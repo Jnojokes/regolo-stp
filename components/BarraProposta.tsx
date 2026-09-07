@@ -16,7 +16,11 @@ import Link from 'next/link'
  * una riga di rumore sopra la hero.
  */
 export function BarraProposta({ opzione }: { opzione: 'a' | 'b' }) {
-  const questa = opzione === 'a' ? 'opzione A — «l’elevato»' : 'opzione B — «il registro»'
+  // I nomi sono quelli di CLAUDE.md § Due opzioni, che sono anche quelli con cui
+  // FT le vende in call: non si cambiano da qui. «L'elevato» e «Il registro»
+  // sono i nomi *interni* dei due temi nel codice e nella cartella di prove —
+  // dicono il meccanismo tipografico, non il tono — e restano lì.
+  const questa = opzione === 'a' ? 'opzione A — «lo studio»' : 'opzione B — «il cantiere»'
   const altra =
     opzione === 'a'
       ? { href: '/opzione-b', label: 'guarda l’opzione B' }

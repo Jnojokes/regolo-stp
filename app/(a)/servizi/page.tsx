@@ -1,34 +1,131 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Briciole } from '@/components/Briciole'
+import { JsonLd } from '@/components/JsonLd'
+import { Sezione } from '@/components/sezioni/Sezione'
+import { contenutoServizio } from '@/lib/contenuti/servizi'
+import { fasi, introProcesso } from '@/lib/processo'
+import { ctaPrimaria, site } from '@/lib/site'
 import { servizi } from '@/lib/servizi'
+
+/**
+ * L'indice dei servizi.
+ *
+ * Sei voci, non nove: chi arriva qui sta cercando di capire in quale casella
+ * cade il proprio problema, e ogni casella in più è una decisione in più da
+ * prendere prima di poter chiamare.
+ *
+ * Il titolo di ogni servizio è un **esito** e non una prestazione — «mettere in
+ * sicurezza la struttura», non «progettazione strutturale» — e il tecnicismo
+ * sta in seconda riga per chi lo cerca (CLAUDE.md § I sei servizi). Serve a due
+ * lettori diversi con lo stesso testo: il committente riconosce il proprio
+ * caso, il collega o l'ente riconosce la competenza.
+ *
+ * Sotto le sei voci ci sono le cinque fasi, una volta sola: è la risposta alla
+ * domanda che viene subito dopo «cosa fate», cioè «e poi cosa succede». Nelle
+ * pagine dei singoli servizi è ripetuta perché lì è il contesto giusto, ma chi
+ * legge solo l'indice non deve restare senza.
+ */
 
 export const metadata: Metadata = {
   title: 'Servizi',
   description:
-    'Progettazione architettonica e strutturale, pratiche e bonus, energia e acustica, opere pubbliche e collaudi. Sei modi di lavorare insieme.',
+    'Progettazione architettonica e strutturale, ristrutturazioni, sisma, pratiche e bonus, energia e acustica, opere pubbliche. Studio REGOLO, Fermo.',
 }
 
 export default function Servizi() {
   return (
-    <section className="wrap nav:py-24 py-16">
-      <p className="eyebrow">Indice</p>
-      <h1 className="mt-4 max-w-[18ch]">Sei modi in cui possiamo esservi utili.</h1>
+    <>
+      <div className="testa-pagina">
+        <div className="wrap">
+          <Briciole percorso={[{ href: '/servizi', label: 'Servizi' }]} />
+          <p className="eyebrow mt-6">Cosa facciamo</p>
+          <h1 className="mt-3">Sei modi in cui possiamo esservi utili.</h1>
+          <p className="sommario text-lead">
+            Progetto architettonico e strutturale, pratiche, cantiere: la stessa squadra dall’idea
+            alla consegna. Ogni pagina dice cosa comprende l’incarico e — cosa che quasi nessuno
+            scrive — cosa serve da parte tua per cominciare.
+          </p>
+        </div>
+      </div>
 
-      <ul className="border-line mt-14 border-t">
-        {servizi.map((s) => (
-          <li key={s.slug} className="border-line border-b">
-            <Link
-              href={`/servizi/${s.slug}`}
-              className="hover:bg-accent-soft group nav:flex-row nav:items-baseline nav:justify-between nav:gap-8 flex flex-col gap-2 py-8 transition-colors"
-            >
-              <h2 className="text-h3 max-w-[24ch]">{s.titolo}</h2>
-              <p className="text-muted text-small nav:max-w-[34ch] nav:text-right">
-                {s.sottotitolo}
-              </p>
+      <Sezione>
+        <ul className="griglia-servizi" role="list">
+          {servizi.map((s) => {
+            const c = contenutoServizio(s.slug)
+            return (
+              <li key={s.slug} className="servizio-essenziale">
+                <p className="servizio-tecnicismo">{s.sottotitolo}</p>
+                <h2 className="text-h3">
+                  <Link href={`/servizi/${s.slug}`}>{s.titolo}</Link>
+                </h2>
+                {c && <p>{c.sommario}</p>}
+                <Link href={`/servizi/${s.slug}`} className="servizio-vai">
+                  Cosa comprende, e cosa serve da te
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </Sezione>
+
+      <Sezione
+        fondo="alt"
+        quota="Come lavoriamo"
+        titolo="E poi cosa succede?"
+        intro={introProcesso}
+      >
+        <ol className="processo-elenco max-w-[62ch]">
+          {fasi.map((f) => (
+            <li key={f.titolo}>
+              <div>
+                <strong className="processo-titolo">{f.titolo}</strong>
+                <p>{f.testoLungo}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Sezione>
+
+      <Sezione>
+        <div className="cta-contestuale">
+          <p className="eyebrow">Non sai in quale casella cade il tuo caso?</p>
+          <h2 className="mt-3 max-w-[26ch]">Raccontacelo in cinque domande.</h2>
+          <p className="intro-sezione text-lead">
+            La prima domanda del brief è esattamente questa, e non serve indovinare: se non rientra
+            in nessuna delle sei, c’è «Altro».
+          </p>
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <Link href={ctaPrimaria.href} className="btn">
+              {ctaPrimaria.label}
             </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
+            <a href={`tel:${site.telefonoHref}`} className="text-muted text-small">
+              oppure chiama · {site.telefono}
+            </a>
+          </div>
+        </div>
+      </Sezione>
+
+      {/* Il catalogo dei sei servizi come lista di offerte. Il nodo `#org`
+          completo lo emette la fase 6: qui basta il riferimento per nome. */}
+      <JsonLd
+        dati={{
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: 'I servizi di REGOLO',
+          itemListElement: servizi.map((s, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            item: {
+              '@type': 'Service',
+              name: s.titolo,
+              serviceType: s.sottotitolo,
+              url: `/servizi/${s.slug}`,
+              provider: { '@type': 'ProfessionalService', name: site.nomeEsteso },
+            },
+          })),
+        }}
+      />
+    </>
   )
 }

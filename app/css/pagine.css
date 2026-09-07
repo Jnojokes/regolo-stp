@@ -1,0 +1,367 @@
+/* ============================================================================
+   Pagine interne — fase 4: servizi, progetti, studio, contatti.
+
+   Vale la stessa nota sull'ordine dei fogli di `sezioni.css`: questo file è
+   importato da `globals.css` prima delle sue regole, quindi per riposizionare o
+   ritingere una primitiva definita là (`.placeholder-media`, `.btn`,
+   `.eyebrow`) qui serve un selettore più specifico. Una regola piatta perde in
+   silenzio.
+   ========================================================================== */
+
+@layer components {
+  /* ---------- briciole di pane -------------------------------------------- */
+  .briciole ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  .briciole li + li::before {
+    content: '/';
+    margin-right: 0.5rem;
+    color: var(--color-line);
+  }
+  .briciole a {
+    text-decoration: underline;
+    text-decoration-color: var(--color-line);
+    text-underline-offset: 3px;
+  }
+  .briciole a:hover {
+    color: var(--color-accent-text);
+  }
+  .briciole [aria-current='page'] {
+    color: var(--color-ink);
+  }
+
+  /* ---------- testa di pagina interna -------------------------------------
+     Le pagine interne hanno tutte lo stesso attacco: briciole, occhiello, h1,
+     sommario. Il ritmo sta qui, non ripetuto in cinque pagine. */
+  .testa-pagina {
+    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .testa-pagina h1 {
+    margin-top: 1rem;
+    max-width: 24ch;
+  }
+  .testa-pagina .sommario {
+    margin-top: 1.5rem;
+    max-width: 52ch;
+    color: var(--color-muted);
+  }
+
+  /* ---------- prosa ------------------------------------------------------
+     Il corpo MDX delle schede progetto e i blocchi di testo lungo. Misura
+     stretta: una riga di prosa oltre i 70 caratteri si perde. */
+  .prosa {
+    max-width: 68ch;
+  }
+  .prosa > * + * {
+    margin-top: 1.125rem;
+  }
+  .prosa h2 {
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
+    margin-top: 2.5rem;
+  }
+  .prosa h3 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+  }
+  .prosa ul,
+  .prosa ol {
+    padding-left: 1.25rem;
+  }
+  .prosa li + li {
+    margin-top: 0.375rem;
+  }
+  .prosa a {
+    color: var(--color-accent-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ---------- elenchi «per chi è» / «cosa comprende» ---------------------- */
+  .elenco-segnato {
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    max-width: 60ch;
+  }
+  .elenco-segnato > li {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.75rem;
+    padding: 0.6875rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+  .elenco-segnato > li::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.5rem;
+    background-color: var(--color-accent);
+  }
+
+  /* ---------- FAQ --------------------------------------------------------- */
+  .faq {
+    max-width: 68ch;
+    border-top: 1px solid var(--color-line);
+  }
+  .faq > details {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .faq > details > summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 1.125rem 0;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    line-height: 1.25;
+    list-style: none;
+  }
+  .faq > details > summary::-webkit-details-marker {
+    display: none;
+  }
+  /* Il segno di apertura: una croce che ruota di 45° quando è aperta. È
+     `transform`, cioè una delle due proprietà che si animano. */
+  .faq > details > summary::after {
+    content: '+' / '';
+    margin-left: auto;
+    flex: none;
+    font-family: var(--regolo-font-body);
+    font-size: 1.375rem;
+    line-height: 1;
+    color: var(--color-accent-text);
+    transition: transform 0.15s;
+  }
+  .faq > details[open] > summary::after {
+    transform: rotate(45deg);
+  }
+  .faq > details > summary:hover {
+    color: var(--color-accent-text);
+  }
+  .faq-risposta {
+    padding-bottom: 1.25rem;
+    color: var(--color-muted);
+    max-width: 62ch;
+  }
+  /* Marca «proposta» sulle risposte non ancora validate dallo studio.
+     Volutamente visibile: è un segnaposto, e va trattato come tale. */
+  .faq-proposta {
+    flex: none;
+    align-self: center;
+    padding: 0.125rem 0.4375rem;
+    border: 1px solid var(--color-accent-text);
+    border-radius: var(--radius-edge);
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+
+  /* ---------- filtri dell'indice progetti --------------------------------
+     Sono link, non bottoni: i filtri stanno nella query string e devono essere
+     indicizzabili e condivisibili (CLAUDE.md § SEO). Senza JavaScript
+     funzionano perché non c'è JavaScript da nessuna parte. */
+  .filtri {
+    display: grid;
+    gap: 1.125rem;
+  }
+  .filtro-riga {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.875rem;
+  }
+  .filtro-nome {
+    flex: none;
+    min-width: 5.5rem;
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .filtro-voci {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .filtro-voce {
+    display: inline-flex;
+    align-items: center;
+    /* 44 px: è il minimo tattile che il resto del sito tiene, e questi sono i
+       bersagli più piccoli di tutte le pagine interne. A 36 px si sbagliava. */
+    min-height: 2.75rem;
+    padding: 0.4375rem 0.875rem;
+    border: 1px solid var(--regolo-brief-controllo-bordo);
+    border-radius: var(--radius-edge);
+    font-size: var(--text-small);
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      color 0.15s;
+  }
+  .filtro-voce:hover {
+    border-color: var(--color-accent-strong);
+  }
+  .filtro-voce[aria-current='true'] {
+    background-color: var(--color-accent-strong);
+    border-color: var(--color-accent-strong);
+    color: var(--color-on-accent);
+  }
+  /* Il contatore accanto alla voce: è il pezzo che prova il volume senza
+     dirlo (catalogo blocchi D1). Zero si mostra comunque, spento. */
+  .filtro-conta {
+    margin-left: 0.375rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.7;
+  }
+  .filtro-voce[data-vuoto] {
+    color: var(--color-muted);
+    border-color: var(--color-line);
+    pointer-events: none;
+  }
+
+  /* Nell'indice la scheda intera è un link (nella home A non lo era, perché
+     `/progetti/[slug]` non risolveva ancora): serve un riscontro al passaggio
+     del mouse, altrimenti niente dice che è cliccabile. Il fuoco da tastiera
+     ce l'ha già dall'anello globale. */
+  .griglia-progetti a:hover .progetto-nome,
+  .griglia-progetti a:focus-visible .progetto-nome {
+    color: var(--color-accent-text);
+  }
+  .griglia-progetti a:hover .placeholder-media {
+    border-color: var(--color-accent-strong);
+  }
+
+  /* ---------- dati duri della scheda progetto ----------------------------- */
+  .dati-duri {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body);
+    max-width: 44rem;
+  }
+  .dati-duri th,
+  .dati-duri td {
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--color-line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .dati-duri th {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 500;
+    width: 34%;
+    padding-right: 1.5rem;
+  }
+  /* Il ruolo dello studio è la riga che conta: si vede che conta. */
+  .dati-duri tr[data-chiave='ruolo'] td {
+    font-weight: 500;
+  }
+
+  /* ---------- galleria ---------------------------------------------------- */
+  .galleria {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  }
+  @media (max-width: 48rem) {
+    .galleria {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 30rem) {
+    .galleria {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- CTA contestuale a fine pagina ------------------------------
+     «Hai un intervento simile?» (catalogo blocchi F5): costo quasi nullo, e
+     intercetta chi legge nel momento di massima persuasione. */
+  .cta-contestuale {
+    background-color: var(--regolo-brief-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-edge);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  /* ---------- avviso di pagina ------------------------------------------
+     «Questa è una scheda di esempio», «questi contenuti sono una proposta».
+     Deve leggersi come un cartello di cantiere, non come contenuto. */
+  .avviso {
+    display: flex;
+    gap: 0.875rem;
+    padding: 0.875rem 1.125rem;
+    border: 1px dashed var(--color-accent-text);
+    border-radius: var(--radius-edge);
+    background-color: var(--color-accent-soft);
+    font-size: var(--text-small);
+    color: var(--color-ink);
+    max-width: 68ch;
+  }
+  .avviso strong {
+    font-weight: 600;
+  }
+
+  /* Una nota in linea rivolta a chi legge — «stai scrivendo di: Pratica o
+     bonus» — che è contenuto vero, non provvisorio. Serve una classe a sé:
+     `.avviso` ha il bordo tratteggiato del cartello di cantiere, e usarla per
+     una conferma normale insegna al lettore la cosa sbagliata su cosa vuol
+     dire quel bordo. */
+  .nota-inline {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    border-left: 3px solid var(--color-accent);
+    background-color: var(--regolo-sezione-alt);
+    font-size: var(--text-small);
+    color: var(--color-ink);
+  }
+
+  /* ---------- indirizzo e contatti diretti -------------------------------- */
+  .contatti-diretti {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .contatti-diretti dt {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.375rem;
+  }
+  .contatti-diretti dd {
+    margin: 0;
+    font-size: var(--text-lead);
+  }
+  .contatti-diretti a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .contatti-diretti a:hover {
+    color: var(--color-accent-text);
+  }
+}

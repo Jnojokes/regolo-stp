@@ -45,8 +45,8 @@ export function Persone({ variante }: { variante: 'a' | 'b' }) {
       {/* Una lista, non quattro <div>: quante sono le persone è un'informazione,
           e chi usa uno screen reader la sente prima di scorrerle una per una. */}
       <ul className="griglia-persone">
-        {persone.map((persona) => (
-          <li key={persona.ruolo}>
+        {persone.map((persona, indice) => (
+          <li key={indice}>
             <Placeholder label={persona.ritratto} ratio="3 / 4" />
             {/* Il nome è un <h3> come il nome delle schede progetto: una scheda
                 con un nome è un titolo, e chi naviga per titoli deve poter

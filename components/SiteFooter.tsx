@@ -62,7 +62,7 @@ export function SiteFooter() {
         </div>
 
         <div className="nav:col-span-3">
-          <Placeholder label="Mappa statica della sede" ratio="4 / 3" />
+          <Placeholder label="Come si arriva in studio" className="mappa-footer" />
         </div>
       </div>
 

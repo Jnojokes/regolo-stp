@@ -4,8 +4,9 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | `/fase-3-home-statica` (07/09/2026) |
-| Prossima fase | `/fase-4-contenuti`. **Nota: la decisione n. 1 (A / B / mix) si prende su queste due pagine, e blocca la fase 5** |
+| Ultima fase chiusa | `/fase-4-contenuti` (07/09/2026, di notte) |
+| Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / B / mix), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
+| Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
 | Come si prova il brief | serve `start:prova` o `dev`: accendono `BRIEF_TRASPORTO=file` e le due mail finiscono in `.brief-dev/` invece di partire |
@@ -53,6 +54,16 @@
 | 07/09/2026 | 3 | il segnaposto di testo ora si vede: filetto pieno a sinistra, tinta, punteggiato | la sola tinta stava a 1,1:1 dalla carta e non si vedeva, mentre il commento del componente prometteva il contrario |
 | 07/09/2026 | 3 | «geometra» è diventato un segnaposto | tre mestieri su quattro risultano da CLAUDE.md § Cliente; il quarto veniva dal prototipo e da nessuna fonte confermata. È il tipo di dato plausibile che la regola 1 vieta |
 | 07/09/2026 | 3 | rimessa l'evidenziazione legenda ↔ livelli dell'esploso, **in CSS puro** | è il gesto della call in `kit/REGOLO_Due_Opzioni.md` e si era perso passando dal prototipo. `:has()` + `opacity`, dentro `@media (hover: hover)` |
+| 07/09/2026 | **4 — contenuti** | **le pagine interne**: sei pagine servizio, indice servizi, indice progetti con i filtri, scheda progetto, studio, contatti | dieci rotte, tutte con briciole, `title` ≤ 60, `description` ≤ 155 e un solo `h1` |
+| 07/09/2026 | 4 | contenuti dei progetti in **MDX** con frontmatter validato da **zod**: la build fallisce se un campo manca | provato su quattro guasti: campo `ruolo` assente, ruolo fuori dall'elenco chiuso, `alt` vuoto in galleria, `correlati` che rimanda a uno slug che non esiste |
+| 07/09/2026 | 4 | **un solo** MDX di esempio (`content/progetti/esempio-scheda.mdx`), con tutti i campi segnaposto | `esempio: true` accende insieme il `noindex` e il cartello in pagina: una scheda finta non può passare per vera |
+| 07/09/2026 | 4 | indice `/progetti` con tre filtri — tipo, comune, ruolo — **come query string**, con il conteggio per voce | link veri, indicizzabili, condivisibili, e funzionanti senza JavaScript perché non ce n'è |
+| 07/09/2026 | 4 | le sei pagine servizio complete: esito → per chi è → cosa comprende → cinque fasi → **cosa serve da te** → FAQ → progetti collegati → CTA | la CTA porta al brief con il passo 1 già scelto, e la pagina lo sa da sé: resta statica |
+| 07/09/2026 | 4 | **18 FAQ** (3 per servizio) in `<details>` nativi, validate da zod: domanda che finisce con `?`, risposta ≥ 15 parole | nascono `validato: false`, in pagina sono marcate «proposta» e **non entrano nello schema `FAQPage`** finché lo studio non le conferma |
+| 07/09/2026 | 4 | `/studio` con la **answer capsule** del kit verbatim, le cinque fasi e le quattro caselle delle persone | la capsule è la sorgente unica: da lì escono la description, il nodo `ProfessionalService` e — alla fase 6 — `llms.txt` |
+| 07/09/2026 | 4 | `/contatti` vera: dati confermati, i mancanti come segnaposto, mappa statica **senza iframe**, e il brief | la precompilazione da `?intervento=` continua a funzionare senza JavaScript, che era il requisito da non rompere |
+| 07/09/2026 | 4 | `JsonLd` toglie da sé i campi vuoti e i `[[DA CLIENTE]]`, **a ogni livello di annidamento**, e non emette gusci vuoti | «un campo mancante si omette» (`kit/REGOLO_SEO-GEO-LEGAL.md`): un segnaposto in `vatID` non è un buco visibile, è una partita IVA falsa dichiarata a una macchina |
+| 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 
 ## Misure (07/09/2026, build di produzione, Slow 4G + CPU 4×, viewport 390)
 
@@ -67,7 +78,36 @@ Byte **sul filo** (`encodedDataLength`), non decompressi: il budget parla di KB 
 | Richieste | < 40 | 27 | 22 | 17 | OK |
 | Documento HTML | — | 26,2 KB | 19,7 KB | 12,7 KB | dentro ci sono l'esploso (~6 KB), la mappa (~4 KB), i 5 pannelli di B (~2 KB) e i 128 `<option>` del datalist (~1 KB) |
 | Lighthouse mobile | ≥ 90 ×4 | 100 · 100 · 100 · 100 | 100 · 100 · **60** · 100 | 100 ×4 | OK — vedi sotto |
-| Resa | — | statica | statica | **dinamica per scelta** | `/contatti` legge `?intervento=` sul server perché la precompilazione deve funzionare anche senza JS. Al collaudo della fase 8 non è una regressione |
+| Resa | — | statica | statica | **dinamica per scelta** | vedi sotto |
+
+**Le rotte dinamiche, e perché.** Non sono una regressione e al collaudo della fase 8 non vanno
+segnalate come tale:
+
+| Rotta | Perché legge la richiesta |
+|---|---|
+| `/contatti` | `?intervento=` precompila il passo 1 del brief, e deve funzionare **anche senza JavaScript**: il valore va scelto sul server |
+| `/progetti` | i tre filtri sono query string per essere indicizzabili e condivisibili (CLAUDE.md § SEO), e senza JS non c'è altro posto dove leggerli |
+| `/brief/inviato`, `/brief/non-inviato` | leggono il motivo dell'esito; sono `noindex` |
+| `/api/brief` | è un endpoint |
+
+Tutto il resto è statico, comprese le sei pagine servizio e le schede progetto.
+
+### Fase 4 — le pagine interne (07/09/2026, stesse condizioni)
+
+| Rotta | LCP | CLS | Richieste | Peso | JS | Documento |
+|---|---|---|---|---|---|---|
+| `/servizi/strutture` | 0,77 s | 0,000 | 22 | 245 KB | 144 KB | 8,0 KB |
+| `/progetti` | 0,74 s | 0,000 | 18 | 246 KB | 150 KB | 9,0 KB |
+| `/progetti/esempio-scheda` | 0,77 s | 0,000 | 20 | 246 KB | 150 KB | 7,2 KB |
+| `/studio` | 0,75 s | 0,000 | 17 | 239 KB | 144 KB | 7,6 KB |
+| `/contatti` | 0,74 s | 0,000 | 18 | 246 KB | 144 KB | 14,1 KB |
+
+Lighthouse mobile: **100 · 100 · 100 · 100** su `/servizi/strutture` (49 controlli) e su
+`/progetti` (50 controlli), zero falliti.
+
+**`zod`, `gray-matter` e `next-mdx-remote` non entrano nel bundle client**: zero chunk su
+quattordici (verificato a grep sui chunk serviti). Le tre dipendenze della fase 4 costano zero
+byte a chi apre il sito, e il JavaScript resta fra 144 e 150 KB su 180 di budget.
 
 **La fase 3 è costata 5,4 KB gz di JavaScript** (da 143,3 a 148,7): dodici sezioni, due home, e
 un solo componente client in tutto (`Confronto.tsx`, il cursore del prima/dopo). Il resto è HTML
@@ -84,7 +124,9 @@ Su `/opzione-b` il peso totale sale per i font in più — debito tecnico della 
 |---|---|---|
 | **A / B / mix — decisione n. 1** | cliente, in call con FT | **la fase 5**. Le due pagine su cui decidere sono in piedi: `/` e `/opzione-b` dallo stesso deploy, con la barra in cima per passare dall'una all'altra. La fase 4 si può fare comunque: i contenuti sono gli stessi per entrambe |
 | Come parte la mail del brief: **decisione n. 14** (Resend / SMTP dello studio / SMTP di una casella `brief@`) | NB con il titolare | **la fase 7**: `/privacy` deve nominare il responsabile del trattamento, e con SMTP non c'è nessun terzo da nominare. Le variabili in `.env.example` sono quelle dell'opzione A: quali servano davvero lo dice la n. 14 |
-| Dominio | cliente | fase 6 (SEO). Finché non c'è, `metadataBase` resta vuoto e non si dichiara nessun canonical |
+| Dominio | cliente | fase 6 (SEO). Finché non c'è, `metadataBase` resta vuoto, non si dichiara nessun canonical e il `BreadcrumbList` **non si emette** (URL relativi in un JSON-LD non servono a niente) |
+| **Le 18 risposte alle FAQ da validare** | studio | niente: in pagina si vedono marcate «proposta». Bloccano solo lo schema `FAQPage`, che oggi non si emette |
+| **Decisione n. 16**: che risposta del passo 1 dare a «Comfort, energia, acustica» | NB con FT | niente. Oggi quella CTA manda al brief senza precompilare |
 | Foto e dati dei progetti | cliente | fase 4 (contenuti reali) |
 | Quale analytics (decisione n. 10) | NB | fase 7. Gli eventi sono già cablati: `lib/analytics.ts` è muto finché non c'è la libreria |
 | Node locale v25.7.0, non LTS | NB | niente: `.nvmrc` e `engines` fissano 22 LTS, che è quello che usa Vercel |
@@ -150,3 +192,94 @@ e dalle misure qui sopra, ma non da una lettura avversariale).
 | Idratazione | zero errori in console su entrambe le pagine, in `next dev` e in produzione | 07/09/2026 |
 | Mobile 320 / 390 / 430 / 768 px | nessuno scroll orizzontale, barra mobile che non copre il footer, bersagli ≥ 44 px | 07/09/2026 |
 | Nessuna richiesta a terzi | zero: font self-hosted, nessun tile server, nessun analytics ancora installato | 07/09/2026 |
+| **Fase 4 — lo schema ferma la build** | provato su quattro guasti: `ruolo` assente, ruolo fuori dall'elenco chiuso, `alt` vuoto in galleria, `correlati` verso uno slug inesistente. Tutti e quattro fermano `next build` con il nome del file e del campo | 07/09/2026 |
+| **I filtri di `/progetti` senza JavaScript** | provati con due schede temporanee, poi cancellate: conteggi corretti e coerenti fra i tre filtri, voci a zero spente e non cliccabili, la voce attiva che si disattiva, `noindex, follow` solo con un filtro attivo, tre query ostili che non applicano niente e non compaiono in pagina | 07/09/2026 |
+| Le dieci pagine con e senza JavaScript | nessuna perde testo. Le due differenze sono attese: sulla scheda progetto mancano le 7 parole del suggerimento del cursore (che senza JS non esiste) e `/contatti` senza JS ha **più** testo, perché i cinque passi del brief sono tutti visibili | 07/09/2026 |
+| FAQ senza JavaScript | i `<details name="faq">` si aprono e si chiudono a vicenda, e la risposta si legge | 07/09/2026 |
+| Corpo MDX senza JavaScript | i tre capoversi del racconto sono nell'HTML servito, e i tre segnaposto dentro la prosa sono evidenziati | 07/09/2026 |
+| `title` ≤ 60 e `description` ≤ 155 | misurati sull'HTML servito di tutte e undici le rotte, suffisso « — REGOLO» compreso | 07/09/2026 |
+| Mobile 320 / 390 / 768 / 1440 px | nessuna delle dieci pagine sfonda in orizzontale. Corretto: le etichette del prima/dopo si sovrapponevano sotto i 430 px | 07/09/2026 |
+
+---
+
+# Nota della notte del 07/09
+
+Ho chiuso la **fase 3** e la **fase 4** e mi sono fermato, come da istruzioni. La fase 5 non
+l'ho cominciata: comincia leggendo la decisione n. 1 (A / B / mix), che la prende il cliente in
+call con FT. **Le due rotte sono entrambe in piedi, nessun tono è stato scelto, nessun mix
+provvisorio è stato portato avanti.**
+
+## La prima cosa da guardare
+
+**`http://localhost:3210/servizi/strutture`** — è la pagina servizio completa, ed è quella che
+mostra come sarà il sito quando avrà dei contenuti. Poi **`/progetti`**: con zero schede mostra
+un cartello che spiega cosa manca, e i tre filtri sono in pagina e funzionanti (li ho provati
+con due schede temporanee, che ho cancellato).
+
+Se hai dieci minuti, il terzo posto è **`/progetti/esempio-scheda`**: è la scheda di esempio, ed
+è il file che lo studio copia per pubblicare il primo progetto vero.
+
+## Le tre decisioni che ho scritto invece di prendere
+
+| # | Cosa | Perché non l'ho presa io |
+|---|---|---|
+| **1** | A / B / mix | è del cliente, e blocca la fase 5 |
+| **15** | senza JavaScript un rifiuto del server costa ancora le cinque risposte del brief, nel caso residuo | chiuderlo bene vuol dire riscrivere il route handler come Server Action e ri-collaudare la fase 2: è un costo M, e la decisione è tua |
+| **16** | «Comfort, energia, acustica» non ha una risposta nel passo 1 del brief | tre opzioni, una delle quali sposta un capitolato. Oggi la CTA di quel servizio manda al brief senza precompilare, e non finge il contrario |
+
+Non ho toccato le n. 2 (dominio) e n. 14 (come parte la mail del brief). Non ho chiesto né usato
+la chiave Resend e non ho provato nessun invio reale: il trasporto su file è rimasto come stava.
+
+## Cosa ho corretto che non sapevo di dover correggere
+
+Tre difetti veri, trovati dall'audit avversariale e non da me:
+
+1. **Il blocco prima/dopo era servito completamente vuoto.** `placeholder-media` era un
+   `@utility` di Tailwind, che compila in `@layer utilities` e vince su `@layer components`:
+   quattro regole di blocco perdevano in silenzio. Non me ne ero accorto perché avevo
+   fotografato quel blocco e non l'avevo guardato.
+2. **Senza JavaScript il brief perdeva le cinque risposte** se il server rifiutava un valore che
+   il browser aveva accettato — e il caso tipico era `Fermo (FM)`, cioè esattamente quello che
+   il `<datalist>` mostra.
+3. **La CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in
+   silenzio**: un parametro morto in una URL.
+
+E due cose che avevo scritto io e che non andavano: il segnaposto di testo stava a 1,1:1 dal
+fondo (cioè non si vedeva, mentre il commento del componente prometteva il contrario), e
+«geometra» fra i mestieri delle persone era l'unico dei quattro senza nessuna fonte confermata.
+
+## Cosa non è stato provato, e va provato
+
+- **Il ramo «progetto vero» della scheda progetto.** Con `esempio: false` cambiano cinque cose
+  (`robots`, il `title`, il nodo `CreativeWork`, l'omissione di impresa e committente, il
+  «progetto successivo») e nessuna è stata eseguita: serve un MDX vero. Il primo progetto che
+  arriva va guardato in pagina.
+- **`next/image` non è mai stato eseguito**: nessuna immagine ha ancora un file. Il ramo è tre
+  righe, ma è codice non collaudato — rapporto d'aspetto, ritaglio e `sizes` vanno visti con la
+  prima foto vera.
+- **Accessibilità, mobile e performance non hanno avuto una lettura avversariale**: l'audit della
+  fase 3 si è fermato a metà per il limite di sessione. Sono coperti da Lighthouse e dalle
+  misure, non da qualcuno che cercava di rompere.
+- **Nessuna prova su un telefono vero.** Tutto il mobile è emulato.
+
+## Due cose da sapere per lavorare qui
+
+- **`next start` serve il build che c'era all'avvio.** Ricostruire senza riavviare fa servire
+  chunk vecchi e sembrare rotto ciò che funziona: ci ho perso mezz'ora prima di capirlo. Serve
+  build **e** riavvio insieme.
+- **Non far costruire più agenti nello stesso `.next`.** I build concorrenti si sovrascrivono i
+  chunk e le pagine cominciano a rispondere 500 senza che ci sia niente di rotto nel codice. È
+  successo, e mi ha invalidato una misura.
+
+## Debiti piccoli, segnati e non urgenti
+
+- `favicon.ico` risponde 404 su tutto il sito: dipende dal logo, che è la decisione n. 5.
+- `robots.txt` e `sitemap.xml` non ci sono: sono della fase 6.
+- I nodi JSON-LD si riferiscono all'organizzazione **per nome** invece che con un `@id`, perché
+  il dominio manca. Da legare in fase 6, insieme a `areaServed`, che oggi dice «Fermo e
+  provincia» sulle pagine servizio e su `/contatti` mentre il brief e la mappa parlano di tre
+  province: **due nodi dicono due cose diverse**, e va allineato una volta per tutte.
+- `components/PaginaStub.tsx` è ancora usato dalle tre pagine legali: sparisce alla fase 7.
+- Il file `content/progetti/esempio-scheda.mdx` va **cancellato al go-live**. Il valore
+  `esempio: true` resta nello schema per la prossima volta.
+

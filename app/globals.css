@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './css/sezioni.css';
+@import './css/pagine.css';
 
 /* ============================================================================
    REGOLO STP — design token
@@ -388,6 +389,15 @@
    ========================================================================== */
 
 @layer components {
+  /* La mappa del footer è una **striscia**, non un riquadro: su `/contatti` c'è
+     già una mappa 4/3 nella sezione «dove siamo», e due rettangoli identici a
+     una schermata di distanza sembrano un errore di impaginazione. Larga e
+     bassa dice «sei arrivato in fondo», non «ecco la mappa» — ed è anche il
+     rapporto che ha nel prototipo B. */
+  .mappa-footer {
+    aspect-ratio: 21 / 6;
+  }
+
   .placeholder-media {
     position: relative;
     background-color: var(--color-ph);

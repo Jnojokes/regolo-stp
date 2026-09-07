@@ -921,6 +921,21 @@
     left: auto;
     right: 0.75rem;
   }
+  /* Sotto i ~430 px le due targhette non stanno affiancate: «PRIMA — FOTO
+     DELLO STUDIO» e «DOPO — STESSO PUNTO DI RIPRESA» si sovrappongono e si
+     legge una terza cosa che non vuol dire niente. Si accorciano — la parte
+     che conta è la prima parola — e si mettono su due righe diverse. */
+  @media (max-width: 27rem) {
+    .prima-dopo > .placeholder-media > .placeholder-etichetta {
+      max-width: calc(100% - 1.5rem);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .prima-dopo > .placeholder-media:first-child > .placeholder-etichetta {
+      bottom: 2.5rem;
+    }
+  }
   .prima-dopo-maniglia {
     position: absolute;
     top: 0;

@@ -1,7 +1,23 @@
 /**
  * I sei servizi. Titolo = esito per il cliente, tecnicismo in seconda riga
- * (CLAUDE.md § I sei servizi). `intervento` è il valore che precompila il
- * passo 1 del brief via query string, dal blocco di smistamento della home.
+ * (CLAUDE.md § I sei servizi).
+ *
+ * `intervento` è la chiave del **passo 1 del brief** con cui la CTA del servizio
+ * precompila il form. Non è il nome del servizio: è una delle sei risposte
+ * chiuse che CLAUDE.md § Il form fissa per la prima domanda, e cinque servizi su
+ * sei ne hanno una.
+ *
+ * Il sesto — `energia-acustica` — **non ce l'ha**, ed è dichiarato con
+ * `undefined` invece di essere fatto combaciare a forza. Prima aveva
+ * `intervento: 'energia-acustica'`, che non è fra le sei chiavi: la CTA
+ * produceva `?intervento=energia-acustica`, il brief lo scartava perché non è
+ * nell'elenco chiuso, e la precompilazione non faceva niente — un parametro
+ * morto in una URL, che è peggio di nessun parametro. Con `undefined` la CTA
+ * non lo mette affatto.
+ *
+ * Quale sia la risposta giusta per quel servizio è una scelta di prodotto, non
+ * di codice: sta in DECISIONI.md come voce aperta (una settima risposta nel
+ * passo 1? oppure «Ristrutturazione», che è come la descrive chi chiama?).
  */
 export const servizi = [
   {
@@ -32,7 +48,9 @@ export const servizi = [
     slug: 'energia-acustica',
     titolo: 'Comfort, energia, acustica',
     sottotitolo: 'progettazione termica e acustica, efficientamento',
-    intervento: 'energia-acustica',
+    /* Nessuna delle sei risposte del passo 1 corrisponde: vedi il commento in
+       testa e la voce aperta in DECISIONI.md. */
+    intervento: undefined,
   },
   {
     slug: 'opere-pubbliche',
@@ -54,5 +72,10 @@ export const servizioBySlug = (slug: string): Servizio | undefined =>
  * È qui che si chiude la catena dello smistamento: home → servizio → brief,
  * senza che nessuno ridigiti il tipo di intervento. La pagina del servizio non
  * ha bisogno di leggere niente dalla query: sa già chi è.
+ *
+ * Se il servizio non ha una chiave del passo 1, il parametro **non si mette**:
+ * una `?intervento=` che il brief scarta è una URL che promette una cosa e non
+ * la fa.
  */
-export const hrefBriefServizio = (s: Servizio) => `/contatti?intervento=${s.intervento}#brief`
+export const hrefBriefServizio = (s: Servizio) =>
+  s.intervento ? `/contatti?intervento=${s.intervento}#brief` : '/contatti#brief'

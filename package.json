@@ -15,10 +15,13 @@
     "start:prova": "BRIEF_TRASPORTO=file next start"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "next": "16.3.4",
+    "next-mdx-remote": "^6.0.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "resend": "^6.26.0"
+    "resend": "^6.26.0",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

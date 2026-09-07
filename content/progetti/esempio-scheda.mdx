@@ -1,0 +1,64 @@
+---
+# ============================================================================
+# SCHEDA PROGETTO DI ESEMPIO — nessun dato di questo file è reale.
+#
+# È l'unico MDX della fase 4, e serve a due cose: far vedere allo studio quali
+# campi servono per una scheda, e far fallire la build se un campo manca
+# (lo schema è in lib/contenuti/schema.ts, validato con zod).
+#
+# Quando arrivano i progetti veri: si copia questo file, si cambia lo slug nel
+# nome, si riempiono i campi e si toglie `esempio: true`. Finché `esempio` è
+# vero la scheda è `noindex` e in pagina lo dichiara.
+# ============================================================================
+esempio: true
+titolo: '[[DA CLIENTE: nome del progetto]]'
+sommario: '[[DA CLIENTE: una riga che dica cosa è questo intervento]]'
+# Il tipo di intervento: stesso elenco chiuso del passo 1 del brief, così la
+# scheda si collega allo smistamento della home e ai filtri dell'indice.
+intervento: ristrutturazione
+comune: '[[DA CLIENTE: comune]]'
+provincia: FM
+anno: '[[DA CLIENTE: anno]]'
+superficieMq: '[[DA CLIENTE: superficie in mq]]'
+# Elenco CHIUSO (lib/contenuti/schema.ts): è il campo che dice cosa sapete
+# fare, e CLAUDE.md § Scheda progetto vieta di ometterlo.
+ruolo:
+  - progetto architettonico
+  - progetto strutturale
+  - direzione lavori
+committente: '[[DA CLIENTE: committente, solo se autorizzato a citarlo]]'
+impresa: '[[DA CLIENTE: impresa esecutrice, se citabile]]'
+copertina:
+  segnaposto: 'Copertina — foto dello studio, non un render'
+  alt: '[[DA CLIENTE: cosa si vede nella foto di copertina]]'
+galleria:
+  - segnaposto: 'Galleria 1 — foto dello studio'
+    alt: '[[DA CLIENTE: cosa si vede]]'
+  - segnaposto: 'Galleria 2 — foto dello studio'
+    alt: '[[DA CLIENTE: cosa si vede]]'
+  - segnaposto: 'Galleria 3 — foto dello studio'
+    alt: '[[DA CLIENTE: cosa si vede]]'
+primaDopo:
+  prima: 'Prima — foto dello studio'
+  dopo: 'Dopo — stesso punto di ripresa'
+correlati: []
+---
+
+## Il contesto e il problema
+
+[[DA CLIENTE: com'era l'immobile e qual era il problema da risolvere. Due o tre
+capoversi, scritti come si racconterebbero a voce a un committente nuovo: cosa
+c'era, cosa non funzionava, quali vincoli — urbanistici, strutturali, di budget
+o di famiglia — hanno dato la forma all'intervento.]]
+
+## Cosa abbiamo fatto
+
+[[DA CLIENTE: le scelte di progetto e il perché. Non l'elenco delle lavorazioni:
+le due o tre decisioni che hanno fatto la differenza, e cosa sarebbe andato
+storto scegliendo diversamente. È la parte che un altro committente legge per
+capire se ragionate come serve a lui.]]
+
+## Come è andata in cantiere
+
+[[DA CLIENTE: opzionale, ma è quello che nessuno scrive e tutti vorrebbero
+leggere. Un imprevisto e come si è risolto vale dieci righe di metodo.]]

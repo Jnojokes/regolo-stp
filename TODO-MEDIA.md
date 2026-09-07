@@ -13,9 +13,22 @@
 | ▲ Progetti 01-02 | home B | 16 / 9 | le stesse due dei primi due progetti, ritagliate | no | come sopra |
 | ▲ Ritratti ×4 | home A e B | 3 / 4 | quattro ritratti, stessa luce e stessa distanza. Quante persone davvero lo dice lo studio | no | nome e ruolo |
 | Prima / dopo ×1 (poi 2-3) | home B | 16 / 10 | **due foto dallo stesso punto di ripresa**: è il vincolo che fa funzionare il blocco. Senza, il blocco non va online | no | «prima» e «dopo» dello stesso soggetto |
-| Mappa statica della sede | footer, tutte | 4 / 3 | tile statico o SVG. **Nessun cookie di terzi**: niente iframe di Google Maps | da decidere | indirizzo in chiaro |
+| Mappa statica della sede — **striscia** | footer, tutte | **21 / 6** | tile statico o SVG. **Nessun cookie di terzi**: niente iframe di Google Maps. È larga e bassa per non essere la stessa immagine della mappa di `/contatti`, che è 4/3 | da decidere | indirizzo in chiaro |
 | Immagine Open Graph 1200×630 | tutte | — | fondo + tipografia in codice, oppure una foto dello studio | sì se generata → dichiarare | — |
 | Favicon e icone | tutte | — | dal logo, quando arriva (decisione n. 5) | no | — |
+
+## Fase 4 — le pagine interne
+
+| Blocco | Pagina | Rapporto | Cosa serve | Generato con IA | Alt |
+|---|---|---|---|---|---|
+| ▲ Copertina di ogni progetto | /progetti/* | **16 / 9**, a piena larghezza | una foto per scheda, orizzontale. È l'LCP della scheda (`priority`), quindi < 250 KB. Il rapporto è fissato dalla pagina: un 4/3 verrebbe ritagliato senza che nessuno l'abbia deciso. L'`alt` è **obbligatorio** nello schema e non può essere vuoto: la build fallisce | no | lo scrive lo studio, dice cosa si vede |
+| ▲ Galleria di ogni progetto | /progetti/* | libero | tre o più foto per scheda, ognuna con il suo `alt` | no | come sopra |
+| Prima / dopo per scheda | /progetti/* | 16 / 10 | due foto dallo stesso punto, campo opzionale nello schema | no | «prima» e «dopo» dello stesso soggetto |
+| Mappa statica della sede | /contatti | 4 / 3 | tile statico o SVG, **nessun iframe** (decisione scritta) | da decidere | indirizzo in chiaro |
+
+**Pittogrammi dei sei servizi: non si fanno** (DECISIONI.md, 07/09). La direzione visiva è
+tipografica e i titoli dei servizi sono già degli esiti: sei icone aggiungerebbero rumore.
+Se il cliente li chiede si disegnano in SVG, non si generano.
 
 ## Fatti alla fase 3 — costruiti in codice, non immagini
 

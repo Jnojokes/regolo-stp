@@ -1,0 +1,8 @@
+.next
+node_modules
+public/fonts
+package-lock.json
+
+# Documenti di progetto: si scrivono a mano, Prettier non li tocca
+*.md
+.claude/

@@ -21,3 +21,4 @@ la sessione di avvio: non si scrive codice.
 
 Aggiorna `STATO.md` (prossima fase: `/fase-1-impalcatura`) e fermati.
 
+Prima di fermarti: `git add -A && git commit -m "fase 0 — avvio"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

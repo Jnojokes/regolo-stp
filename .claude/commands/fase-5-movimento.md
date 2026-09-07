@@ -20,3 +20,4 @@ mix su `/`), e `/opzione-b` sparisce.
 Verifica il budget dopo ogni blocco animato con Chrome DevTools MCP. Aggiorna `STATO.md`
 (prossima: `/fase-6-seo-geo`). Poi fermati e fammi vedere il blocco speciale su telefono.
 
+Prima di fermarti: `git add -A && git commit -m "fase 5 — movimento"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

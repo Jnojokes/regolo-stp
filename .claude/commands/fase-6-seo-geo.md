@@ -24,3 +24,4 @@ skill `sito-seo-geo-legal` (SEO tecnico, dati strutturati, GEO) e il capitolato
 Aggiorna `STATO.md` (prossima: `/fase-7-legal`). Poi fermati e mostrami il JSON-LD validato e
 `llms.txt`.
 
+Prima di fermarti: `git add -A && git commit -m "fase 6 — seo geo"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

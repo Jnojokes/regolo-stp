@@ -21,3 +21,4 @@ in `CONTENUTI-DA-CLIENTE.md`.
 
 Aggiorna `STATO.md` (prossima: `/fase-8-collaudo`). Poi fermati e mostrami le tre pagine.
 
+Prima di fermarti: `git add -A && git commit -m "fase 7 — legal"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

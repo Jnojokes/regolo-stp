@@ -27,3 +27,4 @@ Verifica il budget di entrambe con Chrome DevTools MCP. Aggiorna `STATO.md` (pro
 `/fase-4-contenuti`; nota: la decisione n. 1 si prende su queste due pagine). Poi fermati e
 mostrami le due home su desktop e su mobile.
 
+Prima di fermarti: `git add -A && git commit -m "fase 3 — home statica"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

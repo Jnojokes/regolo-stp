@@ -18,3 +18,4 @@ Evento di misurazione sull'invio riuscito (uno dei 4 di `CLAUDE.md` § Analytics
 Aggiorna `STATO.md` (prossima: `/fase-3-home-statica`). Poi fermati e fammelo provare, con JS
 attivo e disattivato, e mostrami la mail che arriva.
 
+Prima di fermarti: `git add -A && git commit -m "fase 2 — conversione"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

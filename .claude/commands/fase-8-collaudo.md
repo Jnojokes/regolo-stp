@@ -17,3 +17,5 @@ Leggi `CLAUDE.md`, `STATO.md`, `DECISIONI.md`. Applica la skill `sito-collaudo`.
 Correggi quello che fallisce e rilancia finché è pulito. Scrivi il rapporto in `STATO.md`
 § Collaudo con data ed esito per riga, la lista finale di `CONTENUTI-DA-CLIENTE.md` e i
 `DECISIONI.md` ancora aperti. Poi fermati: la consegna è della skill `sito-consegna`.
+
+Prima di fermarti: `git add -A && git commit -m "fase 8 — collaudo"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

@@ -12,6 +12,15 @@
 | prima/dopo ×2-3 | home | placeholder | foto dello studio, stesso punto | no | |
 | esploso strutturale | home (A) | **da costruire in SVG nel codice**, non un'immagine | — | no | testo alternativo con i 5 livelli |
 | mappa della provincia (territorio) | home | da costruire in SVG con i comuni | — | no | |
-| mappa statica della sede | footer | da generare (tile statico o SVG), nessun cookie | — | no | |
+| mappa statica della sede | footer | **placeholder in pagina dalla fase 1** — da generare (tile statico o SVG), nessun cookie | — | no | |
 | immagine Open Graph 1200×630 | tutte | da generare | gpt_image_2 (sfondo) + tipografia in codice, oppure foto dello studio | sì se generata → dichiarare | |
 | favicon / icone | tutte | da fare dal logo, quando arriva | — | no | |
+
+## Stato dei placeholder in codice (fase 1)
+
+Il componente `components/Placeholder.tsx` disegna il rettangolo: tratteggio nel tema A,
+carta millimetrata nel tema B, con l'etichetta di cosa ci andrà. Oggi in pagina ce n'è uno
+solo — la mappa del footer. Gli altri entrano con i blocchi, alla fase 3.
+
+Il testo mancante usa `DaCliente` dello stesso file e si vede a occhio: fondo colorato e
+sottolineatura punteggiata. Il collaudo (fase 8) cerca `data-placeholder="da-cliente"`.

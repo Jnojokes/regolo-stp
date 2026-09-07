@@ -24,3 +24,4 @@ Leggi `CLAUDE.md`, `STATO.md`, `DECISIONI.md`. Segui le regole della skill `sito
 Aggiorna `STATO.md` (prossima: `/fase-5-movimento`). Poi fermati e mostrami una pagina servizio
 completa e l'indice progetti con i filtri.
 
+Prima di fermarti: `git add -A && git commit -m "fase 4 — contenuti"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

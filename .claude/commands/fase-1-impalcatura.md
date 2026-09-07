@@ -25,3 +25,4 @@ Verifica il performance budget del solo scheletro con Chrome DevTools MCP. Aggio
 (prossima: `/fase-2-conversione`). Poi fermati e mostrami header, footer e la scala tipografica
 su desktop e mobile, nei due temi.
 
+Prima di fermarti: `git add -A && git commit -m "fase 1 — impalcatura"`. Niente push: lo fa chi segue il progetto da GitHub Desktop.

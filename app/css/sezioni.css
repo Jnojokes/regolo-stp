@@ -1419,6 +1419,21 @@
      Territorio — il perimetro vero delle tre province, in SVG.
      Nessun tile server: nessun terzo vede l'IP di chi visita.
      ======================================================================== */
+  /* Il ritaglio della sede nel footer: stessi token della mappa grande, e la
+     croce di quota al posto del pallino. */
+  .mappa-sede-footer {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 21 / 6;
+    background-color: var(--regolo-mappa-fondo);
+    border: 1px solid var(--regolo-mappa-linea);
+  }
+  .mappa-croce line {
+    stroke: var(--regolo-mappa-sede);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
   .mappa-provincia {
     width: 100%;
     height: auto;

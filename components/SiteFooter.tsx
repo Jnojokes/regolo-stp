@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { legal, menu, site } from '@/lib/site'
-import { DaCliente, Placeholder } from '@/components/Placeholder'
+import { DaCliente } from '@/components/Placeholder'
+import { MappaSede } from '@/components/MappaSede'
 
 /**
  * Footer operativo (catalogo blocchi G1): nei servizi professionali è la
@@ -29,9 +30,8 @@ import { DaCliente, Placeholder } from '@/components/Placeholder'
  * cambia mai.
  *
  * La «mappa statica» di `CLAUDE.md` è un **ritaglio dello stesso SVG del
- * territorio** sulla sede: zero byte in più, zero terzi, nessun iframe, nessun
- * banner. Finché il ritaglio non c'è, è un campo dichiarato con la sua
- * specifica.
+ * territorio** sulla sede (`components/MappaSede.tsx`): zero byte in più, zero
+ * terzi, nessun iframe, nessun banner, e nessun segnaposto da riempire.
  */
 export function SiteFooter() {
   return (
@@ -83,11 +83,12 @@ export function SiteFooter() {
           </dd>
         </dl>
 
-        <Placeholder
-          label="Come si arriva in studio"
-          specifica="ritaglio dell’SVG del territorio · 21/6"
-          className="mappa-footer site-footer-mappa"
-        />
+        {/* Non è più un rettangolo dichiarato: è un **ritaglio dello stesso
+            SVG del territorio** centrato sulla sede. Zero richieste, zero
+            terzi, nessun iframe, e si ritematizza. È l'unico segnaposto che
+            questa fase ha potuto eliminare, perché era l'unico che non
+            aspettava niente dal cliente. */}
+        <MappaSede />
       </div>
 
       <div className="wrap site-footer-coda">

@@ -65,6 +65,21 @@ fai chivo \
   "wght=400:600" \
   "chivo-regolo-latin-var.woff2"
 
+# --- due istanze STATICHE per l'immagine Open Graph -------------------------
+# `next/og` (satori) non legge i woff2 variabili: vuole un file statico a un
+# peso fisso. Queste due non vengono servite al browser — stanno fuori da
+# `public/` — e le legge solo `app/(a)/opengraph-image.tsx` a build time.
+echo "· istanze statiche per l'Open Graph"
+mkdir -p assets/og
+for peso in 400 500; do
+  "$TMP/venv/bin/fonttools" varLib.instancer "$TMP/archivo.woff2" \
+    "wght=$peso" "wdth=100" -o "$TMP/og-$peso.ttf" >/dev/null
+  "$TMP/venv/bin/pyftsubset" "$TMP/og-$peso.ttf" \
+    --unicodes="$LAT" --layout-features="$FEAT" \
+    --output-file="assets/og/archivo-$peso.ttf"
+  echo "  assets/og/archivo-$peso.ttf  $(wc -c <"assets/og/archivo-$peso.ttf") byte"
+done
+
 echo
 echo "Fatto. Controllo degli assi e delle funzioni tipografiche:"
 "$TMP/venv/bin/python" - "$DEST" <<'PY'

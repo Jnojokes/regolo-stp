@@ -35,8 +35,8 @@ export function Brief({
 }) {
   return (
     <section id="brief" className="brief passo-largo">
-      <div className="wrap nav:grid-12 nav:gap-16 grid gap-10">
-        <div className="nav:col-span-5 nav:self-start">
+      <div className="wrap brief-griglia">
+        <div className="brief-testo">
           <p className="eyebrow brief-occhiello">{etichetta}</p>
           <h2 className="mt-3">Cinque domande. Poi vi richiamiamo noi.</h2>
           <p className="brief-lead text-lead mt-5 max-w-[40ch]">
@@ -52,7 +52,7 @@ export function Brief({
           </p>
         </div>
 
-        <div className="nav:col-span-7">
+        <div className="brief-colonna-scheda">
           <BriefForm pagina={pagina} interventoIniziale={interventoIniziale} idComuni={ID_COMUNI} />
         </div>
       </div>

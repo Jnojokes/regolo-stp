@@ -1071,15 +1071,30 @@
   .brief-scheda {
     position: relative;
   }
-  /* La griglia del brief in B: il testo nelle prime colonne fino all'asse, la
-     scheda dopo. In A resta 5/7, perché in A l'asse non c'è. */
+  /* La griglia del brief. **Non è `grid-12`**: quella è una `@utility`, quindi
+     compila in `@layer utilities` e batte qualunque regola di componente — con
+     `grid-12` in markup ogni figlio finiva in **una** colonna da 108 px e il
+     testo usciva una parola per riga. È la trappola della decisione del 07/09,
+     e si evita non mettendo l'utility dove serve una griglia di blocco.
+     In B la colonna del testo finisce **esattamente** sull'asse; in A resta la
+     proporzione 5/7, perché in A l'asse non c'è. */
+  .brief-griglia {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+  }
   @media (min-width: 56rem) {
-    [data-theme='b'] .brief > .wrap {
-      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
-      gap: clamp(1.5rem, 3vw, 2.5rem);
+    .brief-griglia {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(2.5rem, 5vw, 4rem);
+      align-items: start;
     }
-    [data-theme='b'] .brief > .wrap > * {
-      grid-column: auto !important;
+    [data-theme='b'] .brief-griglia {
+      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
+      gap: 0;
+    }
+    [data-theme='b'] .brief-griglia > .brief-colonna-scheda {
+      margin-left: clamp(1.5rem, 3vw, 2.5rem);
     }
   }
 

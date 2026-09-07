@@ -51,29 +51,48 @@ Regola della skill `sito-media` e di `CLAUDE.md` § Regole, 2: in hero, progetti
 prima/dopo **non entra mai** materiale generato con IA. Alla fase 3 non è stato generato niente:
 i due SVG sono geometria calcolata da dati pubblici, non immagini prodotte da un modello.
 
-## Fase 3 bis — i media generati: **niente, e uno è bloccato dai crediti**
+## Fase 3 bis — due segnaposto in meno, e nessuno stock
 
-**Zero immagini generate in tutto il sito, e non è un ripiego.** Il prompt della fase prevedeva
-sfondi e texture materiche a piena larghezza. Alla seconda passata del piano la scelta è
-caduta, con una ragione scritta: `TODO-MEDIA.md` § «Niente materiale generato nei blocchi di
-prova» nomina **la hero per prima**, e una texture generata nell'oggetto più grande della prima
-schermata — che è anche l'LCP — farebbe leggere a chi arriva per passaparola, nell'ordine: il
-nome, il payoff, e una smentita. La risposta migliore era già in casa: il **campo dichiarato**
-con le quattro squadrette e la specifica dentro, che davanti a un ingegnere è più forte di un
-intonaco generato con un cartello che dice che non è suo.
+**Zero immagini generate e zero stock in tutto il sito, e non è un ripiego.** Il prompt della
+fase prevedeva sfondi materici generati; FT ha poi chiesto di prendere immagini «da internet»
+per non lasciare rettangoli vuoti. La risposta è la stessa in entrambi i casi, e la ragione è
+scritta in due posti indipendenti:
 
-**Quello che resta da generare è bloccato dai crediti.** Il workspace privato Higgsfield ha
-**1,79 crediti**; `gpt_image_2` costa 0,5 a 1k/low, **2 a 2k/medium**, 6,5 a 2k/high. Non basta
-per una sola immagine alla qualità che serve, e il video Seedance costa di più. Quindi:
+- `TODO-MEDIA.md` § «Niente materiale generato nei blocchi di prova» nomina **la hero per
+  prima**, e `CLAUDE.md` § Regole 2 vieta lo stock nei blocchi di prova;
+- l'antipattern n. 1 della scheda nicchia: «render di repertorio o foto stock di cantieri — il
+  visitatore locale riconosce che non è roba loro; **brucia esattamente la fiducia che il sito
+  doveva costruire**». Il pubblico di REGOLO sono progettisti e imprese.
 
-| Cosa | Stato | Prompt e costo, pronti |
+La skill `refero-design` arriva alla stessa conclusione dall'altra parte (§ 9): un segnaposto
+va bene **quando evita una finta immagine**, purché abbia rapporto fisso, art direction e
+didascalia. I nostri ce li hanno tutti e tre, più la specifica del formato.
+
+### I due che sono spariti — perché non aspettavano niente dal cliente
+
+| Cosa | Come | Perché così |
 |---|---|---|
-| Immagine **Open Graph** 1200×630 | **bloccata: crediti** | `gpt_image_2`, 2k/medium = 2 crediti. Prompt: fondo neutro chiarissimo, una linea di quota orizzontale con terminatori obliqui, nessun edificio, nessuna persona, nessun testo (il testo si compone in codice). Poi `curl -sSL -o public/images/og.png "<url>"`, WebP q82, riga «generato: sì» e `additionalProperty` IPTC `digitalSourceType` sull'`ImageObject` |
-| Loop atmosferico per la hero (Seedance) | **fuori**, e non solo per i crediti | il piano lo ha escluso in seconda passata: la hero di A ha l'LCP sul **testo**, e un video dietro il payoff sposterebbe l'LCP su un asset da 2 MB per guadagnare atmosfera su un sito che deve vendere competenza. Se si rivaluta, serve la decisione n. 6 |
-| Sfondi e texture materiche | **fuori, per decisione** | vedi sopra: nessuna immagine generata in nessun blocco |
+| **Immagine Open Graph** 1200×630 | `app/(a)/opengraph-image.tsx`: **la pagina stessa in miniatura** — stessi caratteri, stessa quota dei cinque ruoli, stesso bianco e nero. Prerenderizzata a build time, 56 KB | Zero crediti, zero licenze, nessuna tell da riconoscere, e **non può divergere dal sito**: se cambia il payoff o l'elenco dei ruoli, cambia l'anteprima. `next/og` non legge i woff2 variabili: le due istanze statiche le produce `scripts/genera-font.sh` in `assets/og/`, fuori da `public/` |
+| **Mappa della sede** nel footer | `components/MappaSede.tsx`: un **ritaglio dello stesso SVG del territorio**, con la croce di quota sulla sede | Zero richieste, zero byte in più (la geometria è già nel bundle), zero terzi, nessun iframe. La decisione del 07/09 sui tile server vale anche nel footer, che era rimasto un rettangolo |
 
-Se in futuro servirà uno sfondo o una texture — che prova non è — si genera con Higgsfield
-seguendo `sito-media`, si converte in WebP e si segna qui con «generato: sì».
+### Quello che resta un campo dichiarato, e resta giusto così
+
+Progetti, persone, prima/dopo e la fotografia della hero. Sono i blocchi di **prova**: è lì
+che una foto che non è loro costa la vendita. Da questa fase ogni campo porta in pagina la
+propria **specifica** (`2400 × 1650 px · AVIF · ≤ 250 KB`) e quattro squadrette di registro:
+legge «modulo in attesa», non «buco», e in call è la lista della spesa da mandare allo studio.
+
+Il **prima/dopo** è il caso in cui questo ha cambiato il blocco: prima erano due segnaposto
+grigi sovrapposti a 1,17:1 — un cursore che non rivelava niente. Ora le due metà sono
+`grafite` e `calce`, il taglio sta a **21:1**, e il blocco dimostra **lo strumento** finché le
+due fotografie dallo stesso punto non arrivano.
+
+### Se un giorno serve generare
+
+I crediti Higgsfield sono **1,79** (`gpt_image_2`: 0,5 a 1k/low, 2 a 2k/medium, 6,5 a
+2k/high). Non servono più per l'Open Graph. Se si decide di generare uno sfondo materico —
+che prova non è — si segue `sito-media`, si converte in WebP, si segna qui con «generato: sì»
+e si dichiara `additionalProperty` IPTC `digitalSourceType` sull'`ImageObject`.
 
 ## Stato dei segnaposto in pagina (fase 3)
 

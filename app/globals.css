@@ -965,6 +965,9 @@
   .site-footer-dati dd {
     margin: 0;
   }
+  .site-footer-quota {
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+  }
   .site-footer-coda {
     display: flex;
     flex-wrap: wrap;

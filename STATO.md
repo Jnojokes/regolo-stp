@@ -4,8 +4,7 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | **fase 3 bis — ridisegno (1/2)** (07/09/2026). Prima: `/fase-4-contenuti` |
-| In corso | **fase 3 bis, parte 2/2**: i blocchi oltre le due hero, i media, la verifica. Lo stop 1 è chiuso |
+| Ultima fase chiusa | **fase 3 bis — ridisegno** (07/09/2026), parti 1/2 e 2/2 |
 | Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / B / mix), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
@@ -107,46 +106,76 @@ La seconda passata ha cambiato dodici parti del piano; le più grosse:
 | la texture materica generata nella hero | **zero immagini generate in tutto il sito** | `TODO-MEDIA.md` nomina la hero per prima fra i blocchi dove non entra mai materiale generato |
 | i nove token caldi dell'esploso «restano» | tre valori per le facce, e cinque retini alla parte 2/2 | erano il cluster 1 sopravvissuto intatto nel momento più guardato di A |
 
-### Blocco → reference → cosa ho preso → quale cluster NON uso (parte 1/2)
+### Blocco → reference → cosa ho preso → quale cluster NON uso
 
-I blocchi rifatti finora. La tabella si completa alla parte 2/2.
+Tutti i blocchi delle due home. Le colonne 4 e 5 sono la parte che conta.
+«**Q:**» segna la quota **solo dove esiste**: in tutto il sito sono tre.
 
 | Blocco | Reference | Cosa ho preso | Cluster che NON uso | Cosa c'è al suo posto |
 |---|---|---|---|---|
 | **Token, tutti** | SCHEDA § 2 · refero | nero **pieno** (3 reference su 4 misurano `rgb(0,0,0)`), gutter 24 e non 64, angoli vivi e zero ombre (unanime), interlinea come funzione del corpo, quattro spaziature **tutte negative** | **1** carta calda `#F4F2ED` · **5** nero tinto `#17171A`, `+0,14em` sulle etichette, mono per i dati | bianco puro (A) e un fondo a **luminanza media** (B, L 0,541 come refero); `#000000`; spaziatura negativa anche sulle maiuscole |
 | **Caratteri** | `_provini/PROVINI.md` | Archivo (A, asse di larghezza) e Chivo (B), una famiglia per tema | **1** il serif display ad alto contrasto — e i due candidati «diversi» (Newsreader, Source Serif) sono lo stesso cluster con un altro nome | un grottesco con **asse di larghezza**, che a 390 px è l'unico modo di tenere il contrasto di scala. Niente monospace: `tabular-nums` |
-| **Accento** | Storey · Kononenko · AS · refero · sbp | le tre tier A non hanno accento; refero lo scrive come divieto; sbp dimostra che l'arancio è il default di settore | **1** terracotta · **2** l'acido su fondo scuro · l'arancio `#E4572E` | **un** accento, sui **soli segnaposto**: l'inchiostro del timbro. Si consuma quando i contenuti arrivano |
-| **Header** | Kononenko (`1440-hero`) | il menu è una **frase** con le virgole; «in tutto il sito non esiste un bottone»; il marchio è tipografia | **5** la pastiglia «Raccontaci il progetto →» ripetuta in alto a destra, il logotipo a `+0,26em`, la freccia | **zero bottoni**: sopra la piega la CTA è una sola, quella della hero. Sotto il nome, la sede in chiaro |
-| **Hero A** | Storey (vuoto disuguale) · Kononenko (il titolo a due voci) · Dieste (**la quota con le parole appese**) · Studio Foundry (2 gesti) | il payoff **intero** su quattro righe a 132 px, le due metà a `wdth 100` e `wdth 75`; la quota dei cinque ruoli da margine a margine; il campo della foto che sborda a destra | **1** in pieno (crema + didone + riga in corsivo verde) · **5** l'occhiello unito da puntini, «→» su due bottoni | **Q: `5 ruoli`** — da `RUOLI.length`, elenco chiuso in `lib/contenuti/schema.ts`. È il dato che dice cosa sanno fare, che CLAUDE.md vieta di omettere |
-| **Hero B** | AS (l'indice) · Dieste (**l'asse verticale**) · Kononenko (l'etichetta nel margine vuoto) | cinque **righe di registro** a cavallo dell'asse: chiave e ruolo a sinistra, radio e nome a destra; la riga scelta apre la **figura bianca** con 1 px di inchiostro | **4** le cinque card identiche con raggio 3 px, e il pannello scuro a tre colonne con la micro-etichetta mono sopra · **5** «SEZ. 01 — IL PUNTO DI PARTENZA» centrato fra due filetti che non misurano niente | il filetto di riga **c'è** (ogni riga porta un radio: il confine del bersaglio è informazione), e `01…05` è una chiave d'archivio, non una sequenza |
-| **Segnaposto immagine** | ecoLINEAR (i segni di registro) · AS · Kononenko | quattro **squadrette d'angolo** e la **scheda di specifica** dentro: cosa manca *e in che formato deve arrivare* | **3** il tratteggio (A) e la carta millimetrata (B): due texture decorative su ogni blocco che dicono «disegno» e non dicono niente | il campo dice `2400 × 1650 px · AVIF · ≤ 250 KB`. Legge «modulo in attesa», non «buco», e in call è la lista della spesa |
-| **Etichette di sezione** | AS (`[Projects]` `[Materials]`) | minuscole, fra **parentesi quadre** messe dal CSS, sulla stessa riga del titolo | **5** l'occhiello in maiuscoletto spaziato sopra ogni titolo | le 23 `quota="Sez. 04 — Progetti"` sono diventate `[progetti]`. Nessuna è una quota: non portano un numero |
-| **Barra CTA mobile** | AS | tre celle **a larghezza disuguale**, piatte, solo testo | **4** le pastiglie tonde galleggianti con l'ombra · **5** «→» | 22 % · 29 % · 49 %: le larghezze dicono la priorità, e con metà barra ci sta «raccontaci il progetto» intero |
+| **Accento** | Storey · Kononenko · AS · refero · sbp | le tre tier A non hanno accento; refero lo scrive come divieto; sbp dimostra che l'arancio è il default di settore | **1** terracotta · **2** l'acido su fondo scuro · l'arancio `#E4572E` · e, dopo la n. 25, **l'indaco/viola**, che è il tell n. 1 di refero | **un** accento, sui **soli segnaposto**: `#123C7A`, l'inchiostro blu del tampone. Si consuma quando i contenuti arrivano |
+| **Header** | Kononenko (`1440-hero`) | il menu è una **frase** con le virgole; «in tutto il sito non esiste un bottone»; il marchio è tipografia | **5** la pastiglia «Raccontaci il progetto →» in alto a destra, il logotipo a `+0,26em`, la freccia | **zero bottoni**: sopra la piega la CTA è una sola, quella della hero. Sotto il nome, la sede in chiaro |
+| **Hero A** | Storey (vuoto disuguale) · Kononenko (titolo a due voci) · Dieste (**la quota con le parole appese**) · Studio Foundry (2 gesti) | il payoff **intero** su quattro righe a 132 px, le due metà a `wdth 100` e `wdth 75`; la quota da margine a margine; il campo foto che sborda a destra | **1** in pieno (crema + didone + riga in corsivo verde) · **5** l'occhiello unito da puntini, «→» su due bottoni | **Q: `5 ruoli`** — da `RUOLI.length`, elenco chiuso in `lib/contenuti/schema.ts`. È il dato che dice cosa sanno fare |
+| **Hero B** | AS (l'indice) · Dieste (**l'asse verticale**) · Kononenko (l'etichetta nel margine vuoto) | cinque **righe di registro** a cavallo dell'asse; la riga scelta apre la **figura bianca** con 1 px di inchiostro | **4** le cinque card identiche con raggio 3 px, e il pannello scuro a tre colonne con la micro-etichetta mono sopra · **5** «SEZ. 01 — IL PUNTO DI PARTENZA» centrato fra due filetti | il filetto di riga **c'è** (ogni riga porta un radio: il confine del bersaglio è informazione), e `01…05` è una chiave d'archivio, non una sequenza |
+| **Smistamento** (A) | AS (righe di indice) · Pelizzari (l'azione al bordo, il vuoto in mezzo) | cinque righe alte 60 px, il **ruolo firmabile** spinto in colonna 11-12 | **4** le cinque pastiglie identiche in fila · **5** l'occhiello, la freccia su ogni voce | righe di indice **con l'affordance**: ogni riga è un `<a>` a piena larghezza, sottolineata al passaggio. **Nessun conteggio**: gli elenchi di `lib/percorsi.ts` sono una nostra proposta, non un dato dello studio |
+| **Numeri** (B) | Storey (il numerone tono su tono) · AS (l'opacità come gerarchia) | quattro celle **senza bordi fra loro** a destra dell'asse, cifra a `display` con `tnum` | **4** quattro card con bordo · **5** le unità in mono maiuscolo | il **trattino** resta finché il dato non arriva, in `line` invece che in `ink`: si legge come una casella da riempire. **Mai «128» qui**: l'etichetta dice «comuni in cui abbiamo lavorato», e quel numero lì sarebbe un dato vero che produce un'affermazione falsa |
+| **Servizi / sei percorsi** | Kononenko + Pelizzari (titolo a due voci) · AS (quattro corpi, la tabella senza filetti) · sbp (solo l'impianto) | tre campi per riga: **esito** · **tecnicismo in seconda riga** · **ruolo firmabile** al bordo destro | **4** la griglia 3×2 di card con l'icona sopra · **5** sei occhielli, «Scopri →» | in **A nessun filetto** fra le righe (AS regge 25 righe con sette colonne senza); in **B** uno per riga, perché lì ogni riga porta anche «serve da te». Il sesto servizio non ha elenco: resta il segnaposto |
+| **Come lavoriamo** | Dieste `1440-meta-22` (l'asse, le cose a cavallo a scale disuguali) | in **A** cinque fasi appese a un filetto con cinque tacche; in **B** a cavallo dell'asse verticale | **4** cinque card numerate · **5** `FASE 01 —` ripetuto cinque volte | qui la numerazione è **legittima** e la § 5 della skill la autorizza: è una sequenza vera (`lib/processo.ts`). E **la dimensione dice l'importanza**: le due fasi che il committente vive a `titolo`, le tre nostre a `sottotitolo` |
+| **Progetti** | Pelizzari `1440-meta-42` (riga a tre tempi, colonne di altezza disuguale) · Kononenko (**rapporti misti nella stessa fila**) · AS (il ruolo in colonna) | in **A** tre segnaposto a rapporti **diversi** (16/10 · 3/4 · 4/3) e sfalsati; in **B** due schede con i dati duri **senza filetti fra le righe** | **4** tre card identiche 4/3, stesso raggio, ombra · **5** i metadati uniti da «·» | la riga a tre tempi porta **`luogo · ruolo · azione`**, non un «codice» — che non esiste in `lib/progetti.ts` e sarebbe un dato d'archivio inventato. E sopra tre rettangoli vuoti `codice · nome · vedi progetto` **è** un annuncio immobiliare; `luogo · direzione lavori · vedi progetto` è una credenziale |
+| **Esploso** (wow A) | Storey (banda nera a taglio netto) · Kononenko `1440-meta-32` (**il disegno al posto della fotografia**) | banda `ink` a piena larghezza; **tre valori per le tre facce** (la faccia dice la luce) e **cinque retini per i cinque livelli** (il retino dice il livello); contorno in `carta` a 21:1 | **1** i nove token caldi (`involucro #e7e3da`, `finiture #f7f5f0`, `apertura #2f4a42`, una terra, un blu) · **4** l'esploso come illustrazione dentro una card | si legge **anche in bianco e nero**, e la legenda mostra i **retini** invece di pallini colorati. La decisione «il colore non porta informazione da solo» è rispettata meglio di prima: qui il colore non ne porta affatto. **Nessuna quota**: «5 livelli» si conta a vista |
+| **Prima / dopo** (wow B) | Storey (l'immagine che sborda) · ecoLINEAR (la **lettura** numerica accanto al controllo) | il cursore taglia **tipografia**: metà `grafite` con «stato attuale», metà `calce` con «progetto» — taglio a **21:1** | **4** la maniglia rotonda con l'ombra · **5** «PRIMA — dopo» in maiuscoletto | **è il blocco che rende B mostrabile oggi.** Prima erano due grigi a 1,17:1: un cursore che non rivelava niente. **Lettura, non quota**: `50 %` è il valore di un controllo, e si rende anche senza JavaScript |
+| **Le persone** | Kononenko (la tabella con l'etichetta nel margine) · Pelizzari (altezze disuguali) | quattro campi a **quote verticali disuguali**; sotto il ritratto una piccola tabella: nome · ruolo · **abilitazione** | **4** quattro card uguali col ritratto tondo e l'ombra. E il divieto: **nessun ritratto generato** | il dato che conta è l'**abilitazione**, non la faccia, ed è quella che alla fase 6 finisce in `Person.hasCredential`. **Nessuna quota**: il solo numero sarebbe «4 caselle», che si leggerebbe «lo studio ha 4 persone» — un dato inventato |
+| **Territorio** (A) | `lib/territorio.ts` · Kononenko · ecoLINEAR (la quota che porta un numero) | il perimetro vero a 1 px su `carta`; la sede come **croce di quota** | nessuna mappa a tile (un tile server è un terzo che vede l'IP) · niente pin a goccia | **Q: `128 comuni nell'autocomplete · FM 40, MC 55, AP 33`** — la sola quota con una fonte pubblica citabile. **L'annotazione dice cos'è**: le tre province dell'autocomplete del brief, non «dove abbiamo lavorato». `comuniServiti = []`: nessun comune acceso |
+| **Brief** ★ | ecoLINEAR (la CTA prima della galleria) · Storey (il vuoto disuguale prima) · AS (una domanda per schermata) | **200 px di silenzio** davanti; in A l'**unica** banda che porta una scheda chiara; la barra di avanzamento ridisegnata come **linea di misura a cinque tacche** | **4** la scheda con l'ombra e il raggio · **1/5** in A era un blocco pieno color accento, cioè l'unica area grande di colore del sito | **Q: `passo n di 5`** — l'unica quota che si muove, perché l'unico posto dove la quantità cambia. Senza JS dice «passo 1 di 5», che è vero. Tutto il resto della fase 2 non si tocca: un solo form, radio col pallino, `<datalist>`, honeypot, niente CAPTCHA |
+| **Footer** | Storey `1440-meta-52` (la schedina col piè a tre tempi) · Pelizzari (l'azione al bordo) | tre tempi: indirizzo · contatti · dati fiscali al bordo destro, il vuoto in mezzo. In **A** banda `ink` **saldata al brief**; in **B** il `getto` continua | **5** le quattro colonne di link con un occhiello sopra ognuna, i dati uniti da puntini, le icone social | il **telefono è il corpo più grande** del footer: la gerarchia racconta quella delle azioni. La mappa non è più un segnaposto ma un **ritaglio dello stesso SVG del territorio** con la croce sulla sede. In **B** il footer ospita la quota `128 comuni`, perché B non ha il blocco Territorio |
+| **Barra CTA mobile** (B) | AS (la barra fissa piatta, etichette a peso disuguale) | tre celle a larghezza **disuguale** — 22 % · 29 % · 49 % — `calce` con filetti `ink`, solo testo | **4** tre pastiglie tonde galleggianti con l'ombra · **5** «→» | le larghezze dicono la priorità, e con metà barra ci sta «raccontaci il progetto» intero. La cella del WhatsApp resta un segnaposto dichiarato |
+| **Segnaposto immagine** | ecoLINEAR (i **segni di registro**) · AS · Kononenko (il disegno dove la foto non c'è) | quattro **squadrette d'angolo** in `line` (4,61:1) e la **scheda di specifica** dentro: cosa manca *e in che formato* | **3** il tratteggio (A) e la carta millimetrata (B): due texture decorative su ogni blocco che dicono «disegno» e non dicono niente | il campo dice `2400 × 1650 px · AVIF · ≤ 250 KB`: legge «modulo in attesa», non «buco», e in call è la lista della spesa. È anche ciò che refero chiama *intentional placeholder* |
+| **Segnaposto di testo** (62) | ecoLINEAR (l'annotazione come segno di stato) | i **tre canali** restano tutti e tre; cambia solo il colore | **zero accenti**, che sarebbe la mossa elegante e sbagliata: con la sola palette neutra i canali scendono a due e il fondo torna a 1,1:1 dalla carta | **è l'unico posto del sito dove c'è colore, e ha una data di scadenza.** Dentro una banda scura il token è vincolato al piano (`timbro-chiaro`, 10,07:1) |
 
-### Misure della parte 1/2 (build di produzione, Slow 4G + CPU 4×, viewport 390)
+### Misure a fine fase (build di produzione, Slow 4G + CPU 4×, viewport 390)
 
-| Metrica | Obiettivo | `/` (A) | `/opzione-b` (B) | Esito |
-|---|---|---|---|---|
-| LCP | < 2,0 s | **0,73 s** | 0,69 s | OK. L'LCP è **testo**, non un'immagine: il display della hero |
-| CLS | < 0,05 | **0,00** | 0,00 | OK |
-| Peso primo caricamento | < 1,2 MB | **254 KB** | 263 KB | OK |
-| JS primo caricamento | < 180 KB gz | **149 KB** | 149 KB | invariato: il ridisegno non aggiunge un byte di JavaScript |
-| Richieste | < 40 | **20** | 18 | OK |
-| **Font per rotta** | — | **40,7 KB** (era 60,8) | 67,7 KB (era 138,3) | **−20 e −71 KB.** Un file per tema |
-| Documento HTML | — | 26,5 KB | 19,6 KB | — |
-| Lighthouse mobile | ≥ 90 | accessibilità **100** · best practices **100** · SEO **100** · agentic **100**, 56 controlli passati, 0 falliti | — | OK |
+| Metrica | Obiettivo | `/` (A) | `/opzione-b` (B) | `/servizi/strutture` | Esito |
+|---|---|---|---|---|---|
+| LCP | < 2,0 s | **0,69 s** | 0,69 s | — | OK. L'LCP è **testo**, non un'immagine: il display della hero |
+| CLS | < 0,05 | **0,00** | 0,00 | — | OK |
+| Peso primo caricamento | < 1,2 MB | **265 KB** | ~263 KB | **234 KB** | OK |
+| JS primo caricamento | < 180 KB gz | **149 KB** | 149 KB | 144 KB | invariato: il ridisegno non aggiunge un byte di JavaScript |
+| Richieste | < 40 | **21** | 18 | 20 | OK |
+| **Font per rotta** | — | **40,7 KB** (era 60,8) | 67,7 KB (era 138,3) | 40,7 KB | **−20 e −71 KB**, un file per tema |
+| Documento HTML | — | 28,5 KB | ~20 KB | 12,9 KB | dentro ci sono l'esploso coi retini, la mappa, i cinque pannelli di B e i 128 `<option>` |
+| Lighthouse mobile | ≥ 90 | **100 · 100 · 100 · 100** (56 controlli, 0 falliti) | — | **100 · 100 · 100 · 100** (52 controlli, 0 falliti) | OK |
+| **Contrasto** | AA | **81 coppie distinte** misurate sulle sette rotte renderizzate, **zero sotto soglia** | | | OK |
 
 Il debito del preload resta e si è **dimezzato**: `/opzione-b` scarica ancora i 40,7 KB di
 Archivo che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo e Next
 precarica quello che ci trova. Prima erano 105 KB nella direzione opposta. Sparisce alla fase 5
 con la rotta non scelta.
 
-### Cosa resta alla parte 2/2
+### Verifiche fatte a fine fase
 
-I blocchi oltre le due hero — smistamento, numeri, servizi, come lavoriamo, progetti, esploso
-(i cinque retini), prima/dopo (le due metà a 21:1), persone, territorio, brief, footer — i
-media, e la verifica completa (budget su una pagina servizio, screenshot di tutte le pagine
-interne, contrasto delle coppie nuove, prova senza JavaScript).
+| Controllo | Esito |
+|---|---|
+| **Senza JavaScript**, cinque rotte | tutto si rende: il brief è un solo form con i cinque `<fieldset>` visibili e «passo 1 di 5» in chiaro; in B **un solo pannello** visibile, quello scelto; il cursore del prima/dopo non c'è (sarebbe un controllo morto) ma la **lettura «50 %» sì**; nessun overflow orizzontale |
+| **Contrasto AA** | 81 coppie distinte di colore su sette rotte renderizzate, **zero sotto soglia** (`scratchpad/contrasto.mjs`, misurate sul DOM vero e non sui token) |
+| **Overflow orizzontale** | zero a 1440, 390 e 320 su entrambe le home (`scrollWidth == clientWidth`) |
+| **Bersagli tattili** | i link isolati e il lockup del marchio portati a 44 px sotto i 56 rem; i `radio` restano 18 px ma la loro `<label>` è 48 |
+| **Lighthouse mobile** | 100 · 100 · 100 · 100 su `/` e su `/servizi/strutture` |
+| **L'asse di B non attraversa più nessun testo** | era il difetto visibile («sembra buggata»): 28 elementi tagliati, ora zero fuori dalle figure, davanti alle quali il filetto passa dietro |
+
+### Cosa resta aperto
+
+- **I media dei blocchi di prova** restano campi dichiarati: progetti, persone, prima/dopo e
+  la fotografia della hero. È dove lo stock costa la vendita. Due segnaposto sono invece
+  spariti per sempre, perché non aspettavano niente dal cliente: l'**immagine Open Graph**
+  (disegnata in codice, la pagina in miniatura) e la **mappa del footer** (ritaglio dello
+  stesso SVG del territorio).
+- **I crediti Higgsfield** (1,79) non servono più per l'Open Graph. Restano utili solo se si
+  decide di generare qualcosa di materico, che oggi il piano esclude.
+- Il **debito del preload** resta e si è dimezzato: `/opzione-b` scarica i 40,7 KB di Archivo
+  che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo. Prima
+  erano 105 KB nella direzione opposta. Sparisce alla fase 5 con la rotta non scelta.
 
 ## Misure (07/09/2026, build di produzione, Slow 4G + CPU 4×, viewport 390)
 

@@ -38,7 +38,7 @@ export default function LayoutB({ children }: { children: React.ReactNode }) {
         <main id="contenuto" className="flex-1">
           {children}
         </main>
-        <SiteFooter />
+        <SiteFooter conTerritorio />
       </body>
     </html>
   )

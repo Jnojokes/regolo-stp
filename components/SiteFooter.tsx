@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { legal, menu, site } from '@/lib/site'
 import { DaCliente } from '@/components/Placeholder'
 import { MappaSede } from '@/components/MappaSede'
+import { Quota } from '@/components/Quota'
+import { comuni, province } from '@/lib/territorio'
 
 /**
  * Footer operativo (catalogo blocchi G1): nei servizi professionali è la
@@ -33,7 +35,9 @@ import { MappaSede } from '@/components/MappaSede'
  * territorio** sulla sede (`components/MappaSede.tsx`): zero byte in più, zero
  * terzi, nessun iframe, nessun banner, e nessun segnaposto da riempire.
  */
-export function SiteFooter() {
+const contaComuni = (sigla: string) => comuni.filter((c) => c.sigla === sigla).length
+
+export function SiteFooter({ conTerritorio = false }: { conTerritorio?: boolean }) {
   return (
     <footer className="site-footer">
       <div className="wrap site-footer-riga">
@@ -90,6 +94,22 @@ export function SiteFooter() {
             aspettava niente dal cliente. */}
         <MappaSede />
       </div>
+
+      {/* La quota dei 128 comuni sta qui **solo nell'opzione B**, che non ha il
+          blocco Territorio (decisione del 07/09 sull'ordine dei blocchi). Così
+          le tre quote del sito sono tre in entrambe le proposte, e nessuna
+          delle due perde il dato territoriale — che per uno studio locale è la
+          credenziale che pesa di più. */}
+      {conTerritorio && (
+        <div className="wrap site-footer-quota">
+          <Quota
+            voci={province.map((p) => p.nome)}
+            numero={comuni.length}
+            unita="comuni nell’autocomplete"
+            dettaglio={province.map((p) => `${p.sigla} ${contaComuni(p.sigla)}`).join(', ')}
+          />
+        </div>
+      )}
 
       <div className="wrap site-footer-coda">
         <p>

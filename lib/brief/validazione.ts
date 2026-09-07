@@ -47,6 +47,28 @@ export function pulisci(valore: string | undefined): string {
   return valore.replace(CONTROLLO, '').replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * Il comune come lo scrive una persona vera, riportato alla forma che il
+ * riconoscimento si aspetta.
+ *
+ * Il `<datalist>` mostra «Fermo (FM)» e ha `value="Fermo"`: chi sceglie dalla
+ * tendina ottiene «Fermo», ma chi **scrive quello che legge** ottiene
+ * «Fermo (FM)» — e quella era una stringa che il server rifiutava. Senza
+ * JavaScript il rifiuto costava tutte e cinque le risposte, sul campo che
+ * quasi tutti compilano per primo. Qui la sigla in coda si toglie e non si
+ * discute: è informazione che abbiamo già.
+ *
+ * Si toglie anche una sigla senza parentesi («Fermo FM») e si normalizzano gli
+ * apostrofi tipografici, perché l'elenco ISTAT usa quello dritto.
+ */
+export function pulisciComune(valore: string | undefined): string {
+  return pulisci(valore)
+    .replace(/[\u2018\u2019\u02bc]/g, "'")
+    .replace(/[\s,]*\(\s*[A-Za-z]{2}\s*\)\s*$/, '')
+    .replace(/[\s,]+[A-Za-z]{2}$/, (m) => (/^[\s,]+(?:di|da|il|la|le|lo)$/i.test(m) ? m : ''))
+    .trim()
+}
+
 /** Il testo lungo conserva le righe: solo gli spazi orizzontali si comprimono. */
 export function pulisciTesto(valore: string | undefined): string {
   if (!valore) return ''
@@ -147,7 +169,11 @@ export function validaPasso(indice: number, dati: Grezzo): Errori {
       if (e) errori[nome] = e
     } else if (nome in campi) {
       const grezzo =
-        campi[nome].tipo === 'testolungo' ? pulisciTesto(dati[nome]) : pulisci(dati[nome])
+        campi[nome].tipo === 'testolungo'
+          ? pulisciTesto(dati[nome])
+          : campi[nome].tipo === 'comune'
+            ? pulisciComune(dati[nome])
+            : pulisci(dati[nome])
       const e = controllaCampo(nome, grezzo)
       if (e) errori[nome] = e
     } else if (nome === 'consenso') {
@@ -194,7 +220,7 @@ export function valida(dati: Grezzo): Esito {
     ok: true,
     brief: {
       intervento: pulisci(dati.intervento),
-      comune: pulisci(dati.comune),
+      comune: pulisciComune(dati.comune),
       immobile: pulisci(dati.immobile),
       punto: pulisci(dati.punto),
       tempi: pulisci(dati.tempi),

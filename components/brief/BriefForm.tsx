@@ -476,6 +476,13 @@ function CampoDiTesto({
           autoComplete={campo.autoCompleta}
           maxLength={campo.massimo}
           required={campo.obbligatorio}
+          /* `pattern` e `title` servono al percorso **senza JavaScript**: sono
+             loro a far fermare l'invio sul campo, invece di far scoprire
+             l'errore al server dopo il POST — che senza JS vuol dire perdere
+             tutte e cinque le risposte. Con JS `noValidate` li disattiva e i
+             messaggi tornano i nostri, in italiano. */
+          pattern={campo.schema}
+          title={campo.schema ? campo.schemaTitolo : undefined}
           aria-invalid={errore ? true : undefined}
           aria-describedby={descritto || undefined}
           list={eComune ? idComuni : undefined}

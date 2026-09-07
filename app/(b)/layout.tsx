@@ -28,7 +28,9 @@ export const viewport: Viewport = {
 export default function LayoutB({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it" data-theme="b" className={fontsThemeB}>
-      <body className="flex min-h-dvh flex-col">
+      {/* `con-barra-mobile` lascia sotto i 768 px lo spazio della barra CTA
+          fissa: senza, la barra coprirebbe l'ultima riga del footer. */}
+      <body className="con-barra-mobile flex min-h-dvh flex-col">
         <a href="#contenuto" className="skip-link">
           Salta al contenuto
         </a>

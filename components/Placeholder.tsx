@@ -20,23 +20,29 @@ export function Placeholder({
       role="img"
       aria-label={`Segnaposto: ${label}`}
     >
-      <span className="bg-paper text-eyebrow text-ph-ink absolute bottom-3 left-3 px-2 py-1 tracking-[0.12em] uppercase">
-        {label}
-      </span>
+      {/* La classe, non le utility: vedi la nota in `app/globals.css`. Con le
+          utility Tailwind questa targhetta non era spostabile da nessun blocco. */}
+      <span className="placeholder-etichetta">{label}</span>
     </div>
   )
 }
 
 /**
- * Segnaposto di testo. Volutamente vistoso: se finisce in produzione
- * si deve vedere a occhio nudo, non solo nel collaudo.
+ * Segnaposto di testo: si deve vedere a occhio nudo, non solo nel collaudo
+ * (CLAUDE.md § Regole, 10 — un `[[DA CLIENTE]]` visibile in produzione è un
+ * difetto bloccante, quindi qui il difetto deve essere impossibile da mancare).
+ *
+ * Come si vede è in `app/globals.css`, classe `.da-cliente`: un filetto pieno a
+ * sinistra nel colore dell'accento, la tinta di fondo e la sottolineatura
+ * punteggiata. La tinta **da sola non bastava** — un fondo abbastanza chiaro da
+ * lasciare leggibile il testo sta a 1,1:1 dalla carta della pagina, cioè è
+ * invisibile: era il caso di prima, e il commento diceva il contrario.
+ *
+ * `data-placeholder="da-cliente"` è l'aggancio del collaudo della fase 8.
  */
 export function DaCliente({ children }: { children: string }) {
   return (
-    <span
-      data-placeholder="da-cliente"
-      className="bg-accent-soft text-accent-text decoration-accent-text/40 px-1 underline decoration-dotted underline-offset-2"
-    >
+    <span data-placeholder="da-cliente" className="da-cliente">
       {children}
     </span>
   )

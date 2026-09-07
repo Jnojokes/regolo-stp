@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './css/sezioni.css';
 
 /* ============================================================================
    REGOLO STP — design token
@@ -93,6 +94,45 @@
   --regolo-brief-scelta-bordo: var(--regolo-accent); /*  8,25:1 su scelta-bg */
   --regolo-brief-errore: #8c2d12; /*  8,05:1 su controllo, 7,51:1 su card */
   --regolo-brief-fuoco: var(--regolo-paper);
+  /* --- fase 3: sezioni della home ----------------------------------------
+     La «quota» è la linea di misura del disegno tecnico: è un motivo
+     dell'opzione B. In A l'occhiello resta un occhiello e le due righe non si
+     disegnano — stesso markup, `display: none` sui pseudo-elementi. */
+  --regolo-quota-riga: none;
+  --regolo-quota-colore: var(--regolo-muted);
+
+  /* fascia a fondo alternato: in A la usa la griglia dei servizi */
+  --regolo-sezione-alt: var(--regolo-surface);
+
+  /* pannello scuro: in A il fondo del percorso scelto, in B quello della hero */
+  --regolo-pannello-bg: var(--regolo-ink);
+  --regolo-pannello-fg: var(--regolo-paper); /* 15,99:1 */
+  --regolo-pannello-chiave: #b9d1c6; /* 11,07:1 */
+  --regolo-pannello-voce: #dce7e1; /* 14,11:1 */
+
+  /* processo su fondo scuro (motivo dell'opzione B) */
+  --regolo-scuro-bg: var(--regolo-ink);
+  --regolo-scuro-fg: var(--regolo-paper);
+  --regolo-scuro-muted: #a9b7b1; /*  8,60:1 */
+  --regolo-scuro-linea: #3a3a40;
+
+  /* esploso strutturale: ogni faccia è ≥ 3:1 sul fondo, verificata
+     (scripts/contrasto.mjs). Il colore non porta informazione — la legenda
+     accanto ripete i cinque livelli in testo. */
+  --regolo-esploso-fondazioni: #999489; /* facce 5,92 · 3,18 · 4,30 */
+  --regolo-esploso-struttura: #a8c9b8; /* facce 9,98 · 4,96 · 6,99 */
+  --regolo-esploso-involucro: #e7e3da; /* facce 13,97 · 6,70 · 9,66 */
+  --regolo-esploso-impianti: #8792a0; /* facce 5,66 · 3,08 · 4,11 */
+  --regolo-esploso-finiture: #f7f5f0; /* facce 16,42 · 7,79 · 11,27 */
+  --regolo-esploso-apertura: #2f4a42; /* serramenti: 7,53 / 3,61 / 5,21 sulle tre facce dell'involucro */
+  --regolo-esploso-calore: #6a2a05; /*  3,42:1 sul solaio impianti */
+  --regolo-esploso-acqua: #123f63; /*  3,47:1 */
+  --regolo-esploso-aria: #1e3129; /*  4,36:1 */
+
+  /* territorio: il perimetro delle province, non una mappa a tile */
+  --regolo-mappa-linea: var(--regolo-muted);
+  --regolo-mappa-fondo: var(--regolo-surface);
+  --regolo-mappa-sede: var(--regolo-accent);
 }
 
 /* ---------- Tema B — «Il cantiere» ---------------------------------------- */
@@ -168,6 +208,36 @@
   --regolo-brief-scelta-bordo: var(--regolo-accent-strong); /*  4,20:1 su scelta-bg */
   --regolo-brief-errore: #b01c00; /*  6,31:1 su controllo, 6,97:1 su card */
   --regolo-brief-fuoco: var(--regolo-ink);
+  /* --- fase 3: sezioni della home ---------------------------------------- */
+  /* in B la quota si disegna: due righe di misura intorno all'etichetta */
+  --regolo-quota-riga: block;
+  --regolo-quota-colore: var(--regolo-muted);
+
+  --regolo-sezione-alt: var(--regolo-surface);
+
+  --regolo-pannello-bg: var(--regolo-ink);
+  --regolo-pannello-fg: #ffffff; /* 17,84:1 */
+  --regolo-pannello-chiave: #ffb39a; /* 10,34:1 */
+  --regolo-pannello-voce: #dde2e6; /* 13,67:1 */
+
+  --regolo-scuro-bg: var(--regolo-ink);
+  --regolo-scuro-fg: #ffffff;
+  --regolo-scuro-muted: #9aa4ad; /*  7,04:1 */
+  --regolo-scuro-linea: #3a434b;
+
+  --regolo-esploso-fondazioni: #999489;
+  --regolo-esploso-struttura: #a8c9b8;
+  --regolo-esploso-involucro: #e7e3da;
+  --regolo-esploso-impianti: #8792a0;
+  --regolo-esploso-finiture: #f7f5f0;
+  --regolo-esploso-apertura: #2f4a42;
+  --regolo-esploso-calore: #6a2a05;
+  --regolo-esploso-acqua: #123f63;
+  --regolo-esploso-aria: #1e3129;
+
+  --regolo-mappa-linea: var(--regolo-muted);
+  --regolo-mappa-fondo: var(--regolo-surface);
+  --regolo-mappa-sede: var(--regolo-accent-strong);
 }
 
 /* ---------- Da token a utility Tailwind -----------------------------------
@@ -302,14 +372,14 @@
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-@utility placeholder-media {
-  position: relative;
-  background-color: var(--color-ph);
-  background-image: var(--regolo-ph-pattern);
-  background-size: var(--regolo-ph-size);
-  border: var(--regolo-ph-border);
-  overflow: hidden;
-}
+/* NOTA: `placeholder-media` **non** è un `@utility`, ed è una correzione, non
+   una preferenza. `@utility` compila in `@layer utilities`, che nella cascata
+   viene *dopo* `@layer components`: tutte le regole che provavano a
+   riposizionare un segnaposto dentro un blocco — le due metà sovrapposte del
+   prima/dopo, la targhetta della hero in alto a destra, il bordo singolo nella
+   scheda progetto — perdevano in silenzio, e il blocco prima/dopo veniva
+   servito **vuoto** (due rettangoli alti 2 px). Come classe di componente
+   l'ordine di sorgente e la specificità tornano a decidere. */
 
 /* ============================================================================
    Componenti condivisi dai due temi.
@@ -318,6 +388,50 @@
    ========================================================================== */
 
 @layer components {
+  .placeholder-media {
+    position: relative;
+    background-color: var(--color-ph);
+    background-image: var(--regolo-ph-pattern);
+    background-size: var(--regolo-ph-size);
+    border: var(--regolo-ph-border);
+    overflow: hidden;
+  }
+  /* La targhetta che dice cosa andrà lì. Stava nel componente come utility
+     Tailwind (`absolute bottom-3 left-3 …`) e per la stessa ragione batteva
+     ogni tentativo di spostarla: `.hero-foto` la voleva in alto a destra e
+     otteneva un `inset: 12px` su tutti e quattro i lati, cioè una targhetta
+     larga come tutto il segnaposto. */
+  /* Segnaposto di testo. **Il fondo non basta**: una tinta leggibile sotto il
+     testo sta a 1,1:1 dalla carta della pagina, cioè non si vede — e il
+     commento del componente prometteva il contrario. Il segno che si vede è
+     strutturale: un filetto pieno a sinistra nel colore dell'accento (8,61:1
+     sulla pagina), più la tinta, più la sottolineatura punteggiata. Tre canali,
+     nessuno dei quali è il solo colore. */
+  .da-cliente {
+    padding: 0.0625rem 0.375rem;
+    border-left: 3px solid var(--color-accent-text);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-text);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .placeholder-etichetta {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--color-paper);
+    color: var(--color-ph-ink);
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -435,6 +549,9 @@
 
 @layer components {
   .brief {
+    /* Come le sezioni della home: l'ancora `#brief` non deve finire sotto la
+       barra sticky (la regola gemella sta in `app/css/sezioni.css`). */
+    scroll-margin-top: var(--regolo-header-h);
     background-color: var(--regolo-brief-bg);
     color: var(--regolo-brief-fg);
     border-top: var(--regolo-brief-bordo-sezione);

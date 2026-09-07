@@ -1,0 +1,1103 @@
+/* ============================================================================
+   Sezioni della home — fase 3.
+
+   Un solo foglio per tutti i blocchi, perché il ritmo (respiro fra le sezioni,
+   uso dell'occhiello, filetti) è una cosa sola e va guardata insieme.
+   I token stanno in `globals.css`: qui dentro non c'è un colore scritto a mano
+   che non sia già stato verificato AA — l'unica eccezione dichiarata sono le
+   facce dell'esploso, che derivano dal token del livello con `color-mix`.
+
+   ## Ordine dei fogli — leggere prima di scrivere una regola qui
+
+   `globals.css` importa questo file **subito dopo Tailwind**, e in CSS un
+   `@import` deve precedere le regole: quindi tutto quello che c'è qui viene
+   *prima* delle regole di `globals.css`. A pari specificità vince `globals.css`.
+
+   Vuol dire che per riposizionare o ritingere una primitiva definita là —
+   `.placeholder-media`, `.placeholder-etichetta`, `.btn`, `.eyebrow` — qui serve
+   **un selettore più specifico** (`.blocco > .primitiva`), non una regola piatta.
+   Una regola piatta non dà errore: perde in silenzio. È già costato il blocco
+   prima/dopo servito vuoto e la targhetta della hero larga come tutta la foto.
+
+   Regola di questa fase: **niente animazioni**. Le transizioni che restano sono
+   solo di stato (hover, checked, focus), durano 0,15 s e toccano soltanto
+   `background-color`, `border-color` e `transform`. Il movimento allo scroll
+   arriva alla fase 5.
+   ========================================================================== */
+
+@layer components {
+  /* ---------- guscio di sezione -------------------------------------------
+     Tutte le sezioni hanno lo stesso respiro. Chi ne vuole meno passa una
+     utility, non riscrive il padding. */
+  .sezione,
+  .sezione-stretta {
+    /* Le sezioni hanno un `id` e la barra è sticky: senza questo un'ancora
+       porta il titolo sotto la barra. */
+    scroll-margin-top: var(--regolo-header-h);
+  }
+  .sezione {
+    padding-block: clamp(3.5rem, 8vw, 7.5rem);
+  }
+  .sezione-stretta {
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+  .sezione-filo {
+    border-top: 1px solid var(--color-line);
+  }
+  .sezione-filo-sotto {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .sezione-alt {
+    background-color: var(--regolo-sezione-alt);
+    border-block: 1px solid var(--color-line);
+  }
+  .sezione-scura {
+    background-color: var(--regolo-scuro-bg);
+    color: var(--regolo-scuro-fg);
+  }
+  .sezione-scura h2,
+  .sezione-scura h3 {
+    color: var(--regolo-scuro-fg);
+  }
+
+  /* ---------- quota ------------------------------------------------------
+     La linea di misura del disegno tecnico. È il motivo dell'opzione B; in A
+     le due righe non si disegnano e resta un occhiello (un token, non un `if`). */
+  .quota {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--regolo-quota-colore);
+  }
+  .quota::before,
+  .quota::after {
+    content: '';
+    display: var(--regolo-quota-riga);
+    flex: 1;
+    height: 1px;
+    background-color: currentColor;
+  }
+  /* la prima riga si disegna solo quando la quota è centrata */
+  .quota:not(.quota-centrata)::before {
+    display: none;
+  }
+  .quota > span {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .sezione-scura .quota {
+    color: var(--regolo-scuro-muted);
+  }
+
+  /* ---------- testa di sezione -------------------------------------------- */
+  .testa-sezione {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  /* Niente `max-width` sul blocco del titolo: `34ch` misurati sul corpo (17 px)
+     valgono ~290 px, e un h2 da 64 px ci finiva su tre righe. Chi ha bisogno di
+     un limite lo mette sull'h2, dove `ch` è misurato sulla sua misura. */
+  .intro-sezione {
+    color: var(--color-muted);
+    margin-top: 1rem;
+    max-width: 42ch;
+  }
+  .sezione-scura .intro-sezione {
+    color: var(--regolo-scuro-muted);
+  }
+
+  /* Nota di servizio: «questo blocco è vuoto per scelta». Deve leggersi come
+     una nota di cantiere, non come contenuto del sito. */
+  .nota-cantiere {
+    margin-top: 1.25rem;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    max-width: 62ch;
+    padding-left: 0.875rem;
+    border-left: 2px solid var(--color-line);
+  }
+  .sezione-scura .nota-cantiere {
+    color: var(--regolo-scuro-muted);
+    border-left-color: var(--regolo-scuro-linea);
+  }
+
+  /* ---------- barra della proposta ---------------------------------------
+     Serve a FT in call: dice quale opzione stai guardando e permette di
+     passare all'altra. Sparisce alla fase 5, con la rotta non scelta. */
+  .barra-proposta {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+  /* Il layout sta qui e non in una className lunga sul componente: se un
+     giorno la barra torna utile altrove, si porta dietro la sua forma. */
+  .barra-proposta > .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 2rem;
+    row-gap: 0.25rem;
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+  }
+  .barra-proposta strong {
+    font-weight: 500;
+  }
+  .barra-proposta a {
+    display: inline-flex;
+    align-items: center;
+    /* il bersaglio da 44 px è il link, ed è lui a dare l'altezza alla barra */
+    min-height: 2.75rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+  .barra-proposta .barra-proposta-avvertenza {
+    color: var(--color-muted-invert);
+  }
+  .barra-proposta > .wrap > span {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 2rem;
+    row-gap: 0.25rem;
+  }
+
+  /* ---------- striscia a domanda -----------------------------------------
+     La domanda e le pastiglie sulla stessa riga (`.sort .row` del prototipo A).
+     Il passo dei due gap sta qui: composto con le utility divergerebbe al
+     primo altro blocco che ripete la striscia. */
+  .striscia-domanda {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 2.5rem;
+    row-gap: 1.25rem;
+  }
+
+  /* ==========================================================================
+     Hero A — la fotografia con il payoff in due tempi
+     ======================================================================== */
+  .hero-foto {
+    position: relative;
+    height: min(78vh, 760px);
+    min-height: 26rem;
+  }
+  /* La targhetta del segnaposto va in alto a destra: in basso il velo la
+     sbiadisce e il bordo della sezione la taglia. */
+  .hero-foto > .placeholder-media > .placeholder-etichetta {
+    top: 0.75rem;
+    right: 0.75rem;
+    bottom: auto;
+    left: auto;
+  }
+  /* Il testo sta sopra la foto: la sfumatura garantisce il contrasto senza
+     schiarire l'immagine. Il tratto opaco comincia al 40 % e non al 55 %
+     perché il payoff parte più in alto del sottotitolo.
+     ATTENZIONE: quando arriva la fotografia vera il contrasto va riverificato
+     sul punto più chiaro della metà inferiore (riga in TODO-MEDIA.md). */
+  .hero-velo {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding-block: clamp(1.5rem, 4vw, 3.5rem);
+    background-image: linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in srgb, var(--color-paper) 88%, transparent) 40%,
+      color-mix(in srgb, var(--color-paper) 97%, transparent) 100%
+    );
+  }
+  .hero-payoff em {
+    font-style: italic;
+    color: var(--color-accent-text);
+  }
+  [data-theme='b'] .hero-payoff em {
+    font-style: normal;
+    color: var(--color-accent);
+  }
+
+  /* ==========================================================================
+     Hero B — la domanda, i cinque percorsi e il pannello.
+     Il pannello si cambia **senza una riga di JavaScript**: i percorsi sono
+     `radio` nativi e `:has()` accende il pannello corrispondente. Senza JS
+     funziona tutto; da tastiera si scorre con le freccette.
+     ======================================================================== */
+  .percorsi {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.625rem;
+    margin-top: clamp(1.75rem, 4vw, 3rem);
+  }
+  @media (max-width: 62rem) {
+    .percorsi {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 35rem) {
+    .percorsi {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .percorso {
+    display: flex;
+    flex-direction: column;
+    gap: 1.375rem;
+    padding: 1.375rem 1.125rem 1.125rem;
+    min-height: 9.375rem;
+    background-color: var(--regolo-brief-controllo-bg);
+    border: 1px solid var(--regolo-brief-controllo-bordo);
+    border-radius: var(--radius-edge);
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      background-color 0.15s;
+  }
+  @media (max-width: 35rem) {
+    .percorso {
+      min-height: 0;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+  }
+  .percorso-numero {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--color-muted);
+  }
+  .percorso-numero input[type='radio'] {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    accent-color: var(--color-accent-strong);
+  }
+  .percorso-nome {
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    line-height: 1.1;
+    color: var(--color-ink);
+  }
+  .percorso:hover {
+    border-color: var(--regolo-brief-scelta-bordo);
+  }
+  .percorso:has(input:checked) {
+    background-color: var(--regolo-brief-scelta-bg);
+    border-color: var(--regolo-brief-scelta-bordo);
+    box-shadow: inset 0 0 0 1px var(--regolo-brief-scelta-bordo);
+  }
+  .percorso:has(input:focus-visible) {
+    outline: 2px solid var(--regolo-focus);
+    outline-offset: 2px;
+  }
+  .percorso input[type='radio']:focus-visible {
+    outline: none;
+  }
+
+  /* I cinque pannelli stanno tutti nel DOM: si accende quello scelto.
+     Costa ~2 KB di HTML e vale un blocco che funziona senza JavaScript. */
+  .pannello {
+    display: none;
+    margin-top: 0.875rem;
+    padding: clamp(1.375rem, 3vw, 2.25rem);
+    background-color: var(--regolo-pannello-bg);
+    color: var(--regolo-pannello-fg);
+    border-radius: var(--radius-edge);
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 2rem;
+    /* dentro il pannello il fondo è scuro: l'anello di fuoco si schiarisce */
+    --regolo-focus: var(--regolo-pannello-chiave);
+  }
+  @media (max-width: 62rem) {
+    .pannello {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+  /* Il nome del percorso non è un titolo: è la ripetizione del controllo
+     scelto qui sopra. I tre scomparti invece sono titoli pari fra loro. */
+  .pannello-titolo {
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: clamp(1.375rem, 2vw, 1.75rem);
+    line-height: 1.1;
+    color: var(--regolo-pannello-chiave);
+    margin-bottom: 1rem;
+  }
+  .pannello-chiave {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--regolo-pannello-chiave);
+    margin-bottom: 0.625rem;
+  }
+  .pannello ul {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+    color: var(--regolo-pannello-voce);
+  }
+  .pannello li::before {
+    content: '— ';
+    color: var(--regolo-pannello-chiave);
+  }
+  .pannello .btn {
+    margin-top: 1.125rem;
+    background-color: var(--regolo-pannello-chiave);
+    border-color: var(--regolo-pannello-chiave);
+    color: var(--color-ink);
+  }
+  .pannello .btn:hover {
+    background-color: var(--regolo-pannello-fg);
+    border-color: var(--regolo-pannello-fg);
+  }
+  /* Accende il pannello del percorso scelto. Cinque regole esplicite: una
+     per percorso, generate dal componente perché i valori sono quelli chiusi
+     di `lib/percorsi.ts`. */
+  .hero-domanda:has(#percorso-casa-nuova:checked) .pannello[data-percorso='casa-nuova'],
+  .hero-domanda:has(#percorso-ristrutturazione:checked) .pannello[data-percorso='ristrutturazione'],
+  .hero-domanda:has(#percorso-pratica-bonus:checked) .pannello[data-percorso='pratica-bonus'],
+  .hero-domanda:has(#percorso-struttura-sisma:checked) .pannello[data-percorso='struttura-sisma'],
+  .hero-domanda:has(#percorso-opera-pubblica:checked) .pannello[data-percorso='opera-pubblica'] {
+    display: grid;
+  }
+  /* Se `:has()` non c'è (browser molto vecchio) si vede il pannello di
+     partenza invece di nessun pannello: il blocco non resta muto. */
+  @supports not selector(:has(*)) {
+    .pannello[data-iniziale] {
+      display: grid;
+    }
+  }
+
+  /* ==========================================================================
+     Smistamento A — la stessa domanda, in una striscia
+     ======================================================================== */
+  .pastiglie {
+    display: flex;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pastiglia {
+    display: inline-flex;
+    align-items: center;
+    /* 44 px: con il solo padding l'altezza reale era ~40, sotto il minimo
+       tattile. Sta nella classe così vale per ogni pastiglia. */
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem;
+    font-size: var(--text-small);
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-edge);
+    transition:
+      background-color 0.15s,
+      border-color 0.15s,
+      color 0.15s;
+  }
+  .pastiglia:hover {
+    background-color: var(--color-accent-strong);
+    border-color: var(--color-accent-strong);
+    color: var(--color-on-accent);
+  }
+
+  /* ==========================================================================
+     Numeri — quattro, non otto. Nel DOM anche senza JavaScript.
+     ======================================================================== */
+  .numeri {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media (max-width: 48rem) {
+    .numeri {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .numero {
+    padding: 1.75rem 1.5rem 1.75rem 0;
+    border-right: 1px solid var(--color-line);
+  }
+  .numero:last-child {
+    border-right: 0;
+  }
+  @media (max-width: 48rem) {
+    .numero:nth-child(2n) {
+      border-right: 0;
+    }
+    .numero:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--color-line);
+    }
+  }
+  .numero-valore {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    font-size: clamp(1.5rem, 3vw, 2.75rem);
+    letter-spacing: var(--regolo-display-tracking);
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+  }
+  .numero-etichetta {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* ==========================================================================
+     Servizi — sei schede. In A minime, in B con «cosa serve da te».
+     ======================================================================== */
+  .griglia-servizi {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  @media (max-width: 60rem) {
+    .griglia-servizi {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 38rem) {
+    .griglia-servizi {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* A: nessuna cornice, un filetto sopra. La tipografia fa il lavoro. */
+  .servizio-essenziale {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line);
+    min-height: 11.875rem;
+  }
+  @media (max-width: 38rem) {
+    .servizio-essenziale {
+      min-height: 0;
+    }
+  }
+
+  /* B: scheda con cornice e lo scomparto «serve da te» in fondo. */
+  .servizio-scheda {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background-color: var(--regolo-brief-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-edge);
+    min-height: 12.5rem;
+  }
+  @media (max-width: 38rem) {
+    .servizio-scheda {
+      min-height: 0;
+    }
+  }
+  /* La riga di descrizione delle schede: nei prototipi era `.svc p`, e senza
+     questa regola ogni scheda se la riscriveva con due utility. */
+  .servizio-essenziale > p,
+  .servizio-scheda > p:not(.serve-da-te) {
+    color: var(--color-muted);
+    font-size: var(--text-small);
+  }
+  .servizio-tecnicismo {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+  .servizio-vai {
+    margin-top: auto;
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--color-accent-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .serve-da-te {
+    margin-top: auto;
+    padding-top: 0.875rem;
+    border-top: 1px dashed var(--color-line);
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  .serve-da-te strong {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  /* ==========================================================================
+     Come lavoriamo — A: colonna ferma + elenco numerato. B: timeline.
+     In questa fase nessuna delle due si muove: A userà `position: sticky`
+     (CSS, non JavaScript) e alla fase 5 arriva l'avanzamento allo scroll.
+     ======================================================================== */
+  .processo-elenco {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: fase;
+  }
+  .processo-elenco li {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 1rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--color-line);
+    counter-increment: fase;
+  }
+  /* Ogni `<li>` ha un `<div>` d'involucro nella seconda colonna: è la griglia
+     a due colonne del `<li>` che lo richiede (numero | contenuto). Togliendolo
+     titolo e paragrafo diventerebbero due celle e il numero slitterebbe. */
+  .processo-elenco li > div {
+    min-width: 0;
+  }
+  .processo-elenco li::before {
+    content: counter(fase, decimal-leading-zero);
+    font-family: var(--font-display);
+    font-size: 2.125rem;
+    line-height: 1;
+    color: var(--color-accent-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .processo-titolo {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: 1.625rem;
+    line-height: 1.15;
+    margin-bottom: 0.375rem;
+  }
+  .processo-elenco p {
+    color: var(--color-muted);
+    font-size: var(--text-small);
+    max-width: 52ch;
+  }
+  @media (min-width: 56rem) {
+    .processo-colonna {
+      position: sticky;
+      top: calc(var(--regolo-header-h) + 1.5rem);
+    }
+  }
+
+  /* B: timeline in cinque colonne, che su mobile diventa verticale. */
+  .processo-timeline {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-top: 2.75rem;
+    position: relative;
+    list-style: none;
+    padding: 0;
+  }
+  .processo-timeline::before {
+    content: '';
+    position: absolute;
+    /* Dal centro del primo pallino al centro dell'ultimo: le cinque colonne
+       valgono il 20 % ciascuna, quindi l'ultimo pallino comincia all'80 %.
+       Prima la linea correva fino al bordo e finiva in mezzo al nulla. */
+    left: 0.625rem;
+    right: calc(20% - 0.625rem);
+    top: 0.5625rem;
+    height: 2px;
+    background-color: var(--regolo-scuro-linea);
+  }
+  .processo-timeline > li {
+    padding-right: 1.25rem;
+    position: relative;
+  }
+  .processo-timeline > li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+    background-color: var(--regolo-scuro-bg);
+  }
+  .processo-timeline .processo-passo {
+    display: block;
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--regolo-scuro-muted);
+    margin: 2.125rem 0 0.5rem;
+  }
+  .processo-timeline .processo-titolo {
+    color: var(--regolo-scuro-fg);
+    font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  }
+  .processo-timeline p {
+    color: var(--regolo-scuro-muted);
+    font-size: var(--text-small);
+    margin-top: 0.5rem;
+    max-width: 26ch;
+  }
+  @media (max-width: 56rem) {
+    .processo-timeline {
+      grid-template-columns: 1fr;
+      gap: 1.625rem;
+    }
+    .processo-timeline::before {
+      left: 0.5625rem;
+      right: auto;
+      top: 0.625rem;
+      bottom: auto;
+      /* verticale: dal primo pallino all'ultimo, che è l'ultimo `li` */
+      height: calc(100% - 1.25rem - 1.625rem);
+      width: 2px;
+    }
+    .processo-timeline > li {
+      padding-left: 2.25rem;
+      padding-right: 0;
+    }
+    .processo-timeline .processo-passo {
+      margin-top: 0;
+    }
+  }
+
+  /* ==========================================================================
+     Progetti — A: tre schede con la foto grande. B: due schede con i dati duri.
+     ======================================================================== */
+  .griglia-progetti {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  @media (max-width: 56rem) {
+    .griglia-progetti {
+      grid-template-columns: 1fr;
+    }
+  }
+  .griglia-progetti-due {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 50rem) {
+    .griglia-progetti-due {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .progetto-meta {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 0.875rem;
+    margin-top: 0.875rem;
+    border-top: 1px solid var(--color-ink);
+  }
+  .progetto-nome {
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: 1.375rem;
+    line-height: 1.15;
+  }
+  .progetto-riga {
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  .progetto-riga strong {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  /* B: la tabella dei dati duri. Una `<table>` vera: sono dati, e chi legge
+     con uno screen reader deve sentire l'intestazione di riga. */
+  .progetto-scheda {
+    background-color: var(--regolo-brief-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-edge);
+    overflow: hidden;
+  }
+  /* La scheda ha già la sua cornice: la foto dentro non ne mette una seconda,
+     solo il filetto che la stacca dai dati (come nel prototipo B). */
+  .progetto-scheda .placeholder-media {
+    border: 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .progetto-scheda .progetto-nome {
+    display: block;
+    padding: 1.125rem 1.25rem 0.75rem;
+    font-size: 1.375rem;
+  }
+  .progetto-dati {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-small);
+  }
+  .progetto-dati th,
+  .progetto-dati td {
+    padding: 0.5625rem 1.25rem;
+    border-top: 1px solid var(--color-line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .progetto-dati th {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 500;
+    width: 40%;
+  }
+
+  /* ==========================================================================
+     Esploso strutturale — SVG a livelli, già separati.
+     Le tre facce derivano dal token del livello: un colore per livello, non
+     quindici. Alla fase 5 si animerà solo il `transform` dei cinque `<g>`.
+     ======================================================================== */
+  .esploso-figura {
+    width: 100%;
+    height: auto;
+    max-height: min(78vh, 46rem);
+    display: block;
+    margin-inline: auto;
+  }
+  .esploso-livello {
+    /* `--tono` lo imposta il componente, livello per livello */
+    transform: translateY(var(--dy, 0));
+  }
+  .faccia-alto {
+    fill: var(--tono);
+  }
+  .faccia-destra {
+    fill: color-mix(in srgb, var(--tono), #000 16%);
+  }
+  .faccia-sinistra {
+    fill: color-mix(in srgb, var(--tono), #000 30%);
+  }
+  /* I serramenti: un colore proprio, non la parete scurita. Senza questo
+     l'involucro legge come un blocco pieno invece che come un involucro. */
+  .faccia-apertura {
+    fill: var(--regolo-esploso-apertura);
+  }
+  .traccia {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .traccia-calore {
+    stroke: var(--regolo-esploso-calore);
+  }
+  .traccia-acqua {
+    stroke: var(--regolo-esploso-acqua);
+  }
+  .traccia-aria {
+    stroke: var(--regolo-esploso-aria);
+  }
+
+  /* ---------- legenda ↔ livelli --------------------------------------------
+     Col mouse su una voce, gli altri livelli si attenuano. È il gesto della
+     call di vendita (`kit/REGOLO_Due_Opzioni.md`), e si fa in CSS: `:has()`
+     sulla sezione, `opacity` come unica proprietà toccata — con `transform` è
+     la sola che si anima (CLAUDE.md § Regole, 7).
+
+     Dentro `@media (hover: hover)` perché su un touch screen il `:hover` resta
+     appiccicato dopo il tocco, e resterebbe un livello acceso e quattro spenti.
+     Cinque regole scritte a mano: `:has()` non prende un valore da una
+     variabile, e le chiavi sono l'elenco chiuso di `lib/esploso.ts`. */
+  @media (hover: hover) {
+    .esploso-livello,
+    .legenda-esploso .legenda-nome {
+      transition: opacity 0.2s;
+    }
+    .esploso:has(.legenda-esploso li[data-livello='fondazioni']:hover)
+      .esploso-livello:not([data-livello='fondazioni']),
+    .esploso:has(.legenda-esploso li[data-livello='struttura']:hover)
+      .esploso-livello:not([data-livello='struttura']),
+    .esploso:has(.legenda-esploso li[data-livello='involucro']:hover)
+      .esploso-livello:not([data-livello='involucro']),
+    .esploso:has(.legenda-esploso li[data-livello='impianti']:hover)
+      .esploso-livello:not([data-livello='impianti']),
+    .esploso:has(.legenda-esploso li[data-livello='finiture']:hover)
+      .esploso-livello:not([data-livello='finiture']) {
+      opacity: 0.28;
+    }
+    .esploso:has(.legenda-esploso li:hover) .legenda-esploso li:not(:hover) .legenda-nome {
+      opacity: 0.55;
+    }
+  }
+
+  .legenda-esploso {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .legenda-esploso li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.875rem 0;
+    border-top: 1px solid var(--regolo-scuro-linea);
+  }
+  .legenda-esploso li:last-child {
+    border-bottom: 1px solid var(--regolo-scuro-linea);
+  }
+  .legenda-nome {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: 1.625rem;
+    line-height: 1.1;
+    color: var(--regolo-scuro-fg);
+  }
+  /* Il pallino ripete il colore del livello. È un rinforzo, non l'unico
+     canale: il nome accanto è testo. */
+  .legenda-pallino {
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: var(--tono);
+  }
+  .legenda-esploso span:last-child {
+    color: var(--regolo-scuro-muted);
+    font-size: var(--text-small);
+  }
+
+  /* ==========================================================================
+     Prima / dopo — due immagini sovrapposte e un `clip-path` guidato da un
+     `input[type=range]`. Niente librerie (catalogo blocchi B4).
+     Senza JavaScript il cursore non c'è affatto: si vedono le due metà al 50 %
+     con entrambe le etichette, che è un contenuto leggibile — invece di un
+     controllo che non fa niente.
+     ======================================================================== */
+  .prima-dopo {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-edge);
+    background-color: var(--color-ph);
+  }
+  .prima-dopo > .placeholder-media {
+    position: absolute;
+    inset: 0;
+    border: 0;
+  }
+  /* `> .prima-dopo-dopo` e non `.prima-dopo-dopo`: vedi la nota
+     sull'ordine dei fogli in testa a questo file. A pari specificità
+     `.placeholder-media` di `globals.css` vincerebbe e le due metà del
+     confronto avrebbero lo stesso colore, cioè il blocco non proverebbe niente. */
+  .prima-dopo > .prima-dopo-dopo {
+    clip-path: inset(0 0 0 var(--x, 50%));
+    background-color: var(--color-accent-soft);
+  }
+  .prima-dopo-dopo > .placeholder-etichetta {
+    left: auto;
+    right: 0.75rem;
+  }
+  .prima-dopo-maniglia {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--x, 50%);
+    width: 2px;
+    background-color: var(--color-accent-strong);
+    pointer-events: none;
+  }
+  .prima-dopo-maniglia::after {
+    content: '◂ ▸' / '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-accent-strong);
+    color: var(--color-on-accent);
+    font-size: var(--text-eyebrow);
+    padding: 0.375rem 0.5rem;
+    border-radius: var(--radius-edge);
+    white-space: nowrap;
+  }
+  .prima-dopo input[type='range'] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+  .prima-dopo:has(input:focus-visible) {
+    outline: 2px solid var(--regolo-focus);
+    outline-offset: 3px;
+  }
+
+  /* ==========================================================================
+     Persone
+     ======================================================================== */
+  .griglia-persone {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  @media (max-width: 56rem) {
+    .griglia-persone {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .persona-nome {
+    display: block;
+    margin-top: 0.875rem;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    letter-spacing: var(--regolo-display-tracking);
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+  .persona-ruolo {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  /* Ordine, sezione e numero: è una credenziale, non il mestiere. Classe a
+     parte perché alla fase 4 finisce anche in `Person.hasCredential`. */
+  .persona-abilitazioni {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+
+  /* ==========================================================================
+     Territorio — il perimetro vero delle tre province, in SVG.
+     Nessun tile server: nessun terzo vede l'IP di chi visita.
+     ======================================================================== */
+  .mappa-provincia {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .mappa-perimetro {
+    fill: var(--regolo-mappa-fondo);
+    stroke: var(--regolo-mappa-linea);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+  }
+  .mappa-sede {
+    fill: var(--regolo-mappa-sede);
+  }
+  .mappa-etichetta {
+    font-family: var(--regolo-font-eyebrow);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--color-muted);
+  }
+  /* Il nome della provincia sta dentro il perimetro: un filo di fondo lo
+     stacca dalla linea di confine quando ci passa vicino. */
+  .mappa-etichetta-provincia {
+    font-size: 15px;
+    fill: var(--color-ink);
+    paint-order: stroke;
+    stroke: var(--regolo-mappa-fondo);
+    stroke-width: 4;
+    stroke-linejoin: round;
+  }
+  .elenco-comuni {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .elenco-comuni li {
+    border: 1px solid var(--color-line);
+    padding: 0.375rem 0.75rem;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    border-radius: var(--radius-edge);
+  }
+
+  /* ==========================================================================
+     Barra CTA mobile — sotto i 768 px (catalogo blocchi F2).
+     Nei servizi locali è spesso il primo canale di contatto in assoluto.
+     ======================================================================== */
+  .barra-mobile {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: none;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 1px;
+    background-color: var(--color-line);
+    border-top: 1px solid var(--color-line);
+    /* sotto la tacca dei telefoni recenti */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  @media (max-width: 48rem) {
+    .barra-mobile {
+      display: grid;
+    }
+    /* La barra copre il fondo della pagina: si lascia lo spazio.
+       5,5rem e non 4,25 perché la cella del WhatsApp è un segnaposto
+       dichiarato che a 320 px va a capo e alza la barra di una riga: con lo
+       spazio giusto per una riga sola, l'ultimo pixel del footer finiva
+       sotto la barra (misurato: footer a 712, barra a 711).
+       Quando arriva il numero vero la cella torna di una riga e questo
+       valore può tornare a 4,25rem — riga in TODO-MEDIA/CONTENUTI. */
+    .con-barra-mobile {
+      padding-bottom: 5.5rem;
+    }
+  }
+  .barra-mobile > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* tre bersagli da 44 px: è la barra più toccata del sito */
+    min-height: 2.75rem;
+    background-color: var(--regolo-brief-card);
+    padding: 0.875rem 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: var(--text-small);
+    color: var(--color-ink);
+  }
+  .barra-mobile > .barra-mobile-brief {
+    background-color: var(--color-accent-strong);
+    color: var(--color-on-accent);
+  }
+  /* La voce senza dato non è un link: è una casella dichiarata vuota. */
+  .barra-mobile > .barra-mobile-manca {
+    color: var(--color-muted);
+    font-weight: 500;
+  }
+}

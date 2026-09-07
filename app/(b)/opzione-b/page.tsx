@@ -1,6 +1,14 @@
 import type { Metadata } from 'next'
+import { BarraMobile } from '@/components/BarraMobile'
+import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
-import { PaginaStub } from '@/components/PaginaStub'
+import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
+import { Hero } from '@/components/sezioni/Hero'
+import { Numeri } from '@/components/sezioni/Numeri'
+import { Persone } from '@/components/sezioni/Persone'
+import { PrimaDopo } from '@/components/sezioni/PrimaDopo'
+import { Progetti } from '@/components/sezioni/Progetti'
+import { Servizi } from '@/components/sezioni/Servizi'
 
 export const metadata: Metadata = {
   title: 'Homepage',
@@ -8,27 +16,38 @@ export const metadata: Metadata = {
     'Proposta di homepage per REGOLO, variante «Il cantiere»: la domanda al posto dello slogan e i dati duri dei progetti in evidenza.',
 }
 
-/** Home, opzione B: stessi blocchi, altro ordine e altri token. */
+/**
+ * Home — opzione B «Il cantiere».
+ *
+ * Stessa architettura dell'opzione A, altro ordine e altri token: **si smista
+ * prima e si dimostra dopo**. La differenza non è di gusto. In A si conquista
+ * con una fotografia e poi si chiede cosa serve; in B la prima cosa che la
+ * pagina fa è una domanda, e tutto il resto è la risposta a quella domanda.
+ *
+ * Ordine di CLAUDE.md § Due opzioni: hero-domanda con i cinque percorsi →
+ * numeri → sei percorsi con «serve da te» → come lavoriamo (timeline) →
+ * progetti con i dati duri → prima/dopo → persone → brief → footer, più la
+ * barra CTA fissa su mobile.
+ *
+ * Anche qui un solo blocco «wow»: il prima/dopo. È l'unico pezzo di tutta la
+ * pagina che ha bisogno di JavaScript, e solo per muovere il taglio.
+ *
+ * `/opzione-b` è `noindex` (lo dichiara il layout in `app/(b)`): è una rotta di
+ * proposta, non una pagina del sito.
+ */
 export default function OpzioneB() {
   return (
     <>
-      <PaginaStub
-        fase="Home · opzione B «Il cantiere»"
-        titolo="Che intervento hai in mente?"
-        blocchi={[
-          'Hero-domanda con percorso — la domanda al posto dello slogan, 5 percorsi',
-          'Numeri — anni · progetti · mq · comuni',
-          'Sei percorsi con «cosa serve da te»',
-          'Come lavoriamo — timeline delle 5 fasi',
-          'Progetti con i dati duri — luogo, anno, mq, ruolo dello studio',
-          'WOW — prima / dopo',
-          'Le persone',
-          'Brief qualificato',
-          'Footer operativo + barra CTA mobile',
-        ]}
-        intento="Stessa architettura dell’opzione A, altro ordine e altri token: si smista prima, si dimostra dopo."
-      />
-      <Brief pagina="/opzione-b" />
+      <BarraProposta opzione="b" />
+      <Hero variante="domanda" />
+      <Numeri />
+      <Servizi variante="percorsi" />
+      <ComeLavoriamo variante="timeline" />
+      <Progetti variante="dati" />
+      <PrimaDopo />
+      <Persone variante="b" />
+      <Brief pagina="/opzione-b" quota="Sez. 07 — Il brief" />
+      <BarraMobile />
     </>
   )
 }

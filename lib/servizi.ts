@@ -46,3 +46,13 @@ export type Servizio = (typeof servizi)[number]
 
 export const servizioBySlug = (slug: string): Servizio | undefined =>
   servizi.find((s) => s.slug === slug)
+
+/**
+ * La CTA contestuale della pagina del servizio: porta al brief con il passo 1
+ * già scelto (CLAUDE.md § Pagina servizio → CTA · catalogo blocchi F5).
+ *
+ * È qui che si chiude la catena dello smistamento: home → servizio → brief,
+ * senza che nessuno ridigiti il tipo di intervento. La pagina del servizio non
+ * ha bisogno di leggere niente dalla query: sa già chi è.
+ */
+export const hrefBriefServizio = (s: Servizio) => `/contatti?intervento=${s.intervento}#brief`

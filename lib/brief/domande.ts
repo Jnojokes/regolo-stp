@@ -36,6 +36,19 @@ export type Campo = {
   /** Va nell'attributo `autocomplete`: fa risparmiare tempo su mobile. */
   autoCompleta?: string
   massimo: number
+  /**
+   * Il `pattern` HTML del campo. **Serve solo a chi non ha JavaScript**, ed è
+   * la differenza fra un errore che il browser segnala sul campo — con le
+   * risposte al loro posto — e un errore che solo il server vede, che costa un
+   * 303 e tutte e cinque le risposte.
+   *
+   * Deve essere più **permissivo** della validazione lato server, non più
+   * severo: qui si scartano solo le cose che il server rifiuterebbe di sicuro.
+   * Se i due divergono, la parola resta al server (`validazione.ts`).
+   */
+  schema?: string
+  /** Il messaggio nativo quando il `pattern` non passa. */
+  schemaTitolo?: string
 }
 
 export type Consenso = { genere: 'consenso'; nome: string }
@@ -86,6 +99,12 @@ export const passi: readonly Passo[] = [
         aiuto: 'Fermo, Macerata, Ascoli Piceno e provincia. Anche fuori: scrivilo comunque.',
         autoCompleta: 'address-level2',
         massimo: 80,
+        /* Lettere, apostrofi, trattini, punti e spazi — più la sigla della
+           provincia in coda, con o senza parentesi, perché è quello che il
+           `<datalist>` mostra («Fermo (FM)») e quindi quello che la gente
+           scrive. La sigla la togliamo noi in `pulisciComune`. */
+        schema: "\\p{L}[\\p{L}’' .\\-]*(?:[ ,]*\\(?[A-Za-z]{2}\\)?)?",
+        schemaTitolo: 'Il nome di un comune: solo lettere, apostrofi e trattini.',
       },
       {
         genere: 'gruppo',
@@ -94,6 +113,11 @@ export const passi: readonly Passo[] = [
         opzioni: [
           { valore: 'casa-indipendente', etichetta: 'Casa indipendente' },
           { valore: 'appartamento', etichetta: 'Appartamento' },
+          /* Il committente qui è un amministratore, non un privato: sisma,
+             facciate, lavori condominiali sono una filiera a sé, e senza una
+             voce propria finivano in «edificio intero» o in «altro» e il
+             segnale si perdeva (FT, 07/09/2026). */
+          { valore: 'condominio', etichetta: 'Condominio o parti comuni' },
           { valore: 'edificio', etichetta: 'Edificio intero' },
           { valore: 'capannone-ufficio', etichetta: 'Capannone o ufficio' },
           { valore: 'terreno', etichetta: 'Terreno' },
@@ -149,6 +173,8 @@ export const passi: readonly Passo[] = [
         obbligatorio: true,
         autoCompleta: 'name',
         massimo: 80,
+        schema: "\\p{L}[\\p{L}’' .\\-]*",
+        schemaTitolo: 'Nome e cognome: solo lettere, apostrofi e trattini.',
       },
       {
         genere: 'campo',
@@ -158,6 +184,15 @@ export const passi: readonly Passo[] = [
         obbligatorio: true,
         autoCompleta: 'tel',
         massimo: 30,
+        /* Almeno otto cifre in tutto, con separatori a piacere. Il conteggio
+           esatto (8-15 cifre) lo fa il server: un `pattern` non sa contare
+           ignorando gli spazi, e qui basta scartare «12».
+           ATTENZIONE alle parentesi: i browser compilano `pattern` con il flag
+           `v`, che dentro una classe di caratteri considera `( ) / -` dei
+           punteggiatori da proteggere. Non protetti, il pattern è invalido e
+           viene **ignorato in silenzio** — il campo sembra validato e non lo è. */
+        schema: '\\+?[0-9][0-9 .\\(\\)\\/\\-]{6,}',
+        schemaTitolo: 'Un numero di telefono: almeno otto cifre.',
       },
       {
         genere: 'campo',

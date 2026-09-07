@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { PaginaStub } from '@/components/PaginaStub'
-import { servizi, servizioBySlug } from '@/lib/servizi'
+import Link from 'next/link'
+import { hrefBriefServizio, servizi, servizioBySlug } from '@/lib/servizi'
 
 export function generateStaticParams() {
   return servizi.map((s) => ({ slug: s.slug }))
@@ -37,6 +38,14 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
         'Progetti collegati',
         'CTA che precompila il brief con questo tipo di intervento',
       ]}
+      azione={
+        /* La CTA c'è già, anche se la pagina è ancora un'impalcatura: è
+           l'ultimo anello dello smistamento della home, e senza di lei un
+           committente arriva qui e non sa dove andare. */
+        <Link href={hrefBriefServizio(s)} className="btn">
+          Raccontaci il progetto
+        </Link>
+      }
     />
   )
 }

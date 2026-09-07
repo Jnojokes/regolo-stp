@@ -18,17 +18,25 @@ import { BriefForm } from './BriefForm'
 export function Brief({
   pagina,
   interventoIniziale = null,
+  quota = 'Raccontaci il progetto',
 }: {
   /** La pagina che ospita il blocco: finisce nella registrazione del consenso. */
   pagina: string
   /** Il passo 1 precompilato da `?intervento=`, già validato lato server. */
   interventoIniziale?: string | null
+  /**
+   * L'occhiello del blocco. Nell'opzione B le sezioni sono numerate («Sez. 01 —
+   * …») e il brief è la settima: senza questa prop la serie si interrompeva
+   * proprio sul blocco che deve convertire, e il prototipo B numera anche
+   * quello. In A e in `/contatti` resta l'occhiello normale.
+   */
+  quota?: string
 }) {
   return (
-    <section id="brief" className="brief scroll-mt-(--regolo-header-h)">
+    <section id="brief" className="brief">
       <div className="wrap nav:grid-12 nav:gap-16 nav:py-28 grid gap-10 py-16">
         <div className="nav:col-span-5 nav:self-start">
-          <p className="eyebrow brief-occhiello">Raccontaci il progetto</p>
+          <p className="eyebrow brief-occhiello">{quota}</p>
           <h2 className="mt-3">Cinque domande. Poi vi richiamiamo noi.</h2>
           <p className="brief-lead text-lead mt-5 max-w-[40ch]">
             Non è un «contattaci»: è un brief. Un minuto, una domanda per volta, e i dati personali

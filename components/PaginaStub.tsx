@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { servizi } from '@/lib/servizi'
 
 /**
@@ -10,11 +11,19 @@ export function PaginaStub({
   intento,
   blocchi,
   fase,
+  azione,
 }: {
   titolo: string
   intento: string
   blocchi: string[]
   fase: string
+  /**
+   * Una CTA vera dentro una pagina che è ancora un'impalcatura. Serve alle
+   * pagine dei servizi: lo smistamento della home promette di portare al
+   * servizio **e** di precompilare il brief, e senza questa la catena si
+   * interrompe sull'ultimo salto (CLAUDE.md § Homepage, blocco 2).
+   */
+  azione?: ReactNode
 }) {
   return (
     <section className="wrap nav:py-24 py-16">
@@ -33,6 +42,8 @@ export function PaginaStub({
           </li>
         ))}
       </ol>
+
+      {azione && <div className="mt-10">{azione}</div>}
     </section>
   )
 }

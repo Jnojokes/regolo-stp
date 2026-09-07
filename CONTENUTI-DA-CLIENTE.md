@@ -10,6 +10,7 @@
 | ▲ Telefono diretto, email pubblica, PEC, orari | footer, contatti, JSON-LD | titolare | | |
 | ▲ **Casella dove arrivano i brief** (`BRIEF_TO`) — può non essere la mail pubblica | route `/api/brief` | titolare | | |
 | ▲ **Mittente delle mail del brief** (`BRIEF_FROM`): dominio da verificare su Resend | route `/api/brief` | titolare (dipende dalla decisione n. 2) | | |
+| ▲ **Numero WhatsApp** (un mobile: il fisso non ce l'ha) | barra CTA mobile dell'opzione B | titolare | | |
 | ▲ Titolare del trattamento ed email per i diritti privacy | privacy | titolare | | |
 | ▲ Dominio definitivo e accesso DNS (o accesso a brasili.net) | canonical, redirect, deploy | titolare | | |
 | ▲ Iscrizioni: ordini degli ingegneri/architetti, sezione, numero; coordinatore sicurezza; CTU; certificazioni | studio, persone, JSON-LD `hasCredential` | titolare | | |
@@ -23,12 +24,16 @@
 | Numeri | home | anni di attività, progetti chiusi, mq progettati, comuni | | |
 | Elenco dei comuni in cui hanno lavorato | home (territorio), SEO | lista, anche solo nomi | | |
 | 3-5 testimonianze con nome e cognome | home | basta una telefonata registrata e trascritta, ognuna legata a un progetto | | |
-| Elenco «cosa serve da te» per ciascuno dei 6 servizi | /servizi/* | i documenti che chiedono davvero a un cliente per partire | | |
+| Elenco «cosa serve da te» per ciascuno dei 6 servizi | home (opzione B), /servizi/* | i documenti che chiedono davvero a un cliente per partire; per «Comfort, energia, acustica» non ne abbiamo nemmeno una proposta, e in home si vede il segnaposto | | |
 | Vecchie URL di brasili.net con traffico | REDIRECT.md | export da Search Console o Analytics del vecchio sito, se esiste | | |
 | Loghi imprese partner, pubblicazioni, premi | home, studio | solo se citabili | | |
 | Tempo di risposta da dichiarare nella mail di cortesia, se lo vogliono | mail del brief | una frase: oggi non promettiamo nessun tempo (CLAUDE.md § Obiettivo) | | |
-| Se le sei voci di «tipo di immobile» del brief vanno bene | brief, passo 2 | oggi: casa indipendente · appartamento · edificio intero · capannone o ufficio · terreno · altro | | |
-| Titolare del trattamento, base giuridica e tempi di conservazione dei brief | /privacy (fase 7) | serve per dichiarare Resend come responsabile e dire quanto si tengono i brief | | |
+| Se le sette voci di «tipo di immobile» del brief vanno bene | brief, passo 2 | oggi: casa indipendente · appartamento · **condominio o parti comuni** · edificio intero · capannone o ufficio · terreno · altro | | |
+| Titolare del trattamento, base giuridica e tempi di conservazione dei brief | /privacy (fase 7) | dipende dalla decisione n. 14: con Resend c'è un responsabile da nominare, con l'SMTP dello studio no | | |
+| «Cosa serve da te» per **Comfort, energia, acustica** | home B, /servizi/energia-acustica | è il sesto servizio, l'unico senza percorso nella hero: gli altri cinque hanno una proposta nostra, questo no | | |
+| Conferma dei cinque elenchi «cosa serve da te» proposti | home B, /servizi/* | li abbiamo scritti noi dal prototipo: vanno letti e corretti servizio per servizio | | |
+| Quante persone sono e chi firma cosa | home, /studio | in pagina ci sono quattro caselle: è un'ipotesi di impaginazione, non un organigramma | | |
+| Se il payoff «Progettiamo e dirigiamo. Dal disegno al cantiere.» va bene | home A (è l'h1) | è nostro, dal prototipo approvato: se non li rappresenta si cambia adesso, non dopo | | |
 
 ## Media (dettaglio in TODO-MEDIA.md)
 

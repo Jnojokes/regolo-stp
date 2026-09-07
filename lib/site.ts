@@ -7,6 +7,15 @@
 /** Segnaposto inequivocabile. Il collaudo (fase 8) fallisce se ne trova uno in produzione. */
 export const daCliente = (cosa: string) => `[[DA CLIENTE: ${cosa}]]`
 
+/**
+ * Vero se la stringa è un segnaposto. Serve dove un campo può essere già vero
+ * per alcune voci e ancora mancante per altre — il mestiere delle persone, per
+ * esempio: tre risultano da CLAUDE.md, il quarto no. Così `<DaCliente>` si mette
+ * solo dove serve, e alla fase 4 i valori veri escono senza evidenziatura
+ * senza toccare i componenti.
+ */
+export const eSegnaposto = (valore: string) => valore.startsWith('[[DA CLIENTE:')
+
 export const site = {
   /* --- confermato (LinkedIn, verificato 03/09/2026) --- */
   nome: 'REGOLO',

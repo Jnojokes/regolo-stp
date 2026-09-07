@@ -42,17 +42,35 @@ import { DESCRIZIONE, VIEWBOX, livelli } from '@/lib/esploso'
  * accanto, che c'è sempre. Per questo va bene che sia solo per il mouse — chi
  * naviga da tastiera non perde niente, perché non c'è niente da scoprire.
  *
- * ## Il colore non porta informazione
+ * ## Fase 3 bis — la faccia dice la luce, il retino dice il livello
  *
- * La legenda accanto ripete i cinque livelli in testo, nello stesso ordine, e
- * il testo alternativo dell'SVG li elenca dal basso verso l'alto. Il colore è
- * un rinforzo: ogni faccia è comunque ≥ 3:1 sul fondo (verificato con
- * `scripts/contrasto.mjs`, i rapporti sono nei token in `globals.css`), così il
- * disegno si legge anche a monitor tarato male.
+ * I nove token caldi sono morti: `involucro #e7e3da` e `finiture #f7f5f0` erano
+ * la famiglia della crema, `apertura #2f4a42` il verde pietra che la fase
+ * esclude, e c'erano una terra, un blu e un verde scuro. Peggio: erano
+ * verificati su un fondo che questa fase ha cambiato, e su bianco puro
+ * `finiture` sarebbe stato a 1,09:1 — i due livelli più esterni senza
+ * silhouette.
+ *
+ * Ora il disegno si legge **come si legge un disegno tecnico**:
+ *
+ * - **tre valori per le tre facce** dell'isometria (14,73 · 8,83 · 4,89 sul
+ *   nero): la faccia dice da dove viene la luce, e vale uguale per tutti e
+ *   cinque i livelli;
+ * - **cinque retini per i cinque livelli**: pieno · 45° · contorno · tratteggio
+ *   · punteggiato. Il retino dice il livello, e si vede anche in bianco e nero;
+ * - **il contorno di ogni volume in `carta`, a 21:1**: è la silhouette che
+ *   prima non c'era, perché le facce erano `color-mix` senza `stroke`;
+ * - i **serramenti sono il vuoto**: hanno il colore del fondo della banda, così
+ *   leggono come aperture e non come pannelli.
+ *
+ * Da nove token a tre più cinque retini, e la decisione del 07/09 — «il colore
+ * non porta informazione da solo» — è rispettata meglio di prima: qui il colore
+ * non porta informazione **affatto**. La legenda ripete comunque i cinque
+ * livelli in testo, e il testo alternativo dell'SVG li elenca dal basso in su.
  */
 export function Esploso() {
   return (
-    <Sezione id="esploso" fondo="scuro" className="esploso">
+    <Sezione id="esploso" fondo="scuro" passo="largo" className="esploso">
       <div className="grid-12 items-center">
         <div className="nav:col-span-6 col-span-12">
           <svg
@@ -62,21 +80,38 @@ export function Esploso() {
             aria-labelledby="esploso-titolo"
           >
             <title id="esploso-titolo">{DESCRIZIONE}</title>
+            {/* I cinque retini. Sono `<pattern>` SVG, quindi zero byte di
+                immagine, zero richieste, e si ritematizzano con i token. */}
+            <defs>
+              <pattern id="retino-45" width="6" height="6" patternUnits="userSpaceOnUse">
+                <path d="M-1,1 l2,-2 M0,6 l6,-6 M5,7 l2,-2" className="retino-tratto" />
+              </pattern>
+              <pattern id="retino-tratteggio" width="8" height="8" patternUnits="userSpaceOnUse">
+                <path d="M0,4 h4" className="retino-tratto" />
+              </pattern>
+              <pattern id="retino-punti" width="6" height="6" patternUnits="userSpaceOnUse">
+                <circle cx="1.5" cy="1.5" r="0.9" className="retino-punto" />
+              </pattern>
+            </defs>
             {livelli.map((l) => (
               <g
                 key={l.chiave}
                 className="esploso-livello"
                 data-livello={l.chiave}
-                style={
-                  {
-                    '--dy': `${l.dy}px`,
-                    '--tono': `var(--regolo-esploso-${l.chiave})`,
-                  } as CSSProperties
-                }
+                style={{ '--dy': `${l.dy}px` } as CSSProperties}
               >
+                {/* Ogni faccia si disegna due volte: sotto il valore della
+                    faccia (la luce), sopra il retino del livello. È il modo con
+                    cui costa meno di quindici `<pattern>` — uno per coppia
+                    livello×faccia — e tiene i due canali indipendenti. */}
                 {l.poligoni.map((p, i) => (
-                  <polygon key={i} className={`faccia-${p.faccia}`} points={p.punti} />
+                  <polygon key={i} className={`faccia faccia-${p.faccia}`} points={p.punti} />
                 ))}
+                {l.poligoni.map((p, i) =>
+                  p.faccia === 'apertura' ? null : (
+                    <polygon key={`r${i}`} className="retino" points={p.punti} />
+                  ),
+                )}
                 {l.polilinee.map((p, i) => (
                   <polyline key={i} className={`traccia traccia-${p.traccia}`} points={p.punti} />
                 ))}
@@ -86,20 +121,18 @@ export function Esploso() {
         </div>
 
         <div className="nav:col-start-8 nav:col-span-5 col-span-12">
-          <p className="etichetta-sezione">Il mestiere che nelle foto non si vede</p>
+          <p className="etichetta-sezione">il mestiere che nelle foto non si vede</p>
           <h2 className="mt-3 max-w-[20ch]">Un edificio, cinque livelli.</h2>
 
           {/* La legenda è il contenuto in testo: se l'SVG non si carica, non si
               vede o non si capisce, i cinque livelli sono comunque qui. */}
           <ul className="legenda-esploso mt-8">
             {[...livelli].reverse().map((l) => (
-              <li
-                key={l.chiave}
-                data-livello={l.chiave}
-                style={{ '--tono': `var(--regolo-esploso-${l.chiave})` } as CSSProperties}
-              >
+              <li key={l.chiave} data-livello={l.chiave}>
                 <span className="legenda-nome">
-                  <span className="legenda-pallino" aria-hidden="true" />
+                  {/* Il campione ripete il **retino**, non un colore: è il
+                      canale che porta l'informazione nel disegno. */}
+                  <span className="legenda-campione" aria-hidden="true" />
                   {l.nome}
                 </span>
                 <span>{l.descrizione}</span>

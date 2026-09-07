@@ -122,7 +122,6 @@ export default function Studio() {
       </Sezione>
 
       <Sezione
-        fondo="alt"
         id="metodo"
         etichetta="come lavoriamo"
         titolo="Il metodo: cinque passaggi, sempre gli stessi."
@@ -134,13 +133,16 @@ export default function Studio() {
         {/* `role="list"`: `list-style: none` toglie il ruolo di lista in Safari
             con VoiceOver, e «cinque passaggi» è metà dell'informazione. È la
             stessa ragione per cui ce l'hanno le liste della home. */}
-        <ol className="processo-elenco max-w-[62ch]" role="list">
-          {fasi.map((f) => (
+        <ol className="fasi fasi-elenco" role="list">
+          {fasi.map((f, i) => (
             <li key={f.titolo}>
-              <div>
-                <strong className="processo-titolo">{f.titolo}</strong>
-                <p>{f.testoLungo}</p>
-              </div>
+              <span className="fase-numero" data-numero="">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="fase-corpo">
+                <strong className="fase-titolo">{f.titolo}</strong>
+                <span className="fase-testo">{f.testoLungo}</span>
+              </span>
             </li>
           ))}
         </ol>

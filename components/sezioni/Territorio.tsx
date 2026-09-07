@@ -1,6 +1,7 @@
+import { Quota } from '@/components/Quota'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { DaCliente } from '@/components/Placeholder'
-import { VIEWBOX, comuneByNome, comuniServiti, province, sede } from '@/lib/territorio'
+import { VIEWBOX, comuneByNome, comuni, comuniServiti, province, sede } from '@/lib/territorio'
 import { daCliente } from '@/lib/site'
 
 /**
@@ -56,23 +57,45 @@ const DESCRIZIONE_MAPPA =
   province.map((p) => p.nome).join(', ') +
   ', con la sede dello studio segnata a Fermo.'
 
+/** Quanti comuni ha una provincia, contati dall'elenco vero. */
+const contaComuni = (sigla: string) => comuni.filter((c) => c.sigla === sigla).length
+
 export function Territorio() {
   const serviti = comuniServiti.map(comuneByNome).filter((c) => c !== undefined)
 
   return (
     <Sezione
       id="territorio"
-      filo
+      passo="corto"
+
       nota="I comuni li manda lo studio: è anche la lista da cui si decide quali presidiare in ricerca. La mappa disegna Fermo, Macerata e Ascoli Piceno perché sono le tre province dell’autocomplete del brief — è il riquadro geografico, non un elenco di dove avete lavorato. Finché la lista non c’è, l’unico punto segnato è la sede."
     >
       <div className="grid-12 items-center">
         <div className="nav:col-span-5 col-span-12">
-          <p className="etichetta-sezione">Il territorio</p>
+          <p className="etichetta-sezione">il territorio</p>
           <h2 className="mt-3 max-w-[18ch]">Dove abbiamo lavorato.</h2>
           <p className="intro-sezione text-lead">
             Per uno studio locale è la credenziale che conta più di tutte: i comuni, uno per uno,
             con i progetti collegati.
           </p>
+
+          {/* La seconda delle tre quote del sito, e la sola con una fonte
+              pubblica citabile: i 128 comuni delle tre province vengono
+              dall'elenco ISTAT (via openpolis) e li genera
+              `scripts/genera-territorio.mjs`, che si ferma se le numerosità
+              cambiano. Passa il test a tre condizioni: due estremi sul bordo
+              del campo, un numero che il repo conta (`comuni.length`), e una
+              quantità che nessuno conta a vista guardando la mappa.
+              **L'annotazione dice cos'è**: le tre province dell'autocomplete
+              del brief, non «dove abbiamo lavorato» — che è la nota qui sotto,
+              ed è un'altra affermazione. */}
+          <Quota
+            voci={province.map((p) => p.nome)}
+            numero={comuni.length}
+            unita="comuni nell’autocomplete"
+            dettaglio={province.map((p) => `${p.sigla} ${contaComuni(p.sigla)}`).join(', ')}
+            className="quota-stretta mt-8"
+          />
 
           <ul className="elenco-comuni">
             {serviti.length > 0 ? (

@@ -5,82 +5,102 @@ import { DaCliente, Placeholder } from '@/components/Placeholder'
 /**
  * Footer operativo (catalogo blocchi G1): nei servizi professionali è la
  * pagina contatti che nessuno chiama così.
+ *
  * In pagina ci sono SOLO i dati confermati; email, PEC, P.IVA e orari sono
  * segnaposto dichiarati — nessuno di questi può andare online
  * (CONTENUTI-DA-CLIENTE.md, bloccanti).
+ *
+ * ## Fase 3 bis — tre tempi, non quattro colonne
+ *
+ * Erano quattro colonne uguali con un occhiello in maiuscoletto sopra ognuna,
+ * che è la voce n. 5 della lista di calibrazione applicata quattro volte di
+ * fila. Ora è la **riga in tre tempi** di Storey (`ST / CTF  THANK YOU
+ * STOREY.STUDIO`, misurata) e di Pelizzari: indirizzo a sinistra, contatti
+ * accanto, dati fiscali spinti al bordo destro, e in mezzo il vuoto.
+ *
+ * **Il telefono è il corpo più grande del footer.** La telefonata è l'azione
+ * secondaria dichiarata (`CLAUDE.md` § Obiettivo) e la gerarchia tipografica
+ * del footer deve raccontare la gerarchia delle azioni, non l'organigramma del
+ * documento.
+ *
+ * In A il footer è una banda `ink` **saldata al brief** (passo zero fra i due):
+ * il terzo piano della pagina non si interrompe per ricominciare. In B il fondo
+ * `getto` continua e cambia solo un filetto in testa — perché in B il fondo non
+ * cambia mai.
+ *
+ * La «mappa statica» di `CLAUDE.md` è un **ritaglio dello stesso SVG del
+ * territorio** sulla sede: zero byte in più, zero terzi, nessun iframe, nessun
+ * banner. Finché il ritaglio non c'è, è un campo dichiarato con la sua
+ * specifica.
  */
 export function SiteFooter() {
   return (
-    <footer className="border-line bg-paper border-t">
-      <div className="wrap nav:grid-cols-12 nav:gap-8 grid gap-10 py-14">
-        <div className="nav:col-span-4">
-          <p className="logo-name">{site.nome}</p>
-          <p className="text-muted text-small mt-2">
+    <footer className="site-footer">
+      <div className="wrap site-footer-riga">
+        <div className="site-footer-sede">
+          <p className="logo-name">{site.nomeEsteso}</p>
+          <p className="site-footer-ragione">
             <DaCliente>{site.ragioneSociale}</DaCliente>
           </p>
-          <address className="text-small mt-6 not-italic">
+          <address className="site-footer-indirizzo not-italic">
             {site.via}
             <br />
             {site.cap} {site.citta} ({site.provincia})
           </address>
         </div>
 
-        <div className="nav:col-span-3">
-          <h2 className="eyebrow">Contatti</h2>
-          <ul className="text-small mt-4 space-y-2">
-            <li>
-              <a href={`tel:${site.telefonoHref}`} className="hover:text-accent-text">
-                {site.telefono}
-              </a>
-            </li>
-            <li>
-              <DaCliente>{site.email}</DaCliente>
-            </li>
-            <li>
-              PEC · <DaCliente>{site.pec}</DaCliente>
-            </li>
-            <li>
-              P.IVA <DaCliente>{site.partitaIva}</DaCliente>
-            </li>
-            <li>
-              <DaCliente>{site.orari}</DaCliente>
-            </li>
-          </ul>
-        </div>
-
-        <div className="nav:col-span-2">
-          <h2 className="eyebrow">Sito</h2>
-          <ul className="text-small mt-4 space-y-2">
+        <div className="site-footer-contatti">
+          {/* Il corpo più grande del footer: è l'azione secondaria del sito. */}
+          <a href={`tel:${site.telefonoHref}`} className="site-footer-telefono">
+            {site.telefono}
+          </a>
+          <p className="site-footer-mail">
+            <DaCliente>{site.email}</DaCliente>
+          </p>
+          <p className="site-footer-orari">
+            <DaCliente>{site.orari}</DaCliente>
+          </p>
+          <ul className="site-footer-menu">
             {menu.map((v) => (
               <li key={v.href}>
-                <Link href={v.href} className="hover:text-accent-text">
-                  {v.label}
-                </Link>
+                <Link href={v.href}>{v.label.toLowerCase()}</Link>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="nav:col-span-3">
-          <Placeholder label="Come si arriva in studio" className="mappa-footer" />
-        </div>
+        {/* I dati fiscali all'estremo destro, con il vuoto in mezzo: è dove
+            stanno i metadati in Pelizzari e la lettura di coordinate in
+            ecoLINEAR. Sono anche i dati che si leggono una volta sola. */}
+        <dl className="site-footer-dati">
+          <dt>PEC</dt>
+          <dd>
+            <DaCliente>{site.pec}</DaCliente>
+          </dd>
+          <dt>P.IVA</dt>
+          <dd>
+            <DaCliente>{site.partitaIva}</DaCliente>
+          </dd>
+        </dl>
+
+        <Placeholder
+          label="Come si arriva in studio"
+          specifica="ritaglio dell’SVG del territorio · 21/6"
+          className="mappa-footer site-footer-mappa"
+        />
       </div>
 
-      <div className="border-line border-t">
-        <div className="wrap text-muted text-small flex flex-wrap items-center justify-between gap-4 py-6">
-          <p>
-            © {new Date().getFullYear()} {site.nome} — {site.qualifica}, {site.citta}
-          </p>
-          <ul className="flex flex-wrap gap-6">
-            {legal.map((v) => (
-              <li key={v.href}>
-                <Link href={v.href} className="hover:text-accent-text">
-                  {v.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="wrap site-footer-coda">
+        <p>
+          © {new Date().getFullYear()} {site.nomeEsteso} — {site.qualifica}, {site.citta}
+        </p>
+        <ul>
+          {legal.map((v) => (
+            <li key={v.href}>
+              <Link href={v.href}>{v.label.toLowerCase()}</Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   )

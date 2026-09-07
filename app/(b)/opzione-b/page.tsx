@@ -39,6 +39,12 @@ export default function OpzioneB() {
   return (
     <>
       <BarraProposta opzione="b" />
+      {/* Il ritmo di B: **un solo silenzio**, prima del brief, e nessun cambio
+          di fondo dall'header al footer. hero 0 · numeri 48 · percorsi 48 ·
+          fasi 48 · progetti 96 · prima/dopo 96 · persone 200 · brief 200 ·
+          footer 48. La differenza con A non è l'altezza — sono 9 punti
+          percentuali su una home da 5000 px — è che **A ha quattro silenzi e B
+          ne ha uno**, e quello si vede scorrendo. */}
       <Hero variante="domanda" />
       <Numeri />
       <Servizi variante="percorsi" />

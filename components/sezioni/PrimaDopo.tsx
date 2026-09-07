@@ -15,28 +15,29 @@ import { Sezione } from '@/components/sezioni/Sezione'
  *
  * Qui c'è solo il guscio: il cursore sta in `Confronto`, che è l'unico pezzo
  * client di tutta la home, perché il `clip-path` lo muove JavaScript.
+ *
+ * **Fase 3 bis**: le due metà non sono più due segnaposto grigi sovrapposti —
+ * due tinte a 1,17:1 l'una dall'altra, cioè un cursore che non rivelava niente.
+ * Sono `grafite` e `calce`, e il taglio sta a **21:1**. Il blocco dimostra lo
+ * strumento, che è quello che si può dimostrare finché le fotografie non ci
+ * sono, e la casella porta già la propria specifica.
  */
 export function PrimaDopo() {
   return (
     <Sezione
       id="prima-dopo"
-      fondo="alt"
+      passo="normale"
+      asse
+      etichetta="prima e dopo"
+      titolo="La prova che chiunque capisce al volo."
+      intro="Due fotografie dallo stesso punto. Su un recupero è la cosa più convincente che si possa mettere in una pagina, e non ha bisogno di essere spiegata."
       nota="Servono due o tre coppie di fotografie riprese dallo stesso punto: è il vincolo che fa funzionare il blocco, e senza quello non si mette online."
     >
-      <div className="grid-12 items-center">
-        <div className="nav:col-span-4 col-span-12">
-          <p className="etichetta-sezione">Sez. 05 — Prima / dopo</p>
-          <h2 className="mt-3 max-w-[18ch]">La prova che chiunque capisce al volo.</h2>
-          <p className="intro-sezione text-lead">
-            Due fotografie dallo stesso punto. Su un recupero è la cosa più convincente che si possa
-            mettere in una pagina, e non ha bisogno di essere spiegata.
-          </p>
-        </div>
-
-        <div className="nav:col-start-6 nav:col-span-7 col-span-12">
-          <Confronto prima="Prima — foto dallo studio" dopo="Dopo — stesso punto di ripresa" />
-        </div>
-      </div>
+      <Confronto
+        prima="[[DA CLIENTE: foto dello stato attuale]]"
+        dopo="[[DA CLIENTE: foto dopo, stesso punto di ripresa]]"
+        specifica="1600 × 1000 px · AVIF · ≤ 250 KB"
+      />
     </Sezione>
   )
 }

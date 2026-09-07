@@ -101,7 +101,6 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
       </Sezione>
 
       <Sezione
-        fondo="alt"
         etichetta="cosa comprende"
         titolo="L’incarico, voce per voce."
         intro="Quello che è compreso quando ci si affida a noi per questo tipo di intervento."
@@ -120,20 +119,22 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
         titolo="Cinque passaggi, sempre gli stessi."
         intro="Le stesse cinque fasi di ogni incarico: cambia il contenuto, non il metodo."
       >
-        <ol className="processo-elenco max-w-[62ch]">
-          {fasi.map((f) => (
+        <ol className="fasi fasi-elenco" role="list">
+          {fasi.map((f, i) => (
             <li key={f.titolo}>
-              <div>
-                <strong className="processo-titolo">{f.titolo}</strong>
-                <p>{f.testoLungo}</p>
-              </div>
+              <span className="fase-numero" data-numero="">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="fase-corpo">
+                <strong className="fase-titolo">{f.titolo}</strong>
+                <span className="fase-testo">{f.testoLungo}</span>
+              </span>
             </li>
           ))}
         </ol>
       </Sezione>
 
       <Sezione
-        fondo="alt"
         etichetta="cosa serve da te"
         titolo="Cosa portare al primo incontro."
         intro="Sapere in anticipo cosa ti verrà chiesto è metà del tempo risparmiato."
@@ -160,7 +161,6 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
       </Sezione>
 
       <Sezione
-        fondo="alt"
         etichetta="progetti collegati"
         titolo={
           collegati.length > 0

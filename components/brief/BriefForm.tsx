@@ -251,12 +251,26 @@ export function BriefForm({
       </div>
       <input type="hidden" name={CAMPO_PAGINA} value={pagina} />
 
-      {/* Barra di avanzamento: decorativa, il conto in chiaro sta nella legend. */}
-      <ol className="brief-barra" aria-hidden="true" hidden={!montato}>
-        {passi.map((p, i) => (
-          <li key={p.id} data-fatto={i <= passo ? '' : undefined} />
-        ))}
-      </ol>
+      {/* La barra di avanzamento è **la terza e ultima quota del sito**: cinque
+          tacche, il tratto pieno fino a quella corrente, e l'annotazione che
+          dice a che punto si è. È l'unica quota che si muove, perché è l'unico
+          posto del sito dove la quantità cambia (DECISIONI n. 17).
+
+          Il disegno è `aria-hidden` — il conto in chiaro sta nella `<legend>` di
+          ogni passo, e sentirlo due volte è rumore — ma l'annotazione si rende
+          **sempre**, anche senza JavaScript: senza JS i cinque `<fieldset>` sono
+          tutti visibili e «passo 1 di 5» è vero a pagina ferma. Per questo sta
+          **fuori** dai fieldset e si rende una volta sola. */}
+      <div className="brief-avanzamento">
+        <ol className="brief-tacche" aria-hidden="true">
+          {passi.map((p, i) => (
+            <li key={p.id} data-fatto={montato && i <= passo ? '' : undefined} />
+          ))}
+        </ol>
+        <p className="brief-avanzamento-conta" aria-hidden="true" data-numero="">
+          passo {montato ? passo + 1 : 1} di {passi.length}
+        </p>
+      </div>
 
       {passi.map((p, i) => {
         const soloGruppo = p.elementi.length === 1 && p.elementi[0].genere === 'gruppo'

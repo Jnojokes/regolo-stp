@@ -44,23 +44,29 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
   return (
     <Sezione
       id="progetti"
-      etichetta={conDati ? 'progetti' : 'progetti in evidenza'}
+      passo={conDati ? 'normale' : 'largo'}
+      asse={conDati}
+      etichetta="progetti in evidenza"
       titolo={conDati ? 'I dati che un committente serio legge.' : 'Quello che abbiamo costruito.'}
       azione={
         conDati ? undefined : (
-          <Link className="btn btn-ghost" href="/progetti">
-            Tutti i progetti
+          <Link className="uscita" href="/progetti">
+            tutti i progetti
           </Link>
         )
       }
       nota={notaProgetti}
     >
-      <div className={conDati ? 'griglia-progetti griglia-progetti-due' : 'griglia-progetti'}>
-        {inEvidenza.map((progetto) =>
+      <div className={conDati ? 'progetti-due' : 'progetti-tre'}>
+        {inEvidenza.map((progetto, indice) =>
           conDati ? (
             <SchedaDati key={progetto.copertina} progetto={progetto} />
           ) : (
-            <SchedaFoto key={progetto.copertina} progetto={progetto} />
+            <SchedaFoto
+              key={progetto.copertina}
+              progetto={progetto}
+              ratio={RATIO[indice % RATIO.length]}
+            />
           ),
         )}
       </div>
@@ -72,22 +78,46 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
  * A — foto in 4/3 e i dati sotto il filetto. Il nome è un `h3`: la scheda ha un
  * titolo, e la gerarchia della pagina deve restare leggibile in outline.
  */
-function SchedaFoto({ progetto }: { progetto: Progetto }) {
+function SchedaFoto({ progetto, ratio }: { progetto: Progetto; ratio: string }) {
   return (
-    <article>
-      <Placeholder label={progetto.copertina} ratio="4 / 3" />
-      <div className="progetto-meta">
-        <h3 className="progetto-nome">
-          <DaCliente>{progetto.titolo}</DaCliente>
-        </h3>
-        {progetto.dati.map((dato) => (
-          <p key={dato.etichetta} className="progetto-riga">
-            <strong>{dato.etichetta}</strong> <DaCliente>{dato.valore}</DaCliente>
-          </p>
-        ))}
-      </div>
+    <article className="progetto">
+      <Placeholder
+        label={progetto.copertina}
+        specifica={SPECIFICA[ratio] ?? '≥ 1600 px sul lato lungo · AVIF · ≤ 250 KB'}
+        ratio={ratio}
+      />
+      <h3 className="progetto-nome">
+        <DaCliente>{progetto.titolo}</DaCliente>
+      </h3>
+      {/* La riga in tre tempi: luogo a sinistra, **ruolo** accanto, e l'uscita
+          spinta al bordo con il vuoto in mezzo. È Pelizzari misurato — `2502` …
+          `Borromei 9` … `View project` — con una differenza: al posto del
+          «codice» c'è il **ruolo**, perché un codice d'archivio in `lib` non
+          esiste e sarebbe un dato inventato. E perché sopra tre rettangoli
+          vuoti `codice · nome · vedi progetto` **è** un annuncio immobiliare,
+          mentre `luogo · direzione lavori · vedi progetto` è una credenziale. */}
+      <p className="progetto-riga">
+        <span className="progetto-luogo">
+          <DaCliente>{progetto.dati[0].valore}</DaCliente>
+        </span>
+        <span className="progetto-ruolo">
+          <DaCliente>{progetto.dati[3].valore}</DaCliente>
+        </span>
+      </p>
     </article>
   )
+}
+
+/* I tre rapporti sono **diversi nella stessa fila**, ed è Kononenko misurato
+   (643×405 = 1,59 · 361×525 = 0,69 verticale · 549×405 = 1,36 in una griglia
+   sola). Tre 4/3 identici sono tre card, cioè il cluster n. 4; tre rapporti
+   diversi sono tre fotografie. La specifica cambia con il rapporto, così la
+   riga che il cliente legge in call è quella giusta. */
+const RATIO = ['16 / 10', '3 / 4', '4 / 3'] as const
+const SPECIFICA: Record<string, string> = {
+  '16 / 10': '2400 × 1500 px · AVIF · ≤ 250 KB',
+  '3 / 4': '1600 × 2133 px · AVIF · ≤ 250 KB',
+  '4 / 3': '1600 × 1200 px · AVIF · ≤ 250 KB',
 }
 
 /**
@@ -97,16 +127,20 @@ function SchedaFoto({ progetto }: { progetto: Progetto }) {
  * i dati: la tabella si deve capire anche letta fuori dal suo contesto visivo.
  * La foto è 16/9 perché entra nella cornice della scheda.
  *
- * Resta una riga di CSS da aggiungere in `app/css/sezioni.css` (file che non
- * appartiene a questo componente): nel tema B il rettangolo della foto porta il
- * proprio bordo e raddoppia quello della cornice — serve
- * `.progetto-scheda .placeholder-media { border: 0; border-bottom: 1px solid var(--color-line) }`,
- * come già esiste per `.prima-dopo`.
+ * **Fase 3 bis**: la cornice della scheda è sparita. Il segnaposto è già una
+ * figura `calce` con il suo bordo di 1 px, e una cornice attorno a una figura
+ * bordata sono due bordi — che è come si arriva al cluster n. 4 senza
+ * accorgersene. E i dati **non hanno filetti fra le righe**: AS regge una
+ * tabella di 25 righe con sette colonne senza un divisore.
  */
 function SchedaDati({ progetto }: { progetto: Progetto }) {
   return (
     <article className="progetto-scheda">
-      <Placeholder label={progetto.copertina} ratio="16 / 9" />
+      <Placeholder
+        label={progetto.copertina}
+        specifica="2400 × 1350 px · AVIF · ≤ 250 KB"
+        ratio="16 / 9"
+      />
       <h3 className="progetto-nome">
         <DaCliente>{progetto.titolo}</DaCliente>
       </h3>

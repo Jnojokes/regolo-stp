@@ -12,10 +12,24 @@ import { VALORE_ATTESO, notaNumeri, numeri } from '@/lib/numeri'
  * Quattro e non otto: oltre il quarto nessuno legge, e ogni numero in più è un
  * numero in più da difendere.
  *
- * Sta subito dopo la hero-domanda dell'opzione B, in una striscia sottile
- * (`stretta`) con un filetto sopra: è una quota di misura, non una sezione con
- * un titolo. Per questo non ha `titolo` — un `<h2>` qui prometterebbe un blocco
- * di contenuto che non c'è.
+ * Sta subito dopo la hero-domanda dell'opzione B, a passo `corto` perché i due
+ * blocchi sono un solo pensiero. Non ha `titolo`: un `<h2>` qui prometterebbe un
+ * blocco di contenuto che non c'è.
+ *
+ * ## Fase 3 bis — le celle non hanno più i bordi
+ *
+ * Erano quattro celle divise da `border-right`. Con il filetto portato a 4,99:1
+ * — perché in questo sito **un filetto è informazione** — quattro divisori
+ * verticali accanto all'asse leggevano come un errore di impaginazione. Ora le
+ * celle si separano con lo **spazio e l'allineamento all'asse**, che è AS
+ * misurato: 25 righe e sette colonne senza un filetto, con il solo passo a
+ * farle leggere.
+ *
+ * La cifra è a `display` con `tabular-nums`. **Il trattino resta** finché il
+ * dato non arriva (decisione del 07/09): un `[[DA CLIENTE: mq progettati]]` a
+ * 44 px riempie la cella su tre righe e fa sembrare la pagina rotta invece che
+ * in attesa. Il segnaposto dichiarato è uno, nella nota. E qui **non c'è nessuna
+ * quota**: il solo numero disponibile sarebbe «4 voci», che si conta a vista.
  *
  * Perché una `<ul>` e non una `<dl>`. In una `<dl>` il termine è l'etichetta e
  * la definizione è il valore, e la specifica impone `<dt>` prima di `<dd>`:
@@ -46,8 +60,9 @@ export function Numeri() {
   return (
     <Sezione
       id="numeri"
-      stretta
-      filo
+      passo="corto"
+      asse
+      etichetta="i numeri"
       nota={
         <>
           Le cifre le mette lo studio: quattro, non otto. Le etichette sono una nostra proposta.{' '}

@@ -27,30 +27,33 @@
 
 @layer components {
   /* ---------- guscio di sezione -------------------------------------------
-     Tutte le sezioni hanno lo stesso respiro. Chi ne vuole meno passa una
-     utility, non riscrive il padding. */
-  .sezione,
-  .sezione-stretta {
-    /* Le sezioni hanno un `id` e la barra è sticky: senza questo un'ancora
-       porta il titolo sotto la barra. */
-    scroll-margin-top: var(--regolo-header-h);
-  }
+     Il respiro **non è uguale per tutti i blocchi**: tre passi assegnati per
+     ruolo, e dichiarati **solo in alto**. Lo spazio fra due blocchi appartiene
+     al secondo, quindi il ritmo di una pagina è una sequenza di nove valori
+     invece di diciotto e non può divergere.
+     Il padding sotto vale 0,6 volte quello sopra: l'etichetta di una sezione
+     sta sempre più vicina al proprio contenuto che al blocco precedente, e il
+     raggruppamento si legge **senza divisori**. */
   .sezione {
-    padding-block: clamp(3.5rem, 8vw, 7.5rem);
+    scroll-margin-top: var(--regolo-header-h);
+    --passo: var(--regolo-passo-normale);
+    padding-top: var(--passo);
+    padding-bottom: calc(var(--passo) * 0.6);
   }
-  .sezione-stretta {
-    padding-block: clamp(1.75rem, 4vw, 3rem);
+  .passo-corto {
+    --passo: var(--regolo-passo-corto);
   }
-  .sezione-filo {
-    border-top: 1px solid var(--color-line);
+  .passo-normale {
+    --passo: var(--regolo-passo-normale);
   }
-  .sezione-filo-sotto {
-    border-bottom: 1px solid var(--color-line);
+  .passo-largo {
+    --passo: var(--regolo-passo-largo);
   }
-  .sezione-alt {
-    background-color: var(--regolo-sezione-alt);
-    border-block: 1px solid var(--color-line);
+  .passo-nessuno {
+    --passo: 0px;
   }
+  /* Il taglio netto verso il nero: nessun filetto, nessuna sfumatura. È il
+     gesto di Storey (banda nera a taglio netto in mezzo al bianco). */
   .sezione-scura {
     background-color: var(--regolo-scuro-bg);
     color: var(--regolo-scuro-fg);
@@ -89,21 +92,46 @@
     color: var(--regolo-scuro-muted);
   }
 
-  /* ---------- testa di sezione -------------------------------------------- */
+  /* ---------- testa di sezione --------------------------------------------
+     L'etichetta sta nel campo a sinistra e il titolo comincia dove comincia il
+     contenuto: in A il campo è stretto (l'apparato è al bordo destro), in B è
+     l'asse. L'uscita — «tutti i progetti» — è spinta all'estremo con il vuoto
+     in mezzo, che è Pelizzari misurato. */
   .testa-sezione {
     display: flex;
     justify-content: space-between;
-    align-items: end;
-    gap: 1.5rem;
+    align-items: baseline;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     flex-wrap: wrap;
   }
-  /* Niente `max-width` sul blocco del titolo: `34ch` misurati sul corpo (17 px)
-     valgono ~290 px, e un h2 da 64 px ci finiva su tre righe. Chi ha bisogno di
-     un limite lo mette sull'h2, dove `ch` è misurato sulla sua misura. */
+  .testa-sezione-titolo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    flex: 1 1 24rem;
+  }
+  @media (min-width: 56rem) {
+    .testa-sezione-titolo {
+      grid-template-columns: 9rem minmax(0, 1fr);
+      gap: 0 clamp(1.5rem, 3vw, 2.5rem);
+      align-items: baseline;
+    }
+    /* in B il campo dell'etichetta è l'asse */
+    [data-asse] .testa-sezione-titolo {
+      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
+      gap: 0;
+    }
+    [data-asse] .testa-sezione-titolo > div {
+      padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+  .corpo-sezione {
+    margin-top: clamp(1.75rem, 3vw, 2.75rem);
+  }
   .intro-sezione {
     color: var(--color-muted);
     margin-top: 1rem;
-    max-width: 42ch;
+    max-width: var(--regolo-misura);
   }
   .sezione-scura .intro-sezione {
     color: var(--regolo-scuro-muted);
@@ -168,18 +196,6 @@
     row-gap: 0.25rem;
   }
 
-  /* ---------- striscia a domanda -----------------------------------------
-     La domanda e le pastiglie sulla stessa riga (`.sort .row` del prototipo A).
-     Il passo dei due gap sta qui: composto con le utility divergerebbe al
-     primo altro blocco che ripete la striscia. */
-  .striscia-domanda {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 2.5rem;
-    row-gap: 1.25rem;
-  }
-
   /* ==========================================================================
      LA QUOTA — l'unico motivo grafico del sito
      Regola in `components/Quota.tsx` e in DECISIONI n. 17: due estremi su un
@@ -208,13 +224,9 @@
     padding-right: 1.25rem;
   }
   /* Ogni voce prende la sua larghezza naturale **più una quota uguale dello
-     spazio libero**: `flex-grow: 1` con `flex-basis: auto`. Così il filetto
-     arriva da un margine all'altro e le tacche cadono dove finisce ogni
-     etichetta — disuguali per costruzione, senza una misura cablata.
-     ATTENZIONE: `margin-left: auto` sull'annotazione mangerebbe tutto lo spazio
-     libero **prima** che `flex-grow` lo distribuisca, e il filetto si
-     fermerebbe a un terzo della riga. È il difetto che si vedeva nel primo
-     provino di questa fase. */
+     spazio libero**. ATTENZIONE: `margin-left: auto` sull'annotazione
+     mangerebbe tutto lo spazio libero **prima** che `flex-grow` lo distribuisca,
+     e il filetto si fermerebbe a un terzo della riga. */
   .quota-voce {
     flex: 1 1 auto;
   }
@@ -233,7 +245,6 @@
     transform: rotate(45deg);
     transform-origin: top left;
   }
-
   /* L'annotazione sta all'estremo, con il vuoto in mezzo: è il metadato spinto
      al bordo di Pelizzari e la lettura di coordinate di ecoLINEAR. */
   .quota-annotazione {
@@ -274,6 +285,19 @@
   }
   .sezione-scura .quota-annotazione {
     color: var(--regolo-scuro-fg);
+  }
+
+  /* In una colonna stretta — il territorio ha 5 colonne su 12 — le voci non
+     stanno in riga: si incolonnano come su telefono. `@container` no: la quota
+     sta in contesti diversi e una query di contenitore chiederebbe di
+     dichiarare un contenitore in ognuno. */
+  .quota-stretta > * {
+    flex: 1 0 100%;
+    padding-right: 0;
+  }
+  .quota-stretta .quota-annotazione {
+    order: -1;
+    text-align: left;
   }
 
   /* ==========================================================================
@@ -400,30 +424,79 @@
     padding-bottom: var(--regolo-passo-corto);
   }
   /* ---- l'asse verticale del tema B --------------------------------------
-     Un filetto a 1 px alla colonna 5 (34,4 % di 1440 = 495 px; Kononenko
-     misurato comincia la sua tabella a 34,2 %) che attraversa la pagina
-     dall'header al footer. È l'identità del tema, e a 390 px **non si spegne**:
-     si sposta al 24,6 % (96 px) e resta (CLAUDE.md § Regole, 5).
-     Un segmento per sezione invece di un elemento unico in posizione fissa: le
-     sezioni sono contigue, quindi la linea si legge continua, e nessun blocco
-     deve conoscere l'altezza della pagina. */
-  [data-theme='b'] section > .wrap,
-  [data-theme='b'] header > .wrap,
-  [data-theme='b'] footer > .wrap {
+     Un filetto a 1 px alla colonna 5 (34,4 % del contenuto; Kononenko misurato
+     comincia la sua tabella al 34,2 %) che attraversa la pagina dall'header al
+     footer. È l'identità del tema.
+
+     **Si disegna solo dove la sezione è composta sull'asse**, cioè dove ha
+     `data-asse`. Non è prudenza: un asse che attraversa un blocco impaginato a
+     piena larghezza **taglia i paragrafi a metà**, e la pagina non sembra
+     rigorosa, sembra rotta (misurato: 28 elementi di testo tagliati). Un blocco
+     entra nell'asse quando è stato composto su di lui, non prima.
+
+     La posizione è calcolata dal **contenuto**, non dalla larghezza di `.wrap`:
+     il filetto sta dentro `.wrap`, che ha il margine nel padding, mentre le
+     colonne della griglia stanno nel content box. Con la sola percentuale i due
+     cadevano a 16 px di distanza.
+
+     Su telefono la frazione è 0 e l'asse va al margine (8 px). */
+  [data-theme='b'] [data-asse] > .wrap {
     position: relative;
   }
-  [data-theme='b'] section > .wrap::before,
-  [data-theme='b'] header > .wrap::before,
-  [data-theme='b'] footer > .wrap::before {
+  [data-theme='b'] [data-asse] > .wrap::before {
     content: '';
     display: var(--regolo-asse);
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--regolo-asse-x);
+    /* Il filetto si estende **oltre** il `.wrap` fino ai bordi della sezione:
+       il `.wrap` sta dentro il padding, e senza questo l'asse si interrompeva
+       fra un blocco e l'altro — un tratteggio involontario invece di un datum.
+       `--passo` è dichiarato sulla sezione e inherita fin qui. */
+    top: calc(-1 * var(--passo, 0px));
+    bottom: calc(-0.6 * var(--passo, 0px));
+    left: calc(
+      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
+    );
     width: 1px;
     background-color: var(--color-line);
     pointer-events: none;
+  }
+  @media (max-width: 55.999rem) {
+    [data-theme='b'] [data-asse] > .wrap::before {
+      left: 0.5rem;
+    }
+  }
+
+  /* **Il contenuto di un blocco sull'asse vive nella zona destra.** Senza
+     questa regola ogni griglia a piena larghezza — i quattro numeri, i quattro
+     ritratti, le note di cantiere — viene tagliata a metà dal filetto, e la
+     pagina non sembra rigorosa: sembra rotta. È il difetto che ha fatto dire
+     «l'opzione B sembra buggata», e si misura: 29 elementi di testo attraversati.
+     Le teste di sezione hanno già la loro griglia a due zone (`.testa-sezione`). */
+  @media (min-width: 56rem) {
+    [data-asse] .corpo-sezione {
+      padding-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
+    }
+    /* La nota si sposta con il **margine** e non con il padding: ha un filetto
+       pieno a sinistra, e con il padding il filetto restava nel campo vuoto a
+       500 px dal suo testo — un tratto che non appartiene a niente. */
+    [data-asse] > .wrap > .nota-cantiere {
+      margin-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
+    }
+    /* Le due eccezioni: chi ha già una griglia a due zone non si sposta. */
+    [data-asse] .corpo-sezione:has(> .fasi-asse),
+    [data-asse] .corpo-sezione:has(> .indice) {
+      padding-left: 0;
+    }
+  }
+
+  /* Le **figure** stanno davanti all'asse, non sotto: il filetto è un datum che
+     corre dietro le cose, e attraversare una scheda bianca o il confronto lo
+     farebbe leggere come un artefatto. Basta che siano posizionate — il filetto
+     è un `::before` che viene prima nell'ordine di sorgente. */
+  .pannello,
+  .confronto,
+  .placeholder-media {
+    position: relative;
   }
 
   /* La testa: l'etichetta nel campo vuoto a sinistra dell'asse, la domanda a
@@ -436,7 +509,7 @@
   }
   @media (min-width: 56rem) {
     .hero-registro-testa {
-      grid-template-columns: var(--regolo-asse-x) minmax(0, 1fr);
+      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
       gap: 0;
     }
     .hero-registro-domanda {
@@ -483,7 +556,7 @@
      che passa in mezzo a una cella — che è il difetto che questa fase corregge. */
   @media (min-width: 56rem) {
     .riga {
-      grid-template-columns: var(--regolo-asse-x) minmax(0, 1fr);
+      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
       gap: 0;
       align-items: center;
     }
@@ -618,384 +691,400 @@
   }
 
   /* ==========================================================================
-     Smistamento A — la stessa domanda, in una striscia
+     L'INDICE — righe, non card
+     Lo smistamento, i sei servizi, i progetti collegati e le persone usano tutti
+     la stessa riga. Erano quattro griglie di riquadri identici, cioè il cluster
+     n. 4 più la voce di casa «griglie a tre colonne»: nessuna delle tre
+     reference tier A mette il proprio lavoro dentro delle card — AS lo mette in
+     una tabella, Kononenko in righe a filetti, Storey in bande piene.
+
+     **In A non c'è nessun filetto fra le righe**: AS regge 25 righe con sette
+     colonne senza un divisore, e il passo di riga fa il lavoro. `.indice-righe`
+     lo aggiunge dove serve (in B, dove ogni riga porta anche «serve da te» e il
+     confine del gruppo è informazione).
      ======================================================================== */
-  .pastiglie {
-    display: flex;
-    gap: 0.625rem;
-    flex-wrap: wrap;
+  .indice {
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .pastiglia {
-    display: inline-flex;
-    align-items: center;
-    /* 44 px: con il solo padding l'altezza reale era ~40, sotto il minimo
-       tattile. Sta nella classe così vale per ogni pastiglia. */
-    min-height: 2.75rem;
-    padding: 0.625rem 1rem;
-    font-size: var(--text-small);
-    border: 1px solid var(--color-ink);
-    border-radius: var(--radius-edge);
-    transition:
-      background-color 0.15s,
-      border-color 0.15s,
-      color 0.15s;
+  .voce {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    align-items: baseline;
+    /* 60 px: il bersaglio è la riga intera, non la parola */
+    min-height: 3.75rem;
+    padding-block: clamp(0.875rem, 1.6vw, 1.25rem);
   }
-  .pastiglia:hover {
-    background-color: var(--color-ink);
-    border-color: var(--color-ink);
-    color: var(--color-paper);
+  @media (min-width: 56rem) {
+    .voce {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+  .voce-chiave {
+    display: block;
+    font-size: var(--text-small);
+    color: var(--regolo-quota-colore);
+    font-weight: 500;
+  }
+  .voce-esito {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
+    letter-spacing: var(--regolo-display-tracking);
+  }
+  /* Il tecnicismo in **seconda riga**, come prescrive CLAUDE.md § I sei
+     servizi. Misurato: accanto all'esito arriva a 1083 px in una colonna da
+     896, e a 762 px in 350 su mobile — sfonda. */
+  .voce-tecnicismo {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  .voce-descrizione {
+    display: block;
+    margin-top: 0.5rem;
+    max-width: var(--regolo-misura);
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  /* La coda: il ruolo firmabile spinto al bordo destro, con il vuoto in mezzo.
+     È la riga di metadati di Pelizzari misurata. Su desktop il tecnicismo lo
+     dice la coda, quindi la seconda riga sparisce e non si legge due volte. */
+  .voce-coda {
+    display: none;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 56rem) {
+    .voce-coda {
+      display: block;
+    }
+    .voce-tecnicismo {
+      display: none;
+    }
+  }
+  /* L'affordance: la riga è un link, e si vede al passaggio e col fuoco.
+     Nessuna freccia in coda (tell n. 5): la sottolineatura basta. */
+  .voce:hover .voce-esito,
+  .voce:focus-visible .voce-esito {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .indice-righe > li + li,
+  .indice-righe > li:last-child {
+    border-top: 1px solid var(--color-line);
+  }
+  .indice-righe > li:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .voce-serve {
+    padding-bottom: clamp(0.875rem, 1.6vw, 1.25rem);
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    max-width: 68ch;
+  }
+  .voce-serve-chiave {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  @media (min-width: 56rem) {
+    /* Nel tema B la riga è a due zone come quella della hero: la chiave a
+       sinistra dell'asse, il corpo a destra. Niente padding: la griglia. */
+    [data-asse] .voce {
+      grid-template-columns:
+        calc(var(--regolo-asse-frazione) * 100%)
+        minmax(0, 1fr) minmax(0, 20rem);
+      gap: 0 clamp(1.5rem, 3vw, 2.5rem);
+    }
+    [data-asse] .voce > .voce-corpo {
+      padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    [data-asse] .voce:not(:has(> .voce-chiave)) {
+      padding-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
+      grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+    }
+    /* `margin` e non `padding`: `.voce-serve` ha un `max-width`, e con
+       `box-sizing: border-box` il padding glielo mangiava — 560 − 519 = 41 px
+       di contenuto, cioè una parola per riga. È lo stesso inciampo della nota
+       di cantiere, e vale per ogni elemento con un `max-width`. */
+    [data-asse] .voce-serve {
+      margin-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
+    }
+    [data-asse] .voce {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+    }
+  }
+
+  /* L'uscita di sezione: «tutti i progetti», «tutti i servizi». Non è un
+     bottone — un bottone in alto a destra su ogni sezione è chrome — ed è
+     minuscola, sottolineata, senza freccia. */
+  .uscita {
+    align-self: baseline;
+    font-size: var(--text-small);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
   }
 
   /* ==========================================================================
      Numeri — quattro, non otto. Nel DOM anche senza JavaScript.
      ======================================================================== */
+  /* I numeri: quattro celle a cavallo dell'asse, **senza bordi fra loro**.
+     Con il filetto a 4,99:1 quattro divisori verticali accanto all'asse
+     leggevano come un errore. Li separa lo spazio, che è AS misurato. */
   .numeri {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
   @media (max-width: 48rem) {
     .numeri {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  .numero {
-    padding: 1.75rem 1.5rem 1.75rem 0;
-    border-right: 1px solid var(--color-line);
-  }
-  .numero:last-child {
-    border-right: 0;
-  }
-  @media (max-width: 48rem) {
-    .numero:nth-child(2n) {
-      border-right: 0;
-    }
-    .numero:nth-child(-n + 2) {
-      border-bottom: 1px solid var(--color-line);
+      row-gap: clamp(1.5rem, 4vw, 2rem);
     }
   }
   .numero-valore {
     display: block;
     font-family: var(--font-display);
     font-weight: var(--regolo-display-weight);
-    font-size: clamp(1.5rem, 3vw, 2.75rem);
+    font-size: var(--text-h1);
     letter-spacing: var(--regolo-display-tracking);
-    line-height: 1.05;
+    line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--color-muted);
+  }
+  /* La cella in attesa: il trattino è più piccolo della cifra che verrà, e in
+     `line` invece che in `ink`, così si legge come una casella da riempire e
+     non come un valore. */
+  .numero-valore[aria-hidden] {
+    font-size: var(--text-h2);
+    color: var(--regolo-quota-colore);
   }
   .numero-etichetta {
     display: block;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
     font-family: var(--regolo-font-eyebrow);
-    font-size: var(--text-eyebrow);
+    font-size: var(--text-small);
     letter-spacing: var(--regolo-eyebrow-tracking);
     text-transform: var(--regolo-eyebrow-transform);
     color: var(--color-muted);
   }
 
   /* ==========================================================================
-     Servizi — sei schede. In A minime, in B con «cosa serve da te».
+     LE CINQUE FASI — appese a un filetto in A, a cavallo dell'asse in B.
+     La numerazione qui è legittima: il contenuto **è** una sequenza
+     (`lib/processo.ts`), che è la verifica che la skill § 5 chiede prima di
+     numerare. E la **dimensione dice l'importanza**: le due fasi che il
+     committente vive stanno a `titolo`, le tre che facciamo noi a
+     `sottotitolo` — è Dieste misurato, dove la scala dell'immagine dice quanto
+     conta.
      ======================================================================== */
-  .griglia-servizi {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
-  }
-  @media (max-width: 60rem) {
-    .griglia-servizi {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 38rem) {
-    .griglia-servizi {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* A: nessuna cornice, un filetto sopra. La tipografia fa il lavoro. */
-  .servizio-essenziale {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-    padding: 1.75rem 0;
-    border-top: 1px solid var(--color-line);
-    min-height: 11.875rem;
-  }
-  @media (max-width: 38rem) {
-    .servizio-essenziale {
-      min-height: 0;
-    }
-  }
-
-  /* B: scheda con cornice e lo scomparto «serve da te» in fondo. */
-  .servizio-scheda {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.5rem;
-    background-color: var(--regolo-brief-card);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-edge);
-    min-height: 12.5rem;
-  }
-  @media (max-width: 38rem) {
-    .servizio-scheda {
-      min-height: 0;
-    }
-  }
-  /* La riga di descrizione delle schede: nei prototipi era `.svc p`, e senza
-     questa regola ogni scheda se la riscriveva con due utility. */
-  .servizio-essenziale > p,
-  .servizio-scheda > p:not(.serve-da-te) {
-    color: var(--color-muted);
-    font-size: var(--text-small);
-  }
-  .servizio-tecnicismo {
-    font-family: var(--regolo-font-eyebrow);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: var(--regolo-eyebrow-transform);
-    color: var(--color-ink);
-  }
-  .servizio-vai {
-    margin-top: auto;
-    font-size: var(--text-small);
-    font-weight: 500;
-    color: var(--color-ink);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .serve-da-te {
-    margin-top: auto;
-    padding-top: 0.875rem;
-    border-top: 1px dashed var(--color-line);
-    font-size: var(--text-small);
-    color: var(--color-muted);
-  }
-  .serve-da-te strong {
-    color: var(--color-ink);
-    font-weight: 500;
-  }
-
-  /* ==========================================================================
-     Come lavoriamo — A: colonna ferma + elenco numerato. B: timeline.
-     In questa fase nessuna delle due si muove: A userà `position: sticky`
-     (CSS, non JavaScript) e alla fase 5 arriva l'avanzamento allo scroll.
-     ======================================================================== */
-  .processo-elenco {
+  .fasi {
     list-style: none;
     margin: 0;
     padding: 0;
-    counter-reset: fase;
   }
-  .processo-elenco li {
+
+  /* --- A: cinque fasi appese a un filetto orizzontale --------------------- */
+  .fasi-quota {
     display: grid;
-    grid-template-columns: 4rem 1fr;
-    gap: 1rem;
-    padding: 1.75rem 0;
-    border-top: 1px solid var(--color-line);
-    counter-increment: fase;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
   }
-  /* Ogni `<li>` ha un `<div>` d'involucro nella seconda colonna: è la griglia
-     a due colonne del `<li>` che lo richiede (numero | contenuto). Togliendolo
-     titolo e paragrafo diventerebbero due celle e il numero slitterebbe. */
-  .processo-elenco li > div {
+  .fasi-quota > li {
+    position: relative;
+    border-top: 1px solid var(--color-line);
+    padding: 0.75rem 1.25rem 0 0;
+  }
+  /* La tacca: lo stesso tratto obliquo a 45° della quota. */
+  .fasi-quota > li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-left: 1px solid var(--color-line);
+    transform: rotate(45deg);
+    transform-origin: top left;
+  }
+  @media (max-width: 60rem) {
+    .fasi-quota {
+      grid-template-columns: 1fr;
+    }
+    .fasi-quota > li {
+      padding-right: 0;
+      padding-bottom: 1.25rem;
+    }
+  }
+
+  /* --- B: le fasi a cavallo dell'asse verticale --------------------------- */
+  .fasi-asse > li {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding-block: clamp(0.875rem, 1.6vw, 1.25rem);
+  }
+  @media (min-width: 56rem) {
+    .fasi-asse > li {
+      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
+      gap: 0;
+      align-items: baseline;
+    }
+    .fasi-asse .fase-corpo {
+      padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+
+  /* --- elenco semplice: le pagine interne, dove non c'è né quota né asse --- */
+  .fasi-elenco > li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0 1rem;
+    align-items: baseline;
+    padding-block: clamp(0.875rem, 1.6vw, 1.25rem);
+    max-width: 62ch;
+  }
+
+  /* --- comuni ------------------------------------------------------------- */
+  .fase-numero {
+    display: block;
+    font-size: var(--text-small);
+    color: var(--regolo-quota-colore);
+    font-weight: 500;
+  }
+  .fase-corpo {
+    display: block;
     min-width: 0;
   }
-  .processo-elenco li::before {
-    content: counter(fase, decimal-leading-zero);
-    font-family: var(--font-display);
-    font-size: 2.125rem;
-    line-height: 1;
-    color: var(--color-ink);
-    font-variant-numeric: tabular-nums;
-  }
-  .processo-titolo {
+  .fase-titolo {
     display: block;
     font-family: var(--font-display);
     font-weight: var(--regolo-display-weight);
     letter-spacing: var(--regolo-display-tracking);
-    font-size: 1.625rem;
+    /* le tre fasi «nostre» */
+    font-size: var(--text-lead);
     line-height: 1.15;
-    margin-bottom: 0.375rem;
   }
-  .processo-elenco p {
-    color: var(--color-muted);
-    font-size: var(--text-small);
-    max-width: 52ch;
+  /* le due che il committente vive */
+  .fasi > li[data-vissuta] .fase-titolo {
+    font-size: var(--text-h2);
+    line-height: var(--regolo-lh-h2);
   }
-  @media (min-width: 56rem) {
-    .processo-colonna {
-      position: sticky;
-      top: calc(var(--regolo-header-h) + 1.5rem);
-    }
-  }
-
-  /* B: timeline in cinque colonne, che su mobile diventa verticale. */
-  .processo-timeline {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    margin-top: 2.75rem;
-    position: relative;
-    list-style: none;
-    padding: 0;
-  }
-  .processo-timeline::before {
-    content: '';
-    position: absolute;
-    /* Dal centro del primo pallino al centro dell'ultimo: le cinque colonne
-       valgono il 20 % ciascuna, quindi l'ultimo pallino comincia all'80 %.
-       Prima la linea correva fino al bordo e finiva in mezzo al nulla. */
-    left: 0.625rem;
-    right: calc(20% - 0.625rem);
-    top: 0.5625rem;
-    height: 2px;
-    background-color: var(--regolo-scuro-linea);
-  }
-  .processo-timeline > li {
-    padding-right: 1.25rem;
-    position: relative;
-  }
-  .processo-timeline > li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--color-ink);
-    border-radius: 50%;
-    background-color: var(--regolo-scuro-bg);
-  }
-  .processo-timeline .processo-passo {
+  .fase-testo {
     display: block;
-    font-family: var(--regolo-font-eyebrow);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: var(--regolo-eyebrow-transform);
-    color: var(--regolo-scuro-muted);
-    margin: 2.125rem 0 0.5rem;
-  }
-  .processo-timeline .processo-titolo {
-    color: var(--regolo-scuro-fg);
-    font-size: clamp(1.25rem, 1.7vw, 1.5rem);
-  }
-  .processo-timeline p {
-    color: var(--regolo-scuro-muted);
-    font-size: var(--text-small);
     margin-top: 0.5rem;
-    max-width: 26ch;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    max-width: 46ch;
   }
-  @media (max-width: 56rem) {
-    .processo-timeline {
-      grid-template-columns: 1fr;
-      gap: 1.625rem;
-    }
-    .processo-timeline::before {
-      left: 0.5625rem;
-      right: auto;
-      top: 0.625rem;
-      bottom: auto;
-      /* verticale: dal primo pallino all'ultimo, che è l'ultimo `li` */
-      height: calc(100% - 1.25rem - 1.625rem);
-      width: 2px;
-    }
-    .processo-timeline > li {
-      padding-left: 2.25rem;
-      padding-right: 0;
-    }
-    .processo-timeline .processo-passo {
-      margin-top: 0;
-    }
+  .sezione-scura .fase-testo,
+  .sezione-scura .fase-numero {
+    color: var(--regolo-scuro-muted);
   }
 
   /* ==========================================================================
      Progetti — A: tre schede con la foto grande. B: due schede con i dati duri.
      ======================================================================== */
-  .griglia-progetti {
+  /* I tre segnaposto hanno **rapporti diversi nella stessa fila** e cadono ad
+     altezze disuguali: è Kononenko misurato (1,59 · 0,69 verticale · 1,36 in
+     una griglia sola) e Pelizzari (due colonne di altezza disuguale). Tre 4/3
+     identici sono tre card — cluster n. 4 — e questo blocco è quello su cui il
+     confronto si vince o si perde. */
+  .progetti-tre {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    align-items: start;
   }
-  @media (max-width: 56rem) {
-    .griglia-progetti {
-      grid-template-columns: 1fr;
+  /* Lo sfalsamento verticale: la seconda colonna scende, la terza risale. Non è
+     un vezzo — è quello che impedisce alle tre schede di leggersi come una
+     griglia — e su mobile non esiste, perché in colonna sarebbe solo spazio. */
+  @media (min-width: 56rem) {
+    .progetti-tre > *:nth-child(2) {
+      margin-top: clamp(2rem, 4vw, 4rem);
+    }
+    .progetti-tre > *:nth-child(3) {
+      margin-top: clamp(1rem, 1.5vw, 1.5rem);
     }
   }
-  .griglia-progetti-due {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  @media (max-width: 50rem) {
-    .griglia-progetti-due {
+  @media (max-width: 55.999rem) {
+    .progetti-tre {
       grid-template-columns: 1fr;
+      gap: clamp(2rem, 6vw, 3rem);
     }
   }
-
-  .progetto-meta {
+  .progetti-due {
     display: grid;
-    gap: 0.5rem;
-    padding-top: 0.875rem;
-    margin-top: 0.875rem;
-    border-top: 1px solid var(--color-ink);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    align-items: start;
+  }
+  @media (max-width: 48rem) {
+    .progetti-due {
+      grid-template-columns: 1fr;
+      gap: clamp(2rem, 6vw, 3rem);
+    }
   }
   .progetto-nome {
-    font-family: var(--font-display);
-    font-weight: var(--regolo-display-weight);
-    letter-spacing: var(--regolo-display-tracking);
-    font-size: 1.375rem;
-    line-height: 1.15;
+    margin-top: 1rem;
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
   }
+  /* La riga in tre tempi, con il vuoto in mezzo: luogo · ruolo … e l'azione al
+     bordo. **Nessun filetto fra le righe**: AS regge sette colonne senza. */
   .progetto-riga {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-top: 0.625rem;
     font-size: var(--text-small);
     color: var(--color-muted);
   }
-  .progetto-riga strong {
-    color: var(--color-ink);
-    font-weight: 500;
+  .progetto-ruolo {
+    text-align: right;
   }
 
-  /* B: la tabella dei dati duri. Una `<table>` vera: sono dati, e chi legge
-     con uno screen reader deve sentire l'intestazione di riga. */
-  .progetto-scheda {
-    background-color: var(--regolo-brief-card);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-edge);
-    overflow: hidden;
-  }
-  /* La scheda ha già la sua cornice: la foto dentro non ne mette una seconda,
-     solo il filetto che la stacca dai dati (come nel prototipo B). */
-  .progetto-scheda .placeholder-media {
-    border: 0;
-    border-bottom: 1px solid var(--color-line);
-  }
-  .progetto-scheda .progetto-nome {
-    display: block;
-    padding: 1.125rem 1.25rem 0.75rem;
-    font-size: 1.375rem;
-  }
+  /* B — la scheda dei dati duri. Non ha cornice: il segnaposto è già una figura
+     `calce` con il suo bordo, e una cornice attorno a una figura bordata è due
+     bordi. I dati sono una `<table>` vera con `<th scope="row">`: sono dati,
+     non didascalie. **Nessun filetto fra le righe.** */
   .progetto-dati {
     width: 100%;
+    margin-top: 1rem;
     border-collapse: collapse;
     font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
   }
   .progetto-dati th,
   .progetto-dati td {
-    padding: 0.5625rem 1.25rem;
-    border-top: 1px solid var(--color-line);
+    padding: 0.375rem 0;
     text-align: left;
-    vertical-align: top;
+    vertical-align: baseline;
+    font-weight: 400;
   }
   .progetto-dati th {
-    font-family: var(--regolo-font-eyebrow);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: var(--regolo-eyebrow-transform);
+    width: 11rem;
     color: var(--color-muted);
+  }
+  /* Il ruolo è l'unica riga in evidenza: è quello che dice cosa sanno fare, e
+     CLAUDE.md § Scheda progetto vieta di ometterlo. */
+  .progetto-dati tr:nth-child(4) th,
+  .progetto-dati tr:nth-child(4) td {
+    color: var(--color-ink);
     font-weight: 500;
-    width: 40%;
   }
 
   /* ==========================================================================
@@ -1011,109 +1100,157 @@
     margin-inline: auto;
   }
   .esploso-livello {
-    /* `--tono` lo imposta il componente, livello per livello */
     transform: translateY(var(--dy, 0));
   }
+  /* **La faccia dice la luce.** Tre valori per le tre facce dell'isometria,
+     uguali per tutti e cinque i livelli: è come si legge un'assonometria.
+     Il contorno in `carta` a 21:1 è la silhouette che prima mancava — le facce
+     erano `color-mix` senza `stroke`, e su un fondo chiaro l'involucro leggeva
+     come un blocco pieno. */
+  .faccia {
+    stroke: var(--regolo-esploso-contorno);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
   .faccia-alto {
-    fill: var(--tono);
+    fill: var(--regolo-esploso-faccia-alta); /* 14,73:1 su ink */
   }
   .faccia-destra {
-    fill: color-mix(in srgb, var(--tono), #000 16%);
+    fill: var(--regolo-esploso-faccia-dx); /*  4,89:1 */
   }
   .faccia-sinistra {
-    fill: color-mix(in srgb, var(--tono), #000 30%);
+    fill: var(--regolo-esploso-faccia-sx); /*  8,83:1 */
   }
-  /* I serramenti: un colore proprio, non la parete scurita. Senza questo
-     l'involucro legge come un blocco pieno invece che come un involucro. */
+  /* I serramenti **sono il vuoto**: hanno il colore del fondo della banda, così
+     leggono come aperture e non come pannelli. Il contorno li tiene visibili. */
   .faccia-apertura {
     fill: var(--regolo-esploso-apertura);
   }
+
+  /* **Il retino dice il livello.** Cinque trattamenti, e nessuno è un colore:
+     pieno · 45° · contorno · tratteggio · punteggiato. Si legge anche in bianco
+     e nero, e su una stampa. */
+  .retino {
+    fill: none;
+    pointer-events: none;
+  }
+  .retino-tratto {
+    stroke: var(--regolo-esploso-contorno);
+    stroke-width: 1;
+    fill: none;
+  }
+  .retino-punto {
+    fill: var(--regolo-esploso-contorno);
+  }
+  [data-livello='struttura'] .retino {
+    fill: url(#retino-45);
+  }
+  [data-livello='impianti'] .retino {
+    fill: url(#retino-tratteggio);
+  }
+  [data-livello='finiture'] .retino {
+    fill: url(#retino-punti);
+  }
+  /* fondazioni: pieno, nessun retino. involucro: solo contorno, più marcato. */
+  [data-livello='involucro'] .faccia {
+    stroke-width: 2;
+  }
+
   .traccia {
     fill: none;
-    stroke-width: 3;
+    stroke: var(--regolo-esploso-contorno);
+    stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
   .traccia-calore {
-    stroke: var(--regolo-esploso-calore);
+    stroke-dasharray: 10 5;
   }
   .traccia-acqua {
-    stroke: var(--regolo-esploso-acqua);
+    stroke-dasharray: 3 5;
   }
   .traccia-aria {
-    stroke: var(--regolo-esploso-aria);
+    stroke-dasharray: 14 4 3 4;
   }
 
   /* ---------- legenda ↔ livelli --------------------------------------------
      Col mouse su una voce, gli altri livelli si attenuano. È il gesto della
      call di vendita (`kit/REGOLO_Due_Opzioni.md`), e si fa in CSS: `:has()`
-     sulla sezione, `opacity` come unica proprietà toccata — con `transform` è
-     la sola che si anima (CLAUDE.md § Regole, 7).
-
-     Dentro `@media (hover: hover)` perché su un touch screen il `:hover` resta
-     appiccicato dopo il tocco, e resterebbe un livello acceso e quattro spenti.
-     Cinque regole scritte a mano: `:has()` non prende un valore da una
-     variabile, e le chiavi sono l'elenco chiuso di `lib/esploso.ts`. */
-  @media (hover: hover) {
-    .esploso-livello,
-    .legenda-esploso .legenda-nome {
-      transition: opacity 0.2s;
-    }
-    .esploso:has(.legenda-esploso li[data-livello='fondazioni']:hover)
-      .esploso-livello:not([data-livello='fondazioni']),
-    .esploso:has(.legenda-esploso li[data-livello='struttura']:hover)
-      .esploso-livello:not([data-livello='struttura']),
-    .esploso:has(.legenda-esploso li[data-livello='involucro']:hover)
-      .esploso-livello:not([data-livello='involucro']),
-    .esploso:has(.legenda-esploso li[data-livello='impianti']:hover)
-      .esploso-livello:not([data-livello='impianti']),
-    .esploso:has(.legenda-esploso li[data-livello='finiture']:hover)
-      .esploso-livello:not([data-livello='finiture']) {
-      opacity: 0.28;
-    }
-    .esploso:has(.legenda-esploso li:hover) .legenda-esploso li:not(:hover) .legenda-nome {
-      opacity: 0.55;
-    }
-  }
-
+     sulla sezione, `opacity` sui `<g>`. Nessun JavaScript, e l'unica proprietà
+     toccata è una di quelle che si animano.
+     Vive dentro `@media (hover: hover)` perché su un touch screen un `:hover`
+     resta appiccicato dopo il tocco. Non è un canale di informazione: quale
+     livello sia quale lo dicono il nome e il **campione del retino**. */
   .legenda-esploso {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .legenda-esploso li {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.875rem 0;
-    border-top: 1px solid var(--regolo-scuro-linea);
-  }
-  .legenda-esploso li:last-child {
-    border-bottom: 1px solid var(--regolo-scuro-linea);
+  .legenda-esploso > li {
+    display: grid;
+    grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+    gap: 0.25rem clamp(1rem, 2vw, 1.5rem);
+    padding-block: 0.625rem;
+    font-size: var(--text-small);
+    color: var(--regolo-scuro-muted);
   }
   .legenda-nome {
     display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    font-family: var(--font-display);
-    font-weight: var(--regolo-display-weight);
-    letter-spacing: var(--regolo-display-tracking);
-    font-size: 1.625rem;
-    line-height: 1.1;
+    align-items: center;
+    gap: 0.625rem;
     color: var(--regolo-scuro-fg);
+    font-weight: 500;
   }
-  /* Il pallino ripete il colore del livello. È un rinforzo, non l'unico
-     canale: il nome accanto è testo. */
-  .legenda-pallino {
+  /* Il campione ripete il **retino**, non un colore: è il canale che porta
+     l'informazione nel disegno. Ogni voce ha il suo, in CSS puro. */
+  .legenda-campione {
     flex: none;
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 50%;
-    background-color: var(--tono);
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid var(--regolo-esploso-contorno);
+    background-color: var(--regolo-esploso-faccia-alta);
+    background-repeat: repeat;
   }
-  .legenda-esploso span:last-child {
-    color: var(--regolo-scuro-muted);
-    font-size: var(--text-small);
+  [data-livello='struttura'] .legenda-campione {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--regolo-esploso-contorno) 0 1px,
+      transparent 1px 6px
+    );
+  }
+  [data-livello='involucro'] .legenda-campione {
+    background-color: transparent;
+    border-width: 2px;
+  }
+  [data-livello='impianti'] .legenda-campione {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--regolo-esploso-contorno) 0 1px,
+      transparent 1px 8px
+    );
+  }
+  [data-livello='finiture'] .legenda-campione {
+    background-image: radial-gradient(var(--regolo-esploso-contorno) 0.9px, transparent 1px);
+    background-size: 6px 6px;
+  }
+
+  @media (hover: hover) {
+    .esploso:has(.legenda-esploso > li:hover) .esploso-livello {
+      opacity: 0.28;
+      transition: opacity 0.2s;
+    }
+    .esploso:has(.legenda-esploso > li[data-livello='fondazioni']:hover)
+      .esploso-livello[data-livello='fondazioni'],
+    .esploso:has(.legenda-esploso > li[data-livello='struttura']:hover)
+      .esploso-livello[data-livello='struttura'],
+    .esploso:has(.legenda-esploso > li[data-livello='involucro']:hover)
+      .esploso-livello[data-livello='involucro'],
+    .esploso:has(.legenda-esploso > li[data-livello='impianti']:hover)
+      .esploso-livello[data-livello='impianti'],
+    .esploso:has(.legenda-esploso > li[data-livello='finiture']:hover)
+      .esploso-livello[data-livello='finiture'] {
+      opacity: 1;
+    }
   }
 
   /* ==========================================================================
@@ -1123,47 +1260,53 @@
      con entrambe le etichette, che è un contenuto leggibile — invece di un
      controllo che non fa niente.
      ======================================================================== */
-  .prima-dopo {
+  /* Il confronto: due metà a **21:1** l'una dall'altra, non due grigi. È la
+     correzione del difetto che rendeva il blocco inutile — con due segnaposto
+     sovrapposti a 1,17:1 il cursore non rivelava niente — e finché le due
+     fotografie non arrivano il blocco dimostra **lo strumento**, che è quello
+     che si può dimostrare. La casella porta la propria specifica. */
+  .confronto {
     position: relative;
     aspect-ratio: 16 / 10;
+    background-color: var(--regolo-scuro-bg);
+    border: 1px solid var(--color-ink);
     overflow: hidden;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-edge);
-    background-color: var(--color-ph);
+    touch-action: pan-y;
   }
-  .prima-dopo > .placeholder-media {
+  .confronto-meta {
     position: absolute;
     inset: 0;
-    border: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    padding: clamp(1rem, 2.5vw, 2rem);
   }
-  /* `> .prima-dopo-dopo` e non `.prima-dopo-dopo`: vedi la nota
-     sull'ordine dei fogli in testa a questo file. A pari specificità
-     `.placeholder-media` di `globals.css` vincerebbe e le due metà del
-     confronto avrebbero lo stesso colore, cioè il blocco non proverebbe niente. */
-  .prima-dopo > .prima-dopo-dopo {
+  .confronto-prima {
+    background-color: var(--regolo-scuro-bg);
+    color: var(--regolo-scuro-fg);
+  }
+  /* `> .confronto-dopo` e la specificità: la metà «dopo» è ritagliata dal
+     cursore e deve vincere sulla metà «prima», che occupa lo stesso spazio. */
+  .confronto > .confronto-dopo {
     clip-path: inset(0 0 0 var(--x, 50%));
     background-color: var(--color-surface);
+    color: var(--color-ink);
+    align-items: flex-end;
+    text-align: right;
   }
-  .prima-dopo-dopo > .placeholder-etichetta {
-    left: auto;
-    right: 0.75rem;
+  .confronto-stato {
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    letter-spacing: var(--regolo-display-tracking);
   }
-  /* Sotto i ~430 px le due targhette non stanno affiancate: «PRIMA — FOTO
-     DELLO STUDIO» e «DOPO — STESSO PUNTO DI RIPRESA» si sovrappongono e si
-     legge una terza cosa che non vuol dire niente. Si accorciano — la parte
-     che conta è la prima parola — e si mettono su due righe diverse. */
-  @media (max-width: 27rem) {
-    .prima-dopo > .placeholder-media > .placeholder-etichetta {
-      max-width: calc(100% - 1.5rem);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .prima-dopo > .placeholder-media:first-child > .placeholder-etichetta {
-      bottom: 2.5rem;
-    }
+  .confronto-specifica {
+    font-size: var(--text-small);
+    opacity: 0.85;
   }
-  .prima-dopo-maniglia {
+  .confronto-maniglia {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1172,20 +1315,19 @@
     background-color: var(--color-ink);
     pointer-events: none;
   }
-  .prima-dopo-maniglia::after {
-    content: '◂ ▸' / '';
+  /* La tacca sul cursore: lo stesso tratto obliquo a 45° della quota. */
+  .confronto-maniglia::after {
+    content: '';
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--color-ink);
-    color: var(--color-paper);
-    font-size: var(--text-eyebrow);
-    padding: 0.375rem 0.5rem;
-    border-radius: var(--radius-edge);
-    white-space: nowrap;
+    left: 0;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-left: 2px solid var(--color-ink);
+    transform: translateY(-50%) rotate(45deg);
+    transform-origin: top left;
   }
-  .prima-dopo input[type='range'] {
+  .confronto input[type='range'] {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -1194,22 +1336,59 @@
     opacity: 0;
     cursor: ew-resize;
   }
-  .prima-dopo:has(input:focus-visible) {
+  /* Il bersaglio è l'immagine intera, non una traccia sottile: il fuoco però
+     deve vedersi, e sta sul riquadro. */
+  .confronto:has(input:focus-visible) {
     outline: 2px solid var(--regolo-focus);
     outline-offset: 3px;
+  }
+  /* La **lettura**, non una quota: è il valore di un controllo, come
+     `PLOT 23%` in ecoLINEAR. Si rende anche senza JavaScript, perché a pagina
+     ferma il taglio è davvero al 50 %. */
+  .confronto-lettura {
+    margin-top: 0.75rem;
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .confronto-lettura > [data-numero] {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  @media (max-width: 40rem) {
+    .confronto-stato {
+      font-size: var(--text-h2);
+    }
   }
 
   /* ==========================================================================
      Persone
      ======================================================================== */
-  .griglia-persone {
+  /* Le persone: quattro campi a **quote verticali disuguali**. Il dato che
+     conta non è la faccia, è l'**abilitazione** — ordine, sezione e numero —
+     ed è quella che alla fase 6 finisce in `Person.hasCredential`. Per questo
+     la riga sotto il ritratto è una piccola tabella e non una didascalia.
+     **Nessuna quota**: il solo numero disponibile sarebbe «4 caselle», che chi
+     legge intenderebbe come «lo studio ha 4 persone» — un dato del cliente
+     inventato (CLAUDE.md § Cliente dice 2-10). */
+  .persone {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(1rem, 2vw, 2rem);
+    align-items: start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  @media (max-width: 56rem) {
-    .griglia-persone {
+  @media (min-width: 56rem) {
+    .persone > *:nth-child(2n) {
+      margin-top: clamp(1.5rem, 3vw, 3rem);
+    }
+  }
+  @media (max-width: 55.999rem) {
+    .persone {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: clamp(1.75rem, 5vw, 2.5rem);
     }
   }
   .persona-nome {
@@ -1218,22 +1397,22 @@
     font-family: var(--font-display);
     font-weight: var(--regolo-display-weight);
     letter-spacing: var(--regolo-display-tracking);
-    font-size: 1.25rem;
-    line-height: 1.2;
+    font-size: var(--text-lead);
+    line-height: 1.15;
   }
   .persona-ruolo {
     display: block;
-    margin-top: 0.25rem;
+    margin-top: 0.375rem;
     font-size: var(--text-small);
     color: var(--color-muted);
   }
-  /* Ordine, sezione e numero: è una credenziale, non il mestiere. Classe a
-     parte perché alla fase 4 finisce anche in `Person.hasCredential`. */
+  /* Ordine, sezione e numero: è una credenziale, non il mestiere, ed è il dato
+     per cui questo blocco esiste. Per questo sta in inchiostro pieno. */
   .persona-abilitazioni {
     display: block;
-    margin-top: 0.5rem;
+    margin-top: 0.375rem;
     font-size: var(--text-small);
-    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
   }
 
   /* ==========================================================================

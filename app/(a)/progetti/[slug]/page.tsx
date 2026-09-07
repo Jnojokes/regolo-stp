@@ -270,7 +270,6 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
       </Sezione>
 
       <Sezione
-        fondo="alt"
         etichetta="dati"
         titolo="I dati duri."
         intro="Luogo, anno, superficie e — la riga che conta — con quale ruolo lo studio ha lavorato."
@@ -352,7 +351,6 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
 
       {p.primaDopo && (
         <Sezione
-          fondo="alt"
           etichetta="prima e dopo"
           titolo="Lo stesso punto di ripresa."
           /* L'introduzione parla al committente, non allo sviluppatore: come si
@@ -361,7 +359,11 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
              Questa riga vale identica con e senza il cursore. */
           intro="La stessa inquadratura prima e dopo l’intervento: su un recupero è la prova che non ha bisogno di essere spiegata."
         >
-          <Confronto prima={p.primaDopo.prima} dopo={p.primaDopo.dopo} />
+          <Confronto
+            prima={p.primaDopo.prima}
+            dopo={p.primaDopo.dopo}
+            specifica="1600 × 1000 px · AVIF · ≤ 250 KB"
+          />
         </Sezione>
       )}
 
@@ -392,7 +394,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
           scheda il blocco non esiste — un «progetto successivo» che rimanda a
           sé stesso è un vicolo cieco travestito da navigazione. */}
       {successivo && (
-        <Sezione fondo="alt" filo etichetta="progetto successivo">
+        <Sezione etichetta="progetto successivo">
           <Link href={`/progetti/${successivo.slug}`} className="block max-w-[34rem]">
             <Foto
               immagine={successivo.copertina}

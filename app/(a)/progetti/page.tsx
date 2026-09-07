@@ -269,7 +269,6 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
 
       {progettiVeri.length === 0 && (
         <Sezione
-          fondo="alt"
           etichetta="primo dato bloccante"
           titolo="Le schede non ci sono ancora, e non le inventiamo."
         >

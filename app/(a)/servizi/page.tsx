@@ -50,18 +50,21 @@ export default function Servizi() {
       </div>
 
       <Sezione>
-        <ul className="griglia-servizi" role="list">
+        {/* Lo stesso indice della home: righe, non card. Il titolo del
+            servizio è un `h2` perché in questa pagina i sei servizi sono il
+            contenuto, non un elenco di rimandi. */}
+        <ul className="indice" role="list">
           {servizi.map((s) => {
             const c = contenutoServizio(s.slug)
             return (
-              <li key={s.slug} className="servizio-essenziale">
-                <p className="servizio-tecnicismo">{s.sottotitolo}</p>
-                <h2 className="text-h3">
-                  <Link href={`/servizi/${s.slug}`}>{s.titolo}</Link>
-                </h2>
-                {c && <p>{c.sommario}</p>}
-                <Link href={`/servizi/${s.slug}`} className="servizio-vai">
-                  Cosa comprende, e cosa serve da te
+              <li key={s.slug}>
+                <Link href={`/servizi/${s.slug}`} className="voce">
+                  <span className="voce-corpo">
+                    <h2 className="voce-esito">{s.titolo}</h2>
+                    <span className="voce-tecnicismo">{s.sottotitolo}</span>
+                    {c && <span className="voce-descrizione">{c.sommario}</span>}
+                  </span>
+                  <span className="voce-coda">{s.sottotitolo}</span>
                 </Link>
               </li>
             )
@@ -69,19 +72,17 @@ export default function Servizi() {
         </ul>
       </Sezione>
 
-      <Sezione
-        fondo="alt"
-        etichetta="come lavoriamo"
-        titolo="E poi cosa succede?"
-        intro={introProcesso}
-      >
-        <ol className="processo-elenco max-w-[62ch]">
-          {fasi.map((f) => (
+      <Sezione etichetta="come lavoriamo" titolo="E poi cosa succede?" intro={introProcesso}>
+        <ol className="fasi fasi-elenco" role="list">
+          {fasi.map((f, i) => (
             <li key={f.titolo}>
-              <div>
-                <strong className="processo-titolo">{f.titolo}</strong>
-                <p>{f.testoLungo}</p>
-              </div>
+              <span className="fase-numero" data-numero="">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="fase-corpo">
+                <strong className="fase-titolo">{f.titolo}</strong>
+                <span className="fase-testo">{f.testoLungo}</span>
+              </span>
             </li>
           ))}
         </ol>

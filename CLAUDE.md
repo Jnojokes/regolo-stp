@@ -63,9 +63,15 @@ domanda fredda.
 Le tre tier A **non hanno un accento cromatico** (misurato: Storey bianco/nero/foto, Kononenko
 bianco e nero puri, AS bianco e nero con l'opacità come gerarchia) e il `DESIGN.md` di refero
 lo scrive come divieto. Quindi nel sito c'è **un accento solo**, e sta in **un posto solo**: i
-62 segnaposto. È l'inchiostro del timbro professionale — il segno con cui si annota lo stato di
-un documento — ed è l'unico colore del progetto che **si consuma**: quando i contenuti arrivano
-sparisce dalla pagina da sé. Non entra mai in header, bottoni, stati, anello di fuoco, filetti,
+62 segnaposto. È l'inchiostro **blu del tampone** con cui si timbra e si vista un documento —
+il segno che ne dichiara lo stato — ed è l'unico colore del progetto che **si consuma**: quando
+i contenuti arrivano sparisce dalla pagina da sé.
+
+**Blu e non viola, e il motivo è un numero.** Il primo valore era `#45327F`, e la
+giustificazione reggeva; ma in HSL quella tinta sta a **255°**, cioè in mezzo ai tre indaco di
+default dei modelli (239° · 258° · 262°) — la impronta digitale del design generato, che è
+esattamente ciò che questa fase esiste per non avere. `#123C7A` sta a **216°**, passa meglio su
+entrambi i fondi, e in Italia il tampone del timbro professionale è blu. Non entra mai in header, bottoni, stati, anello di fuoco, filetti,
 esploso, mappa.
 
 ```
@@ -77,8 +83,8 @@ A «L'elevato»                         B «Il registro»
 --line    #757575   4,61:1            --line    #4A4A4A   4,99:1 su getto ·  8,86:1 su calce
 --ph      #ECECE9  superficie          --ph      #FFFFFF  figura, quindi bordata
 --muted-invert #9A9A9A  7,46:1 su ink (il testo dentro le bande nere di A)
---timbro  #45327F  10,42:1 su carta · 5,86:1 su getto   ← l'unico accento, solo sui segnaposto
---timbro-soft #EDEAF4 (A) · #FFFFFF (B)    --timbro-chiaro #B3A6DE  9,43:1, solo su banda nera
+--timbro  #123C7A  10,75:1 su carta · 6,05:1 su getto   ← l'unico accento, solo sui segnaposto
+--timbro-soft #E7ECF6 (A) · #FFFFFF (B)    --timbro-chiaro #93B7DE 10,07:1, solo su banda nera
 --errore  #8E1B10   9,07:1 su carta ·  5,11:1 su getto
 ```
 

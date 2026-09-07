@@ -77,11 +77,11 @@ export function Placeholder({
  * carta, cioè è invisibile.
  *
  * **Questi 62 segnaposto sono l'unico posto del sito dove c'è colore.** Il
- * `timbro` (`#45327F`, 10,42:1 sulla carta) è l'inchiostro con cui si annota lo
+ * `timbro` (`#123C7A`, 10,75:1 sulla carta) è l'inchiostro **blu del tampone** con cui si annota lo
  * stato di un documento, e qui dice che il contenuto manca. È anche l'unico
  * colore del progetto che **si consuma**: quando i contenuti arrivano, sparisce
  * dalla pagina da sé. Dentro una banda scura il valore è vincolato al piano
- * (`--regolo-timbro-piano`), perché `timbro` sul nero sta a 2,02:1.
+ * (`--regolo-timbro-piano`), perché `timbro` sul nero sta a 1,95:1.
  *
  * `data-placeholder="da-cliente"` è l'aggancio del collaudo della fase 8.
  */

@@ -34,8 +34,8 @@ export function Brief({
   etichetta?: string
 }) {
   return (
-    <section id="brief" className="brief">
-      <div className="wrap nav:grid-12 nav:gap-16 nav:py-28 grid gap-10 py-16">
+    <section id="brief" className="brief passo-largo">
+      <div className="wrap nav:grid-12 nav:gap-16 grid gap-10">
         <div className="nav:col-span-5 nav:self-start">
           <p className="eyebrow brief-occhiello">{etichetta}</p>
           <h2 className="mt-3">Cinque domande. Poi vi richiamiamo noi.</h2>

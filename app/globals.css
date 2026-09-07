@@ -37,10 +37,21 @@
    l'opacità come gerarchia; e il `DESIGN.md` di refero lo scrive come divieto.
    Il tier C (sbp) dimostra che l'arancio è il *default di settore*
    dell'ingegneria. Quindi nel sito c'è **una sola tinta satura**, e sta in un
-   posto solo: **i segnaposto**. È l'inchiostro del timbro professionale, cioè
-   il segno con cui si annota lo stato di un documento — che è il lavoro che le
-   si chiede. Non entra mai in header, bottoni, stati, anello di fuoco, filetti,
-   esploso, mappa. Quando i contenuti arrivano, sparisce dalla pagina da sé.
+   posto solo: **i segnaposto**. È l'inchiostro **blu del tampone** con cui si
+   timbra e si vista un documento — il segno che ne dichiara lo stato, che è il
+   lavoro che le si chiede. Non entra mai in header, bottoni, stati, anello di
+   fuoco, filetti, esploso, mappa. Quando i contenuti arrivano, sparisce dalla
+   pagina da sé.
+
+   **Perché blu e non viola.** Il primo valore provato era `#45327F`, e la
+   giustificazione («l'inchiostro del timbro») reggeva. Ma misurata in HSL
+   quella tinta sta a **255° di tonalità**, cioè in mezzo al gruppo che i tre
+   indaco di default dei modelli occupano (239°, 258°, 262°): è *la* impronta
+   digitale del design generato, e questa fase esiste per non averla.
+   `#123C7A` sta a **216°**, cioè un blu vero, 39-46° lontano da tutti e tre, e
+   passa meglio su entrambi i fondi (10,75 e 6,05 contro 10,42 e 5,86). E in
+   Italia il tampone del timbro professionale è blu, non viola: la
+   giustificazione migliora insieme al numero.
    ========================================================================== */
 
 /* ---------- Tema A — «L'elevato» ------------------------------------------
@@ -60,13 +71,13 @@
   --regolo-errore: #8e1b10; /*  9,07:1 su carta ·  7,67:1 su ph */
 
   /* l'unico accento, e sta solo sui segnaposto */
-  --regolo-timbro: #45327f; /* 10,42:1 su carta ·  8,77:1 su timbro-soft */
-  --regolo-timbro-soft: #edeaf4; /*  1,19:1 dalla carta: è il terzo canale, non il primo */
-  --regolo-timbro-chiaro: #b3a6de; /*  9,43:1 su ink — SOLO dentro una banda nera (2,23:1 sulla carta) */
+  --regolo-timbro: #123c7a; /* 10,75:1 su carta ·  9,08:1 su timbro-soft */
+  --regolo-timbro-soft: #e7ecf6; /*  1,18:1 dalla carta: è il terzo canale, non il primo */
+  --regolo-timbro-chiaro: #93b7de; /* 10,07:1 su ink — SOLO dentro una banda nera (2,09:1 sulla carta) */
 
   /* Il piano su cui sta il segnaposto. Stesso meccanismo di `--regolo-focus`:
      è il CONTESTO a dire quale dei due valori vale, non un `if` nel componente.
-     Sulla carta è `timbro`; dentro una banda scura `timbro` dà 2,02:1, quindi
+     Sulla carta è `timbro`; dentro una banda scura `timbro` dà 1,95:1, quindi
      lì il piano lo ridichiara a `timbro-chiaro` (9,43:1). */
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
@@ -173,9 +184,9 @@
   --regolo-quota-riga: block;
   --regolo-quota-colore: var(--regolo-line);
 
-  /* in A l'asse dell'apparato è ORIZZONTALE: niente asse verticale */
+  /* in A l'apparato è ORIZZONTALE: niente asse verticale */
   --regolo-asse: none;
-  --regolo-asse-x: 0;
+  --regolo-asse-frazione: 0;
 
   /* nessuna fascia a fondo alternato: A cambia fondo due volte, a taglio netto */
   --regolo-sezione-alt: var(--regolo-paper);
@@ -217,6 +228,13 @@
   --regolo-mappa-linea: var(--regolo-ink);
   --regolo-mappa-fondo: var(--regolo-paper);
   --regolo-mappa-sede: var(--regolo-ink);
+
+  /* Il footer di A è una banda `ink` **saldata al brief**: nessun filetto in
+     testa, perché il terzo piano della pagina non si interrompe. */
+  --regolo-footer-bg: var(--regolo-ink);
+  --regolo-footer-fg: var(--regolo-paper); /* 21,00:1 */
+  --regolo-footer-muted: var(--regolo-muted-invert); /*  7,46:1 */
+  --regolo-footer-filo: none;
 }
 
 /* ---------- Tema B — «Il registro» ---------------------------------------
@@ -236,9 +254,9 @@
   --regolo-bordo-campo: var(--regolo-line);
   --regolo-errore: #8e1b10; /*  5,11:1 su getto ·  9,07:1 su calce */
 
-  --regolo-timbro: #45327f; /*  5,86:1 su getto · 10,42:1 su calce */
+  --regolo-timbro: #123c7a; /*  6,05:1 su getto · 10,75:1 su calce */
   --regolo-timbro-soft: #ffffff; /* in B il terzo canale è la figura bianca: un token in meno */
-  --regolo-timbro-chiaro: #b3a6de;
+  --regolo-timbro-chiaro: #93b7de;
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
@@ -310,11 +328,15 @@
   --regolo-quota-riga: block;
   --regolo-quota-colore: var(--regolo-line);
 
-  /* in B l'apparato è un ASSE VERTICALE che attraversa dall'header al footer */
+  /* In B l'apparato è un ASSE VERTICALE. La frazione è **del contenuto**, non
+     della pagina: il filetto è posizionato dentro `.wrap`, che ha il margine nel
+     padding, mentre le colonne della griglia stanno nel content box. Con la sola
+     percentuale i due cadevano a 16 px di distanza e l'asse passava **dentro**
+     le celle invece che sul loro bordo — che è il difetto che faceva sembrare la
+     pagina rotta. Un solo numero per tutti e due, e la conversione sta nella
+     regola che disegna il filetto. */
   --regolo-asse: block;
-  /* 34,4 % di 1440 = 495 px. A 390 px va al 24,6 % (96 px) e resta: non è una
-     decorazione da spegnere. */
-  --regolo-asse-x: 34.4%;
+  --regolo-asse-frazione: 0.344; /* Kononenko misurato comincia la sua tabella al 34,2 % */
 
   --regolo-sezione-alt: var(--regolo-paper); /* in B il fondo non cambia MAI */
   --regolo-sezione-alt-filo: none;
@@ -345,6 +367,13 @@
   --regolo-mappa-linea: var(--regolo-ink);
   --regolo-mappa-fondo: var(--regolo-surface);
   --regolo-mappa-sede: var(--regolo-ink);
+
+  /* In B il fondo non cambia mai: il footer continua sul getto e si stacca dal
+     brief con un filetto, non con una banda. */
+  --regolo-footer-bg: var(--regolo-paper);
+  --regolo-footer-fg: var(--regolo-ink); /* 11,82:1 */
+  --regolo-footer-muted: var(--regolo-muted); /*  5,09:1 */
+  --regolo-footer-filo: 1px solid var(--regolo-line);
 }
 
 /* Interlinea del display: è funzione del CORPO, non una costante. 0,84 vale
@@ -367,7 +396,11 @@
    versione mobile progettata che CLAUDE.md § Regole, 5 chiede. */
 @media (max-width: 55.999rem) {
   [data-theme='b'] {
-    --regolo-asse-x: 0.5rem;
+    /* Su telefono l'asse va al margine e la griglia torna a una colonna: due
+       zone su 358 px non stanno, e al 24,6 % il filetto passava in mezzo al
+       testo (verificato in pagina). Il gesto è lo stesso, ruotato nello spazio
+       che c'è: non è una decorazione spenta. */
+    --regolo-asse-frazione: 0;
   }
 }
 
@@ -662,6 +695,10 @@
     position: absolute;
     bottom: 0.75rem;
     left: 0.75rem;
+    /* Il vincolo a destra non è cosmetico: senza, su un campo stretto — i
+       quattro ritratti in 3/4 — la scheda di specifica usciva dal campo e si
+       leggeva addosso a quello accanto. */
+    max-width: calc(100% - 1.5rem);
     padding: 0.25rem 0.5rem;
     background-color: var(--color-paper);
     color: var(--color-ph-ink);
@@ -760,6 +797,12 @@
     flex-direction: var(--regolo-logo-direction);
     gap: var(--regolo-logo-gap, 0.125rem);
     align-items: baseline;
+    /* Sotto i 30 rem il qualificatore è nascosto e il lockup resta alto 24 px:
+       è il link alla home, e un bersaglio da 24 px in una barra sticky non
+       basta. Il padding non sposta il testo perché la riga è già centrata. */
+    min-height: 2.75rem;
+    align-content: center;
+    flex-wrap: wrap;
   }
   [data-theme='b'] .logo-lockup {
     --regolo-logo-gap: 0.625rem;
@@ -839,13 +882,122 @@
 }
 
 @layer components {
+  /* ============================================================================
+     FOOTER — la riga in tre tempi, con il vuoto in mezzo
+     In A è una banda `ink` **saldata al brief** (nessun filetto e nessuno
+     stacco: il terzo piano non si interrompe per ricominciare); in B il fondo
+     `getto` continua e cambia solo un filetto in testa.
+     ========================================================================== */
+  .site-footer {
+    background-color: var(--regolo-footer-bg);
+    color: var(--regolo-footer-fg);
+    border-top: var(--regolo-footer-filo, none);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .site-footer-riga {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+  @media (min-width: 56rem) {
+    .site-footer-riga {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.8fr) minmax(0, 1.1fr);
+      gap: clamp(1.5rem, 3vw, 3rem);
+    }
+  }
+  .site-footer .logo-name {
+    color: var(--regolo-footer-fg);
+  }
+  .site-footer-ragione,
+  .site-footer-indirizzo,
+  .site-footer-mail,
+  .site-footer-orari {
+    margin-top: 0.625rem;
+    font-size: var(--text-small);
+    color: var(--regolo-footer-muted);
+  }
+  .site-footer-indirizzo {
+    margin-top: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Il corpo più grande del footer: la telefonata è l'azione secondaria
+     dichiarata, e la gerarchia del footer racconta quella delle azioni. */
+  .site-footer-telefono {
+    display: inline-block;
+    font-size: var(--text-lead);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 5px;
+  }
+  .site-footer-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+  }
+  .site-footer-menu li:not(:last-child)::after {
+    content: ',';
+    color: var(--regolo-footer-muted);
+  }
+  .site-footer-menu a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  /* I dati fiscali all'estremo: si leggono una volta sola, e sono i soli
+     numeri del footer che vanno incolonnati. */
+  .site-footer-dati {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.25rem 0.75rem;
+    margin: 0;
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+  }
+  .site-footer-dati dt {
+    color: var(--regolo-footer-muted);
+  }
+  .site-footer-dati dd {
+    margin: 0;
+  }
+  .site-footer-coda {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: var(--text-eyebrow);
+    color: var(--regolo-footer-muted);
+  }
+  .site-footer-coda ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .site-footer-coda a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   /* Il piano scuro. Un posto solo per la regola: dentro una banda `ink` il
      segnaposto passa a `timbro-chiaro` e perde la tinta (9,43:1 sul nero), e il
      fuoco si schiarisce. Nessun `if` nei componenti: è il contesto a dirlo. */
   .sezione-scura,
-  [data-theme='a'] .brief {
+  [data-theme='a'] .brief,
+  [data-theme='a'] .site-footer {
     --regolo-timbro-piano: var(--regolo-timbro-chiaro);
     --regolo-timbro-piano-soft: transparent;
+    --regolo-focus: var(--regolo-paper);
   }
   /* ...ma dentro la scheda del brief il fondo torna carta, e con lui il piano. */
   [data-theme='a'] .brief .brief-scheda {
@@ -867,6 +1019,21 @@
     left: 1rem;
     top: 1rem;
   }
+
+  /* Bersagli tattili: i link **isolati** — non quelli dentro una frase, che
+     WCAG 2.5.8 esclude — arrivano a 44 px su telefono. Si fa con il padding e
+     un margine negativo, così la riga di testo non si sposta di un pixel. */
+  @media (max-width: 55.999rem) {
+    .uscita,
+    .pannello-vai,
+    .brief-telefono,
+    .site-footer-telefono,
+    .hero-telefono {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+    }
+  }
 }
 
 /* ============================================================================
@@ -877,10 +1044,54 @@
    ========================================================================== */
 
 @layer components {
+  /* In B il brief sta sull'asse come tutto il resto: la colonna del testo
+     finisce **esattamente** sul filetto, e la scheda comincia dopo. Senza
+     questo la pagina perdeva l'asse proprio sul blocco che deve convertire. */
+  [data-theme='b'] .brief > .wrap {
+    position: relative;
+  }
+  [data-theme='b'] .brief > .wrap::before {
+    content: '';
+    display: var(--regolo-asse);
+    position: absolute;
+    top: calc(-1 * var(--passo, 0px));
+    bottom: calc(-0.6 * var(--passo, 0px));
+    left: calc(
+      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
+    );
+    width: 1px;
+    background-color: var(--color-line);
+    pointer-events: none;
+  }
+  @media (max-width: 55.999rem) {
+    [data-theme='b'] .brief > .wrap::before {
+      left: 0.5rem;
+    }
+  }
+  .brief-scheda {
+    position: relative;
+  }
+  /* La griglia del brief in B: il testo nelle prime colonne fino all'asse, la
+     scheda dopo. In A resta 5/7, perché in A l'asse non c'è. */
+  @media (min-width: 56rem) {
+    [data-theme='b'] .brief > .wrap {
+      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+    [data-theme='b'] .brief > .wrap > * {
+      grid-column: auto !important;
+    }
+  }
+
   .brief {
     /* Come le sezioni della home: l'ancora `#brief` non deve finire sotto la
-       barra sticky (la regola gemella sta in `app/css/sezioni.css`). */
+       barra sticky (la regola gemella sta in `app/css/sezioni.css`).
+       Il passo è `largo`: 200 px di silenzio davanti al blocco primario, che è
+       l'unico posto della pagina in cui il vuoto è un'affermazione. */
     scroll-margin-top: var(--regolo-header-h);
+    --passo: var(--regolo-passo-largo);
+    padding-top: var(--passo);
+    padding-bottom: calc(var(--passo) * 0.6);
     background-color: var(--regolo-brief-bg);
     color: var(--regolo-brief-fg);
     border-top: var(--regolo-brief-bordo-sezione);
@@ -920,21 +1131,55 @@
   /* ---- barra di avanzamento ----------------------------------------------
      Decorativa (aria-hidden): il conto in chiaro sta nella <legend>, così uno
      screen reader lo sente una volta sola invece di due. */
-  .brief-barra {
+  /* La terza quota del sito: cinque tacche e l'annotazione. È l'unica che si
+     muove, perché è l'unico posto dove la quantità cambia. Il tratto è pieno
+     fino al passo corrente; l'annotazione si rende **sempre**, anche senza
+     JavaScript, dove dice «passo 1 di 5» — che a pagina ferma è vero. */
+  .brief-avanzamento {
     display: flex;
-    gap: 0.375rem;
-    margin-bottom: 1.5rem;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .brief-tacche {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 0;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
-  .brief-barra li {
+  .brief-tacche li {
+    position: relative;
     flex: 1;
-    height: 3px;
-    background-color: var(--color-line);
-    transition: background-color 0.25s;
+    height: 0.625rem;
+    border-top: 1px solid var(--regolo-brief-controllo-bordo);
   }
-  .brief-barra li[data-fatto] {
-    background-color: var(--color-ink);
+  /* La tacca: lo stesso tratto obliquo a 45° della quota della hero. */
+  .brief-tacche li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-left: 1px solid var(--regolo-brief-controllo-bordo);
+    transform: rotate(45deg);
+    transform-origin: top left;
+  }
+  .brief-tacche li[data-fatto] {
+    border-top-color: var(--color-ink);
+    border-top-width: 2px;
+  }
+  .brief-tacche li[data-fatto]::before {
+    border-left-color: var(--color-ink);
+  }
+  .brief-avanzamento-conta {
+    flex: none;
+    font-size: var(--text-small);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
   }
 
   /* ---- il passo ----------------------------------------------------------- */
@@ -961,7 +1206,19 @@
     padding: 0;
     margin: 0;
   }
+  /* Il conto del passo lo mostra la **quota** (`passo 1 di 5`, in alto a
+     destra). Qui resta per chi ascolta — sta dentro la `<legend>`, ed è quello
+     che uno screen reader annuncia entrando nel gruppo — ma non si stampa due
+     volte nella stessa schermata. */
   .brief-conta {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
     display: block;
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);

@@ -38,6 +38,13 @@ export default function Home() {
   return (
     <>
       <BarraProposta opzione="a" />
+      {/* Il ritmo di A: **quattro silenzi da 200 px** e due tagli netti verso il
+          nero. Il passo lo dichiara il blocco che *arriva*, non quello che
+          finisce — lo spazio fra due blocchi appartiene al secondo — quindi la
+          sequenza è di nove valori e non di diciotto, e si legge qui:
+          hero 0 · smistamento 48 · progetti 200 · servizi 96 · fasi 96 ·
+          esploso 200 · persone 200 · territorio 48 · brief 200 · footer 0.
+          A respira; B accumula (`app/(b)/opzione-b/page.tsx`). */}
       <Hero variante="foto" />
       <Smistamento />
       <Progetti variante="schede" />

@@ -17,7 +17,7 @@ la sessione di avvio: non si scrive codice.
 3. Elenca le voci di `DECISIONI.md` ancora aperte che **bloccano la fase 1**. Oggi nessuna
    dovrebbe bloccarla: stack, font e token provvisori sono in `CLAUDE.md`. Se ne trovi, fermati.
 4. Verifica gli strumenti: le skill `sito-*` e `web-references` sono visibili, Context7 e Chrome
-   DevTools MCP rispondono. Se manca qualcosa, dimmi cosa e come si installa 
+   DevTools MCP rispondono. Se manca qualcosa, dimmi cosa e come si installa (`skills/install.sh`).
 Fra gli strumenti verifica anche **Higgsfield** (generazione immagini/video/3D): se non risponde,
 si installa con `claude mcp add --scope user --transport http higgsfield https://mcp.higgsfield.ai/mcp`
 e poi `/mcp` per autorizzare. Non blocca le prime fasi: serve dalla 3 in poi.

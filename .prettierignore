@@ -6,3 +6,7 @@ package-lock.json
 # Documenti di progetto: si scrivono a mano, Prettier non li tocca
 *.md
 .claude/
+
+# Il kit di progetto: i due prototipi sono il brief visivo per il cliente,
+# si leggono come sono stati scritti e non si riformattano.
+kit/

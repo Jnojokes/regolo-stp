@@ -189,8 +189,8 @@ apertura form · completamento form · click telefono · click WhatsApp. Quattro
 ## Due opzioni di homepage (fino alla fase 3)
 
 FT vende con due toni; il cliente sceglie (`DECISIONI.md` n. 1). Stessa architettura, stessi
-componenti, due ordini e due set di token. I prototipi sono nel kit: `opzioni/REGOLO_Opzione_A.html`
-e `opzioni/REGOLO_Opzione_B.html` (leggibili con `--add-dir` al kit): sono il brief visivo.
+componenti, due ordini e due set di token. I prototipi stanno nel repo, in
+`kit/opzioni/REGOLO_Opzione_A.html` e `kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo.
 
 | | A «Lo studio» — route `/` | B «Il cantiere» — route `/opzione-b` |
 |---|---|---|
@@ -205,7 +205,7 @@ elimina (fase 5): non restano due home in produzione.
 
 ## SEO, GEO, legal — il minimo deciso
 
-- Answer capsule, entità, 12 domande della baseline GEO, legal: in `REGOLO_SEO-GEO-LEGAL.md` del kit.
+- Answer capsule, entità, 12 domande della baseline GEO, legal: in `kit/REGOLO_SEO-GEO-LEGAL.md`.
 - Crawler di addestramento: default **consentiti** (decisione n. 9). Nessuna riserva TDM.
 - Pagine: `/privacy`, `/cookie`, `/note-legali` dai template della skill `sito-seo-geo-legal`.
   Nessun banner (analytics senza cookie), nessun iframe di terzi (mappa statica).
@@ -213,4 +213,4 @@ elimina (fase 5): non restano due home in produzione.
 
 ## Consegna
 
-Per FT e per il cliente: `REGOLO_Due_Opzioni.md`. Alla fine: skill `sito-consegna`.
+Per FT e per il cliente: `kit/REGOLO_Due_Opzioni.md`. Alla fine: skill `sito-consegna`.

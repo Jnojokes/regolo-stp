@@ -21,6 +21,11 @@ Leggi `CLAUDE.md`, `STATO.md`, `DECISIONI.md`. Segui le regole della skill `sito
 - **Contatti**: dati confermati, brief completo, mappa statica (nessun iframe).
 - Ogni pagina: URL parlante, `title` ≤ 60, `description` ≤ 155, un `h1`, breadcrumb.
 
+
+**Media.** Se servono pittogrammi per i sei servizi, disegnali in SVG oppure generali con
+Higgsfield (`gpt_image_2`) e ripuliscili — la skill `sito-media` dice quando conviene l'uno o
+l'altro. Nelle schede progetto nessuna immagine generata: solo foto dello studio o placeholder.
+
 Aggiorna `STATO.md` (prossima: `/fase-5-movimento`). Poi fermati e mostrami una pagina servizio
 completa e l'indice progetti con i filtri.
 

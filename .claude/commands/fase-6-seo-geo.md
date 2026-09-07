@@ -18,6 +18,13 @@ skill `sito-seo-geo-legal` (SEO tecnico, dati strutturati, GEO) e il capitolato
 5. GEO: l'answer capsule del kit come sorgente unica di description, `#org.description`,
    `/studio` e `llms.txt` **generato** (route handler, dai contenuti). `robots.txt` con i gruppi
    del capitolato secondo la decisione n. 9 (default: entrambi consentiti).
+**Immagine Open Graph 1200×630.** Se non c'è una foto dello studio che regge il crop, generala
+tu con **Higgsfield** (`gpt_image_2`, `select_workspace` sul workspace privato) seguendo la skill
+`sito-media`, scaricala in `public/` con `curl -sSL -o` e ottimizzala. Se è generata va
+dichiarata in due punti, come chiede il capitolato: riga «generato: sì» in `TODO-MEDIA.md`, e
+`additionalProperty` IPTC (`propertyID: https://cv.iptc.org/newscodes/digitalsourcetype/`,
+`name: digitalSourceType`) sull'`ImageObject` corrispondente.
+
 6. Prepara `scripts/seo-check.mjs` copiandolo dalla skill `sito-collaudo` e fallo girare
    sull'anteprima.
 

@@ -43,3 +43,9 @@ next-env.d.ts
 # Blu Lang
 *.pdf
 !.env.example
+
+# mail del brief scritte dal trasporto di sviluppo (nessuna RESEND_API_KEY)
+.brief-dev/
+
+# artefatti del MCP Playwright (screenshot e snapshot dei test)
+.playwright-mcp/

@@ -1,0 +1,343 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><title>REGOLO · Opzione A — Lo studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F4F2ED; --ink:#17171A; --muted:#6E6B66; --line:#DCD8D0; --accent:#2F4A42;
+  --ph:#E7E3DA; --ph-ink:#8A867E; --white:#FBFAF7;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --max:1440px; --gut:clamp(20px,4vw,64px);
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(44px,7.2vw,104px);line-height:.98}
+h2{font-size:clamp(34px,4.4vw,64px);line-height:1.02}
+h3{font-size:clamp(24px,2.2vw,32px);line-height:1.1}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+section{padding:clamp(56px,8vw,120px) 0}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2vw,32px)}
+.btn{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);padding:16px 22px;font-weight:500;font-size:15px;border:1px solid var(--ink);cursor:pointer;font-family:var(--sans)}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.arrow::after{content:"→";font-family:var(--serif);font-size:1.2em;line-height:0}
+
+/* barra proposta */
+.proposal{background:var(--ink);color:var(--paper);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:9px var(--gut);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.proposal b{color:#B9D1C6;font-weight:500}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{font-family:var(--sans);font-weight:600;letter-spacing:.26em;font-size:14px}
+.logo small{display:block;font-weight:400;letter-spacing:.08em;font-size:10px;color:var(--muted);margin-top:2px}
+.nav ul{display:flex;gap:32px;list-style:none;margin:0;padding:0;font-size:15px}
+.nav ul a:hover{color:var(--accent)}
+@media(max-width:860px){.nav ul{display:none}}
+
+/* placeholder fotografico: tratteggio da disegno tecnico */
+.ph{position:relative;background:var(--ph);background-image:repeating-linear-gradient(135deg,transparent 0 9px,rgba(23,23,26,.07) 9px 10px);overflow:hidden}
+.ph::after{content:attr(data-label);position:absolute;left:14px;bottom:12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ph-ink);background:var(--paper);padding:5px 9px}
+
+/* hero */
+.hero{padding:0}
+.hero .ph{height:min(78vh,760px);min-height:460px}
+.hero .ph::after{left:auto;right:14px;top:12px;bottom:auto}
+.hero .over{position:absolute;inset:auto 0 0 0;padding:clamp(24px,4vw,56px) var(--gut);background:linear-gradient(180deg,transparent,rgba(244,242,237,.92) 55%)}
+.hero .over .wrap{padding:0}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero .lead{max-width:44ch;font-size:clamp(17px,1.4vw,20px);color:var(--ink);margin-top:20px}
+.hero .cta{display:flex;gap:16px;align-items:center;margin-top:28px;flex-wrap:wrap}
+.hero .tel{font-size:15px;color:var(--muted)}
+
+/* smistamento */
+.sort{padding:clamp(28px,4vw,48px) 0;border-bottom:1px solid var(--line)}
+.sort .row{display:flex;align-items:center;gap:20px 40px;flex-wrap:wrap}
+.sort h2{font-size:clamp(24px,2.4vw,34px)}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{border:1px solid var(--ink);padding:10px 16px;font-size:15px;background:transparent;cursor:pointer;font-family:var(--sans);color:var(--ink)}
+.chip:hover,.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+
+/* progetti */
+.projects .head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.pcard{grid-column:span 4}
+.pcard .ph{aspect-ratio:4/3}
+.pcard .meta{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding-top:14px;border-top:1px solid var(--ink);margin-top:14px}
+.pcard .meta b{font-family:var(--serif);font-weight:400;font-size:22px}
+.pcard .meta span{color:var(--muted);font-size:14px}
+.pcard .role{grid-column:1/-1;font-size:13px;color:var(--muted)}
+.pcard .role i{font-style:normal;color:var(--ink)}
+@media(max-width:900px){.pcard{grid-column:span 12}}
+
+/* servizi */
+.services{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.svc{grid-column:span 4;padding:28px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px;min-height:190px}
+.svc h3{font-size:clamp(24px,2vw,30px)}
+.svc p{color:var(--muted);font-size:15px}
+.svc a{margin-top:auto;font-size:14px;font-weight:500;color:var(--accent)}
+@media(max-width:900px){.svc{grid-column:span 6}}
+@media(max-width:600px){.svc{grid-column:span 12;min-height:0}}
+
+/* processo */
+.process .grid{align-items:start}
+.process .stick{grid-column:span 5;position:sticky;top:96px}
+.process ol{grid-column:7/span 6;list-style:none;margin:0;padding:0;counter-reset:f}
+.process li{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:28px 0;border-top:1px solid var(--line);counter-increment:f}
+.process li::before{content:counter(f,decimal-leading-zero);font-family:var(--serif);font-size:34px;line-height:1;color:var(--accent)}
+.process li b{display:block;font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:6px}
+.process li p{color:var(--muted);font-size:15px;max-width:52ch}
+@media(max-width:900px){.process .stick{grid-column:span 12;position:static;margin-bottom:24px}.process ol{grid-column:span 12}}
+
+/* esploso */
+.exploded{background:var(--ink);color:var(--paper)}
+.exploded .eyebrow{color:#A9B7B1}
+.exploded .grid{align-items:center}
+.exploded .fig{grid-column:span 7}
+.exploded svg{width:100%;height:auto;display:block}
+.exploded .legend{grid-column:8/span 5;list-style:none;margin:0;padding:0}
+.exploded .legend li{display:flex;flex-direction:column;gap:4px;padding:14px 0;border-top:1px solid #3A3A40;cursor:default}
+.exploded .legend li:last-child{border-bottom:1px solid #3A3A40}
+.exploded .legend b{font-family:var(--serif);font-weight:400;font-size:26px}
+.exploded .legend span{color:#A9B7B1;font-size:14px}
+.exploded .legend li.on b{color:#B9D1C6}
+.exploded .note{margin-top:20px;font-size:13px;color:#A9B7B1;max-width:52ch}
+@media(max-width:900px){.exploded .fig,.exploded .legend{grid-column:span 12}}
+
+/* persone */
+.people .pcard .ph{aspect-ratio:3/4}
+.people .grid>div{grid-column:span 3}
+@media(max-width:900px){.people .grid>div{grid-column:span 6}}
+
+/* territorio */
+.territory{border-top:1px solid var(--line)}
+.territory .grid{align-items:center}
+.territory .txt{grid-column:span 5}
+.territory .map{grid-column:7/span 6;aspect-ratio:4/3}
+.territory .list{margin:20px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.territory .list li{border:1px solid var(--line);padding:6px 12px;font-size:14px;color:var(--muted)}
+@media(max-width:900px){.territory .txt,.territory .map{grid-column:span 12}}
+
+/* brief */
+.brief{background:var(--accent);color:var(--paper)}
+.brief .eyebrow{color:#B9D1C6}
+.brief .grid{align-items:start}
+.brief .intro{grid-column:span 5}
+.brief .intro p{color:#DCE7E1;margin-top:16px;max-width:40ch}
+.form{grid-column:7/span 6;background:var(--paper);color:var(--ink);padding:clamp(20px,3vw,36px)}
+.form .bar{display:flex;gap:6px;margin-bottom:22px}
+.form .bar i{flex:1;height:3px;background:var(--line)}
+.form .bar i.done{background:var(--accent)}
+.form .q{font-family:var(--serif);font-size:clamp(24px,2.2vw,30px);margin-bottom:18px;line-height:1.1}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:1px solid var(--line);background:var(--white);padding:14px;text-align:left;cursor:pointer;font-family:var(--sans);font-size:15px;color:var(--ink)}
+.opt:hover,.opt[aria-pressed=true]{border-color:var(--accent);background:#E8EFEB}
+.field{display:grid;gap:6px;margin-bottom:12px}
+.field label{font-size:13px;color:var(--muted)}
+.field input{border:1px solid var(--line);background:var(--white);padding:12px;font:inherit;color:var(--ink)}
+.form .nav2{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.form .step{font-size:13px;color:var(--muted)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin-top:8px}
+.consent input{margin-top:3px}
+.form .disabled{font-size:12px;color:var(--muted);margin-top:14px}
+@media(max-width:900px){.brief .intro,.form{grid-column:span 12}.opts{grid-template-columns:1fr}}
+
+/* footer */
+footer{padding:56px 0 40px;border-top:1px solid var(--line)}
+footer .grid{align-items:start}
+footer .col{grid-column:span 3;font-size:14px;line-height:1.7}
+footer .col b{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:500}
+footer .map{grid-column:span 12;aspect-ratio:21/6;margin-top:32px}
+footer .fine{margin-top:28px;font-size:12px;color:var(--muted);display:flex;gap:24px;flex-wrap:wrap}
+@media(max-width:900px){footer .col{grid-column:span 6}}
+.todo{color:var(--ph-ink)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="proposal"><span><b>Proposta · Opzione A — «Lo studio»</b> · prototipo di homepage</span><span>Contenuti indicativi: foto, numeri, nomi e progetti arrivano dallo studio</span></div>
+
+<header><div class="wrap nav">
+  <a class="logo" href="#">REGOLO<small>ingegneria civile e architettura · Fermo</small></a>
+  <ul><li><a href="#progetti">Progetti</a></li><li><a href="#servizi">Servizi</a></li><li><a href="#studio">Studio</a></li><li><a href="#contatti">Contatti</a></li></ul>
+  <a class="btn ghost" href="#brief">Raccontaci il progetto</a>
+</div></header>
+
+<section class="hero">
+  <div class="ph" data-label="Fotografia di un'opera realizzata — dallo studio, non un render">
+    <div class="over"><div class="wrap">
+      <p class="eyebrow">Progettazione e direzione lavori · edifici nuovi ed esistenti · pubblici e privati</p>
+      <h1 style="margin-top:14px">Progettiamo e dirigiamo.<br><em>Dal disegno al cantiere.</em></h1>
+      <p class="lead">Uno studio di ingegneria civile e architettura a Fermo. Progetto architettonico e strutturale, pratiche, cantiere: la stessa squadra, dall'idea alla consegna.</p>
+      <div class="cta"><a class="btn arrow" href="#brief">Raccontaci il progetto</a><a class="tel" href="tel:+390734510329">oppure chiama · 0734 510329</a></div>
+    </div></div>
+  </div>
+</section>
+
+<section class="sort"><div class="wrap row">
+  <h2>Che intervento hai in mente?</h2>
+  <div class="chips" id="chips">
+    <button class="chip" data-v="Casa nuova">Casa nuova</button>
+    <button class="chip" data-v="Ristrutturazione o ampliamento">Ristrutturazione o ampliamento</button>
+    <button class="chip" data-v="Pratica o bonus">Pratica o bonus</button>
+    <button class="chip" data-v="Struttura e sisma">Struttura e sisma</button>
+    <button class="chip" data-v="Opera pubblica">Opera pubblica</button>
+  </div>
+</div></section>
+
+<section class="projects" id="progetti"><div class="wrap">
+  <div class="head"><div><p class="eyebrow">Progetti in evidenza</p><h2 style="margin-top:10px">Quello che abbiamo costruito.</h2></div><a class="btn ghost arrow" href="#">Tutti i progetti</a></div>
+  <div class="grid">
+    <div class="pcard"><div class="ph" data-label="Foto progetto 01 — dallo studio"></div><div class="meta"><b>Progetto 01</b><span>comune · anno</span><span class="role">Ruolo dello studio: <i>progetto architettonico · strutturale · direzione lavori</i></span></div></div>
+    <div class="pcard"><div class="ph" data-label="Foto progetto 02 — dallo studio"></div><div class="meta"><b>Progetto 02</b><span>comune · anno</span><span class="role">Ruolo dello studio: <i>adeguamento sismico · direzione lavori</i></span></div></div>
+    <div class="pcard"><div class="ph" data-label="Foto progetto 03 — dallo studio"></div><div class="meta"><b>Progetto 03</b><span>comune · anno</span><span class="role">Ruolo dello studio: <i>opera pubblica · coordinamento sicurezza · collaudo</i></span></div></div>
+  </div>
+  <p class="todo" style="margin-top:18px;font-size:13px">Ogni scheda avrà i dati duri: luogo, anno, superficie, ruolo dello studio, committente se citabile.</p>
+</div></section>
+
+<section class="services" id="servizi"><div class="wrap">
+  <p class="eyebrow">Cosa facciamo</p>
+  <h2 style="margin:10px 0 40px">Sei modi in cui possiamo esservi utili.</h2>
+  <div class="grid">
+    <div class="svc"><h3>La tua casa, dal disegno al cantiere</h3><p>progettazione architettonica e direzione lavori</p><a class="arrow" href="#">Scopri</a></div>
+    <div class="svc"><h3>Ristrutturare, ampliare, recuperare</h3><p>interventi sull'esistente, cambi di destinazione</p><a class="arrow" href="#">Scopri</a></div>
+    <div class="svc"><h3>Mettere in sicurezza la struttura</h3><p>progettazione strutturale, adeguamento e miglioramento sismico</p><a class="arrow" href="#">Scopri</a></div>
+    <div class="svc"><h3>Pratiche, permessi e bonus</h3><p>pratiche edilizie, sisma bonus, agibilità</p><a class="arrow" href="#">Scopri</a></div>
+    <div class="svc"><h3>Comfort, energia, acustica</h3><p>progettazione termica e acustica, efficientamento</p><a class="arrow" href="#">Scopri</a></div>
+    <div class="svc"><h3>Opere pubbliche e collaudi</h3><p>lavori pubblici, coordinamento sicurezza, collaudi</p><a class="arrow" href="#">Scopri</a></div>
+  </div>
+</div></section>
+
+<section class="process" id="studio"><div class="wrap grid">
+  <div class="stick"><p class="eyebrow">Come lavoriamo</p><h2 style="margin-top:10px">E poi cosa succede?</h2><p style="color:var(--muted);margin-top:16px;max-width:38ch">La domanda vera di chi non ha mai costruito. Cinque passaggi, sempre gli stessi, con una persona di riferimento dall'inizio alla fine.</p></div>
+  <ol>
+    <li><div><b>Primo incontro</b><p>Ci raccontate l'idea, l'immobile, i vincoli. Noi vi diciamo cosa è possibile e cosa serve.</p></div></li>
+    <li><div><b>Fattibilità e costi</b><p>Verifiche urbanistiche e strutturali, prima stima dei costi realizzativi. Prima di disegnare.</p></div></li>
+    <li><div><b>Progetto</b><p>Architettonico e strutturale insieme: la forma e ciò che la regge nascono dallo stesso tavolo.</p></div></li>
+    <li><div><b>Autorizzazioni</b><p>Pratiche edilizie, sismiche, energetiche. Le seguiamo noi, con i tempi degli uffici messi in chiaro.</p></div></li>
+    <li><div><b>Cantiere e direzione lavori</b><p>In cantiere fino alla consegna: controllo delle lavorazioni, dei costi e della sicurezza.</p></div></li>
+  </ol>
+</div></section>
+
+<section class="exploded" id="esploso"><div class="wrap grid">
+  <div class="fig"><svg id="iso" viewBox="0 0 640 560" role="img" aria-label="Esploso dei livelli di un edificio: fondazioni, struttura, involucro, impianti, finiture"></svg></div>
+  <div>
+    <p class="eyebrow">Il mestiere che nelle foto non si vede</p>
+    <h2 style="margin:10px 0 24px;color:var(--paper)">Un edificio, cinque livelli.</h2>
+    <ul class="legend" id="legend">
+      <li data-l="4"><b>Finiture</b><span>quello che si vede: superfici, serramenti, dettagli</span></li>
+      <li data-l="3"><b>Impianti</b><span>termico, elettrico, acustico: il comfort</span></li>
+      <li data-l="2"><b>Involucro</b><span>pareti e copertura: energia e tenuta</span></li>
+      <li data-l="1"><b>Struttura</b><span>travi, pilastri, solai: la sicurezza sismica</span></li>
+      <li data-l="0"><b>Fondazioni</b><span>dove tutto comincia</span></li>
+    </ul>
+    <p class="note">Scorrendo, i livelli si separano. Nel sito finale ogni livello racconta cosa fa lo studio in quella fase.</p>
+  </div>
+</div></section>
+
+<section class="people"><div class="wrap">
+  <p class="eyebrow">Le persone</p>
+  <h2 style="margin:10px 0 40px">In una società tra professionisti si sceglie chi firma.</h2>
+  <div class="grid">
+    <div class="pcard"><div class="ph" data-label="Ritratto — dallo studio"></div><div class="meta"><b>Nome Cognome</b><span></span><span class="role">ingegnere · <i>ordine e abilitazioni</i></span></div></div>
+    <div class="pcard"><div class="ph" data-label="Ritratto — dallo studio"></div><div class="meta"><b>Nome Cognome</b><span></span><span class="role">architetto · <i>ordine e abilitazioni</i></span></div></div>
+    <div class="pcard"><div class="ph" data-label="Ritratto — dallo studio"></div><div class="meta"><b>Nome Cognome</b><span></span><span class="role">ingegnere · <i>coordinamento sicurezza</i></span></div></div>
+    <div class="pcard"><div class="ph" data-label="Ritratto — dallo studio"></div><div class="meta"><b>Nome Cognome</b><span></span><span class="role">geometra · <i>pratiche e cantiere</i></span></div></div>
+  </div>
+</div></section>
+
+<section class="territory"><div class="wrap grid">
+  <div class="txt"><p class="eyebrow">Il territorio</p><h2 style="margin-top:10px">Dove abbiamo lavorato.</h2><p style="color:var(--muted);margin-top:16px;max-width:40ch">Per uno studio locale è la credenziale principale: i comuni, uno per uno, con i progetti collegati.</p>
+    <ul class="list"><li>Fermo</li><li>comune</li><li>comune</li><li>comune</li><li>comune</li><li>comune</li><li>+ elenco dallo studio</li></ul></div>
+  <div class="ph map" data-label="Mappa della provincia con i comuni serviti — SVG, non una mappa a tile"></div>
+</div></section>
+
+<section class="brief" id="brief"><div class="wrap grid">
+  <div class="intro"><p class="eyebrow">Raccontaci il progetto</p><h2 style="margin-top:10px;color:var(--paper)">Cinque domande. Poi vi richiamiamo noi.</h2><p>Non è un «contattaci»: è un brief. Alla fine sappiamo già cosa serve, e la prima telefonata parte dal punto giusto.</p></div>
+  <form class="form" id="form" onsubmit="return false">
+    <div class="bar" id="bar"><i class="done"></i><i></i><i></i><i></i><i></i></div>
+    <div id="steps"></div>
+    <div class="nav2"><span class="step" id="stepLbl">Passo 1 di 5</span><div style="display:flex;gap:8px"><button type="button" class="btn ghost" id="prev">Indietro</button><button type="button" class="btn arrow" id="next">Avanti</button></div></div>
+    <p class="disabled">Prototipo: l'invio è disattivato. Nel sito il brief arriva allo studio via email, con copia a chi lo compila.</p>
+  </form>
+</div></section>
+
+<footer id="contatti"><div class="wrap">
+  <div class="grid">
+    <div class="col"><b>Studio</b>REGOLO<br>società tra professionisti<br>ingegneria civile e architettura</div>
+    <div class="col"><b>Sede</b>Via Campiglione 2/E<br>63900 Fermo (FM)</div>
+    <div class="col"><b>Contatti</b><a href="tel:+390734510329">0734 510329</a><br><span class="todo">email · PEC</span></div>
+    <div class="col"><b>Orari</b><span class="todo">orari di studio</span><br><span class="todo">P.IVA</span></div>
+    <div class="ph map" data-label="Mappa statica della sede — nessun cookie di terzi"></div>
+  </div>
+  <div class="fine"><span>© REGOLO STP</span><span>Privacy</span><span>Cookie</span><span>Note legali</span></div>
+</div></footer>
+
+<script>
+/* ---- brief a 5 passi ---- */
+const STEPS=[
+ {q:"Che tipo di intervento?",opts:["Casa nuova","Ristrutturazione o ampliamento","Pratica o bonus","Struttura e sisma","Opera pubblica","Altro"]},
+ {q:"Dove si trova?",fields:[["Comune","Fermo, Porto San Giorgio, …"],["Tipo di immobile","casa, appartamento, capannone, …"]]},
+ {q:"A che punto sei?",opts:["Solo un'idea","Ho l'immobile","Ho già un progetto","Devo partire subito"]},
+ {q:"In che tempi?",opts:["Entro 3 mesi","3-6 mesi","6-12 mesi","Non ho fretta"]},
+ {q:"Come ti richiamiamo?",fields:[["Nome",""],["Telefono",""],["Email",""]],consent:true}
+];
+const ans={};let s=0;
+const stepsEl=document.getElementById('steps'),bar=document.getElementById('bar'),lbl=document.getElementById('stepLbl');
+function render(){
+  const st=STEPS[s];let h=`<div class="q">${st.q}</div>`;
+  if(st.opts)h+=`<div class="opts">`+st.opts.map(o=>`<button type="button" class="opt" aria-pressed="${ans[s]===o}" data-o="${o}">${o}</button>`).join('')+`</div>`;
+  if(st.fields)h+=st.fields.map(([l,p])=>`<div class="field"><label>${l}</label><input type="text" placeholder="${p}"></div>`).join('');
+  if(st.consent)h+=`<label class="consent"><input type="checkbox"> Ho letto l'informativa privacy e acconsento al trattamento dei dati per essere ricontattato.</label>`;
+  stepsEl.innerHTML=h;
+  [...bar.children].forEach((i,k)=>i.classList.toggle('done',k<=s));
+  lbl.textContent=`Passo ${s+1} di 5`;
+  document.getElementById('next').textContent=s===4?'Invia il brief':'Avanti';
+  document.getElementById('prev').style.visibility=s===0?'hidden':'visible';
+}
+stepsEl.addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;ans[s]=b.dataset.o;render();});
+document.getElementById('next').addEventListener('click',()=>{if(s<4){s++;render();}});
+document.getElementById('prev').addEventListener('click',()=>{if(s>0){s--;render();}});
+document.getElementById('chips').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;
+  [...c.parentNode.children].forEach(x=>x.setAttribute('aria-pressed',x===c));ans[0]=c.dataset.v;s=0;render();
+  document.getElementById('brief').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});
+render();
+
+/* ---- esploso isometrico, generato ---- */
+const svg=document.getElementById('iso'),NS='http://www.w3.org/2000/svg';
+const S=34,cx=320,cy=430;
+const iso=(x,y,z)=>[cx+(x-y)*S*Math.cos(Math.PI/6),cy+(x+y)*S*Math.sin(Math.PI/6)-z*S];
+const poly=(pts,fill,extra={})=>{const p=document.createElementNS(NS,'polygon');p.setAttribute('points',pts.map(q=>q.join(',')).join(' '));p.setAttribute('fill',fill);for(const k in extra)p.setAttribute(k,extra[k]);return p};
+const prism=(g,x,y,z,w,d,h,c)=>{
+  g.appendChild(poly([iso(x,y+d,z),iso(x+w,y+d,z),iso(x+w,y+d,z+h),iso(x,y+d,z+h)],c[1]));
+  g.appendChild(poly([iso(x+w,y,z),iso(x+w,y+d,z),iso(x+w,y+d,z+h),iso(x+w,y,z+h)],c[2]));
+  g.appendChild(poly([iso(x,y,z+h),iso(x+w,y,z+h),iso(x+w,y+d,z+h),iso(x,y+d,z+h)],c[0]));
+};
+const L=[];const mk=()=>{const g=document.createElementNS(NS,'g');svg.appendChild(g);L.push(g);return g};
+/* 0 fondazioni */ let g=mk();prism(g,-0.4,-0.4,0,6.8,6.8,.7,['#4A4A52','#2E2E34','#3A3A42']);
+/* 1 struttura: pilastri + travi */ g=mk();
+[[0,0],[5,0],[0,5],[5,5],[2.5,0],[2.5,5],[0,2.5],[5,2.5]].forEach(([px,py])=>prism(g,px,py,0,1,1,3,['#B9D1C6','#7E9A8F','#98B3A7']));
+prism(g,0,0,3,6,6,.35,['#B9D1C6','#7E9A8F','#98B3A7']);
+/* 2 involucro */ g=mk();prism(g,0,0,0,6,6,3.35,['#E7E3DA','#B9B4A9','#CFCAC0']);
+[[1,0],[3,0],[1,2],[3,2]].forEach(([u,v])=>{const p=poly([iso(0,6-u-1.2,.9+v),iso(0,6-u,.9+v),iso(0,6-u,2.1+v),iso(0,6-u-1.2,2.1+v)],'#2F4A42');g.appendChild(p)});
+[[1,0],[3,0],[1,2],[3,2]].forEach(([u,v])=>{const p=poly([iso(6,u,.9+v),iso(6,u+1.2,.9+v),iso(6,u+1.2,2.1+v),iso(6,u,2.1+v)],'#2F4A42');g.appendChild(p)});
+/* 3 impianti: linee su lastra traslucida */ g=mk();prism(g,0,0,0,6,6,.25,['#3A3A42','#26262C','#30303A']);
+const line=(pts,c)=>{const p=document.createElementNS(NS,'polyline');p.setAttribute('points',pts.map(q=>iso(...q).join(',')).join(' '));p.setAttribute('fill','none');p.setAttribute('stroke',c);p.setAttribute('stroke-width','3');p.setAttribute('stroke-linecap','round');g.appendChild(p)};
+line([[.5,.5,.4],[.5,5.5,.4],[5.5,5.5,.4]],'#E4A65E');line([[5.5,.5,.4],[3,.5,.4],[3,3,.4],[.8,3,.4]],'#8FC1FF');line([[1.5,1.5,.4],[1.5,4.5,.4],[4.5,4.5,.4],[4.5,1.5,.4],[1.5,1.5,.4]],'#B9D1C6');
+/* 4 finiture: copertura */ g=mk();prism(g,-0.2,-0.2,0,6.4,6.4,.3,['#F4F2ED','#B9B4A9','#D6D1C7']);
+const H=[0.7,3.35,3.35,.25,.3];let base=[];let acc=0;L.forEach((g,i)=>{base[i]=acc;acc+=H[i]});
+const SEP=1.9;
+function place(t){L.forEach((g,i)=>{const z=base[i]+i*SEP*t;g.setAttribute('transform',`translate(0 ${-z*S})`)})}
+const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sec=document.getElementById('esploso');
+function onScroll(){if(rm){place(1);return}const r=sec.getBoundingClientRect(),vh=innerHeight;let t=(vh*.85-r.top)/(r.height*.9);t=Math.max(.3,Math.min(1,t));place(t)}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+const leg=document.getElementById('legend');leg.addEventListener('mouseover',e=>{const li=e.target.closest('li');if(!li)return;[...leg.children].forEach(x=>x.classList.toggle('on',x===li));L.forEach((g,i)=>g.style.opacity=(String(i)===li.dataset.l)?1:.35)});
+leg.addEventListener('mouseleave',()=>{[...leg.children].forEach(x=>x.classList.remove('on'));L.forEach(g=>g.style.opacity=1)});
+</script>
+</body></html>

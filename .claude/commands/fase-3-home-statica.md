@@ -23,6 +23,14 @@ prima che si muova qualcosa, e FT deve poter mostrare le due opzioni dallo stess
   progettata per ogni blocco; nella B la barra fissa Chiama · WhatsApp · Brief sotto i 768 px.
 - `/opzione-b` è `noindex` e fuori sitemap: è una pagina di proposta, non del sito.
 
+
+**Media.** I blocchi di prova (hero, progetti, ritratti, prima/dopo) restano rettangoli con
+l'etichetta di cosa ci andrà, e ogni riga va in `TODO-MEDIA.md`: lì non entra mai materiale
+generato. Se invece serve uno sfondo, una texture o un gradiente materico — che prova non è —
+generalo tu con **Higgsfield** seguendo la skill `sito-media`: `select_workspace` sul workspace
+privato, `gpt_image_2`, poi scarica l'URL della CDN con `curl -sSL -o public/images/<nome>.png`,
+converti in WebP (lato lungo ≤ 2400, q82) e segna la riga con «generato: sì» in `TODO-MEDIA.md`.
+
 Verifica il budget di entrambe con Chrome DevTools MCP. Aggiorna `STATO.md` (prossima:
 `/fase-4-contenuti`; nota: la decisione n. 1 si prende su queste due pagine). Poi fermati e
 mostrami le due home su desktop e su mobile.

@@ -8,6 +8,8 @@
 |---|---|---|---|---|
 | ▲ Ragione sociale esatta, P.IVA, sede legale, REA | footer, note legali, JSON-LD | titolare | | |
 | ▲ Telefono diretto, email pubblica, PEC, orari | footer, contatti, JSON-LD | titolare | | |
+| ▲ **Casella dove arrivano i brief** (`BRIEF_TO`) — può non essere la mail pubblica | route `/api/brief` | titolare | | |
+| ▲ **Mittente delle mail del brief** (`BRIEF_FROM`): dominio da verificare su Resend | route `/api/brief` | titolare (dipende dalla decisione n. 2) | | |
 | ▲ Titolare del trattamento ed email per i diritti privacy | privacy | titolare | | |
 | ▲ Dominio definitivo e accesso DNS (o accesso a brasili.net) | canonical, redirect, deploy | titolare | | |
 | ▲ Iscrizioni: ordini degli ingegneri/architetti, sezione, numero; coordinatore sicurezza; CTU; certificazioni | studio, persone, JSON-LD `hasCredential` | titolare | | |
@@ -24,6 +26,9 @@
 | Elenco «cosa serve da te» per ciascuno dei 6 servizi | /servizi/* | i documenti che chiedono davvero a un cliente per partire | | |
 | Vecchie URL di brasili.net con traffico | REDIRECT.md | export da Search Console o Analytics del vecchio sito, se esiste | | |
 | Loghi imprese partner, pubblicazioni, premi | home, studio | solo se citabili | | |
+| Tempo di risposta da dichiarare nella mail di cortesia, se lo vogliono | mail del brief | una frase: oggi non promettiamo nessun tempo (CLAUDE.md § Obiettivo) | | |
+| Se le sei voci di «tipo di immobile» del brief vanno bene | brief, passo 2 | oggi: casa indipendente · appartamento · edificio intero · capannone o ufficio · terreno · altro | | |
+| Titolare del trattamento, base giuridica e tempi di conservazione dei brief | /privacy (fase 7) | serve per dichiarare Resend come responsabile e dire quanto si tengono i brief | | |
 
 ## Media (dettaglio in TODO-MEDIA.md)
 

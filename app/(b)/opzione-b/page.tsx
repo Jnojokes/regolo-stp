@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Brief } from '@/components/brief/Brief'
 import { PaginaStub } from '@/components/PaginaStub'
 
 export const metadata: Metadata = {
@@ -10,21 +11,24 @@ export const metadata: Metadata = {
 /** Home, opzione B: stessi blocchi, altro ordine e altri token. */
 export default function OpzioneB() {
   return (
-    <PaginaStub
-      fase="Home · opzione B «Il cantiere»"
-      titolo="Che intervento hai in mente?"
-      blocchi={[
-        'Hero-domanda con percorso — la domanda al posto dello slogan, 5 percorsi',
-        'Numeri — anni · progetti · mq · comuni',
-        'Sei percorsi con «cosa serve da te»',
-        'Come lavoriamo — timeline delle 5 fasi',
-        'Progetti con i dati duri — luogo, anno, mq, ruolo dello studio',
-        'WOW — prima / dopo',
-        'Le persone',
-        'Brief qualificato',
-        'Footer operativo + barra CTA mobile',
-      ]}
-      intento="Stessa architettura dell’opzione A, altro ordine e altri token: si smista prima, si dimostra dopo."
-    />
+    <>
+      <PaginaStub
+        fase="Home · opzione B «Il cantiere»"
+        titolo="Che intervento hai in mente?"
+        blocchi={[
+          'Hero-domanda con percorso — la domanda al posto dello slogan, 5 percorsi',
+          'Numeri — anni · progetti · mq · comuni',
+          'Sei percorsi con «cosa serve da te»',
+          'Come lavoriamo — timeline delle 5 fasi',
+          'Progetti con i dati duri — luogo, anno, mq, ruolo dello studio',
+          'WOW — prima / dopo',
+          'Le persone',
+          'Brief qualificato',
+          'Footer operativo + barra CTA mobile',
+        ]}
+        intento="Stessa architettura dell’opzione A, altro ordine e altri token: si smista prima, si dimostra dopo."
+      />
+      <Brief pagina="/opzione-b" />
+    </>
   )
 }

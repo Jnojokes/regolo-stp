@@ -1,0 +1,320 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><title>REGOLO · Opzione B — Il cantiere</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F3F4F1; --ink:#14181C; --steel:#5C6670; --grid:#D5D9D3; --card:#FFFFFF;
+  --accent:#E4572E; --accent-ink:#B8421F; --accent-soft:#FBE9E2;
+  --disp:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --sans:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --max:1360px; --gut:clamp(20px,4vw,56px);
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-bottom:0}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{font-family:var(--disp);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.025em;line-height:1}
+h1{font-size:clamp(40px,7.4vw,96px);font-weight:800}
+h2{font-size:clamp(30px,4.2vw,58px)}
+h3{font-size:clamp(20px,1.8vw,26px);line-height:1.15}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--steel)}
+section{padding:clamp(52px,7vw,104px) 0}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,2vw,28px)}
+.btn{display:inline-flex;align-items:center;gap:12px;background:var(--accent);color:#fff;padding:16px 22px;font-weight:600;font-size:15px;border:0;cursor:pointer;font-family:var(--sans);border-radius:3px}
+.btn:hover{background:var(--accent-ink)}
+.btn.dark{background:var(--ink)}.btn.dark:hover{background:#2A3138}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.line:hover{background:var(--ink);color:#fff}
+.arrow::after{content:"→"}
+
+/* quota: la linea di misura del disegno tecnico */
+.dim{display:flex;align-items:center;gap:12px;color:var(--steel)}
+.dim::before,.dim::after{content:"";flex:1;height:1px;background:var(--steel);position:relative}
+.dim span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.dim.left::before{display:none}
+
+/* placeholder: carta millimetrata */
+.ph{position:relative;background:var(--card);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:16px 16px;border:1px solid var(--grid);overflow:hidden}
+.ph::after{content:attr(data-label);position:absolute;left:10px;top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);background:var(--ground);padding:4px 8px;border:1px solid var(--grid)}
+
+/* barra proposta */
+.proposal{background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:9px var(--gut);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.proposal b{color:#FFB39A;font-weight:500}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--grid)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{font-family:var(--disp);font-weight:800;letter-spacing:-.02em;font-size:22px;display:flex;align-items:baseline;gap:10px}
+.logo small{font-family:var(--mono);font-weight:400;letter-spacing:.06em;font-size:11px;color:var(--steel);text-transform:uppercase}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:15px;font-weight:500}
+.nav ul a:hover{color:var(--accent-ink)}
+@media(max-width:860px){.nav ul,.nav .btn{display:none}}
+
+/* hero-domanda */
+.hero{padding:clamp(40px,6vw,88px) 0 clamp(36px,5vw,64px);border-bottom:1px solid var(--grid)}
+.hero .top{display:flex;justify-content:space-between;gap:24px;align-items:end;flex-wrap:wrap}
+.hero h1 span{color:var(--accent)}
+.hero .sub{max-width:40ch;color:var(--steel);font-size:clamp(16px,1.3vw,19px)}
+.paths{margin-top:clamp(28px,4vw,48px);display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.path{background:var(--card);border:1.5px solid var(--grid);padding:22px 18px 18px;text-align:left;cursor:pointer;font-family:var(--sans);color:var(--ink);display:flex;flex-direction:column;gap:22px;min-height:150px;border-radius:3px;transition:border-color .15s,transform .15s}
+.path .n{font-family:var(--mono);font-size:11px;color:var(--steel);letter-spacing:.08em}
+.path b{font-family:var(--disp);font-weight:700;font-size:clamp(18px,1.5vw,22px);line-height:1.1;letter-spacing:-.02em}
+.path:hover{border-color:var(--ink);transform:translateY(-2px)}
+.path[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.panel{margin-top:14px;background:var(--ink);color:#fff;padding:clamp(22px,3vw,36px);border-radius:3px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px}
+.panel h3{color:#fff;font-size:clamp(22px,2.2vw,30px)}
+.panel .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#FFB39A;margin-bottom:10px}
+.panel ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px;color:#DDE2E6}
+.panel ul li::before{content:"— ";color:#FFB39A}
+.panel .go{margin-top:18px}
+@media(max-width:1000px){.paths{grid-template-columns:repeat(2,1fr)}.panel{grid-template-columns:1fr}}
+@media(max-width:560px){.paths{grid-template-columns:1fr}.path{min-height:0;flex-direction:row;justify-content:space-between;align-items:center}}
+
+/* numeri */
+.numbers{padding:0;border-bottom:1px solid var(--grid)}
+.numbers .grid{gap:0}
+.num{grid-column:span 3;padding:28px var(--gut) 28px 0;border-right:1px solid var(--grid)}
+.num:last-child{border-right:0}
+.num b{display:block;font-family:var(--disp);font-weight:800;font-size:clamp(40px,5vw,68px);letter-spacing:-.03em;line-height:1;color:var(--steel);font-variant-numeric:tabular-nums}
+.num span{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel)}
+@media(max-width:760px){.num{grid-column:span 6}.num:nth-child(2){border-right:0}}
+
+/* servizi come percorsi */
+.svcs .head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.svc{grid-column:span 4;background:var(--card);border:1px solid var(--grid);padding:24px;display:flex;flex-direction:column;gap:12px;border-radius:3px;min-height:200px}
+.svc .mono{color:var(--accent-ink)}
+.svc p{color:var(--steel);font-size:15px}
+.svc .need{margin-top:auto;padding-top:14px;border-top:1px dashed var(--grid);font-size:13px;color:var(--steel)}
+.svc .need b{color:var(--ink);font-weight:500}
+@media(max-width:1000px){.svc{grid-column:span 6}}
+@media(max-width:600px){.svc{grid-column:span 12;min-height:0}}
+
+/* processo: timeline orizzontale */
+.process{background:var(--ink);color:#fff}
+.process .dim,.process .dim span{color:#9AA4AD}.process .dim::before,.process .dim::after{background:#3A434B}
+.tl{margin-top:44px;display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.tl::before{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:#3A434B}
+.tl>div{padding:0 20px 0 0;position:relative}
+.tl>div::before{content:"";position:absolute;left:0;top:0;width:20px;height:20px;background:var(--ink);border:2px solid var(--accent);border-radius:50%}
+.tl .mono{color:#9AA4AD;margin:34px 0 8px;display:block}
+.tl b{font-family:var(--disp);font-weight:700;font-size:clamp(20px,1.7vw,24px);display:block;letter-spacing:-.02em;line-height:1.1}
+.tl p{color:#C6CDD3;font-size:14px;margin-top:8px;max-width:26ch}
+@media(max-width:900px){.tl{grid-template-columns:1fr;gap:26px}.tl::before{left:9px;right:auto;top:0;bottom:0;width:2px;height:auto}.tl>div{padding-left:36px}.tl .mono{margin-top:0}}
+
+/* progetti con dati duri */
+.projects .pcard{grid-column:span 6;background:var(--card);border:1px solid var(--grid);border-radius:3px;overflow:hidden}
+.projects .ph{aspect-ratio:16/9;border:0;border-bottom:1px solid var(--grid)}
+.projects table{width:100%;border-collapse:collapse;font-size:14px}
+.projects td{padding:9px 20px;border-top:1px solid var(--grid)}
+.projects td:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);width:40%}
+.projects .t{padding:18px 20px 12px;font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-.02em}
+@media(max-width:800px){.projects .pcard{grid-column:span 12}}
+
+/* prima/dopo */
+.ba{border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);background:var(--card)}
+.ba .grid{align-items:center}
+.ba .txt{grid-column:span 4}
+.ba .cmp{grid-column:6/span 7;position:relative;aspect-ratio:16/10;border:1px solid var(--grid);overflow:hidden;background:var(--ground)}
+.ba .cmp .ph{position:absolute;inset:0;border:0}
+.ba .cmp .after{clip-path:inset(0 0 0 var(--x,50%))}
+.ba .cmp .after.ph{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-color:var(--accent-soft)}
+.ba .cmp .after::after{left:auto;right:10px}
+.ba .cmp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba .cmp .hnd{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--accent);pointer-events:none}
+.ba .cmp .hnd::after{content:"◂ ▸";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;font-size:11px;padding:6px 8px;border-radius:3px;white-space:nowrap}
+@media(max-width:900px){.ba .txt,.ba .cmp{grid-column:span 12}}
+
+/* persone */
+.people .p{grid-column:span 3;display:flex;flex-direction:column;gap:12px}
+.people .ph{aspect-ratio:3/4}
+.people b{font-family:var(--disp);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.people span{font-size:14px;color:var(--steel)}
+@media(max-width:900px){.people .p{grid-column:span 6}}
+
+/* brief */
+.brief{background:var(--accent-soft);border-top:1px solid var(--grid)}
+.brief .grid{align-items:start}
+.brief .intro{grid-column:span 5}
+.brief .intro p{color:var(--steel);margin-top:16px;max-width:40ch}
+.form{grid-column:7/span 6;background:var(--card);border:1px solid var(--grid);padding:clamp(20px,3vw,32px);border-radius:3px}
+.form .bar{display:flex;gap:6px;margin-bottom:20px}
+.form .bar i{flex:1;height:4px;background:var(--grid);border-radius:2px}
+.form .bar i.done{background:var(--accent)}
+.form .q{font-family:var(--disp);font-weight:700;font-size:clamp(22px,2vw,28px);letter-spacing:-.02em;margin-bottom:16px;line-height:1.1}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:1.5px solid var(--grid);background:var(--ground);padding:14px;text-align:left;cursor:pointer;font-family:var(--sans);font-size:15px;color:var(--ink);border-radius:3px}
+.opt:hover,.opt[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.field{display:grid;gap:6px;margin-bottom:12px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel)}
+.field input{border:1.5px solid var(--grid);background:var(--ground);padding:12px;font:inherit;color:var(--ink);border-radius:3px}
+.form .nav2{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--steel);margin-top:8px}
+.consent input{margin-top:3px}
+.form .disabled{font-family:var(--mono);font-size:11px;color:var(--steel);margin-top:14px;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:900px){.brief .intro,.form{grid-column:span 12}.opts{grid-template-columns:1fr}}
+
+/* footer + barra mobile */
+footer{padding:52px 0 96px;border-top:1px solid var(--grid)}
+footer .col{grid-column:span 3;font-size:14px;line-height:1.7}
+footer .col b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel);margin-bottom:8px;font-weight:500}
+footer .map{grid-column:span 12;aspect-ratio:21/6;margin-top:28px}
+footer .fine{margin-top:24px;font-family:var(--mono);font-size:11px;color:var(--steel);display:flex;gap:24px;flex-wrap:wrap;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:900px){footer .col{grid-column:span 6}}
+.todo{color:var(--steel)}
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;grid-template-columns:1fr 1fr 1.4fr;gap:1px;background:var(--grid);border-top:1px solid var(--grid)}
+.mbar a{background:var(--card);padding:14px 8px;text-align:center;font-weight:600;font-size:14px}
+.mbar a.go{background:var(--accent);color:#fff}
+@media(max-width:768px){.mbar{display:grid}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="proposal"><span><b>Proposta · Opzione B — «Il cantiere»</b> · prototipo di homepage</span><span>Contenuti indicativi: foto, numeri, nomi e progetti arrivano dallo studio</span></div>
+
+<header><div class="wrap nav">
+  <a class="logo" href="#">REGOLO <small>STP · Fermo</small></a>
+  <ul><li><a href="#servizi">Servizi</a></li><li><a href="#progetti">Progetti</a></li><li><a href="#processo">Come lavoriamo</a></li><li><a href="#contatti">Contatti</a></li></ul>
+  <a class="btn dark" href="#brief">Raccontaci il progetto</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="dim left"><span>Sez. 01 — Il punto di partenza</span></div>
+  <div class="top" style="margin-top:22px">
+    <h1>Che intervento<br>hai <span>in mente?</span></h1>
+    <p class="sub">Scegli il tuo caso. Ti diciamo subito cosa comprende, come si svolge e cosa serve da parte tua. Ingegneria civile e architettura, a Fermo.</p>
+  </div>
+  <div class="paths" id="paths">
+    <button class="path" data-k="casa"><span class="n">01</span><b>Casa nuova</b></button>
+    <button class="path" data-k="ristr"><span class="n">02</span><b>Ristrutturazione o ampliamento</b></button>
+    <button class="path" data-k="pratica"><span class="n">03</span><b>Pratica o bonus</b></button>
+    <button class="path" data-k="sisma"><span class="n">04</span><b>Struttura e sisma</b></button>
+    <button class="path" data-k="pubblica"><span class="n">05</span><b>Opera pubblica</b></button>
+  </div>
+  <div class="panel" id="panel"></div>
+</div></section>
+
+<section class="numbers"><div class="wrap"><p class="mono" style="padding:18px 0 0">I vostri numeri — quattro, non otto. Li mette lo studio.</p></div><div class="wrap grid">
+  <div class="num"><b>—</b><span>anni di attività</span></div>
+  <div class="num"><b>—</b><span>progetti seguiti</span></div>
+  <div class="num"><b>—</b><span>mq progettati</span></div>
+  <div class="num"><b>—</b><span>comuni in cui abbiamo lavorato</span></div>
+</div></section>
+
+<section class="svcs" id="servizi"><div class="wrap">
+  <div class="dim left"><span>Sez. 02 — Cosa facciamo</span></div>
+  <div class="head" style="margin-top:22px"><h2>Sei percorsi. Ognuno con quello che serve da te.</h2><a class="btn line arrow" href="#">Tutti i servizi</a></div>
+  <div class="grid">
+    <div class="svc"><span class="mono">progettazione architettonica · direzione lavori</span><h3>La tua casa, dal disegno al cantiere</h3><p>Dall'idea al progetto esecutivo, con la direzione dei lavori fino alla consegna.</p><div class="need"><b>Serve da te:</b> il terreno o l'immobile, le esigenze della famiglia, il budget orientativo</div></div>
+    <div class="svc"><span class="mono">interventi sull'esistente · cambi di destinazione</span><h3>Ristrutturare, ampliare, recuperare</h3><p>Verifica di cosa si può fare, progetto, pratiche e cantiere sull'edificio che c'è.</p><div class="need"><b>Serve da te:</b> planimetrie o vecchie pratiche, foto dello stato attuale</div></div>
+    <div class="svc"><span class="mono">progettazione strutturale · adeguamento sismico</span><h3>Mettere in sicurezza la struttura</h3><p>Valutazione della vulnerabilità, progetto di miglioramento o adeguamento, direzione lavori.</p><div class="need"><b>Serve da te:</b> accesso all'edificio per il rilievo, eventuali progetti originali</div></div>
+    <div class="svc"><span class="mono">pratiche edilizie · sisma bonus · agibilità</span><h3>Pratiche, permessi e bonus</h3><p>Le carte che servono, fatte bene e nei tempi degli uffici, con i requisiti dei bonus verificati prima.</p><div class="need"><b>Serve da te:</b> titolo di proprietà o visura, planimetria catastale</div></div>
+    <div class="svc"><span class="mono">progettazione termica e acustica · efficientamento</span><h3>Comfort, energia, acustica</h3><p>Meno consumi, più silenzio, temperatura giusta: progettati, non aggiunti dopo.</p><div class="need"><b>Serve da te:</b> le bollette dell'ultimo anno, l'impianto attuale</div></div>
+    <div class="svc"><span class="mono">lavori pubblici · coordinamento sicurezza · collaudi</span><h3>Opere pubbliche e collaudi</h3><p>Progettazione, sicurezza e collaudo per enti e amministrazioni, con le procedure che conosciamo.</p><div class="need"><b>Serve da te:</b> il documento di indirizzo o il bando</div></div>
+  </div>
+  <p class="todo" style="margin-top:14px;font-size:13px">Gli elenchi «serve da te» sono un esempio: li scrive lo studio, servizio per servizio.</p>
+</div></section>
+
+<section class="process" id="processo"><div class="wrap">
+  <div class="dim left"><span>Sez. 03 — Come lavoriamo</span></div>
+  <h2 style="margin-top:22px;color:#fff">E poi cosa succede? Cinque passaggi, sempre gli stessi.</h2>
+  <div class="tl">
+    <div><span class="mono">Passo 1</span><b>Primo incontro</b><p>L'idea, l'immobile, i vincoli. Vi diciamo cosa è possibile.</p></div>
+    <div><span class="mono">Passo 2</span><b>Fattibilità e costi</b><p>Verifiche urbanistiche e strutturali, prima stima dei costi. Prima di disegnare.</p></div>
+    <div><span class="mono">Passo 3</span><b>Progetto</b><p>Architettonico e strutturale dallo stesso tavolo.</p></div>
+    <div><span class="mono">Passo 4</span><b>Autorizzazioni</b><p>Pratiche edilizie, sismiche, energetiche, con i tempi degli uffici in chiaro.</p></div>
+    <div><span class="mono">Passo 5</span><b>Cantiere e direzione lavori</b><p>Controllo di lavorazioni, costi e sicurezza fino alla consegna.</p></div>
+  </div>
+</div></section>
+
+<section class="projects" id="progetti"><div class="wrap">
+  <div class="dim left"><span>Sez. 04 — Progetti</span></div>
+  <h2 style="margin:22px 0 36px">I dati che un committente serio legge.</h2>
+  <div class="grid">
+    <div class="pcard"><div class="ph" data-label="Foto progetto 01 — dallo studio"></div><div class="t">Progetto 01</div>
+      <table><tr><td>Luogo</td><td>comune (FM)</td></tr><tr><td>Anno</td><td>—</td></tr><tr><td>Superficie</td><td>— mq</td></tr><tr><td>Ruolo dello studio</td><td>progetto architettonico · strutturale · direzione lavori</td></tr><tr><td>Committente</td><td>privato</td></tr></table></div>
+    <div class="pcard"><div class="ph" data-label="Foto progetto 02 — dallo studio"></div><div class="t">Progetto 02</div>
+      <table><tr><td>Luogo</td><td>comune (FM)</td></tr><tr><td>Anno</td><td>—</td></tr><tr><td>Superficie</td><td>— mq</td></tr><tr><td>Ruolo dello studio</td><td>adeguamento sismico · direzione lavori</td></tr><tr><td>Committente</td><td>Comune di …</td></tr></table></div>
+  </div>
+  <p class="todo" style="margin-top:14px;font-size:13px">Il campo «ruolo dello studio» manca in quasi tutti i siti di studi tecnici: è quello che dice cosa sapete fare.</p>
+</div></section>
+
+<section class="ba"><div class="wrap grid">
+  <div class="txt"><div class="dim left"><span>Sez. 05 — Prima / dopo</span></div><h2 style="margin-top:22px">La prova che chiunque capisce al volo.</h2><p style="color:var(--steel);margin-top:16px;max-width:36ch">Due foto dallo stesso punto, un cursore. Su due o tre recuperi vale più di qualsiasi descrizione.</p></div>
+  <div class="cmp" id="cmp"><div class="ph" data-label="Prima — foto dallo studio"></div><div class="ph after" data-label="Dopo — stesso punto di ripresa"></div><div class="hnd"></div><input type="range" min="0" max="100" value="50" aria-label="Confronto prima e dopo"></div>
+</div></section>
+
+<section class="people"><div class="wrap">
+  <div class="dim left"><span>Sez. 06 — Le persone</span></div>
+  <h2 style="margin:22px 0 32px">Chi firma il progetto.</h2>
+  <div class="grid">
+    <div class="p"><div class="ph" data-label="Ritratto — dallo studio"></div><b>Nome Cognome</b><span>ingegnere · ordine e abilitazioni</span></div>
+    <div class="p"><div class="ph" data-label="Ritratto — dallo studio"></div><b>Nome Cognome</b><span>architetto · ordine e abilitazioni</span></div>
+    <div class="p"><div class="ph" data-label="Ritratto — dallo studio"></div><b>Nome Cognome</b><span>ingegnere · coordinamento sicurezza</span></div>
+    <div class="p"><div class="ph" data-label="Ritratto — dallo studio"></div><b>Nome Cognome</b><span>geometra · pratiche e cantiere</span></div>
+  </div>
+</div></section>
+
+<section class="brief" id="brief"><div class="wrap grid">
+  <div class="intro"><div class="dim left"><span>Sez. 07 — Il brief</span></div><h2 style="margin-top:22px">Cinque domande. Poi vi richiamiamo noi.</h2><p>Un minuto. Alla fine sappiamo già cosa serve e la prima telefonata parte dal punto giusto. I dati personali solo all'ultimo passo.</p></div>
+  <form class="form" id="form" onsubmit="return false">
+    <div class="bar" id="bar"><i class="done"></i><i></i><i></i><i></i><i></i></div>
+    <div id="steps"></div>
+    <div class="nav2"><span class="mono" id="stepLbl">Passo 1 di 5</span><div style="display:flex;gap:8px"><button type="button" class="btn line" id="prev">Indietro</button><button type="button" class="btn arrow" id="next">Avanti</button></div></div>
+    <p class="disabled">Prototipo · invio disattivato · nel sito arriva allo studio via email</p>
+  </form>
+</div></section>
+
+<footer id="contatti"><div class="wrap">
+  <div class="grid">
+    <div class="col"><b>Studio</b>REGOLO<br>società tra professionisti<br>ingegneria civile e architettura</div>
+    <div class="col"><b>Sede</b>Via Campiglione 2/E<br>63900 Fermo (FM)</div>
+    <div class="col"><b>Contatti</b><a href="tel:+390734510329">0734 510329</a><br><span class="todo">email · PEC</span></div>
+    <div class="col"><b>Orari</b><span class="todo">orari di studio</span><br><span class="todo">P.IVA</span></div>
+    <div class="ph map" data-label="Mappa statica della sede — nessun cookie di terzi"></div>
+  </div>
+  <div class="fine"><span>© REGOLO STP</span><span>Privacy</span><span>Cookie</span><span>Note legali</span></div>
+</div></footer>
+
+<nav class="mbar" aria-label="Azioni rapide"><a href="tel:+390734510329">Chiama</a><a href="#">WhatsApp</a><a class="go" href="#brief">Raccontaci il progetto</a></nav>
+
+<script>
+const P={
+ casa:{t:"Casa nuova",v:"Casa nuova",inc:["progetto architettonico e strutturale","pratiche edilizie e sismiche","direzione lavori e sicurezza"],how:["primo incontro e fattibilità","progetto e autorizzazioni","cantiere fino alla consegna"],need:["terreno o immobile","esigenze della famiglia","budget orientativo"]},
+ ristr:{t:"Ristrutturazione o ampliamento",v:"Ristrutturazione o ampliamento",inc:["verifica di cosa si può fare","progetto e pratiche","direzione lavori"],how:["rilievo dello stato attuale","progetto e titolo edilizio","cantiere"],need:["planimetrie o vecchie pratiche","foto dello stato attuale","chi abita l'immobile durante i lavori"]},
+ pratica:{t:"Pratica o bonus",v:"Pratica o bonus",inc:["verifica dei requisiti prima di partire","la pratica giusta, completa","rapporto con gli uffici"],how:["controllo documenti","deposito e integrazioni","chiusura e agibilità"],need:["titolo di proprietà o visura","planimetria catastale","eventuali pratiche precedenti"]},
+ sisma:{t:"Struttura e sisma",v:"Struttura e sisma",inc:["valutazione della vulnerabilità","progetto di miglioramento o adeguamento","direzione lavori strutturale"],how:["rilievo e indagini","progetto e deposito sismico","cantiere e collaudo"],need:["accesso all'edificio per il rilievo","progetti originali, se esistono"]},
+ pubblica:{t:"Opera pubblica",v:"Opera pubblica",inc:["progettazione nei livelli richiesti","coordinamento della sicurezza","collaudo"],how:["indirizzo e fattibilità","progetto e verifica","esecuzione e collaudo"],need:["documento di indirizzo o bando","cronoprogramma dell'ente"]}
+};
+const panel=document.getElementById('panel'),paths=document.getElementById('paths');
+function show(k){const d=P[k];panel.innerHTML=`<div><div class="k">${d.t}</div><h3>Cosa comprende</h3><ul style="margin-top:12px">${d.inc.map(x=>`<li>${x}</li>`).join('')}</ul><a class="btn go arrow" href="#brief" data-v="${d.v}">Raccontaci il progetto</a></div><div><div class="k">Come si svolge</div><ul>${d.how.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><div class="k">Cosa serve da te</div><ul>${d.need.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+ [...paths.children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
+paths.addEventListener('click',e=>{const b=e.target.closest('.path');if(b)show(b.dataset.k)});
+panel.addEventListener('click',e=>{const a=e.target.closest('.go');if(!a)return;ans[0]=a.dataset.v;s=0;render();});
+show('ristr');
+
+/* brief */
+const STEPS=[
+ {q:"Che tipo di intervento?",opts:["Casa nuova","Ristrutturazione o ampliamento","Pratica o bonus","Struttura e sisma","Opera pubblica","Altro"]},
+ {q:"Dove si trova?",fields:[["Comune","Fermo, Porto San Giorgio, …"],["Tipo di immobile","casa, appartamento, capannone, …"]]},
+ {q:"A che punto sei?",opts:["Solo un'idea","Ho l'immobile","Ho già un progetto","Devo partire subito"]},
+ {q:"In che tempi?",opts:["Entro 3 mesi","3-6 mesi","6-12 mesi","Non ho fretta"]},
+ {q:"Come ti richiamiamo?",fields:[["Nome",""],["Telefono",""],["Email",""]],consent:true}
+];
+const ans={};let s=0;const stepsEl=document.getElementById('steps'),bar=document.getElementById('bar'),lbl=document.getElementById('stepLbl');
+function render(){const st=STEPS[s];let h=`<div class="q">${st.q}</div>`;
+ if(st.opts)h+=`<div class="opts">`+st.opts.map(o=>`<button type="button" class="opt" aria-pressed="${ans[s]===o}" data-o="${o}">${o}</button>`).join('')+`</div>`;
+ if(st.fields)h+=st.fields.map(([l,p])=>`<div class="field"><label>${l}</label><input type="text" placeholder="${p}"></div>`).join('');
+ if(st.consent)h+=`<label class="consent"><input type="checkbox"> Ho letto l'informativa privacy e acconsento al trattamento dei dati per essere ricontattato.</label>`;
+ stepsEl.innerHTML=h;[...bar.children].forEach((i,k)=>i.classList.toggle('done',k<=s));lbl.textContent=`Passo ${s+1} di 5`;
+ document.getElementById('next').textContent=s===4?'Invia il brief':'Avanti';document.getElementById('prev').style.visibility=s===0?'hidden':'visible';}
+stepsEl.addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;ans[s]=b.dataset.o;render();});
+document.getElementById('next').addEventListener('click',()=>{if(s<4){s++;render();}});
+document.getElementById('prev').addEventListener('click',()=>{if(s>0){s--;render();}});
+render();
+
+/* prima/dopo */
+const cmp=document.getElementById('cmp');cmp.querySelector('input').addEventListener('input',e=>cmp.style.setProperty('--x',e.target.value+'%'));
+</script>
+</body></html>

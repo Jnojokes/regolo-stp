@@ -2,7 +2,11 @@
 
 > Ogni immagine o video placeholder da sostituire prima del go-live, e ogni file generato con IA.
 > Regola: nei blocchi di prova (progetti, persone, prima/dopo, cantieri) solo foto dello studio.
-> Aggiornato alla fase 3.
+> Aggiornato alla **fase 3 bis** (parte 1/2).
+>
+> Da adesso ogni segnaposto immagine **porta in pagina la propria specifica**
+> (`2400 × 1650 px · AVIF · ≤ 250 KB`): la riga di questa tabella e il campo in pagina dicono
+> la stessa cosa, e quella in pagina è quella che il cliente vede in call.
 
 ## Da sostituire prima del go-live
 
@@ -36,7 +40,7 @@ Se il cliente li chiede si disegnano in SVG, non si generano.
 |---|---|---|---|
 | Esploso strutturale (home A) | SVG generato lato server da `lib/esploso.ts` (isometria calcolata, 47 poligoni + 3 polilinee) | ~6 KB nell'HTML | un PNG non si può animare per livelli alla fase 5, non scala e non si ritematizza. E i colori delle cinque facce sono token verificati AA |
 | Mappa del territorio (home A) | SVG generato da `lib/territorio.ts` — perimetro **vero** delle tre province (confini ISTAT via openpolis, semplificati a ~100 m) + 128 punti comune | ~4 KB nell'HTML | una mappa a tile è un terzo che vede l'IP di chi visita: informativa più lunga e consent gate. Questo non chiama nessuno |
-| Rettangoli di prova | `components/Placeholder.tsx` — tratteggio da disegno tecnico nel tema A, carta millimetrata nel tema B | 0 | — |
+| Rettangoli di prova | `components/Placeholder.tsx` — **fase 3 bis**: via le due texture (tratteggio in A, carta millimetrata in B), dentro **quattro squadrette d'angolo** in `--color-line` (4,61:1) e la **scheda di specifica** con il formato richiesto. Un elemento e quattro gradienti | 0 | le due texture erano decorative e identiche su ogni blocco: dicevano «disegno» e non dicevano niente. E il piano del segnaposto sta a 1,18:1 dalla carta, quindi non poteva portare da solo il significato «qui va una fotografia»: ora lo portano le squadrette |
 
 Entrambi si rigenerano con `node scripts/genera-territorio.mjs` e ricalcolando `lib/esploso.ts`
 (la geometria è codice, non un file: cambia una costante e cambia il disegno).
@@ -47,8 +51,29 @@ Regola della skill `sito-media` e di `CLAUDE.md` § Regole, 2: in hero, progetti
 prima/dopo **non entra mai** materiale generato con IA. Alla fase 3 non è stato generato niente:
 i due SVG sono geometria calcolata da dati pubblici, non immagini prodotte da un modello.
 
-Se servirà uno sfondo o una texture — che prova non è — si genera con Higgsfield seguendo
-`sito-media`, si converte in WebP e si segna qui con «generato: sì».
+## Fase 3 bis — i media generati: **niente, e uno è bloccato dai crediti**
+
+**Zero immagini generate in tutto il sito, e non è un ripiego.** Il prompt della fase prevedeva
+sfondi e texture materiche a piena larghezza. Alla seconda passata del piano la scelta è
+caduta, con una ragione scritta: `TODO-MEDIA.md` § «Niente materiale generato nei blocchi di
+prova» nomina **la hero per prima**, e una texture generata nell'oggetto più grande della prima
+schermata — che è anche l'LCP — farebbe leggere a chi arriva per passaparola, nell'ordine: il
+nome, il payoff, e una smentita. La risposta migliore era già in casa: il **campo dichiarato**
+con le quattro squadrette e la specifica dentro, che davanti a un ingegnere è più forte di un
+intonaco generato con un cartello che dice che non è suo.
+
+**Quello che resta da generare è bloccato dai crediti.** Il workspace privato Higgsfield ha
+**1,79 crediti**; `gpt_image_2` costa 0,5 a 1k/low, **2 a 2k/medium**, 6,5 a 2k/high. Non basta
+per una sola immagine alla qualità che serve, e il video Seedance costa di più. Quindi:
+
+| Cosa | Stato | Prompt e costo, pronti |
+|---|---|---|
+| Immagine **Open Graph** 1200×630 | **bloccata: crediti** | `gpt_image_2`, 2k/medium = 2 crediti. Prompt: fondo neutro chiarissimo, una linea di quota orizzontale con terminatori obliqui, nessun edificio, nessuna persona, nessun testo (il testo si compone in codice). Poi `curl -sSL -o public/images/og.png "<url>"`, WebP q82, riga «generato: sì» e `additionalProperty` IPTC `digitalSourceType` sull'`ImageObject` |
+| Loop atmosferico per la hero (Seedance) | **fuori**, e non solo per i crediti | il piano lo ha escluso in seconda passata: la hero di A ha l'LCP sul **testo**, e un video dietro il payoff sposterebbe l'LCP su un asset da 2 MB per guadagnare atmosfera su un sito che deve vendere competenza. Se si rivaluta, serve la decisione n. 6 |
+| Sfondi e texture materiche | **fuori, per decisione** | vedi sopra: nessuna immagine generata in nessun blocco |
+
+Se in futuro servirà uno sfondo o una texture — che prova non è — si genera con Higgsfield
+seguendo `sito-media`, si converte in WebP e si segna qui con «generato: sì».
 
 ## Stato dei segnaposto in pagina (fase 3)
 

@@ -16,22 +16,23 @@ import Link from 'next/link'
  * una riga di rumore sopra la hero.
  */
 export function BarraProposta({ opzione }: { opzione: 'a' | 'b' }) {
-  const questa = opzione === 'a' ? 'Opzione A — «Lo studio»' : 'Opzione B — «Il cantiere»'
+  const questa = opzione === 'a' ? 'opzione A — «l’elevato»' : 'opzione B — «il registro»'
   const altra =
     opzione === 'a'
-      ? { href: '/opzione-b', label: 'Guarda l’opzione B' }
-      : { href: '/', label: 'Guarda l’opzione A' }
+      ? { href: '/opzione-b', label: 'guarda l’opzione B' }
+      : { href: '/', label: 'guarda l’opzione A' }
 
   return (
     <div className="barra-proposta">
       <div className="wrap">
         <span>
-          <strong>Proposta · {questa}</strong> · prototipo di homepage
+          <strong>proposta · {questa}</strong> — prototipo di homepage
         </span>
 
         <span>
           <span className="barra-proposta-avvertenza">
-            Contenuti indicativi: foto, numeri, nomi e progetti arrivano dallo studio
+            le fotografie, i numeri, i nomi e i progetti arrivano dallo studio: in pagina sono
+            segnaposto dichiarati
           </span>
           <Link href={altra.href}>{altra.label}</Link>
         </span>

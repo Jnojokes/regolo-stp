@@ -17,7 +17,7 @@ import type { ReactNode } from 'react'
  */
 export function Sezione({
   id,
-  quota,
+  etichetta,
   titolo,
   intro,
   azione,
@@ -32,7 +32,7 @@ export function Sezione({
 }: {
   id?: string
   /** L'occhiello / quota. Nell'opzione B ci va anche il numero di sezione. */
-  quota?: string
+  etichetta?: string
   /** Il titolo del blocco. Sempre `h2`. */
   titolo?: ReactNode
   /** Una riga di intento sotto il titolo. */
@@ -76,7 +76,7 @@ export function Sezione({
     .filter(Boolean)
     .join(' ')
 
-  const haTesta = quota || titolo || intro || azione
+  const haTesta = etichetta || titolo || intro || azione
 
   return (
     <section id={id} className={classi}>
@@ -84,11 +84,7 @@ export function Sezione({
         {haTesta && (
           <div className={azione ? 'testa-sezione' : undefined}>
             <div>
-              {quota && (
-                <p className="quota">
-                  <span>{quota}</span>
-                </p>
-              )}
+              {etichetta && <p className="etichetta-sezione">{etichetta}</p>}
               {titolo && <h2 className={titoloLargo ? 'mt-3' : 'mt-3 max-w-[26ch]'}>{titolo}</h2>}
               {intro && <p className="intro-sezione text-lead">{intro}</p>}
             </div>

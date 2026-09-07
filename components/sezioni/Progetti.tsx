@@ -44,7 +44,7 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
   return (
     <Sezione
       id="progetti"
-      quota={conDati ? 'Sez. 04 — Progetti' : 'Progetti in evidenza'}
+      etichetta={conDati ? 'progetti' : 'progetti in evidenza'}
       titolo={conDati ? 'I dati che un committente serio legge.' : 'Quello che abbiamo costruito.'}
       azione={
         conDati ? undefined : (

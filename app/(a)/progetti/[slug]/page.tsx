@@ -263,7 +263,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
       {/* Il racconto: contesto e problema, cosa abbiamo fatto, il cantiere. I
           titoli sono `h2` e li scrive il file di contenuto, quindi la sezione
           non ne aggiunge un altro. */}
-      <Sezione quota="Il progetto">
+      <Sezione etichetta="il progetto">
         <div className="prosa">
           <MDXRemote source={p.corpo} components={componentiMdx} />
         </div>
@@ -271,7 +271,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
 
       <Sezione
         fondo="alt"
-        quota="Dati"
+        etichetta="dati"
         titolo="I dati duri."
         intro="Luogo, anno, superficie e — la riga che conta — con quale ruolo lo studio ha lavorato."
       >
@@ -336,7 +336,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
       </Sezione>
 
       {p.galleria.length > 0 && (
-        <Sezione quota="Galleria" titolo="Come è venuta.">
+        <Sezione etichetta="galleria" titolo="Come è venuta.">
           <div className="galleria">
             {p.galleria.map((immagine, i) => (
               <Foto
@@ -353,7 +353,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
       {p.primaDopo && (
         <Sezione
           fondo="alt"
-          quota="Prima e dopo"
+          etichetta="prima e dopo"
           titolo="Lo stesso punto di ripresa."
           /* L'introduzione parla al committente, non allo sviluppatore: come si
              comporta il cursore senza JavaScript è scritto in `Confronto`, dove
@@ -392,7 +392,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
           scheda il blocco non esiste — un «progetto successivo» che rimanda a
           sé stesso è un vicolo cieco travestito da navigazione. */}
       {successivo && (
-        <Sezione fondo="alt" filo quota="Progetto successivo">
+        <Sezione fondo="alt" filo etichetta="progetto successivo">
           <Link href={`/progetti/${successivo.slug}`} className="block max-w-[34rem]">
             <Foto
               immagine={successivo.copertina}

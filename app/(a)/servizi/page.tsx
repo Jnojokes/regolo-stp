@@ -71,7 +71,7 @@ export default function Servizi() {
 
       <Sezione
         fondo="alt"
-        quota="Come lavoriamo"
+        etichetta="come lavoriamo"
         titolo="E poi cosa succede?"
         intro={introProcesso}
       >

@@ -86,9 +86,7 @@ export function Esploso() {
         </div>
 
         <div className="nav:col-start-8 nav:col-span-5 col-span-12">
-          <p className="quota">
-            <span>Il mestiere che nelle foto non si vede</span>
-          </p>
+          <p className="etichetta-sezione">Il mestiere che nelle foto non si vede</p>
           <h2 className="mt-3 max-w-[20ch]">Un edificio, cinque livelli.</h2>
 
           {/* La legenda è il contenuto in testo: se l'SVG non si carica, non si

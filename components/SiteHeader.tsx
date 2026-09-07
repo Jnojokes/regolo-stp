@@ -2,61 +2,79 @@ import Link from 'next/link'
 import { menu, ctaPrimaria, site } from '@/lib/site'
 
 /**
- * Barra di navigazione: 4 voci + una sola CTA.
- * Sotto `nav` (896 px) il menu diventa una scomparsa `<details>`: funziona
- * senza JavaScript e da tastiera (CLAUDE.md § Regole, 4 e 5).
+ * Barra di navigazione: quattro voci, e **nessun bottone**.
+ *
+ * ## Perché la pastiglia in alto a destra è sparita
+ *
+ * Kononenko, misurato: «in tutto il sito non esiste un bottone» — il menu è una
+ * **frase** (`Index, Work, About, Contact`) con la sottolineatura sulla voce
+ * corrente. Storey ha una sola pastiglia «Contact», e AS non ha nemmeno il
+ * menu: la sua home *è* l'indice. Nei due prototipi di REGOLO la CTA
+ * «Raccontaci il progetto →» stava in alto a destra **e** nella hero, cioè due
+ * volte nella stessa schermata: la prima diceva al visitatore che il sito ha
+ * qualcosa da vendergli prima di avergli detto chi è.
+ *
+ * Ora sopra la piega la CTA è **una**, quella della hero, che è anche quello che
+ * chiede `CLAUDE.md` § Homepage, blocco 1 («una sola CTA»). Da 896 px in giù la
+ * scomparsa `<details>` la contiene, perché lì la hero è più lontana.
+ *
+ * Il marchio è **tipografia**, non un logo inventato (decisione n. 5: il logo lo
+ * manda il cliente). Sotto il nome c'è la sede, a `micro`: un indirizzo in
+ * chiaro nella prima riga della pagina è la prima prova di essere un posto
+ * vero — che su un sito che è il *secondo* contatto vale più di un pittogramma.
+ *
+ * Il menu a scomparsa mobile resta una `<details>`: funziona senza JavaScript e
+ * da tastiera (CLAUDE.md § Regole, 4 e 5).
  */
 export function SiteHeader() {
   return (
-    <header className="border-line bg-paper/90 sticky top-0 z-30 border-b backdrop-blur-sm">
-      <div className="wrap nav:py-0 flex min-h-(--regolo-header-h) items-center justify-between gap-4 py-3">
+    <header className="site-header">
+      <div className="wrap site-header-riga">
         {/* Niente aria-label: sostituirebbe il testo visibile con uno diverso,
             e per chi usa il comando vocale il nome accessibile deve contenere
             quello che si legge. Il testo del link basta da solo. */}
         <Link href="/" className="logo-lockup">
-          <span className="logo-name">{site.nome}</span>
-          {/* Sotto i 480 px il sottotitolo manderebbe a capo il lockup e
-              farebbe crescere una barra che è sticky: lì resta il solo nome. */}
+          <span className="logo-name">{site.nomeEsteso}</span>
+          {/* Sotto i 480 px la seconda riga manderebbe a capo un lockup che è
+              dentro una barra sticky: lì resta il solo nome. */}
           <span className="logo-qualifier hidden min-[30rem]:block">
-            {site.qualifica} · {site.citta}
+            {site.via} — {site.cap} {site.citta} ({site.provincia})
           </span>
         </Link>
 
-        <nav aria-label="Principale" className="nav:block hidden">
-          <ul className="text-small flex items-center gap-8">
+        {/* Il menu è una frase: le voci sono separate da virgole vere, messe dal
+            CSS e non dal testo, così non entrano nel nome accessibile dei link
+            né in un eventuale copia-incolla della voce. */}
+        <nav aria-label="Principale" className="site-nav nav:block hidden">
+          <ul>
             {menu.map((v) => (
               <li key={v.href}>
-                <Link href={v.href} className="hover:text-accent-text">
-                  {v.label}
-                </Link>
+                <Link href={v.href}>{v.label.toLowerCase()}</Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        <Link href={ctaPrimaria.href} className="btn nav:inline-flex hidden">
-          {ctaPrimaria.label}
-        </Link>
-
-        {/* Mobile: disclosure nativa, nessun JS */}
+        {/* Mobile: disclosure nativa, nessun JS. Qui la CTA c'è, perché il menu
+            è chiuso e la hero è più lontana. */}
         <details className="menu-mobile nav:hidden">
-          <summary>Menu</summary>
-          <div className="border-line bg-paper absolute inset-x-0 top-full border-b">
+          <summary>menu</summary>
+          <div className="menu-mobile-pannello">
             <nav aria-label="Principale, mobile" className="wrap py-6">
               <ul className="flex flex-col">
                 {menu.map((v) => (
                   <li key={v.href} className="border-line border-b last:border-b-0">
                     <Link href={v.href} className="text-h3 block py-4">
-                      {v.label}
+                      {v.label.toLowerCase()}
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link href={ctaPrimaria.href} className="btn mt-6 w-full justify-center">
+              <Link href={ctaPrimaria.href} className="btn mt-6 w-full">
                 {ctaPrimaria.label}
               </Link>
-              <a href={`tel:${site.telefonoHref}`} className="text-muted text-small mt-4 block">
-                oppure chiama · {site.telefono}
+              <a href={`tel:${site.telefonoHref}`} className="hero-telefono mt-4">
+                {site.telefono}
               </a>
             </nav>
           </div>

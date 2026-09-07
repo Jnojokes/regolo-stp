@@ -3,242 +3,372 @@
 @import './css/pagine.css';
 
 /* ============================================================================
-   REGOLO STP — design token
-   Valori provvisori (CLAUDE.md § Direzione visiva): si cambiano QUI e in nessun
-   altro posto. Quando arriva il logo del cliente si rivedono.
+   REGOLO STP — design token · fase 3 bis (07/09/2026)
 
-   Due set: [data-theme="a"] «Lo studio», [data-theme="b"] «Il cantiere».
-   I nomi sono semantici, non descrittivi del colore: gli stessi componenti
-   servono i due temi senza un `if` (CLAUDE.md § Due opzioni di homepage).
+   Questi valori NON sono i provvisori del kick-off: sono stati rifatti dalla
+   cartella di prove in `kit/reference/`, perché i precedenti (`paper #F4F2ED`,
+   serif display ad alto contrasto, `accent #2F4A42`, `accent #E4572E`, mono per
+   le etichette dati) erano — voce per voce — i cluster n. 1 e n. 5 della lista
+   di calibrazione della skill `sito-design`. Il ragionamento sta in
+   `kit/reference/SCHEDA.md`; la scelta dei caratteri in
+   `kit/reference/_provini/PROVINI.md`; le decisioni in `DECISIONI.md`.
 
-   Contrasto: ogni coppia testo/fondo qui sotto è verificata AA (≥ 4,5:1 per il
-   testo normale, ≥ 3:1 per il testo grande). Il rapporto misurato è in coda
-   a ogni riga.
+   Si cambiano QUI e in nessun altro posto. Quando arriva il logo si rivedono
+   (decisione n. 5), e lo slot per il colore del marchio è **uno**: il segno
+   sulla voce corrente del menu.
+
+   ## Le tre regole che tengono insieme questo file
+
+   1. **I nomi sono semantici, non descrittivi del colore.** Gli stessi
+      componenti servono i due temi senza un `if`: cambiano i valori.
+   2. **Il rapporto di contrasto misurato sta in coda a ogni riga**, e dove un
+      rapporto basso è *corretto* c'è scritto perché (una superficie non è
+      testo, e non porta lei il significato). Verificato con
+      `node scripts/contrasto.mjs`.
+   3. **Due token sono vincolati al piano** e non hanno un valore che serva
+      entrambi: `--regolo-timbro` vale sulla carta, `--regolo-timbro-chiaro`
+      dentro una banda scura. Fingere che un valore serva i due piani è come si
+      è arrivati ai bordi a 1,4:1 corretti il 07/09.
+
+   ## L'accento ha un lavoro solo, e una data di scadenza
+
+   Le tre reference tier A **non hanno un colore d'accento**: Storey è
+   bianco/nero/foto, Kononenko bianco e nero puri, AS bianco e nero con
+   l'opacità come gerarchia; e il `DESIGN.md` di refero lo scrive come divieto.
+   Il tier C (sbp) dimostra che l'arancio è il *default di settore*
+   dell'ingegneria. Quindi nel sito c'è **una sola tinta satura**, e sta in un
+   posto solo: **i segnaposto**. È l'inchiostro del timbro professionale, cioè
+   il segno con cui si annota lo stato di un documento — che è il lavoro che le
+   si chiede. Non entra mai in header, bottoni, stati, anello di fuoco, filetti,
+   esploso, mappa. Quando i contenuti arrivano, sparisce dalla pagina da sé.
    ========================================================================== */
 
-/* ---------- Tema A — «Lo studio» ------------------------------------------ */
+/* ---------- Tema A — «L'elevato» ------------------------------------------
+   Fondo bianco puro, contrasto di scala estremo con un salto fuori scala,
+   apparato orizzontale al bordo destro, due tagli netti verso il nero.
+   -------------------------------------------------------------------------- */
 [data-theme='a'] {
-  --regolo-paper: #f4f2ed;
-  --regolo-surface: #fbfaf7;
-  --regolo-ink: #17171a; /* 15,99:1 su paper */
-  --regolo-muted: #6e6b66; /*  4,74:1 su paper */
-  --regolo-muted-invert: #a8a49d; /*  7,21:1 su ink   */
-  --regolo-line: #dcd8d0;
-  --regolo-accent: #2f4a42; /*  8,61:1 su paper */
-  --regolo-accent-strong: #263b34; /* fondo pieno: paper sopra = 10,68:1 */
-  --regolo-accent-text: #2f4a42; /*  8,61:1 su paper */
-  --regolo-accent-soft: #e3eae6;
-  --regolo-on-accent: #f4f2ed;
-  --regolo-ph: #e7e3da;
-  --regolo-ph-ink: #6e6b66; /*  4,74:1 sulla targhetta color paper */
+  --regolo-paper: #ffffff; /* carta */
+  --regolo-surface: #ffffff; /* in A la figura e il fondo sono lo stesso bianco */
+  --regolo-ink: #000000; /* 21,00:1 su carta — nero PIENO: #0B0B0B e #111 sono la tell n. 5 */
+  --regolo-muted: #5e5e5e; /*  6,48:1 su carta ·  5,48:1 su ph */
+  --regolo-muted-invert: #9a9a9a; /*  7,46:1 su ink — il testo secondario DENTRO una banda nera */
+  --regolo-line: #757575; /*  4,61:1 su carta — se il filetto è informazione deve passare 3:1 (WCAG 1.4.11) */
+  --regolo-ph: #ecece9; /*  1,18:1 su carta: è una SUPERFICIE, non testo. Il significato lo portano le squadrette */
+  --regolo-ph-ink: #5e5e5e; /*  5,48:1 sul piano del segnaposto */
+  --regolo-bordo-campo: #767676; /*  4,54:1 su carta — il brief è il blocco primario: il bordo non sta al minimo */
+  --regolo-errore: #8e1b10; /*  9,07:1 su carta ·  7,67:1 su ph */
 
-  --regolo-font-display: var(--font-instrument-serif), Georgia, 'Times New Roman', serif;
-  --regolo-font-body: var(--font-instrument-sans), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* l'unico accento, e sta solo sui segnaposto */
+  --regolo-timbro: #45327f; /* 10,42:1 su carta ·  8,77:1 su timbro-soft */
+  --regolo-timbro-soft: #edeaf4; /*  1,19:1 dalla carta: è il terzo canale, non il primo */
+  --regolo-timbro-chiaro: #b3a6de; /*  9,43:1 su ink — SOLO dentro una banda nera (2,23:1 sulla carta) */
 
-  --regolo-display-weight: 400;
-  --regolo-display-tracking: -0.01em;
+  /* Il piano su cui sta il segnaposto. Stesso meccanismo di `--regolo-focus`:
+     è il CONTESTO a dire quale dei due valori vale, non un `if` nel componente.
+     Sulla carta è `timbro`; dentro una banda scura `timbro` dà 2,02:1, quindi
+     lì il piano lo ridichiara a `timbro-chiaro` (9,43:1). */
+  --regolo-timbro-piano: var(--regolo-timbro);
+  --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  --regolo-text-h1: clamp(2.75rem, 7.2vw, 6.5rem);
-  --regolo-lh-h1: 0.98;
-  --regolo-text-h2: clamp(2.125rem, 4.4vw, 4rem);
-  --regolo-lh-h2: 1.02;
-  --regolo-text-h3: clamp(1.5rem, 2.2vw, 2rem);
-  --regolo-lh-h3: 1.1;
+  /* --- caratteri ---------------------------------------------------------
+     Una famiglia sola per tutto. `--regolo-font-display` e `-body` restano due
+     nomi perché i componenti li usano già, ma puntano allo stesso file. */
+  --regolo-font-display: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-body: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
 
+  /* Il peso di DEFAULT di Archivo è 600: senza un valore esplicito il corpo
+     esce semibold. Verificato con fontTools (vedi lib/fonts/tema-a.ts). */
+  --regolo-display-weight: 500;
+  --regolo-display-tracking: -0.018em;
+  --regolo-display-wdth: 100;
+
+  /* --- scala: rapporto fitto 1,125 sul testo, UN salto sul display -------
+     Il meccanismo è misurato in refero (12 gradini a 1,125 + display fuori
+     scala). In A il display è **fuori** dalla scala: 152 non è nessun gradino,
+     e il salto è ×3,3. Il corpo NON scala: 18 px da 320 a 1440, così il
+     contrasto di scala è una decisione e non un effetto della viewport. */
+  --regolo-text-h1: clamp(3rem, 14.36vw, 8.25rem); /* 48 a 320 · 56 a 390 · 132 a 1440 */
+  --regolo-lh-h1: 0.86;
+  --regolo-text-h2: clamp(1.5125rem, 6.56vw, 2.5625rem); /* 24,2 · 25,6 a 390 · 41 */
+  --regolo-lh-h2: 0.96;
+  --regolo-text-h3: clamp(1.425rem, 6.2vw, 2.025rem); /* 22,8 · 24,2 a 390 · 32,4 */
+  --regolo-lh-h3: 1.05;
+
+  /* --- impaginazione ----------------------------------------------------
+     `--regolo-margine` è il margine di pagina, `--regolo-gutter` il gap fra le
+     colonne: erano la stessa variabile, e chi portava il gutter a 24 spostava i
+     margini invece delle colonne. Gutter 24 e non 64: misurati 20 (Storey),
+     23 (Kononenko), 32 (AS) — «unanime al contrario di come lavoriamo oggi». */
   --regolo-wrap: 1440px;
-  --regolo-gutter: clamp(1.25rem, 4vw, 4rem);
-  --regolo-radius: 0px; /* angoli vivi */
+  --regolo-margine: clamp(1rem, 1.7vw, 1.5rem); /* 16 → 24 */
+  --regolo-gutter: clamp(1rem, 1.7vw, 1.5rem); /* 16 → 24 */
+  --regolo-colonne: 12;
+  --regolo-radius: 0px; /* angoli vivi: unanime nelle tre tier A */
+  --regolo-misura: 34rem; /* 544 px: la prosa mai su più di una colonna */
 
-  /* placeholder: tratteggio da disegno tecnico */
-  --regolo-ph-pattern: repeating-linear-gradient(
-    135deg,
-    transparent 0 9px,
-    rgba(23, 23, 26, 0.07) 9px 10px
-  );
+  /* ritmo verticale: tre passi, mai lo stesso padding fra tutti i blocchi */
+  --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem); /*  32 → 48  */
+  --regolo-passo-normale: clamp(4rem, 6.67vw, 6rem); /*  64 → 96  */
+  --regolo-passo-largo: clamp(6rem, 13.9vw, 12.5rem); /*  96 → 200 */
+
+  /* --- il segnaposto immagine -------------------------------------------
+     Via il tratteggio da disegno tecnico (A) e la carta millimetrata (B): due
+     texture decorative identiche su ogni blocco, che dicono «disegno» e non
+     dicono niente. Al loro posto quattro squadrette d'angolo in `line`
+     (4,61:1) e la scheda di specifica dentro: il segnaposto dice cosa manca e
+     in che formato deve arrivare. */
+  --regolo-ph-pattern: none;
   --regolo-ph-size: auto;
   --regolo-ph-border: none;
 
-  /* l'occhiello in A è il sans spaziato del prototipo, non un monospace */
+  /* l'etichetta di sezione: minuscola, fra parentesi quadre, spaziatura
+     NEGATIVA. Nessuna delle tre tier A usa il maiuscoletto spaziato, e Storey
+     misura −10 % sulle etichette maiuscole: prendo il segno, non la grandezza */
   --regolo-font-eyebrow: var(--regolo-font-body);
-  --regolo-eyebrow-tracking: 0.14em;
+  --regolo-eyebrow-tracking: -0.01em;
+  --regolo-eyebrow-transform: none;
 
-  /* il bottone pieno: in A è inchiostro, in B è l'arancio dell'identità */
+  /* il bottone: un rettangolo di inchiostro sul bianco, senza freccia */
   --regolo-btn-bg: var(--regolo-ink);
   --regolo-btn-fg: var(--regolo-paper);
   --regolo-btn-border: var(--regolo-ink);
-  --regolo-btn-bg-hover: var(--regolo-accent-strong);
+  --regolo-btn-bg-hover: #2b2b2b; /* carta sopra = 14,15:1 */
 
-  --regolo-header-h: 72px;
-  --regolo-logo-size: 0.875rem;
-  --regolo-logo-weight: 600;
-  --regolo-logo-tracking: 0.26em;
-  --regolo-logo-family: var(--regolo-font-body);
+  --regolo-header-h: 88px;
+  --regolo-logo-size: 1.375rem;
+  --regolo-logo-weight: 500;
+  --regolo-logo-tracking: -0.015em;
+  --regolo-logo-family: var(--regolo-font-display);
   --regolo-logo-direction: column;
 
-  /* anello di fuoco: dentro il brief il fondo è scuro, e lì si schiarisce */
-  --regolo-focus: var(--regolo-accent-strong);
+  /* Anello di fuoco: mai colorato. È inchiostro sulla carta e carta
+     sull'inchiostro, cioè sempre 21:1 — così WCAG 1.4.11 è chiuso per
+     costruzione e senza un token in più. */
+  --regolo-focus: var(--regolo-ink);
 
-  /* --- blocco brief -------------------------------------------------------
-     In A il brief è un blocco pieno color accento con la scheda color carta:
-     è l'unico momento in cui la pagina cambia fondo, e serve a dire «qui si
-     fa una cosa». Rapporti verificati in coda a ogni riga. */
-  --regolo-brief-bg: var(--regolo-accent);
-  --regolo-brief-fg: var(--regolo-paper); /*  8,61:1 su bg   */
-  --regolo-brief-occhiello: #b9d1c6; /*  5,97:1 su bg   */
-  --regolo-brief-lead: #dce7e1; /*  7,60:1 su bg   */
+  /* --- blocco brief -----------------------------------------------------
+     In A è l'unico terzo piano della pagina: banda `ink` a piena larghezza con
+     la scheda color carta. È anche il solo momento in cui il fondo cambia,
+     insieme alla banda dell'esploso, e serve a dire «qui si fa una cosa». */
+  --regolo-brief-bg: var(--regolo-ink);
+  --regolo-brief-fg: var(--regolo-paper); /* 21,00:1 */
+  --regolo-brief-occhiello: var(--regolo-muted-invert); /*  7,46:1 */
+  --regolo-brief-lead: var(--regolo-muted-invert); /*  7,46:1 */
   --regolo-brief-bordo-sezione: none;
   --regolo-brief-card: var(--regolo-paper);
-  --regolo-brief-controllo-bg: var(--regolo-surface);
-  --regolo-brief-controllo-bordo: #8e8a82; /*  3,29:1 su controllo, 3,07:1 su card */
-  --regolo-brief-scelta-bg: #e8efeb;
-  --regolo-brief-scelta-bordo: var(--regolo-accent); /*  8,25:1 su scelta-bg */
-  --regolo-brief-errore: #8c2d12; /*  8,05:1 su controllo, 7,51:1 su card */
-  --regolo-brief-fuoco: var(--regolo-paper);
-  /* --- fase 3: sezioni della home ----------------------------------------
-     La «quota» è la linea di misura del disegno tecnico: è un motivo
-     dell'opzione B. In A l'occhiello resta un occhiello e le due righe non si
-     disegnano — stesso markup, `display: none` sui pseudo-elementi. */
-  --regolo-quota-riga: none;
-  --regolo-quota-colore: var(--regolo-muted);
+  --regolo-brief-controllo-bg: var(--regolo-paper);
+  --regolo-brief-controllo-bordo: var(--regolo-bordo-campo); /*  4,54:1 */
+  --regolo-brief-scelta-bg: var(--regolo-paper);
+  --regolo-brief-scelta-bordo: var(
+    --regolo-ink
+  ); /* 21,00:1 — lo stato è il bordo + il pallino, mai il colore */
+  --regolo-brief-errore: var(--regolo-errore);
+  --regolo-brief-fuoco: var(--regolo-paper); /* dentro la banda nera il fuoco si schiarisce */
 
-  /* fascia a fondo alternato: in A la usa la griglia dei servizi */
-  --regolo-sezione-alt: var(--regolo-surface);
+  /* --- apparato di quota ------------------------------------------------
+     La quota si disegna solo se passa tre condizioni (DECISIONI n. 17): due
+     estremi su un oggetto reale, un numero che il repo può contare, e una
+     quantità che il visitatore non conta a vista. In tutto il sito sono TRE. */
+  --regolo-quota-riga: block;
+  --regolo-quota-colore: var(--regolo-line);
 
-  /* pannello scuro: in A il fondo del percorso scelto, in B quello della hero */
+  /* in A l'asse dell'apparato è ORIZZONTALE: niente asse verticale */
+  --regolo-asse: none;
+  --regolo-asse-x: 0;
+
+  /* nessuna fascia a fondo alternato: A cambia fondo due volte, a taglio netto */
+  --regolo-sezione-alt: var(--regolo-paper);
+  --regolo-sezione-alt-filo: none;
+
+  /* pannello e bande scure: un solo fondo, l'inchiostro */
   --regolo-pannello-bg: var(--regolo-ink);
-  --regolo-pannello-fg: var(--regolo-paper); /* 15,99:1 */
-  --regolo-pannello-chiave: #b9d1c6; /* 11,07:1 */
-  --regolo-pannello-voce: #dce7e1; /* 14,11:1 */
-
-  /* processo su fondo scuro (motivo dell'opzione B) */
+  --regolo-pannello-fg: var(--regolo-paper); /* 21,00:1 */
+  --regolo-pannello-chiave: var(--regolo-muted-invert); /*  7,46:1 */
+  --regolo-pannello-voce: var(--regolo-paper); /* 21,00:1 */
   --regolo-scuro-bg: var(--regolo-ink);
   --regolo-scuro-fg: var(--regolo-paper);
-  --regolo-scuro-muted: #a9b7b1; /*  8,60:1 */
-  --regolo-scuro-linea: #3a3a40;
+  --regolo-scuro-muted: var(--regolo-muted-invert); /*  7,46:1 */
+  --regolo-scuro-linea: #4a4a4a; /*  3,44:1 su ink */
 
-  /* esploso strutturale: ogni faccia è ≥ 3:1 sul fondo, verificata
-     (scripts/contrasto.mjs). Il colore non porta informazione — la legenda
-     accanto ripete i cinque livelli in testo. */
-  --regolo-esploso-fondazioni: #999489; /* facce 5,92 · 3,18 · 4,30 */
-  --regolo-esploso-struttura: #a8c9b8; /* facce 9,98 · 4,96 · 6,99 */
-  --regolo-esploso-involucro: #e7e3da; /* facce 13,97 · 6,70 · 9,66 */
-  --regolo-esploso-impianti: #8792a0; /* facce 5,66 · 3,08 · 4,11 */
-  --regolo-esploso-finiture: #f7f5f0; /* facce 16,42 · 7,79 · 11,27 */
-  --regolo-esploso-apertura: #2f4a42; /* serramenti: 7,53 / 3,61 / 5,21 sulle tre facce dell'involucro */
-  --regolo-esploso-calore: #6a2a05; /*  3,42:1 sul solaio impianti */
-  --regolo-esploso-acqua: #123f63; /*  3,47:1 */
-  --regolo-esploso-aria: #1e3129; /*  4,36:1 */
+  /* --- esploso strutturale ----------------------------------------------
+     I nove token caldi sono morti con la fase 3 bis: `involucro #e7e3da` e
+     `finiture #f7f5f0` erano la famiglia della crema, `apertura #2f4a42` il
+     verde pietra, e c'erano una terra, un blu e un verde scuro. Al loro posto
+     **tre valori per le tre facce** (la faccia dice la luce) e, alla parte 2/2,
+     **cinque retini per i cinque livelli** (il retino dice il livello). È come
+     si legge un disegno tecnico, e rispetta la decisione n. 59 meglio di prima:
+     il colore non porta informazione da solo. */
+  --regolo-esploso-faccia-alta: #d8d8d8; /* 14,73:1 su ink */
+  --regolo-esploso-faccia-sx: #a8a8a8; /*  8,83:1 su ink */
+  --regolo-esploso-faccia-dx: #7a7a7a; /*  4,89:1 su ink */
+  --regolo-esploso-contorno: var(--regolo-paper); /* 21,00:1 — la silhouette che oggi manca */
+  --regolo-esploso-fondazioni: #d8d8d8;
+  --regolo-esploso-struttura: #c4c4c4; /* 11,25:1 su ink */
+  --regolo-esploso-involucro: #a8a8a8;
+  --regolo-esploso-impianti: #8f8f8f; /*  6,26:1 su ink */
+  --regolo-esploso-finiture: #ededed; /* 17,86:1 su ink */
+  --regolo-esploso-apertura: #000000; /* i serramenti sono il vuoto: 14,73 / 8,83 / 4,89 sulle tre facce */
+  --regolo-esploso-calore: #1a1a1a;
+  --regolo-esploso-acqua: #1a1a1a;
+  --regolo-esploso-aria: #1a1a1a;
 
-  /* territorio: il perimetro delle province, non una mappa a tile */
-  --regolo-mappa-linea: var(--regolo-muted);
-  --regolo-mappa-fondo: var(--regolo-surface);
-  --regolo-mappa-sede: var(--regolo-accent);
+  /* territorio: il perimetro vero, non una mappa a tile */
+  --regolo-mappa-linea: var(--regolo-ink);
+  --regolo-mappa-fondo: var(--regolo-paper);
+  --regolo-mappa-sede: var(--regolo-ink);
 }
 
-/* ---------- Tema B — «Il cantiere» ---------------------------------------- */
+/* ---------- Tema B — «Il registro» ---------------------------------------
+   Fondo a luminanza media dall'header al footer senza un cambio, quattro
+   corpi dentro la stessa scala e nessun salto, asse verticale, il bianco come
+   figura e non come fondo.
+   -------------------------------------------------------------------------- */
 [data-theme='b'] {
-  --regolo-paper: #f3f4f1;
-  --regolo-surface: #ffffff;
-  --regolo-ink: #14181c; /* 16,16:1 su paper */
-  --regolo-muted: #5c6670; /*  5,30:1 su paper */
-  --regolo-muted-invert: #a6b0b9; /*  8,10:1 su ink   */
-  --regolo-line: #d5d9d3;
-  --regolo-accent: #e4572e; /*  3,34:1 su paper → SOLO testo grande e filetti; 4,84:1 su ink */
-  --regolo-accent-strong: #c7431d; /* fondo pieno: bianco sopra = 4,94:1 */
-  --regolo-accent-text: #b8421f; /*  4,96:1 su paper → l'arancio quando è testo piccolo */
-  --regolo-accent-soft: #fbe9e2;
-  --regolo-on-accent: #ffffff;
-  --regolo-ph: #ffffff;
-  --regolo-ph-ink: #5c6670; /*  5,85:1 su bianco */
+  --regolo-paper: #c0c3c1; /* getto — L relativa 0,541, la luminanza di refero (11,82:1 col nero) */
+  --regolo-surface: #ffffff; /* calce: la FIGURA. 1,78:1 dal getto ⇒ 1 px di ink sul bordo, non negoziabile */
+  --regolo-ink: #000000; /* 11,82:1 su getto · 21,00:1 su calce */
+  --regolo-muted: #454a47; /*  5,09:1 su getto ·  9,04:1 su calce */
+  --regolo-muted-invert: #9a9a9a;
+  --regolo-line: #4a4a4a; /*  4,99:1 su getto ·  8,86:1 su calce — in B la quota pesa quanto la parola */
+  --regolo-ph: #ffffff; /* il segnaposto è una figura: 1,78:1, quindi porta il bordo */
+  --regolo-ph-ink: #454a47; /*  9,04:1 sulla figura */
+  --regolo-bordo-campo: var(--regolo-line);
+  --regolo-errore: #8e1b10; /*  5,11:1 su getto ·  9,07:1 su calce */
 
-  --regolo-font-display: var(--font-bricolage-grotesque), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-body: var(--font-instrument-sans), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --regolo-timbro: #45327f; /*  5,86:1 su getto · 10,42:1 su calce */
+  --regolo-timbro-soft: #ffffff; /* in B il terzo canale è la figura bianca: un token in meno */
+  --regolo-timbro-chiaro: #b3a6de;
+  --regolo-timbro-piano: var(--regolo-timbro);
+  --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  --regolo-display-weight: 700;
-  --regolo-display-tracking: -0.025em;
+  --regolo-font-display: var(--font-chivo), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-body: var(--font-chivo), 'Helvetica Neue', Arial, sans-serif;
 
-  --regolo-text-h1: clamp(2.5rem, 7.4vw, 6rem);
+  --regolo-display-weight: 600;
+  --regolo-display-tracking: -0.02em;
+  --regolo-display-wdth: 100; /* Chivo non ha l'asse di larghezza, e non gli serve: A comprime, B no */
+
+  /* Nessun salto: 43,6 è il gradino 8 della stessa scala 1,125 da base 17.
+     Il valore 48 px — che la lista di calibrazione nomina e che non appartiene
+     a nessuna scala 1,125 — non compare da nessuna parte. */
+  --regolo-text-h1: clamp(1.9125rem, 7.85vw, 2.725rem); /* 30,6 a 390 · 43,6 a 1440 */
   --regolo-lh-h1: 1;
-  --regolo-text-h2: clamp(1.875rem, 4.2vw, 3.625rem);
-  --regolo-lh-h2: 1;
-  --regolo-text-h3: clamp(1.25rem, 1.8vw, 1.625rem);
-  --regolo-lh-h3: 1.15;
+  --regolo-text-h2: clamp(1.5125rem, 6.2vw, 1.9125rem); /* 24,2 a 390 · 30,6 */
+  --regolo-lh-h2: 1.1;
+  --regolo-text-h3: 1.195rem; /* 19,1 — gradino 1: non scala */
+  --regolo-lh-h3: 1.25;
 
-  --regolo-wrap: 1360px;
-  --regolo-gutter: clamp(1.25rem, 4vw, 3.5rem);
-  --regolo-radius: 3px;
+  --regolo-wrap: 1440px;
+  --regolo-margine: clamp(1rem, 1.7vw, 1.5rem);
+  --regolo-gutter: clamp(1rem, 1.7vw, 1.5rem);
+  --regolo-colonne: 12;
+  --regolo-radius: 0px; /* via anche i 3 px di B */
+  --regolo-misura: 30rem; /* 480 px */
 
-  /* placeholder: carta millimetrata */
-  --regolo-ph-pattern:
-    linear-gradient(var(--regolo-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--regolo-line) 1px, transparent 1px);
-  --regolo-ph-size: 16px 16px;
-  --regolo-ph-border: 1px solid var(--regolo-line);
+  --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem);
+  --regolo-passo-normale: clamp(4rem, 6.67vw, 6rem);
+  --regolo-passo-largo: clamp(6rem, 13.9vw, 12.5rem);
 
-  --regolo-font-eyebrow: var(--regolo-font-mono);
-  --regolo-eyebrow-tracking: 0.08em;
+  --regolo-ph-pattern: none;
+  --regolo-ph-size: auto;
+  --regolo-ph-border: 1px solid var(--regolo-ink);
 
-  --regolo-btn-bg: var(--regolo-accent-strong);
-  --regolo-btn-fg: var(--regolo-on-accent);
-  --regolo-btn-border: var(--regolo-accent-strong);
-  --regolo-btn-bg-hover: var(--regolo-ink);
+  --regolo-font-eyebrow: var(--regolo-font-body);
+  --regolo-eyebrow-tracking: -0.01em;
+  --regolo-eyebrow-transform: none;
 
-  --regolo-header-h: 68px;
+  /* in B il bottone è inchiostro sulla FIGURA bianca: il verso è invertito */
+  --regolo-btn-bg: var(--regolo-ink);
+  --regolo-btn-fg: var(--regolo-surface);
+  --regolo-btn-border: var(--regolo-ink);
+  --regolo-btn-bg-hover: #2b2b2b;
+
+  --regolo-header-h: 72px;
   --regolo-logo-size: 1.375rem;
-  --regolo-logo-weight: 800;
+  --regolo-logo-weight: 600;
   --regolo-logo-tracking: -0.02em;
   --regolo-logo-family: var(--regolo-font-display);
   --regolo-logo-direction: row;
 
-  --regolo-focus: var(--regolo-accent-strong);
+  --regolo-focus: var(--regolo-ink);
 
-  /* --- blocco brief -------------------------------------------------------
-     In B il fondo resta chiaro (accent-soft) e la scheda è bianca: il
-     cantiere non spegne la luce, mette un filetto. */
-  --regolo-brief-bg: var(--regolo-accent-soft);
-  --regolo-brief-fg: var(--regolo-ink); /* 15,17:1 su bg   */
-  --regolo-brief-occhiello: var(--regolo-muted); /*  4,97:1 su bg   */
-  --regolo-brief-lead: var(--regolo-muted); /*  4,97:1 su bg   */
-  --regolo-brief-bordo-sezione: 1px solid var(--regolo-line);
+  /* In B il brief non cambia fondo: il getto continua e la scheda è la figura. */
+  --regolo-brief-bg: var(--regolo-paper);
+  --regolo-brief-fg: var(--regolo-ink); /* 11,82:1 */
+  --regolo-brief-occhiello: var(--regolo-muted); /*  5,09:1 */
+  --regolo-brief-lead: var(--regolo-muted); /*  5,09:1 */
+  --regolo-brief-bordo-sezione: none;
   --regolo-brief-card: var(--regolo-surface);
-  --regolo-brief-controllo-bg: var(--regolo-paper);
-  --regolo-brief-controllo-bordo: #818a92; /*  3,18:1 su controllo, 3,51:1 su card */
-  --regolo-brief-scelta-bg: var(--regolo-accent-soft);
-  --regolo-brief-scelta-bordo: var(--regolo-accent-strong); /*  4,20:1 su scelta-bg */
-  --regolo-brief-errore: #b01c00; /*  6,31:1 su controllo, 6,97:1 su card */
+  --regolo-brief-controllo-bg: var(--regolo-paper); /* il campo è getto sulla figura bianca */
+  --regolo-brief-controllo-bordo: var(--regolo-line); /*  4,99:1 su getto ·  8,86:1 su calce */
+  --regolo-brief-scelta-bg: var(--regolo-surface);
+  --regolo-brief-scelta-bordo: var(--regolo-ink);
+  --regolo-brief-errore: var(--regolo-errore);
   --regolo-brief-fuoco: var(--regolo-ink);
-  /* --- fase 3: sezioni della home ---------------------------------------- */
-  /* in B la quota si disegna: due righe di misura intorno all'etichetta */
+
   --regolo-quota-riga: block;
-  --regolo-quota-colore: var(--regolo-muted);
+  --regolo-quota-colore: var(--regolo-line);
 
-  --regolo-sezione-alt: var(--regolo-surface);
+  /* in B l'apparato è un ASSE VERTICALE che attraversa dall'header al footer */
+  --regolo-asse: block;
+  /* 34,4 % di 1440 = 495 px. A 390 px va al 24,6 % (96 px) e resta: non è una
+     decorazione da spegnere. */
+  --regolo-asse-x: 34.4%;
 
-  --regolo-pannello-bg: var(--regolo-ink);
-  --regolo-pannello-fg: #ffffff; /* 17,84:1 */
-  --regolo-pannello-chiave: #ffb39a; /* 10,34:1 */
-  --regolo-pannello-voce: #dde2e6; /* 13,67:1 */
+  --regolo-sezione-alt: var(--regolo-paper); /* in B il fondo non cambia MAI */
+  --regolo-sezione-alt-filo: none;
 
-  --regolo-scuro-bg: var(--regolo-ink);
-  --regolo-scuro-fg: #ffffff;
-  --regolo-scuro-muted: #9aa4ad; /*  7,04:1 */
-  --regolo-scuro-linea: #3a434b;
+  --regolo-pannello-bg: var(--regolo-surface); /* il pannello non è più scuro: è la figura bianca */
+  --regolo-pannello-fg: var(--regolo-ink); /* 21,00:1 */
+  --regolo-pannello-chiave: var(--regolo-muted); /*  9,04:1 sulla figura */
+  --regolo-pannello-voce: var(--regolo-ink);
+  --regolo-scuro-bg: var(--regolo-surface);
+  --regolo-scuro-fg: var(--regolo-ink);
+  --regolo-scuro-muted: var(--regolo-muted); /*  9,04:1 */
+  --regolo-scuro-linea: var(--regolo-line); /*  8,86:1 */
 
-  --regolo-esploso-fondazioni: #999489;
-  --regolo-esploso-struttura: #a8c9b8;
-  --regolo-esploso-involucro: #e7e3da;
-  --regolo-esploso-impianti: #8792a0;
-  --regolo-esploso-finiture: #f7f5f0;
-  --regolo-esploso-apertura: #2f4a42;
-  --regolo-esploso-calore: #6a2a05;
-  --regolo-esploso-acqua: #123f63;
-  --regolo-esploso-aria: #1e3129;
+  --regolo-esploso-faccia-alta: #d8d8d8;
+  --regolo-esploso-faccia-sx: #a8a8a8;
+  --regolo-esploso-faccia-dx: #7a7a7a;
+  --regolo-esploso-contorno: #ffffff;
+  --regolo-esploso-fondazioni: #d8d8d8;
+  --regolo-esploso-struttura: #c4c4c4;
+  --regolo-esploso-involucro: #a8a8a8;
+  --regolo-esploso-impianti: #8f8f8f;
+  --regolo-esploso-finiture: #ededed;
+  --regolo-esploso-apertura: #000000;
+  --regolo-esploso-calore: #1a1a1a;
+  --regolo-esploso-acqua: #1a1a1a;
+  --regolo-esploso-aria: #1a1a1a;
 
-  --regolo-mappa-linea: var(--regolo-muted);
+  --regolo-mappa-linea: var(--regolo-ink);
   --regolo-mappa-fondo: var(--regolo-surface);
-  --regolo-mappa-sede: var(--regolo-accent-strong);
+  --regolo-mappa-sede: var(--regolo-ink);
+}
+
+/* Interlinea del display: è funzione del CORPO, non una costante. 0,84 vale
+   sopra i ~140 px; a 390 px il display è 56 e a 0,84 le righe si toccano.
+   (Misurati: refero 0,84 sopra i 90 · Kononenko 0,70-0,80 sopra i 60 ·
+   Storey 1,00 esatta a ogni corpo.) */
+@media (max-width: 68rem) {
+  [data-theme='a'] {
+    --regolo-lh-h1: 0.94;
+  }
+}
+
+/* L'asse su telefono. Al 24,6 % (96 px a 390) **passava in mezzo al testo**:
+   verificato in pagina, tagliava «Che intervento hai in mente?», il lead e le
+   etichette della quota. Su 358 px di contenuto non c'è spazio per due zone,
+   e indentare tutto oltre l'asse lascerebbe 262 px di misura, cioè ~30 battute.
+   Quindi l'asse **si sposta al margine**: 8 px, appena a sinistra del testo, e
+   corre per tutta l'altezza. Il gesto è lo stesso — le cose pendono da una
+   linea — ruotato nello spazio che c'è. Non è una decorazione spenta: è la
+   versione mobile progettata che CLAUDE.md § Regole, 5 chiede. */
+@media (max-width: 55.999rem) {
+  [data-theme='b'] {
+    --regolo-asse-x: 0.5rem;
+  }
 }
 
 /* ---------- Da token a utility Tailwind -----------------------------------
@@ -252,17 +382,15 @@
   --color-muted: var(--regolo-muted);
   --color-muted-invert: var(--regolo-muted-invert);
   --color-line: var(--regolo-line);
-  --color-accent: var(--regolo-accent);
-  --color-accent-strong: var(--regolo-accent-strong);
-  --color-accent-text: var(--regolo-accent-text);
-  --color-accent-soft: var(--regolo-accent-soft);
-  --color-on-accent: var(--regolo-on-accent);
   --color-ph: var(--regolo-ph);
   --color-ph-ink: var(--regolo-ph-ink);
+  --color-timbro: var(--regolo-timbro);
+  --color-timbro-soft: var(--regolo-timbro-soft);
+  --color-timbro-chiaro: var(--regolo-timbro-chiaro);
+  --color-errore: var(--regolo-errore);
 
   --font-display: var(--regolo-font-display);
   --font-body: var(--regolo-font-body);
-  --font-mono: var(--regolo-font-mono);
 
   --text-h1: var(--regolo-text-h1);
   --text-h1--line-height: var(--regolo-lh-h1);
@@ -270,19 +398,31 @@
   --text-h2--line-height: var(--regolo-lh-h2);
   --text-h3: var(--regolo-text-h3);
   --text-h3--line-height: var(--regolo-lh-h3);
-  --text-lead: clamp(1.0625rem, 1.4vw, 1.25rem);
-  --text-lead--line-height: 1.5;
-  --text-body: 1.0625rem;
-  --text-body--line-height: 1.55;
-  --text-small: 0.9375rem;
-  --text-small--line-height: 1.5;
-  --text-eyebrow: 0.6875rem;
+  /* sottotitolo: 20,3 a 390 · 22,8 a 1440 */
+  --text-lead: clamp(1.269rem, 5.2vw, 1.425rem);
+  --text-lead--line-height: 1.15;
+  /* Il corpo NON scala: 18 px da 320 a 1440. Il contrasto di scala è una
+     decisione, non un effetto della viewport. */
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.5;
+  /* dato: 14,2 px, cifre tabellari */
+  --text-small: 0.8875rem;
+  --text-small--line-height: 1.25;
+  /* micro: 12,6 px */
+  --text-eyebrow: 0.7875rem;
   --text-eyebrow--line-height: 1.2;
 
   --radius-edge: var(--regolo-radius);
 
   /* la barra ha 4 voci + CTA: sotto questa soglia passa al menu a scomparsa */
   --breakpoint-nav: 56rem;
+}
+
+/* In B il corpo è 17 px e il dato 13,4: un gradino sotto, sulla stessa scala. */
+[data-theme='b'] {
+  --text-body: 1.0625rem;
+  --text-small: 0.8375rem;
+  --text-lead: clamp(1.0625rem, 4.36vw, 1.195rem);
 }
 
 /* ---------- Base ----------------------------------------------------------- */
@@ -297,8 +437,16 @@
     color: var(--color-ink);
     font-family: var(--font-body);
     font-size: var(--text-body);
-    line-height: 1.55;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    /* Il peso di default dei due file variabili è 600 (Archivo) e 500 (Chivo),
+       verificato con fontTools: senza questo, TUTTO il corpo esce semibold.
+       Non è una preferenza tipografica, è la trappola dei font variabili. */
+    font-weight: 400;
+    /* La larghezza è un asse solo in A (Archivo 62-100); in B il token vale 100
+       e non fa niente, perché Chivo non ha l'asse — ed è la differenza fra i
+       due temi, non una mancanza. */
+    font-stretch: calc(var(--regolo-display-wdth) * 1%);
   }
 
   h1,
@@ -308,7 +456,11 @@
     font-family: var(--font-display);
     font-weight: var(--regolo-display-weight);
     letter-spacing: var(--regolo-display-tracking);
-    text-wrap: balance;
+    /* NIENTE `text-wrap: balance` di default: dove il titolo è composto a mano
+       — la hero, dove le quattro righe sono decise e misurate — il browser
+       ri-spezzerebbe quello che il piano ha deciso, e a 152 px un capo a riga
+       in più costa 128 px di altezza. Chi vuole il bilanciamento lo chiede. */
+    text-wrap: pretty;
   }
 
   h1 {
@@ -347,6 +499,18 @@
     min-width: 0; /* senza questo un fieldset non si stringe dentro una griglia */
   }
 
+  /* Le colonne di numeri si incolonnano con una riga di CSS, non con una
+     famiglia monospace: Archivo e Chivo hanno `tnum` e cifre di larghezza già
+     fissa (verificato in kit/reference/_provini). È il motivo per cui JetBrains
+     Mono è uscita dal progetto — 31 KB e una tell del cluster n. 5 in meno. */
+  table,
+  td,
+  th,
+  time,
+  [data-numero] {
+    font-variant-numeric: tabular-nums;
+  }
+
   /* Il contenuto non deve mai dipendere da un'animazione. */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -361,16 +525,24 @@
 }
 
 /* ---------- Due utility di impaginazione ----------------------------------- */
+/* Le due utility di impaginazione sono **parametrizzate**, e non è un vezzo:
+   `@utility` compila in `@layer utilities`, che batte `@layer components` in
+   silenzio (la nota qui sotto e la decisione del 07/09). Quindi un blocco non
+   può sovrascriverle: può solo cambiare i token, o — per il pieno vivo —
+   **togliere `.wrap` dal markup**.
+   `--regolo-margine` è il margine di pagina e `--regolo-gutter` il gap fra le
+   colonne: prima erano la stessa variabile, e chi portava il gutter a 24
+   spostava i margini invece delle colonne. */
 @utility wrap {
   max-width: var(--regolo-wrap);
   margin-inline: auto;
-  padding-inline: var(--regolo-gutter);
+  padding-inline: var(--regolo-margine);
 }
 
 @utility grid-12 {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 2rem);
+  grid-template-columns: repeat(var(--regolo-colonne, 12), minmax(0, 1fr));
+  gap: var(--regolo-gutter);
 }
 
 /* NOTA: `placeholder-media` **non** è un `@utility`, ed è una correzione, non
@@ -406,22 +578,76 @@
     border: var(--regolo-ph-border);
     overflow: hidden;
   }
+  /* Le quattro squadrette d'angolo: i segni di registro con cui si delimita
+     un'area su una tavola. **Non sono decorazione**: il piano del segnaposto sta
+     a 1,18:1 dalla carta, quindi non può portare da sola il significato «qui va
+     una fotografia» — e non può portarlo una cornice, che CLAUDE.md vieta sulla
+     fotografia. Sono loro, a 4,61:1, l'unico canale che regge il significato:
+     se qualcuno le «pulisce», il blocco diventa un grafico inaccessibile.
+     Un solo elemento e quattro gradienti: zero richieste, zero byte di immagine. */
+  .placeholder-registro {
+    position: absolute;
+    inset: 0.625rem;
+    pointer-events: none;
+    --sq: 1.25rem;
+    background-image:
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line)),
+      linear-gradient(var(--color-line), var(--color-line));
+    background-size:
+      var(--sq) 1px,
+      1px var(--sq),
+      var(--sq) 1px,
+      1px var(--sq),
+      var(--sq) 1px,
+      1px var(--sq),
+      var(--sq) 1px,
+      1px var(--sq);
+    background-position:
+      left top,
+      left top,
+      right top,
+      right top,
+      left bottom,
+      left bottom,
+      right bottom,
+      right bottom;
+    background-repeat: no-repeat;
+  }
+  /* La specifica: cosa manca **e in che formato deve arrivare**. È quello che
+     trasforma un buco in una richiesta, e in call è la lista della spesa. */
+  .placeholder-specifica {
+    display: block;
+    margin-top: 0.125rem;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
   /* La targhetta che dice cosa andrà lì. Stava nel componente come utility
      Tailwind (`absolute bottom-3 left-3 …`) e per la stessa ragione batteva
      ogni tentativo di spostarla: `.hero-foto` la voleva in alto a destra e
      otteneva un `inset: 12px` su tutti e quattro i lati, cioè una targhetta
      larga come tutto il segnaposto. */
-  /* Segnaposto di testo. **Il fondo non basta**: una tinta leggibile sotto il
-     testo sta a 1,1:1 dalla carta della pagina, cioè non si vede — e il
-     commento del componente prometteva il contrario. Il segno che si vede è
-     strutturale: un filetto pieno a sinistra nel colore dell'accento (8,61:1
-     sulla pagina), più la tinta, più la sottolineatura punteggiata. Tre canali,
-     nessuno dei quali è il solo colore. */
+  /* Segnaposto di testo — **il solo posto del sito dove c'è colore.**
+     Il fondo da solo non basta: una tinta abbastanza chiara da lasciare
+     leggibile il testo sta a 1,1:1 dalla carta, cioè non si vede. I canali sono
+     tre e il primo è il filetto: `timbro` a 10,42:1 sulla carta (5,86:1 sul
+     getto di B), più la tinta, più la sottolineatura punteggiata.
+     È l'inchiostro del timbro professionale, cioè il segno con cui si annota lo
+     stato di un documento: qui dichiara che il contenuto manca. Sono 62 in
+     pagina (33 in A, 29 in B) e **quando i contenuti arrivano l'accento
+     sparisce dal sito da sé** — è l'unico colore del progetto che si consuma.
+     Dentro una banda scura il token diventa `timbro-chiaro` (9,43:1 sul nero):
+     non esiste un valore che serva i due piani, e la regola sta più sotto. */
   .da-cliente {
     padding: 0.0625rem 0.375rem;
-    border-left: 3px solid var(--color-accent-text);
-    background-color: var(--color-accent-soft);
-    color: var(--color-accent-text);
+    border-left: 3px solid var(--regolo-timbro-piano);
+    background-color: var(--regolo-timbro-piano-soft);
+    color: var(--regolo-timbro-piano);
     text-decoration: underline;
     text-decoration-style: dotted;
     text-decoration-thickness: 1px;
@@ -430,6 +656,8 @@
     -webkit-box-decoration-break: clone;
   }
 
+  /* La scheda di specifica del segnaposto: dice cosa manca **e in che formato
+     deve arrivare**. Minuscola, non maiuscoletto spaziato. */
   .placeholder-etichetta {
     position: absolute;
     bottom: 0.75rem;
@@ -438,14 +666,18 @@
     background-color: var(--color-paper);
     color: var(--color-ph-ink);
     font-size: var(--text-eyebrow);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: var(--regolo-eyebrow-transform);
   }
 
   .btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem;
+    /* 56 px di altezza, misurata: è il bersaglio del bottone che deve essere
+       premuto, e su mobile prende tutta la riga. */
+    min-height: 3.5rem;
     padding: 1rem 1.375rem;
     font-size: var(--text-small);
     font-weight: 500;
@@ -459,12 +691,10 @@
       border-color 0.2s,
       color 0.2s;
   }
-  /* La freccia è decorazione: `/ ''` le dà testo alternativo vuoto, così non
-     entra nel nome accessibile del bottone («Avanti →» letto «Avanti freccia
-     a destra»). Dove la sintassi non è supportata si legge come prima. */
-  .btn::after {
-    content: '\2192' / '';
-  }
+  /* La freccia in coda ai bottoni **non c'è più**: è la tell n. 5 della lista di
+     calibrazione, e nessuna delle tre reference tier A la usa (Storey e
+     Kononenko non hanno nemmeno un bottone con un'icona). Un CTA dice cosa
+     succede con le parole: «Raccontaci il progetto». */
   .btn:hover {
     background-color: var(--regolo-btn-bg-hover);
     border-color: var(--regolo-btn-bg-hover);
@@ -477,16 +707,51 @@
     border-color: var(--color-ink);
   }
   .btn-ghost:hover {
-    color: var(--color-on-accent);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
   }
 
+  /* L'etichetta di sezione. **Non è più un occhiello**: nessuna delle tre
+     reference tier A mette un maiuscoletto spaziato sopra un titolo, e AS
+     scrive le sue fra parentesi quadre (`[Projects]`, `[Materials]`).
+     Minuscola, spaziatura negativa, e le quadre sono nel CSS e non nel testo:
+     così non finiscono nel nome accessibile né nei metadati. */
   .eyebrow {
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     font-weight: 500;
     font-family: var(--regolo-font-eyebrow);
     color: var(--color-muted);
+  }
+  .eyebrow::before {
+    content: '[';
+  }
+  .eyebrow::after {
+    content: ']';
+  }
+
+  /* ---- la barra ----------------------------------------------------------
+     In A un filetto chiude l'header; in B no, perché lì la linea che tiene la
+     pagina è l'asse **verticale** e due linee che si incrociano nel primo
+     centimetro di pagina si annullano. */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background-color: var(--color-paper);
+    border-bottom: var(--regolo-header-filo, 1px solid var(--color-line));
+  }
+  [data-theme='b'] .site-header {
+    --regolo-header-filo: none;
+  }
+  .site-header-riga {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: var(--regolo-header-h);
+    padding-block: 0.75rem;
   }
 
   /* logo: stessa struttura, due assetti */
@@ -506,34 +771,88 @@
     letter-spacing: var(--regolo-logo-tracking);
     line-height: 1.1;
   }
+  /* La sede sotto il nome: un indirizzo in chiaro nella prima riga della pagina
+     è la prima prova di essere un posto vero. Minuscola: il maiuscoletto
+     spaziato è la tell n. 5, e nessuna delle tre tier A lo usa. */
   .logo-qualifier {
     font-family: var(--regolo-font-eyebrow);
-    font-size: 0.625rem;
-    letter-spacing: 0.08em;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
     color: var(--color-muted);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- il menu è una frase ----------------------------------------------
+     Le virgole le mette il CSS: non entrano nel nome accessibile dei link né
+     in un copia-incolla della voce. La voce corrente si segna sottolineandola
+     — che è anche lo slot, e l'unico, in cui entrerà il colore del marchio
+     quando il logo arriverà (decisione n. 5). */
+  .site-nav ul {
+    display: flex;
+    align-items: baseline;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-small);
+  }
+  .site-nav li:not(:last-child)::after {
+    content: ',';
+    color: var(--color-muted);
+  }
+  .site-nav a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  .site-nav a:hover {
+    text-decoration-line: underline;
+  }
+  .site-nav a[aria-current='page'] {
+    text-decoration-line: underline;
   }
 
   /* menu mobile: <details> nativo, nessun JavaScript */
   .menu-mobile > summary {
     list-style: none;
     cursor: pointer;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--color-ink);
-    border-radius: var(--radius-edge);
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 0;
     font-size: var(--text-small);
     font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
   }
   .menu-mobile > summary::-webkit-details-marker {
     display: none;
   }
-  .menu-mobile[open] > summary {
-    background-color: var(--color-ink);
-    color: var(--color-paper);
+  .menu-mobile-pannello {
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    background-color: var(--color-paper);
+    border-block: 1px solid var(--color-line);
   }
 }
 
 @layer components {
+  /* Il piano scuro. Un posto solo per la regola: dentro una banda `ink` il
+     segnaposto passa a `timbro-chiaro` e perde la tinta (9,43:1 sul nero), e il
+     fuoco si schiarisce. Nessun `if` nei componenti: è il contesto a dirlo. */
+  .sezione-scura,
+  [data-theme='a'] .brief {
+    --regolo-timbro-piano: var(--regolo-timbro-chiaro);
+    --regolo-timbro-piano-soft: transparent;
+  }
+  /* ...ma dentro la scheda del brief il fondo torna carta, e con lui il piano. */
+  [data-theme='a'] .brief .brief-scheda {
+    --regolo-timbro-piano: var(--regolo-timbro);
+    --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
+  }
+
   /* Salta al contenuto: invisibile finché non riceve il focus da tastiera. */
   .skip-link {
     position: absolute;
@@ -595,7 +914,7 @@
     padding: clamp(1.25rem, 3vw, 2.25rem);
     border-radius: var(--radius-edge);
     /* dentro la scheda il fondo è chiaro: l'anello torna quello del tema */
-    --regolo-focus: var(--regolo-accent-strong);
+    --regolo-focus: var(--regolo-ink);
   }
 
   /* ---- barra di avanzamento ----------------------------------------------
@@ -615,7 +934,7 @@
     transition: background-color 0.25s;
   }
   .brief-barra li[data-fatto] {
-    background-color: var(--color-accent);
+    background-color: var(--color-ink);
   }
 
   /* ---- il passo ----------------------------------------------------------- */
@@ -647,7 +966,7 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     color: var(--color-muted);
     margin-bottom: 0.625rem;
   }
@@ -704,7 +1023,7 @@
     width: 1.125rem;
     height: 1.125rem;
     margin: 0;
-    accent-color: var(--color-accent-strong);
+    accent-color: var(--color-ink);
   }
   .brief-opzione:hover {
     border-color: var(--regolo-brief-scelta-bordo);
@@ -741,7 +1060,7 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     color: var(--color-muted);
   }
   .brief-campo input,
@@ -782,10 +1101,10 @@
     width: 1.125rem;
     height: 1.125rem;
     margin: 0.1875rem 0 0;
-    accent-color: var(--color-accent-strong);
+    accent-color: var(--color-ink);
   }
   .brief-consenso a {
-    color: var(--color-accent-text);
+    color: var(--color-ink);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -810,7 +1129,7 @@
     border-left: 3px solid var(--regolo-brief-errore);
   }
   .brief-guasto a {
-    color: var(--color-accent-text);
+    color: var(--color-ink);
     font-weight: 600;
     text-decoration: underline;
   }
@@ -830,9 +1149,7 @@
   .brief-indietro::after {
     content: none;
   }
-  .brief-indietro::before {
-    content: '\2190' / '';
-  }
+  /* Nessuna freccia: «Indietro» lo dice la parola. */
   .brief-azioni .btn[disabled] {
     opacity: 0.6;
     cursor: progress;

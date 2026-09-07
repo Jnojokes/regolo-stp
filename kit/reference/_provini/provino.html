@@ -1,0 +1,34 @@
+<!doctype html><meta charset="utf-8">
+<style>
+@font-face{font-family:Archivo;src:url(archivo.woff2)format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Anybody;src:url(anybody.woff2)format('woff2');font-weight:100 900;font-stretch:50% 150%}
+@font-face{font-family:EncodeSans;src:url(encodesans.woff2)format('woff2');font-weight:100 900;font-stretch:75% 125%}
+@font-face{font-family:Familjen;src:url(familjen.woff2)format('woff2');font-weight:400 700}
+@font-face{font-family:Host;src:url(host.woff2)format('woff2');font-weight:300 800}
+@font-face{font-family:Schibsted;src:url(schibsted.woff2)format('woff2');font-weight:400 900}
+@font-face{font-family:Chivo;src:url(chivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:PublicSans;src:url(publicsans.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Geist;src:url(geist.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:YoungSerif;src:url(youngserif.woff2)format('woff2');font-weight:400}
+@font-face{font-family:ZillaSlab;src:url(zillaslab.woff2)format('woff2');font-weight:400}
+@font-face{font-family:Bitter;src:url(bitter.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Newsreader;src:url(newsreader.woff2)format('woff2');font-weight:200 800}
+@font-face{font-family:SourceSerif;src:url(sourceserif.woff2)format('woff2');font-weight:200 900}
+body{margin:0;background:#E4E5E0;color:#000;font:14px/1.4 -apple-system}
+.row{border-top:1px solid #A9ABA4;padding:14px 20px}
+.nm{font:11px/1 ui-monospace;letter-spacing:.02em;color:#5A5F5B;margin-bottom:6px}
+.big{font-size:96px;line-height:.82;letter-spacing:-.03em;margin:0}
+.mid{font-size:34px;line-height:1;letter-spacing:-.02em;margin:6px 0 0}
+.sm{font-size:17px;line-height:1.5;margin:6px 0 0;max-width:52ch}
+</style>
+<div id=out></div>
+<script>
+const F=[['Archivo',700],['Archivo',500],['Anybody',700],['EncodeSans',600],['Familjen',500],['Host',600],['Schibsted',600],['Chivo',700],['PublicSans',700],['Geist',600],['YoungSerif',400],['ZillaSlab',400],['Bitter',600],['Newsreader',500],['SourceSerif',600]];
+document.getElementById('out').innerHTML=F.map(([f,w])=>`
+<div class=row style="font-family:${f}">
+ <div class=nm>${f} — peso ${w}</div>
+ <p class=big style="font-weight:${w}">Mettere in sicurezza</p>
+ <p class=mid style="font-weight:${w}">Ristrutturare, ampliare, recuperare · 1.240 m² · Fermo</p>
+ <p class=sm>Uno studio di ingegneria civile e architettura a Fermo. Progetto architettonico e strutturale, pratiche, cantiere: la stessa squadra, dall'idea alla consegna. 0734 510329</p>
+</div>`).join('');
+</script>

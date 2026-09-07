@@ -46,7 +46,7 @@ export default function OpzioneB() {
       <Progetti variante="dati" />
       <PrimaDopo />
       <Persone variante="b" />
-      <Brief pagina="/opzione-b" quota="Sez. 07 — Il brief" />
+      <Brief pagina="/opzione-b" etichetta="il brief" />
       <BarraMobile />
     </>
   )

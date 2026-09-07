@@ -4,7 +4,8 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | `/fase-4-contenuti` (07/09/2026, di notte) |
+| Ultima fase chiusa | **fase 3 bis — ridisegno (1/2)** (07/09/2026). Prima: `/fase-4-contenuti` |
+| In corso | **fase 3 bis, parte 2/2**: i blocchi oltre le due hero, i media, la verifica. Lo stop 1 è chiuso |
 | Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / B / mix), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
@@ -64,6 +65,88 @@
 | 07/09/2026 | 4 | `/contatti` vera: dati confermati, i mancanti come segnaposto, mappa statica **senza iframe**, e il brief | la precompilazione da `?intervento=` continua a funzionare senza JavaScript, che era il requisito da non rompere |
 | 07/09/2026 | 4 | `JsonLd` toglie da sé i campi vuoti e i `[[DA CLIENTE]]`, **a ogni livello di annidamento**, e non emette gusci vuoti | «un campo mancante si omette» (`kit/REGOLO_SEO-GEO-LEGAL.md`): un segnaposto in `vatID` non è un buco visibile, è una partita IVA falsa dichiarata a una macchina |
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
+
+
+## Fase 3 bis — il ridisegno sulle reference vere (07/09/2026)
+
+La fase 3 era uscita generica per due motivi che la skill `sito-design` documenta: **nessuno
+aveva aperto una reference** (`kit/reference/` era vuota, i prototipi erano una parafrasi) e i
+token di partenza erano, voce per voce, i cluster n. 1 e n. 5 della lista di calibrazione.
+Niente è stato revertato: i commit delle fasi 3 e 4 restano e si è costruito sopra.
+
+### Cosa c'è adesso in `kit/reference/`
+
+| Cartella | Cosa |
+|---|---|
+| `SCHEDA.md` | nove siti catturati a 1440 e a 390 (hero, sezione a metà, pagina intera), **guardati** uno per uno, con gli stili **misurati** nel browser: famiglie reali, corpi, interlinee, spaziature, larghezze di contenitore, passo fra le sezioni. Più la § 2, che mette le tre tier A a confronto meccanismo per meccanismo, e la § 0, che motiva le due modifiche al tier |
+| `_provini/PROVINI.md` | **14 famiglie OFL** impaginate con le parole vere del brief ai corpi veri, pesate in KB, e tre prove decisive: i didoni sono il cluster 1, l'asse di larghezza è la leva del mobile, le cifre tabellari eliminano il monospace |
+| `_prima/` · `_dopo/` | le due home prima e dopo, a 1440 e a 390 |
+| `refero/DESIGN-structured.md` | un solo `DESIGN.md` editoriale non-SaaS, usato **solo** come evidenza su scala e spazio |
+
+**Due modifiche al tier, decise in scheda.** *AS Associates entra nel tier A*: la sua home è un
+indice di documenti con i conteggi, e `/projects` è una tabella di dati con la destinazione
+d'uso in colonna — è il primo sito della lista in cui il lavoro è ordinato come lo ordina uno
+studio tecnico, ed è esattamente il problema del campo «ruolo». *Studio Foundry esce dal tier A*:
+è la reference che i prototipi avevano già parafrasato e i suoi token misurati sono i cluster
+1 e 5; restano due suoi gesti, dichiarati. *Nabil Issa resta fuori*: il suo gesto è già nel
+progetto via tier B, e quello che aggiungerebbe è cluster 2 + cluster 5 più un banner cookie.
+
+### Il piano, in due passate
+
+Quattro direzioni indipendenti scritte dalle stesse prove (la scala · la scheda tecnica · la
+materia · la quota), **dodici giudizi** — tre lenti per direzione: anti-default, aderenza al
+brief, fattibilità — e una sintesi che parte dalla vincente e innesta il meglio delle altre.
+La seconda passata ha cambiato dodici parti del piano; le più grosse:
+
+| Prima | Dopo | Perché |
+|---|---|---|
+| l'apparato di quota su 12 blocchi su 15 | **tre quote in tutto il sito**, con un test a tre condizioni | un motivo che sta ovunque non è una firma: è la texture della pagina, cioè la definizione del cluster 5 |
+| «zero tinte sature» | **un accento solo, e il suo lavoro è dichiarare ciò che manca** | zero colore è la mossa di default per «serio», ed era misurabilmente sbagliata: lasciava i 62 segnaposto con due canali su tre e un fondo a 1,1:1 |
+| griglie a 8 e a 14 colonne per distinguere i temi | **12 per entrambi**, e la differenza è l'**asse** | 8 e 14 non avevano nessuna prova nella cartella, e costavano i 28 `col-span-*` già scritti |
+| il display a 176 px con il payoff potato in tre sostantivi | **132 px e il payoff intero** | la geometria stava potando il messaggio: se ne andava «dirigiamo», che è metà di quello che lo studio vende |
+| la texture materica generata nella hero | **zero immagini generate in tutto il sito** | `TODO-MEDIA.md` nomina la hero per prima fra i blocchi dove non entra mai materiale generato |
+| i nove token caldi dell'esploso «restano» | tre valori per le facce, e cinque retini alla parte 2/2 | erano il cluster 1 sopravvissuto intatto nel momento più guardato di A |
+
+### Blocco → reference → cosa ho preso → quale cluster NON uso (parte 1/2)
+
+I blocchi rifatti finora. La tabella si completa alla parte 2/2.
+
+| Blocco | Reference | Cosa ho preso | Cluster che NON uso | Cosa c'è al suo posto |
+|---|---|---|---|---|
+| **Token, tutti** | SCHEDA § 2 · refero | nero **pieno** (3 reference su 4 misurano `rgb(0,0,0)`), gutter 24 e non 64, angoli vivi e zero ombre (unanime), interlinea come funzione del corpo, quattro spaziature **tutte negative** | **1** carta calda `#F4F2ED` · **5** nero tinto `#17171A`, `+0,14em` sulle etichette, mono per i dati | bianco puro (A) e un fondo a **luminanza media** (B, L 0,541 come refero); `#000000`; spaziatura negativa anche sulle maiuscole |
+| **Caratteri** | `_provini/PROVINI.md` | Archivo (A, asse di larghezza) e Chivo (B), una famiglia per tema | **1** il serif display ad alto contrasto — e i due candidati «diversi» (Newsreader, Source Serif) sono lo stesso cluster con un altro nome | un grottesco con **asse di larghezza**, che a 390 px è l'unico modo di tenere il contrasto di scala. Niente monospace: `tabular-nums` |
+| **Accento** | Storey · Kononenko · AS · refero · sbp | le tre tier A non hanno accento; refero lo scrive come divieto; sbp dimostra che l'arancio è il default di settore | **1** terracotta · **2** l'acido su fondo scuro · l'arancio `#E4572E` | **un** accento, sui **soli segnaposto**: l'inchiostro del timbro. Si consuma quando i contenuti arrivano |
+| **Header** | Kononenko (`1440-hero`) | il menu è una **frase** con le virgole; «in tutto il sito non esiste un bottone»; il marchio è tipografia | **5** la pastiglia «Raccontaci il progetto →» ripetuta in alto a destra, il logotipo a `+0,26em`, la freccia | **zero bottoni**: sopra la piega la CTA è una sola, quella della hero. Sotto il nome, la sede in chiaro |
+| **Hero A** | Storey (vuoto disuguale) · Kononenko (il titolo a due voci) · Dieste (**la quota con le parole appese**) · Studio Foundry (2 gesti) | il payoff **intero** su quattro righe a 132 px, le due metà a `wdth 100` e `wdth 75`; la quota dei cinque ruoli da margine a margine; il campo della foto che sborda a destra | **1** in pieno (crema + didone + riga in corsivo verde) · **5** l'occhiello unito da puntini, «→» su due bottoni | **Q: `5 ruoli`** — da `RUOLI.length`, elenco chiuso in `lib/contenuti/schema.ts`. È il dato che dice cosa sanno fare, che CLAUDE.md vieta di omettere |
+| **Hero B** | AS (l'indice) · Dieste (**l'asse verticale**) · Kononenko (l'etichetta nel margine vuoto) | cinque **righe di registro** a cavallo dell'asse: chiave e ruolo a sinistra, radio e nome a destra; la riga scelta apre la **figura bianca** con 1 px di inchiostro | **4** le cinque card identiche con raggio 3 px, e il pannello scuro a tre colonne con la micro-etichetta mono sopra · **5** «SEZ. 01 — IL PUNTO DI PARTENZA» centrato fra due filetti che non misurano niente | il filetto di riga **c'è** (ogni riga porta un radio: il confine del bersaglio è informazione), e `01…05` è una chiave d'archivio, non una sequenza |
+| **Segnaposto immagine** | ecoLINEAR (i segni di registro) · AS · Kononenko | quattro **squadrette d'angolo** e la **scheda di specifica** dentro: cosa manca *e in che formato deve arrivare* | **3** il tratteggio (A) e la carta millimetrata (B): due texture decorative su ogni blocco che dicono «disegno» e non dicono niente | il campo dice `2400 × 1650 px · AVIF · ≤ 250 KB`. Legge «modulo in attesa», non «buco», e in call è la lista della spesa |
+| **Etichette di sezione** | AS (`[Projects]` `[Materials]`) | minuscole, fra **parentesi quadre** messe dal CSS, sulla stessa riga del titolo | **5** l'occhiello in maiuscoletto spaziato sopra ogni titolo | le 23 `quota="Sez. 04 — Progetti"` sono diventate `[progetti]`. Nessuna è una quota: non portano un numero |
+| **Barra CTA mobile** | AS | tre celle **a larghezza disuguale**, piatte, solo testo | **4** le pastiglie tonde galleggianti con l'ombra · **5** «→» | 22 % · 29 % · 49 %: le larghezze dicono la priorità, e con metà barra ci sta «raccontaci il progetto» intero |
+
+### Misure della parte 1/2 (build di produzione, Slow 4G + CPU 4×, viewport 390)
+
+| Metrica | Obiettivo | `/` (A) | `/opzione-b` (B) | Esito |
+|---|---|---|---|---|
+| LCP | < 2,0 s | **0,73 s** | 0,69 s | OK. L'LCP è **testo**, non un'immagine: il display della hero |
+| CLS | < 0,05 | **0,00** | 0,00 | OK |
+| Peso primo caricamento | < 1,2 MB | **254 KB** | 263 KB | OK |
+| JS primo caricamento | < 180 KB gz | **149 KB** | 149 KB | invariato: il ridisegno non aggiunge un byte di JavaScript |
+| Richieste | < 40 | **20** | 18 | OK |
+| **Font per rotta** | — | **40,7 KB** (era 60,8) | 67,7 KB (era 138,3) | **−20 e −71 KB.** Un file per tema |
+| Documento HTML | — | 26,5 KB | 19,6 KB | — |
+| Lighthouse mobile | ≥ 90 | accessibilità **100** · best practices **100** · SEO **100** · agentic **100**, 56 controlli passati, 0 falliti | — | OK |
+
+Il debito del preload resta e si è **dimezzato**: `/opzione-b` scarica ancora i 40,7 KB di
+Archivo che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo e Next
+precarica quello che ci trova. Prima erano 105 KB nella direzione opposta. Sparisce alla fase 5
+con la rotta non scelta.
+
+### Cosa resta alla parte 2/2
+
+I blocchi oltre le due hero — smistamento, numeri, servizi, come lavoriamo, progetti, esploso
+(i cinque retini), prima/dopo (le due metà a 21:1), persone, territorio, brief, footer — i
+media, e la verifica completa (budget su una pagina servizio, screenshot di tutte le pagine
+interne, contrasto delle coppie nuove, prova senza JavaScript).
 
 ## Misure (07/09/2026, build di produzione, Slow 4G + CPU 4×, viewport 390)
 

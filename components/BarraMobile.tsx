@@ -21,15 +21,17 @@ import { ctaPrimaria, daCliente, site } from '@/lib/site'
  * discussione (CLAUDE.md § Regole, 1). Il numero va chiesto allo studio; se
  * decidono di non averlo la cella si toglie e la barra torna a due voci.
  *
- * L'ultima cella si chiama «Brief» come in CLAUDE.md e non «Raccontaci il
- * progetto»: in 390 px le tre celle non stanno su una riga, e una barra alta il
- * doppio mangia lo schermo. La frase intera resta nell'header e nel blocco del
- * brief, dove c'è spazio per dirla.
+ * Le tre celle **non sono larghe uguali**: 25 % · 25 % · 50 %. Le larghezze
+ * dicono la priorità, e la priorità è quella di CLAUDE.md § Obiettivo — il
+ * brief è l'azione primaria. Con metà barra la frase intera «raccontaci il
+ * progetto» ci sta (misurata a 390 px), quindi la cella non si chiama più
+ * «Brief»: un CTA dice esattamente cosa succede, e mantiene lo stesso nome per
+ * tutto il flusso (skill `sito-design` § 8).
  */
 export function BarraMobile() {
   return (
     <nav aria-label="Azioni rapide" className="barra-mobile">
-      <a href={`tel:${site.telefonoHref}`}>Chiama</a>
+      <a href={`tel:${site.telefonoHref}`}>chiama</a>
 
       {/* Uno <span>, non un <a> disabilitato: non c'è niente da toccare, e un
           link che non porta da nessuna parte è peggio di una casella vuota.
@@ -40,7 +42,7 @@ export function BarraMobile() {
       </span>
 
       <Link href={ctaPrimaria.href} className="barra-mobile-brief">
-        Brief
+        raccontaci il progetto
       </Link>
     </nav>
   )

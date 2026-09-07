@@ -60,36 +60,32 @@
     color: var(--regolo-scuro-fg);
   }
 
-  /* ---------- quota ------------------------------------------------------
-     La linea di misura del disegno tecnico. È il motivo dell'opzione B; in A
-     le due righe non si disegnano e resta un occhiello (un token, non un `if`). */
-  .quota {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--regolo-quota-colore);
-  }
-  .quota::before,
-  .quota::after {
-    content: '';
-    display: var(--regolo-quota-riga);
-    flex: 1;
-    height: 1px;
-    background-color: currentColor;
-  }
-  /* la prima riga si disegna solo quando la quota è centrata */
-  .quota:not(.quota-centrata)::before {
-    display: none;
-  }
-  .quota > span {
+  /* ---------- etichetta di sezione ---------------------------------------
+     Era la «quota» dell'opzione B: un filetto, un'etichetta in maiuscoletto
+     monospace e un numero — «SEZ. 01 — IL PUNTO DI PARTENZA» — centrato fra due
+     righe che non misuravano niente. Cioè, insieme, il cluster n. 5 e il
+     «tutto centrato» della lista di casa: decorazione travestita da
+     informazione.
+     Le 23 chiamate `quota="…"` di `Sezione.tsx` sono diventate **etichette**:
+     minuscole, fra parentesi quadre (AS misurato), sulla stessa riga del
+     titolo e non sopra. Nessuna di loro è una quota, perché nessuna porta un
+     numero — che è la condizione 2 della regola in `components/Quota.tsx`.
+     La quota vera è un componente, e in tutto il sito sono tre. */
+  .etichetta-sezione {
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
-    white-space: nowrap;
+    text-transform: var(--regolo-eyebrow-transform);
     font-weight: 500;
+    color: var(--color-muted);
   }
-  .sezione-scura .quota {
+  .etichetta-sezione::before {
+    content: '[';
+  }
+  .etichetta-sezione::after {
+    content: ']';
+  }
+  .sezione-scura .etichetta-sezione {
     color: var(--regolo-scuro-muted);
   }
 
@@ -147,7 +143,7 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
   }
   .barra-proposta strong {
     font-weight: 500;
@@ -185,209 +181,440 @@
   }
 
   /* ==========================================================================
-     Hero A — la fotografia con il payoff in due tempi
+     LA QUOTA — l'unico motivo grafico del sito
+     Regola in `components/Quota.tsx` e in DECISIONI n. 17: due estremi su un
+     oggetto reale, un numero che il repo conta, una quantità che il visitatore
+     non conta a vista. In tutto il sito sono tre.
+
+     Il filetto è la somma dei bordi delle voci, quindi le tacche cadono dove
+     finisce ogni etichetta e sono **disuguali per costruzione**: se una parola
+     cambia, la tacca si sposta. Nessuna misura cablata, zero JavaScript.
      ======================================================================== */
-  .hero-foto {
+  .quota {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    /* nessun `gap`: i bordi delle voci devono saldarsi in un filetto continuo */
+    gap: 0;
+    color: var(--regolo-quota-colore);
+    font-size: var(--text-eyebrow);
+    line-height: 1.25;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+  }
+  .quota > * {
     position: relative;
-    height: min(78vh, 760px);
-    min-height: 26rem;
+    border-top: 1px solid currentColor;
+    padding-top: 0.625rem;
+    padding-right: 1.25rem;
   }
-  /* La targhetta del segnaposto va in alto a destra: in basso il velo la
-     sbiadisce e il bordo della sezione la taglia. */
-  .hero-foto > .placeholder-media > .placeholder-etichetta {
-    top: 0.75rem;
-    right: 0.75rem;
-    bottom: auto;
-    left: auto;
+  /* Ogni voce prende la sua larghezza naturale **più una quota uguale dello
+     spazio libero**: `flex-grow: 1` con `flex-basis: auto`. Così il filetto
+     arriva da un margine all'altro e le tacche cadono dove finisce ogni
+     etichetta — disuguali per costruzione, senza una misura cablata.
+     ATTENZIONE: `margin-left: auto` sull'annotazione mangerebbe tutto lo spazio
+     libero **prima** che `flex-grow` lo distribuisca, e il filetto si
+     fermerebbe a un terzo della riga. È il difetto che si vedeva nel primo
+     provino di questa fase. */
+  .quota-voce {
+    flex: 1 1 auto;
   }
-  /* Il testo sta sopra la foto: la sfumatura garantisce il contrasto senza
-     schiarire l'immagine. Il tratto opaco comincia al 40 % e non al 55 %
-     perché il payoff parte più in alto del sottotitolo.
-     ATTENZIONE: quando arriva la fotografia vera il contrasto va riverificato
-     sul punto più chiaro della metà inferiore (riga in TODO-MEDIA.md). */
-  .hero-velo {
+  /* Il terminatore: tratto obliquo a 45°, che è quello delle scale
+     architettoniche (ISO 129-1). **Non** la freccia di ecoLINEAR, che è il
+     terminatore delle scale meccaniche: stessa grammatica, non la stessa
+     citazione. */
+  .quota > *::before {
+    content: '';
     position: absolute;
-    inset: auto 0 0 0;
-    padding-block: clamp(1.5rem, 4vw, 3.5rem);
-    background-image: linear-gradient(
-      180deg,
-      transparent,
-      color-mix(in srgb, var(--color-paper) 88%, transparent) 40%,
-      color-mix(in srgb, var(--color-paper) 97%, transparent) 100%
-    );
+    top: 0;
+    left: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-left: 1px solid currentColor;
+    transform: rotate(45deg);
+    transform-origin: top left;
   }
-  .hero-payoff em {
-    font-style: italic;
-    color: var(--color-accent-text);
+
+  /* L'annotazione sta all'estremo, con il vuoto in mezzo: è il metadato spinto
+     al bordo di Pelizzari e la lettura di coordinate di ecoLINEAR. */
+  .quota-annotazione {
+    flex: 0 0 auto;
+    padding-right: 0;
+    text-align: right;
+    color: var(--color-ink);
+    font-weight: 500;
   }
-  [data-theme='b'] .hero-payoff em {
-    font-style: normal;
-    color: var(--color-accent);
+  .quota-dettaglio {
+    display: block;
+    color: var(--regolo-quota-colore);
+    font-weight: 400;
+  }
+  /* A 390 px le voci si incolonnano e ognuna porta il suo filetto: la quota non
+     si spegne, cambia forma (CLAUDE.md § Regole, 5). Sotto i 400 px
+     l'annotazione va **sopra** la linea, su una riga propria, altrimenti «128
+     comuni · FM 40 · MC 55 · AP 33» accanto a due terminatori spezza la quota. */
+  @media (max-width: 40rem) {
+    .quota > * {
+      flex: 1 0 100%;
+      max-width: none;
+      padding-right: 0;
+    }
+    .quota-annotazione {
+      order: -1;
+      text-align: left;
+    }
+    .quota-dettaglio {
+      display: inline;
+    }
+    .quota-dettaglio::before {
+      content: ' — ';
+    }
+  }
+  .sezione-scura .quota {
+    color: var(--regolo-scuro-linea);
+  }
+  .sezione-scura .quota-annotazione {
+    color: var(--regolo-scuro-fg);
   }
 
   /* ==========================================================================
-     Hero B — la domanda, i cinque percorsi e il pannello.
-     Il pannello si cambia **senza una riga di JavaScript**: i percorsi sono
-     `radio` nativi e `:has()` accende il pannello corrispondente. Senza JS
-     funziona tutto; da tastiera si scorre con le freccette.
+     Hero A — «L'elevato»
+     Il payoff a 132 px in quattro righe, la quota che attraversa la larghezza,
+     il campo della fotografia che sborda a destra. Nessun occhiello sopra il
+     titolo: l'identità della sezione è la quota.
      ======================================================================== */
-  .percorsi {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.625rem;
-    margin-top: clamp(1.75rem, 4vw, 3rem);
+  .hero-elevato {
+    padding-top: clamp(1.5rem, 2.4vw, 2rem);
+    padding-bottom: var(--regolo-passo-corto);
   }
-  @media (max-width: 62rem) {
-    .percorsi {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Il corpo del payoff è **132 px e non 152**, e il numero non è arbitrario:
+     132 / 18 = 7,3×, cioè esattamente il contrasto di scala misurato su Storey.
+     A 152 le quattro righe misuravano 511 px e, sommati agli 89 dell'header e ai
+     44 della barra della proposta, spingevano la CTA a 370 px sotto la piega:
+     il wireframe del piano metteva la CTA a y=880 senza contare i 133 px di
+     cornice che la pagina ha davvero. Misurato in pagina, non stimato. */
+  .hero-payoff {
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    /* Le quattro righe sono decise e spezzate a mano con `<br>`: `balance` o
+       `pretty` le ri-spezzerebbero, e a 132 px un capo a riga in più costa
+       111 px di altezza. */
+    text-wrap: nowrap;
+  }
+  .hero-payoff > span {
+    display: block;
+  }
+  /* Le due metà: stessa famiglia, stesso corpo, **due larghezze**. La seconda è
+     il tecnicismo della prima — la stessa relazione esito/tecnicismo dei sei
+     servizi — e sostituisce la riga in corsivo colorato, che era la tell «una
+     sola parola del titolo in corsivo/colore».
+     In B `--regolo-display-wdth` vale 100 e le due metà restano identiche:
+     Chivo non ha l'asse di larghezza, e A comprime mentre B no. */
+  .hero-payoff-esito {
+    font-stretch: calc(var(--regolo-display-wdth) * 1%);
+    font-weight: 500;
+  }
+  /* La seconda metà **non cambia colore**: cambia larghezza e peso. Tingerla
+     di grigio la fa leggere come disattivata, e un titolo con una parte in un
+     altro colore è la tell «una sola parola del titolo in corsivo/grassetto/
+     colore» con un vestito nuovo. La differenza è tipografica o non è. */
+  .hero-payoff-tecnico {
+    font-stretch: calc(var(--regolo-display-wdth) * 0.75%);
+    font-weight: 400;
+  }
+  .hero-quota {
+    margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
+  }
+  /* Il basso della hero: il testo su una colonna corta e il campo della
+     fotografia che sborda **a destra** oltre il margine (Kononenko misurato ha
+     un'immagine a x = −32, Storey un file da 1512 px a x = −36). Mai a
+     sinistra: il margine di pagina è la spina della griglia. */
+  .hero-basso {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    margin-top: clamp(1.75rem, 2.4vw, 2.125rem);
+  }
+  @media (min-width: 56rem) {
+    .hero-basso {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+      /* `end` bottom-allineava il testo dentro una riga alta quanto la figura e
+         spingeva la CTA 340 px più in basso di dove serve. Il testo sta in
+         alto; il vuoto, se c'è, sta sotto — che è dove non fa danno. */
+      align-items: start;
     }
   }
-  @media (max-width: 35rem) {
-    .percorsi {
-      grid-template-columns: 1fr;
+  .hero-lead {
+    font-size: var(--text-lead);
+    line-height: 1.4;
+    max-width: var(--regolo-misura);
+    color: var(--color-muted);
+  }
+  /* Sotto i 30 rem la CTA prende la riga intera e il telefono va sotto:
+     affiancati, a 320 px, il bottone si stringeva a 46 px e il testo andava su
+     quattro righe (misurato in pagina, non stimato). Il bersaglio del bottone
+     che deve essere premuto non si negozia. */
+  .hero-azioni {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
+  }
+  @media (min-width: 30rem) {
+    .hero-azioni {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: clamp(1rem, 2vw, 1.75rem);
+    }
+  }
+  .hero-telefono {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: var(--text-lead);
+    font-variant-numeric: tabular-nums;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  .hero-figura {
+    /* sborda di un margine oltre il bordo del contenuto */
+    margin-right: calc(-1 * var(--regolo-margine));
+  }
+  @media (max-width: 55.999rem) {
+    .hero-figura {
+      margin-inline: calc(-1 * var(--regolo-margine));
     }
   }
 
-  .percorso {
-    display: flex;
-    flex-direction: column;
-    gap: 1.375rem;
-    padding: 1.375rem 1.125rem 1.125rem;
-    min-height: 9.375rem;
-    background-color: var(--regolo-brief-controllo-bg);
-    border: 1px solid var(--regolo-brief-controllo-bordo);
-    border-radius: var(--radius-edge);
-    cursor: pointer;
-    transition:
-      border-color 0.15s,
-      background-color 0.15s;
+  /* ==========================================================================
+     Hero B — «Il registro»
+     Cinque righe a cavallo dell'asse verticale. Il pannello si cambia **senza
+     una riga di JavaScript**: i percorsi sono `radio` nativi e `:has()` accende
+     il pannello che segue la riga scelta. Senza JS funziona tutto; da tastiera
+     si scorre con le freccette.
+     ======================================================================== */
+  .hero-registro {
+    padding-top: clamp(1.5rem, 3vw, 3rem);
+    padding-bottom: var(--regolo-passo-corto);
   }
-  @media (max-width: 35rem) {
-    .percorso {
-      min-height: 0;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+  /* ---- l'asse verticale del tema B --------------------------------------
+     Un filetto a 1 px alla colonna 5 (34,4 % di 1440 = 495 px; Kononenko
+     misurato comincia la sua tabella a 34,2 %) che attraversa la pagina
+     dall'header al footer. È l'identità del tema, e a 390 px **non si spegne**:
+     si sposta al 24,6 % (96 px) e resta (CLAUDE.md § Regole, 5).
+     Un segmento per sezione invece di un elemento unico in posizione fissa: le
+     sezioni sono contigue, quindi la linea si legge continua, e nessun blocco
+     deve conoscere l'altezza della pagina. */
+  [data-theme='b'] section > .wrap,
+  [data-theme='b'] header > .wrap,
+  [data-theme='b'] footer > .wrap {
+    position: relative;
+  }
+  [data-theme='b'] section > .wrap::before,
+  [data-theme='b'] header > .wrap::before,
+  [data-theme='b'] footer > .wrap::before {
+    content: '';
+    display: var(--regolo-asse);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--regolo-asse-x);
+    width: 1px;
+    background-color: var(--color-line);
+    pointer-events: none;
+  }
+
+  /* La testa: l'etichetta nel campo vuoto a sinistra dell'asse, la domanda a
+     destra. È l'impaginazione di Kononenko («Offices» a x≈417, tabella a
+     x=493) e vale per tutto il tema. */
+  .hero-registro-testa {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  @media (min-width: 56rem) {
+    .hero-registro-testa {
+      grid-template-columns: var(--regolo-asse-x) minmax(0, 1fr);
+      gap: 0;
+    }
+    .hero-registro-domanda {
+      padding-left: clamp(1.5rem, 3vw, 2.5rem);
     }
   }
-  .percorso-numero {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--regolo-font-eyebrow);
-    font-size: var(--text-eyebrow);
-    letter-spacing: var(--regolo-eyebrow-tracking);
+  .hero-registro-etichetta {
+    padding-top: 0.5rem;
+  }
+  .hero-registro-domanda h1 {
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    max-width: 20ch;
+  }
+  .hero-registro-domanda .hero-lead {
+    margin-top: 1.25rem;
+  }
+  .hero-registro > .wrap > .hero-quota {
+    margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+
+  /* --- il registro: cinque righe, non cinque card ------------------------- */
+  .registro {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid var(--color-line);
+  }
+  /* In B il filetto fra le righe **c'è**, e non è il cluster n. 3: ogni riga
+     porta un radio e un'azione, quindi il confine del bersaglio è
+     informazione. Kononenko misurato ha i filetti fra le righe della sua
+     tabella, AS no — i due casi sono diversi e si trattano diversamente. */
+  .riga {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: baseline;
+    gap: 0.25rem;
+    padding: 0.875rem 0;
+    min-height: 4rem;
+    border-bottom: 1px solid var(--color-line);
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+  /* Il taglio della riga **è l'asse**: chiave e ruolo a sinistra, la scelta a
+     destra. Se le colonne non cadono sull'asse, l'asse diventa una decorazione
+     che passa in mezzo a una cella — che è il difetto che questa fase corregge. */
+  @media (min-width: 56rem) {
+    .riga {
+      grid-template-columns: var(--regolo-asse-x) minmax(0, 1fr);
+      gap: 0;
+      align-items: center;
+    }
+    .riga-chiave {
+      grid-row: 1;
+    }
+    .riga-ruolo {
+      grid-row: 1;
+      grid-column: 1;
+      padding-left: 4.5rem;
+      padding-right: clamp(1rem, 2vw, 1.5rem);
+    }
+    .riga-scelta {
+      grid-column: 2;
+      padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    }
+  }
+  .riga:hover {
+    background-color: var(--color-surface);
+  }
+  .riga-chiave {
+    font-size: var(--text-small);
+    color: var(--regolo-quota-colore);
+    font-weight: 500;
+  }
+  @media (min-width: 56rem) {
+    .riga-chiave {
+      grid-column: 1;
+      justify-self: start;
+    }
+  }
+  .riga-ruolo {
+    font-size: var(--text-small);
     color: var(--color-muted);
   }
-  .percorso-numero input[type='radio'] {
-    width: 1rem;
-    height: 1rem;
+  .riga-scelta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .riga-scelta input[type='radio'] {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
     margin: 0;
-    accent-color: var(--color-accent-strong);
+    accent-color: var(--color-ink);
   }
-  .percorso-nome {
-    font-family: var(--font-display);
-    font-weight: var(--regolo-display-weight);
-    letter-spacing: var(--regolo-display-tracking);
-    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
-    line-height: 1.1;
-    color: var(--color-ink);
+  .riga-nome {
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
+    font-weight: 600;
   }
-  .percorso:hover {
-    border-color: var(--regolo-brief-scelta-bordo);
+  .riga:has(input:checked) {
+    background-color: var(--color-surface);
   }
-  .percorso:has(input:checked) {
-    background-color: var(--regolo-brief-scelta-bg);
-    border-color: var(--regolo-brief-scelta-bordo);
-    box-shadow: inset 0 0 0 1px var(--regolo-brief-scelta-bordo);
+  .riga:has(input:checked) .riga-nome {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
   }
-  .percorso:has(input:focus-visible) {
+  .riga:has(input:focus-visible) {
     outline: 2px solid var(--regolo-focus);
-    outline-offset: 2px;
+    outline-offset: -2px;
   }
-  .percorso input[type='radio']:focus-visible {
+  .riga input[type='radio']:focus-visible {
     outline: none;
   }
 
-  /* I cinque pannelli stanno tutti nel DOM: si accende quello scelto.
-     Costa ~2 KB di HTML e vale un blocco che funziona senza JavaScript. */
+  /* --- il pannello: la figura bianca -------------------------------------
+     1 px di inchiostro sul bordo **non è stile**: `calce` su `getto` sta a
+     1,78:1, e un rettangolo bianco che porta una CTA senza confine non chiude
+     WCAG 1.4.11. Il filetto lo chiude. */
   .pannello {
     display: none;
-    margin-top: 0.875rem;
-    padding: clamp(1.375rem, 3vw, 2.25rem);
     background-color: var(--regolo-pannello-bg);
     color: var(--regolo-pannello-fg);
-    border-radius: var(--radius-edge);
-    grid-template-columns: 1.2fr 1fr 1fr;
-    gap: 2rem;
-    /* dentro il pannello il fondo è scuro: l'anello di fuoco si schiarisce */
-    --regolo-focus: var(--regolo-pannello-chiave);
+    border: 1px solid var(--color-ink);
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    margin-bottom: 0.75rem;
   }
-  @media (max-width: 62rem) {
-    .pannello {
+  /* Una regola sola, invece di cinque: il pannello è il fratello immediatamente
+     successivo alla riga scelta. È il guadagno dell'interlacciamento. */
+  .registro-coppia:has(input:checked) > .pannello {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  @media (min-width: 56rem) {
+    .registro-coppia:has(input:checked) > .pannello {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .pannello-azioni {
+      grid-column: 1 / -1;
+    }
+  }
+  /* Ripiego per i browser senza `:has()`: si vede il pannello di partenza
+     invece di nessun pannello, così il blocco non resta muto. */
+  @supports not selector(:has(*)) {
+    .pannello[data-iniziale] {
+      display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
   }
-  /* Il nome del percorso non è un titolo: è la ripetizione del controllo
-     scelto qui sopra. I tre scomparti invece sono titoli pari fra loro. */
-  .pannello-titolo {
-    font-family: var(--font-display);
-    font-weight: var(--regolo-display-weight);
-    letter-spacing: var(--regolo-display-tracking);
-    font-size: clamp(1.375rem, 2vw, 1.75rem);
-    line-height: 1.1;
-    color: var(--regolo-pannello-chiave);
-    margin-bottom: 1rem;
-  }
   .pannello-chiave {
-    font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     color: var(--regolo-pannello-chiave);
-    margin-bottom: 0.625rem;
+    font-weight: 500;
   }
   .pannello ul {
-    display: grid;
-    gap: 0.5rem;
     margin: 0.75rem 0 0;
     padding: 0;
     list-style: none;
+    font-size: var(--text-body);
+  }
+  .pannello li + li {
+    margin-top: 0.375rem;
+  }
+  .pannello-azioni {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+  .pannello-vai {
     font-size: var(--text-small);
-    color: var(--regolo-pannello-voce);
-  }
-  .pannello li::before {
-    content: '— ';
-    color: var(--regolo-pannello-chiave);
-  }
-  .pannello .btn {
-    margin-top: 1.125rem;
-    background-color: var(--regolo-pannello-chiave);
-    border-color: var(--regolo-pannello-chiave);
-    color: var(--color-ink);
-  }
-  .pannello .btn:hover {
-    background-color: var(--regolo-pannello-fg);
-    border-color: var(--regolo-pannello-fg);
-  }
-  /* Accende il pannello del percorso scelto. Cinque regole esplicite: una
-     per percorso, generate dal componente perché i valori sono quelli chiusi
-     di `lib/percorsi.ts`. */
-  .hero-domanda:has(#percorso-casa-nuova:checked) .pannello[data-percorso='casa-nuova'],
-  .hero-domanda:has(#percorso-ristrutturazione:checked) .pannello[data-percorso='ristrutturazione'],
-  .hero-domanda:has(#percorso-pratica-bonus:checked) .pannello[data-percorso='pratica-bonus'],
-  .hero-domanda:has(#percorso-struttura-sisma:checked) .pannello[data-percorso='struttura-sisma'],
-  .hero-domanda:has(#percorso-opera-pubblica:checked) .pannello[data-percorso='opera-pubblica'] {
-    display: grid;
-  }
-  /* Se `:has()` non c'è (browser molto vecchio) si vede il pannello di
-     partenza invece di nessun pannello: il blocco non resta muto. */
-  @supports not selector(:has(*)) {
-    .pannello[data-iniziale] {
-      display: grid;
-    }
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
   }
 
   /* ==========================================================================
@@ -417,9 +644,9 @@
       color 0.15s;
   }
   .pastiglia:hover {
-    background-color: var(--color-accent-strong);
-    border-color: var(--color-accent-strong);
-    color: var(--color-on-accent);
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-paper);
   }
 
   /* ==========================================================================
@@ -465,7 +692,7 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     color: var(--color-muted);
   }
 
@@ -530,14 +757,14 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
-    color: var(--color-accent-text);
+    text-transform: var(--regolo-eyebrow-transform);
+    color: var(--color-ink);
   }
   .servizio-vai {
     margin-top: auto;
     font-size: var(--text-small);
     font-weight: 500;
-    color: var(--color-accent-text);
+    color: var(--color-ink);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -583,7 +810,7 @@
     font-family: var(--font-display);
     font-size: 2.125rem;
     line-height: 1;
-    color: var(--color-accent-text);
+    color: var(--color-ink);
     font-variant-numeric: tabular-nums;
   }
   .processo-titolo {
@@ -639,7 +866,7 @@
     top: 0;
     width: 1.25rem;
     height: 1.25rem;
-    border: 2px solid var(--color-accent);
+    border: 2px solid var(--color-ink);
     border-radius: 50%;
     background-color: var(--regolo-scuro-bg);
   }
@@ -648,7 +875,7 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     color: var(--regolo-scuro-muted);
     margin: 2.125rem 0 0.5rem;
   }
@@ -765,7 +992,7 @@
     font-family: var(--regolo-font-eyebrow);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
-    text-transform: uppercase;
+    text-transform: var(--regolo-eyebrow-transform);
     color: var(--color-muted);
     font-weight: 500;
     width: 40%;
@@ -915,7 +1142,7 @@
      confronto avrebbero lo stesso colore, cioè il blocco non proverebbe niente. */
   .prima-dopo > .prima-dopo-dopo {
     clip-path: inset(0 0 0 var(--x, 50%));
-    background-color: var(--color-accent-soft);
+    background-color: var(--color-surface);
   }
   .prima-dopo-dopo > .placeholder-etichetta {
     left: auto;
@@ -942,7 +1169,7 @@
     bottom: 0;
     left: var(--x, 50%);
     width: 2px;
-    background-color: var(--color-accent-strong);
+    background-color: var(--color-ink);
     pointer-events: none;
   }
   .prima-dopo-maniglia::after {
@@ -951,8 +1178,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--color-accent-strong);
-    color: var(--color-on-accent);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
     font-size: var(--text-eyebrow);
     padding: 0.375rem 0.5rem;
     border-radius: var(--radius-edge);
@@ -1030,8 +1257,8 @@
   .mappa-etichetta {
     font-family: var(--regolo-font-eyebrow);
     font-size: 13px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: var(--regolo-eyebrow-transform);
     fill: var(--color-muted);
   }
   /* Il nome della provincia sta dentro il perimetro: un filo di fondo lo
@@ -1071,10 +1298,16 @@
     bottom: 0;
     z-index: 40;
     display: none;
-    grid-template-columns: 1fr 1fr 1.4fr;
+    /* Le larghezze dicono la priorità, e la priorità è quella di CLAUDE.md
+       § Obiettivo: il brief è l'azione primaria e prende metà della barra.
+       22 % · 29 % · 49 %, non tre celle uguali. La cella di mezzo è un po' più
+       larga della prima **solo** finché ospita il segnaposto del WhatsApp, che
+       a 390 px andrebbe su tre righe: quando arriva il numero vero torna 1fr,
+       e con lei il `padding-bottom` del contenuto da 5,5 a 4,25 rem. */
+    grid-template-columns: 1fr 1.3fr 2.2fr;
     gap: 1px;
-    background-color: var(--color-line);
-    border-top: 1px solid var(--color-line);
+    background-color: var(--color-ink);
+    border-top: 1px solid var(--color-ink);
     /* sotto la tacca dei telefoni recenti */
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
@@ -1099,7 +1332,10 @@
     justify-content: center;
     /* tre bersagli da 44 px: è la barra più toccata del sito */
     min-height: 2.75rem;
-    background-color: var(--regolo-brief-card);
+    /* La barra è una **figura** `calce` con i filetti in inchiostro: in B il
+       bianco è figura e non fondo, e questa è la barra più toccata del sito.
+       Nessuna icona: solo testo. */
+    background-color: var(--color-surface);
     padding: 0.875rem 0.5rem;
     text-align: center;
     font-weight: 600;
@@ -1107,8 +1343,8 @@
     color: var(--color-ink);
   }
   .barra-mobile > .barra-mobile-brief {
-    background-color: var(--color-accent-strong);
-    color: var(--color-on-accent);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
   }
   /* La voce senza dato non è un link: è una casella dichiarata vuota. */
   .barra-mobile > .barra-mobile-manca {

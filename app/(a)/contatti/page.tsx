@@ -115,7 +115,7 @@ export default async function Contatti({
 
       <Sezione
         id="dove"
-        quota="Dove siamo"
+        etichetta="dove siamo"
         titolo="Dove siamo e come ci si parla."
         intro="I dati diretti dello studio, per chi preferisce non passare dal form."
         nota={
@@ -197,7 +197,7 @@ export default async function Contatti({
         </div>
       </Sezione>
 
-      <Brief pagina="/contatti" quota="Il brief" interventoIniziale={interventoIniziale} />
+      <Brief pagina="/contatti" etichetta="il brief" interventoIniziale={interventoIniziale} />
 
       {/* `ContactPage` con l'organizzazione in `about`. Due assenze volute:
           nessun `url`/`@id`, perché il dominio è la decisione n. 2 e un nodo con

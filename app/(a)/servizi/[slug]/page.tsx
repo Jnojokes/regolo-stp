@@ -87,7 +87,10 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
         </div>
       </div>
 
-      <Sezione quota="Per chi è" titolo="Se ti riconosci in una di queste, è il servizio giusto.">
+      <Sezione
+        etichetta="per chi è"
+        titolo="Se ti riconosci in una di queste, è il servizio giusto."
+      >
         <ul className="elenco-segnato">
           {c.perChi.map((v) => (
             <li key={v}>
@@ -99,7 +102,7 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
 
       <Sezione
         fondo="alt"
-        quota="Cosa comprende"
+        etichetta="cosa comprende"
         titolo="L’incarico, voce per voce."
         intro="Quello che è compreso quando ci si affida a noi per questo tipo di intervento."
       >
@@ -113,7 +116,7 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
       </Sezione>
 
       <Sezione
-        quota="Come funziona"
+        etichetta="come funziona"
         titolo="Cinque passaggi, sempre gli stessi."
         intro="Le stesse cinque fasi di ogni incarico: cambia il contenuto, non il metodo."
       >
@@ -131,7 +134,7 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
 
       <Sezione
         fondo="alt"
-        quota="Cosa serve da te"
+        etichetta="cosa serve da te"
         titolo="Cosa portare al primo incontro."
         intro="Sapere in anticipo cosa ti verrà chiesto è metà del tempo risparmiato."
         nota={
@@ -150,7 +153,7 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
       </Sezione>
 
       <Sezione
-        quota="Domande frequenti"
+        etichetta="domande frequenti"
         nota="Le risposte sono una nostra proposta, marcate «proposta» finché lo studio non le conferma. Finché sono così non entrano nei dati strutturati: un motore di ricerca non deve far dire allo studio qualcosa che lo studio non ha detto."
       >
         <Faq voci={c.faq} titolo="Quello che ci chiedono più spesso." />
@@ -158,7 +161,7 @@ export default async function Servizio({ params }: { params: Promise<{ slug: str
 
       <Sezione
         fondo="alt"
-        quota="Progetti collegati"
+        etichetta="progetti collegati"
         titolo={
           collegati.length > 0
             ? 'Interventi di questo tipo.'

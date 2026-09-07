@@ -51,7 +51,7 @@ export function ComeLavoriamo({
       <Sezione
         id={id}
         fondo="scuro"
-        quota="Sez. 03 — Come lavoriamo"
+        etichetta="come lavoriamo"
         titoloLargo
         titolo="E poi cosa succede? Cinque passaggi, sempre gli stessi."
       >
@@ -81,9 +81,7 @@ export function ComeLavoriamo({
             alla prima fase. Sopra i 56rem la colonna torna ferma di fianco
             all’elenco e il margine sparisce. */}
         <div className="processo-colonna nav:col-span-5 nav:mb-0 col-span-12 mb-6">
-          <p className="quota">
-            <span>Come lavoriamo</span>
-          </p>
+          <p className="etichetta-sezione">Come lavoriamo</p>
           <h2 className="mt-3 max-w-[26ch]">E poi cosa succede?</h2>
           <p className="intro-sezione text-lead">{introProcesso}</p>
         </div>

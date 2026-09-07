@@ -225,7 +225,7 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
 
       <Sezione
         id="elenco"
-        quota="Filtra"
+        etichetta="filtra"
         titolo="Cerca per intervento, comune o ruolo."
         intro="I filtri stanno nell’indirizzo: una selezione si può salvare, mandare per mail o aprire su un altro telefono, ed è la stessa pagina che vede un motore di ricerca."
         nota="Le voci senza risultati restano in pagina, spente: mostrare solo quelle piene nasconderebbe la forma del portfolio, che è un’informazione anche quando dice «qui non abbiamo ancora niente»."
@@ -270,7 +270,7 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
       {progettiVeri.length === 0 && (
         <Sezione
           fondo="alt"
-          quota="Primo dato bloccante"
+          etichetta="primo dato bloccante"
           titolo="Le schede non ci sono ancora, e non le inventiamo."
         >
           <div className="avviso">

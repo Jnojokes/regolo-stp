@@ -67,9 +67,7 @@ export function Territorio() {
     >
       <div className="grid-12 items-center">
         <div className="nav:col-span-5 col-span-12">
-          <p className="quota">
-            <span>Il territorio</span>
-          </p>
+          <p className="etichetta-sezione">Il territorio</p>
           <h2 className="mt-3 max-w-[18ch]">Dove abbiamo lavorato.</h2>
           <p className="intro-sezione text-lead">
             Per uno studio locale è la credenziale che conta più di tutte: i comuni, uno per uno,

@@ -1,0 +1,22 @@
+<!doctype html><meta charset="utf-8">
+<style>
+@font-face{font-family:Archivo;src:url(archivo.woff2)format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Chivo;src:url(chivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Anybody;src:url(anybody.woff2)format('woff2');font-weight:100 900;font-stretch:50% 150%}
+body{margin:0;padding:20px;background:#fff;font:16px/1.5 -apple-system}
+table{border-collapse:collapse;margin:0 0 22px}
+td,th{padding:3px 18px 3px 0;text-align:left;font-weight:400}
+.t{font-variant-numeric:tabular-nums}
+.num{text-align:right}
+h3{font:12px/1 ui-monospace;margin:16px 0 6px}
+</style>
+<div id=o></div>
+<script>
+const rows=[['203','1.240','8.952'],['199','720','66'],['197','25.383','18.737'],['111','111','111']];
+const F=['Archivo','Chivo','Anybody'];
+o.innerHTML=F.map(f=>['prop','tabular'].map(m=>`
+<h3>${f} — ${m}</h3>
+<table style="font-family:${f}" class="${m==='tabular'?'t':''}">
+${rows.map(r=>`<tr><td>${r[0]}</td><td class=num>${r[1]} m²</td><td class=num>${r[2]} m²</td></tr>`).join('')}
+</table>`).join('')).join('');
+</script>

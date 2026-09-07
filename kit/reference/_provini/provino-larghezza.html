@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8">
+<style>
+@font-face{font-family:Archivo;src:url(archivo.woff2)format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Anybody;src:url(anybody.woff2)format('woff2');font-weight:100 900;font-stretch:50% 150%}
+@font-face{font-family:EncodeSans;src:url(encodesans.woff2)format('woff2');font-weight:100 900;font-stretch:75% 125%}
+@font-face{font-family:Chivo;src:url(chivo.woff2)format('woff2');font-weight:100 900}
+body{margin:0;background:#E4E5E0;color:#000;width:390px;font:13px/1.4 -apple-system}
+.r{border-top:1px solid #A9ABA4;padding:10px 16px}
+.nm{font:10px/1 ui-monospace;color:#5A5F5B;margin:0 0 4px}
+h1{margin:0;font-size:44px;line-height:.86;letter-spacing:-.03em;font-weight:700}
+.q{margin:0;font-size:11px;color:#5A5F5B;letter-spacing:-.02em}
+</style>
+<div id=o></div>
+<script>
+const W=[['Anybody',100],['Anybody',80],['Anybody',62],['Archivo',100],['Archivo',80],['Archivo',62],['EncodeSans',100],['EncodeSans',80],['Chivo',100]];
+o.innerHTML=W.map(([f,w])=>`<div class=r style="font-family:${f}">
+<p class=nm>${f} · wdth ${w}%</p>
+<h1 style="font-stretch:${w}%">Ristrutturare,<br>ampliare,<br>recuperare</h1>
+<p class=q style="font-stretch:${w}%">EFFICIENTAMENTO · COORDINAMENTO SICUREZZA</p>
+</div>`).join('');
+</script>

@@ -25,9 +25,7 @@ export function PrimaDopo() {
     >
       <div className="grid-12 items-center">
         <div className="nav:col-span-4 col-span-12">
-          <p className="quota">
-            <span>Sez. 05 — Prima / dopo</span>
-          </p>
+          <p className="etichetta-sezione">Sez. 05 — Prima / dopo</p>
           <h2 className="mt-3 max-w-[18ch]">La prova che chiunque capisce al volo.</h2>
           <p className="intro-sezione text-lead">
             Due fotografie dallo stesso punto. Su un recupero è la cosa più convincente che si possa

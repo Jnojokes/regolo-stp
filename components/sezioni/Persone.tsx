@@ -34,14 +34,14 @@ export function Persone({ variante }: { variante: 'a' | 'b' }) {
   /* La variante cambia solo la testa: griglia, dati e ordine sono gli stessi. */
   const testa =
     variante === 'b'
-      ? { quota: 'Sez. 06 — Le persone', titolo: 'Chi firma il progetto.' }
+      ? { etichetta: 'le persone', titolo: 'Chi firma il progetto.' }
       : {
-          quota: 'Le persone',
+          etichetta: 'le persone',
           titolo: 'In una società tra professionisti si sceglie chi firma.',
         }
 
   return (
-    <Sezione id="persone" quota={testa.quota} titolo={testa.titolo} nota={notaPersone}>
+    <Sezione id="persone" etichetta={testa.etichetta} titolo={testa.titolo} nota={notaPersone}>
       {/* Una lista, non quattro <div>: quante sono le persone è un'informazione,
           e chi usa uno screen reader la sente prima di scorrerle una per una. */}
       <ul className="griglia-persone">

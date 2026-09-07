@@ -78,7 +78,7 @@ export function Servizi({
       <Sezione
         id={id}
         fondo="alt"
-        quota="Cosa facciamo"
+        etichetta="cosa facciamo"
         titolo="Sei modi in cui possiamo esservi utili."
       >
         <div className="griglia-servizi">
@@ -110,7 +110,7 @@ export function Servizi({
   return (
     <Sezione
       id={id}
-      quota="Sez. 02 — Cosa facciamo"
+      etichetta="cosa facciamo"
       titolo="Sei percorsi. Ognuno con quello che serve da te."
       azione={
         <Link className="btn btn-ghost" href="/servizi">

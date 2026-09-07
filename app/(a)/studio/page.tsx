@@ -100,7 +100,7 @@ export default function Studio() {
 
       <Sezione
         id="chi-siamo"
-        quota="Chi siamo"
+        etichetta="chi siamo"
         titolo="Cosa siamo e cosa facciamo."
         nota="In questo testo non ci sono anni di attività, numero di progetti, metri quadri o comuni: quelle righe si aggiungono quando arrivano i numeri dallo studio (CONTENUTI-DA-CLIENTE.md). È anche la sorgente unica di quello che il sito e le risposte generate dicono su REGOLO: si cambia qui, non in dieci posti."
       >
@@ -124,7 +124,7 @@ export default function Studio() {
       <Sezione
         fondo="alt"
         id="metodo"
-        quota="Come lavoriamo"
+        etichetta="come lavoriamo"
         titolo="Il metodo: cinque passaggi, sempre gli stessi."
         intro={introProcesso}
       >
@@ -148,7 +148,7 @@ export default function Studio() {
 
       <Sezione
         id="persone"
-        quota="Le persone"
+        etichetta="le persone"
         titolo="Chi firma il progetto."
         intro="Nome, mestiere e abilitazione, per ciascuno. È la parte della pagina che dice cosa possiamo firmare."
         nota={

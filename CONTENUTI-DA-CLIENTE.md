@@ -14,6 +14,18 @@
 | ▲ Titolare del trattamento ed email per i diritti privacy | privacy | titolare | | |
 | ▲ Dominio definitivo e accesso DNS (o accesso a brasili.net) | canonical, redirect, deploy | titolare | | |
 | ▲ Iscrizioni: ordini degli ingegneri/architetti, sezione, numero; coordinatore sicurezza; CTU; certificazioni | studio, persone, JSON-LD `hasCredential` | titolare | | |
+| ▲ **Conferma della answer capsule, frase per frase** | /studio in chiaro, e `description` del JSON-LD di home, studio e contatti | titolare | | |
+| **Zona servita**: «Fermo e provincia» è una deduzione dalla sede, non un dato | `areaServed` del JSON-LD su home, studio, contatti, servizi | titolare (si chiude con la decisione n. 13) | | |
+
+**Sulla capsule.** Le cinque frasi di `kit/REGOLO_SEO-GEO-LEGAL.md` § Answer capsule le abbiamo
+scritte noi, dal profilo LinkedIn: `kit/00-KICKOFF.md` dichiara in testa che **non c'è ancora un
+trascritto del meeting**. Due di quelle frasi sono promesse operative — «con la stessa squadra»,
+«una persona di riferimento dall'inizio alla fine» — e vivono in quattro punti del sito
+(`Hero.tsx`, `servizi/page.tsx`, `lib/processo.ts`, `studio/page.tsx`), da dove finiscono nel
+`description` del JSON-LD, cioè in una forma che una macchina legge e ripete. Per il payoff, che
+viene dallo stesso prototipo, questa tabella ha già la riga «è nostro, dal prototipo approvato:
+se non li rappresenta si cambia adesso». La capsule non ce l'aveva, ed è lo stesso standard.
+Finché non torna confermata, quelle due frasi non vanno considerate contenuto dello studio.
 
 ## Contenuti
 

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useSyncExternalStore } from 'react'
+import { MediaEsempio } from '@/components/MediaEsempio'
+import { esempio, type ChiaveEsempio } from '@/lib/media-demo'
 
 /* Riferimenti stabili: `useSyncExternalStore` li confronta a ogni render. */
 const nessunaSottoscrizione = () => () => {}
@@ -20,7 +22,7 @@ const snapshotServer = () => false
  * un cursore che non rivelava **niente** — il blocco dimostrativo che non
  * dimostra.
  *
- * Ora le due metà sono **`grafite` e `calce`**, cioè il taglio sta a **21:1** e
+ * Ora le due metà cadono sui **due piani** del tema, cioè il taglio sta a **21:1** e
  * si vede su qualunque schermo e da qualunque distanza. Il blocco dimostra **lo
  * strumento**, che è quello che si può dimostrare oggi; e la casella ha già la
  * sua misura per quando le foto arrivano — la specifica è scritta dentro.
@@ -47,25 +49,37 @@ export function Confronto({
   prima,
   dopo,
   specifica,
+  demoPrima,
+  demoDopo,
 }: {
   prima: string
   dopo: string
   /** Cosa deve arrivare, e in che formato. Sta dentro le due metà. */
   specifica: string
+  /** Le due fotografie di esempio, se la dimostrazione è accesa. */
+  demoPrima?: ChiaveEsempio
+  demoDopo?: ChiaveEsempio
 }) {
+  const ePrima = esempio(demoPrima)
+  const eDopo = esempio(demoDopo)
   const montato = useSyncExternalStore(nessunaSottoscrizione, snapshotClient, snapshotServer)
   const [x, setX] = useState(50)
 
   return (
     <>
       <div className="confronto" style={{ '--x': `${x}%` } as React.CSSProperties}>
+        {/* Le immagini stanno **fuori** dalle due metà con `clip-path`, in un
+            piano sotto: il taglio deve rivelare la fotografia, non spostarla.
+            Ognuna sta dentro la sua metà, quindi eredita il ritaglio da lei. */}
         <div className="confronto-meta confronto-prima">
+          {ePrima ? <MediaEsempio dato={ePrima} priorita={false} /> : null}
           <span className="confronto-stato">stato attuale</span>
           <span className="confronto-specifica">{prima}</span>
           <span className="confronto-specifica">{specifica}</span>
         </div>
 
         <div className="confronto-meta confronto-dopo">
+          {eDopo ? <MediaEsempio dato={eDopo} priorita={false} /> : null}
           <span className="confronto-stato">progetto</span>
           <span className="confronto-specifica">{dopo}</span>
           <span className="confronto-specifica">{specifica}</span>
@@ -94,6 +108,22 @@ export function Confronto({
         <span data-numero="">{x} %</span>
         {montato ? <span> — trascina, oppure usa le frecce da tastiera</span> : null}
       </p>
+
+      {/* La provenienza sta **sotto** il riquadro e non sopra le fotografie.
+          Dentro era una targhetta lunga sul bordo alto: a 1440 stava, a 390
+          andava a capo e copriva la testa di tutt'e due le metà. Qui è una
+          riga di metadati accanto alla lettura del cursore, che è esattamente
+          quello che è. */}
+      {ePrima || eDopo ? (
+        <p className="confronto-fonte">
+          esempio ·{' '}
+          {[ePrima, eDopo]
+            .filter(Boolean)
+            .map((e) => e!.autore)
+            .join(' / ')}{' '}
+          · StockSnap.io · CC0 1.0
+        </p>
+      ) : null}
     </>
   )
 }

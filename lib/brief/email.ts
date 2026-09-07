@@ -1,3 +1,31 @@
+/*
+ * ## Fase 3 bis (2/2) — la mail è una pagina del sito
+ *
+ * Questo template era rimasto **tutto nella palette e nei modi del kick-off**:
+ * fondo `#F4F2ED`, inchiostro `#17171A`, secondario `#6E6B66`, filetti
+ * `#DCD8D0`, il telefono in `#2F4A42` — cioè il verde pietra, uno dei valori
+ * che il ridisegno ha sostituito — e due occhielli in maiuscoletto con
+ * spaziatura **positiva**, che sono le uniche due `letter-spacing` positive
+ * rimaste in tutto il repo e la prima voce dell'elenco «cosa non deve
+ * esserci» di `CLAUDE.md` § Direzione visiva.
+ *
+ * Non è un dettaglio: questa mail **è l'esito dell'azione primaria del sito**.
+ * È l'ultima cosa che il committente vede, ed è la prima che lo studio riceve.
+ * Un sito che si presenta in un modo e scrive in un altro ha due identità.
+ *
+ * I valori sono scritti a mano, in esadecimale e in `style` inline, e non
+ * possono essere altrimenti: i client di posta non leggono le variabili CSS né
+ * i fogli esterni. Restano quindi **una copia** dei token del tema A, e vanno
+ * aggiornati a mano se i token cambiano — per questo sono cinque e non venti,
+ * e per questo sono elencati qui:
+ *
+ *     carta #FFFFFF · inchiostro #000000 (21:1) · secondario #5E5E5E (6,48:1)
+ *     filetto #757575 (4,61:1) · nessun accento
+ *
+ * Nessun colore sul telefono: nella mail è il dato più grande, e la gerarchia
+ * la fa il corpo. È la stessa regola del piede del sito.
+ */
+
 /**
  * Le due mail del brief: quella allo studio e la copia di cortesia a chi
  * compila (CLAUDE.md § Il form).
@@ -93,8 +121,8 @@ function htmlElenco(righe: Riga[]): string {
     righe
       .map(
         (r) =>
-          `<dt style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#6E6B66;margin:14px 0 2px">${esc(r.etichetta)}</dt>` +
-          `<dd style="margin:0;font-size:16px;color:#17171A">${esc(r.valore)}</dd>`,
+          `<dt style="font-size:12px;letter-spacing:-.01em;color:#5E5E5E;margin:14px 0 2px">${esc(r.etichetta)}</dt>` +
+          `<dd style="margin:0;font-size:16px;color:#000000">${esc(r.valore)}</dd>`,
       )
       .join('') +
     '</dl>'
@@ -102,22 +130,22 @@ function htmlElenco(righe: Riga[]): string {
 }
 
 const INIZIO_HTML =
-  '<div style="margin:0;padding:24px;background:#F4F2ED;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Helvetica,Arial,sans-serif;color:#17171A;line-height:1.55">' +
-  '<div style="max-width:600px;margin:0 auto;background:#FBFAF7;padding:28px;border:1px solid #DCD8D0">'
+  '<div style="margin:0;padding:24px;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Helvetica,Arial,sans-serif;color:#000000;line-height:1.55">' +
+  '<div style="max-width:600px;margin:0 auto;background:#FFFFFF;padding:28px;border:1px solid #757575">'
 const FINE_HTML = '</div></div>'
 
-const FILETTO = '<hr style="border:0;border-top:1px solid #DCD8D0;margin:26px 0">'
+const FILETTO = '<hr style="border:0;border-top:1px solid #757575;margin:26px 0">'
 
 const titolo = (t: string) =>
-  `<h1 style="margin:0 0 4px;font-size:22px;line-height:1.15;font-weight:600;color:#17171A">${esc(t)}</h1>`
+  `<h1 style="margin:0 0 4px;font-size:22px;line-height:1.15;font-weight:600;color:#000000">${esc(t)}</h1>`
 
 const occhiello = (t: string) =>
-  `<p style="margin:0 0 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B66">${esc(t)}</p>`
+  `<p style="margin:0 0 18px;font-size:12px;letter-spacing:-.01em;color:#5E5E5E">${esc(t)}</p>`
 
 const paragrafo = (t: string) =>
-  `<p style="margin:0 0 12px;font-size:16px;color:#17171A">${esc(t)}</p>`
+  `<p style="margin:0 0 12px;font-size:16px;color:#000000">${esc(t)}</p>`
 
-const piccolo = (html: string) => `<div style="font-size:13px;color:#6E6B66">${html}</div>`
+const piccolo = (html: string) => `<div style="font-size:13px;color:#5E5E5E">${html}</div>`
 
 /** Riga di separazione nel testo: le mail in monospazio si leggono meglio così. */
 const RIGA = '─'.repeat(52)
@@ -175,7 +203,7 @@ export function mailAlloStudio(
     occhiello('Contatti'),
     htmlElenco(contatti),
     brief.note
-      ? `${FILETTO}${occhiello('Note')}<div style="font-size:16px;color:#17171A">${capoversi(brief.note)}</div>`
+      ? `${FILETTO}${occhiello('Note')}<div style="font-size:16px;color:#000000">${capoversi(brief.note)}</div>`
       : '',
     FILETTO,
     occhiello('Consenso registrato'),
@@ -183,7 +211,7 @@ export function mailAlloStudio(
       `<p style="margin:0 0 8px"><strong>${esc(consenso.quandoLeggibile)}</strong><br>` +
         `<code style="font-size:12px">${esc(consenso.quando)}</code></p>` +
         `<p style="margin:0 0 8px">Versione ${esc(consenso.versione)} · da ${esc(consenso.pagina)}</p>` +
-        `<blockquote style="margin:0 0 8px;padding-left:12px;border-left:2px solid #DCD8D0">${esc(consenso.testo)}</blockquote>` +
+        `<blockquote style="margin:0 0 8px;padding-left:12px;border-left:2px solid #757575">${esc(consenso.testo)}</blockquote>` +
         '<p style="margin:0">Casella non pre-spuntata: il consenso è stato dato attivamente. ' +
         'L’indirizzo IP non è registrato (usato solo, in memoria, per il rate limit).</p>',
     ),
@@ -234,12 +262,12 @@ export function mailDiCortesia(brief: Brief, consenso: RegistrazioneConsenso): M
     occhiello(`${site.nome} · ${site.qualifica}`),
     titolo('Abbiamo ricevuto il tuo brief.'),
     paragrafo('Lo leggiamo e ti ricontattiamo noi. Se nel frattempo vuoi parlarne:'),
-    `<p style="margin:0 0 4px"><a href="tel:${esc(site.telefonoHref)}" style="font-size:20px;color:#2F4A42;text-decoration:none;font-weight:600">${esc(site.telefono)}</a></p>`,
+    `<p style="margin:0 0 4px"><a href="tel:${esc(site.telefonoHref)}" style="font-size:22px;color:#000000;text-decoration:none;font-weight:600">${esc(site.telefono)}</a></p>`,
     FILETTO,
     occhiello('Quello che ci hai scritto'),
     htmlElenco(dati),
     brief.note
-      ? `${FILETTO}${occhiello('Note')}<div style="font-size:16px;color:#17171A">${capoversi(brief.note)}</div>`
+      ? `${FILETTO}${occhiello('Note')}<div style="font-size:16px;color:#000000">${capoversi(brief.note)}</div>`
       : '',
     FILETTO,
     piccolo(

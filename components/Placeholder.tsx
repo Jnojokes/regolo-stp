@@ -1,3 +1,6 @@
+import { MediaEsempio } from '@/components/MediaEsempio'
+import { esempio, type ChiaveEsempio } from '@/lib/media-demo'
+
 /**
  * Rettangolo al posto di una foto che non abbiamo (CLAUDE.md § Regole, 2):
  * in sviluppo niente stock, un campo che dice cosa andrà lì.
@@ -27,6 +30,16 @@
  * **non c'è nemmeno un'immagine generata** (`TODO-MEDIA.md` nomina la hero per
  * prima fra i blocchi dove «non entra mai»).
  *
+ * ## Fase 3 bis (2/2) — il campo può portare un **esempio**
+ *
+ * Con `demo` il campo mostra una fotografia o un video di esempio
+ * (`lib/media-demo.ts`, dove stanno le tre condizioni e le licenze) **senza
+ * smettere di essere un segnaposto**: restano le squadrette, resta la
+ * targhetta con la specifica, e si aggiunge una riga con fonte e licenza. Chi
+ * guarda vede un'impaginazione con dentro delle immagini; chi legge vede
+ * scritto che non sono dello studio. `NEXT_PUBLIC_MEDIA_DEMO=0` le spegne
+ * tutte e il campo torna esattamente com'era.
+ *
  * Ogni segnaposto usato va segnato in TODO-MEDIA.md.
  */
 export function Placeholder({
@@ -34,6 +47,8 @@ export function Placeholder({
   specifica,
   className = '',
   ratio,
+  demo,
+  priorita = false,
 }: {
   /** Cosa andrà lì, in parole: è anche il nome accessibile del campo. */
   label: string
@@ -45,14 +60,29 @@ export function Placeholder({
   specifica?: string
   className?: string
   ratio?: string
+  /** Chiave in `lib/media-demo.ts`: riempie il campo con un esempio dichiarato. */
+  demo?: ChiaveEsempio
+  /** Solo per il campo sopra la piega: toglie il caricamento pigro. */
+  priorita?: boolean
 }) {
+  const e = esempio(demo)
+
   return (
     <div
       className={`placeholder-media ${className}`.trim()}
       style={ratio ? { aspectRatio: ratio } : undefined}
       role="img"
-      aria-label={`Segnaposto: ${label}`}
+      /* Il nome accessibile dice **prima** che è un esempio e poi cosa si vede:
+         chi ascolta non ha nessun altro canale per saperlo, e la fotografia di
+         qualcun altro presentata come opera dello studio è il difetto che tutta
+         questa impalcatura serve a non commettere. */
+      aria-label={
+        e
+          ? `Segnaposto con immagine di esempio — ${e.soggetto}. Al suo posto andrà: ${label}`
+          : `Segnaposto: ${label}`
+      }
     >
+      {e ? <MediaEsempio dato={e} priorita={priorita} /> : null}
       {/* Le quattro squadrette. `aria-hidden` perché il significato è già nel
           nome accessibile del campo: leggerle sarebbe rumore. */}
       <span className="placeholder-registro" aria-hidden="true" />
@@ -62,6 +92,13 @@ export function Placeholder({
         {label}
         {specifica ? <span className="placeholder-specifica">{specifica}</span> : null}
       </span>
+      {e ? (
+        <span className="placeholder-fonte">
+          {/* Quando l'autore *è* la fonte — il video di Mixkit — non lo si
+              scrive due volte. */}
+          esempio · {e.autore === e.fonte ? e.fonte : `${e.autore} · ${e.fonte}`} · {e.licenza}
+        </span>
+      ) : null}
     </div>
   )
 }

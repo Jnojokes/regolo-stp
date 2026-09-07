@@ -18,7 +18,7 @@ import { Sezione } from '@/components/sezioni/Sezione'
  *
  * **Fase 3 bis**: le due metà non sono più due segnaposto grigi sovrapposti —
  * due tinte a 1,17:1 l'una dall'altra, cioè un cursore che non rivelava niente.
- * Sono `grafite` e `calce`, e il taglio sta a **21:1**. Il blocco dimostra lo
+ * Sono i **due piani** del tema, e il taglio sta a **21:1**. Il blocco dimostra lo
  * strumento, che è quello che si può dimostrare finché le fotografie non ci
  * sono, e la casella porta già la propria specifica.
  */
@@ -37,6 +37,8 @@ export function PrimaDopo() {
         prima="[[DA CLIENTE: foto dello stato attuale]]"
         dopo="[[DA CLIENTE: foto dopo, stesso punto di ripresa]]"
         specifica="1600 × 1000 px · AVIF · ≤ 250 KB"
+        demoPrima="prima-01"
+        demoDopo="dopo-01"
       />
     </Sezione>
   )

@@ -32,12 +32,15 @@ export function PaginaStub({
       <p className="text-muted text-lead mt-6 max-w-[52ch]">{intento}</p>
 
       <h2 className="eyebrow mt-14">Cosa andrà in questa pagina</h2>
-      <ol className="border-line mt-4 max-w-[62ch] border-t">
+      {/* Niente filetti fra le righe e niente famiglia monospazio: sono due
+          voci della lista «cosa non deve esserci» di `CLAUDE.md` § Direzione
+          visiva, e queste pagine stanno nel gruppo A, dove il passo di riga fa
+          il lavoro del divisore. Le cifre restano tabellari — quello è un
+          `font-variant`, non una famiglia, e serve a incolonnare i numeri. */}
+      <ol className="mt-4 max-w-[62ch]">
         {blocchi.map((b, i) => (
-          <li key={b} className="border-line text-small flex gap-4 border-b py-3">
-            <span className="text-muted font-mono tabular-nums">
-              {String(i + 1).padStart(2, '0')}
-            </span>
+          <li key={b} className="text-small flex gap-4 py-2">
+            <span className="text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>
             <span>{b}</span>
           </li>
         ))}

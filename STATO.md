@@ -66,7 +66,7 @@
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 
 
-## Fase 3 bis — il ridisegno sulle reference vere (07/09/2026)
+## Fase 3 bis — il ridisegno sulle reference vere (07-08/09/2026)
 
 La fase 3 era uscita generica per due motivi che la skill `sito-design` documenta: **nessuno
 aveva aperto una reference** (`kit/reference/` era vuota, i prototipi erano una parafrasi) e i
@@ -125,28 +125,39 @@ Tutti i blocchi delle due home. Le colonne 4 e 5 sono la parte che conta.
 | **Come lavoriamo** | Dieste `1440-meta-22` (l'asse, le cose a cavallo a scale disuguali) | in **A** cinque fasi appese a un filetto con cinque tacche; in **B** a cavallo dell'asse verticale | **4** cinque card numerate · **5** `FASE 01 —` ripetuto cinque volte | qui la numerazione è **legittima** e la § 5 della skill la autorizza: è una sequenza vera (`lib/processo.ts`). E **la dimensione dice l'importanza**: le due fasi che il committente vive a `titolo`, le tre nostre a `sottotitolo` |
 | **Progetti** | Pelizzari `1440-meta-42` (riga a tre tempi, colonne di altezza disuguale) · Kononenko (**rapporti misti nella stessa fila**) · AS (il ruolo in colonna) | in **A** tre segnaposto a rapporti **diversi** (16/10 · 3/4 · 4/3) e sfalsati; in **B** due schede con i dati duri **senza filetti fra le righe** | **4** tre card identiche 4/3, stesso raggio, ombra · **5** i metadati uniti da «·» | la riga a tre tempi porta **`luogo · ruolo · azione`**, non un «codice» — che non esiste in `lib/progetti.ts` e sarebbe un dato d'archivio inventato. E sopra tre rettangoli vuoti `codice · nome · vedi progetto` **è** un annuncio immobiliare; `luogo · direzione lavori · vedi progetto` è una credenziale |
 | **Esploso** (wow A) | Storey (banda nera a taglio netto) · Kononenko `1440-meta-32` (**il disegno al posto della fotografia**) | banda `ink` a piena larghezza; **tre valori per le tre facce** (la faccia dice la luce) e **cinque retini per i cinque livelli** (il retino dice il livello); contorno in `carta` a 21:1 | **1** i nove token caldi (`involucro #e7e3da`, `finiture #f7f5f0`, `apertura #2f4a42`, una terra, un blu) · **4** l'esploso come illustrazione dentro una card | si legge **anche in bianco e nero**, e la legenda mostra i **retini** invece di pallini colorati. La decisione «il colore non porta informazione da solo» è rispettata meglio di prima: qui il colore non ne porta affatto. **Nessuna quota**: «5 livelli» si conta a vista |
-| **Prima / dopo** (wow B) | Storey (l'immagine che sborda) · ecoLINEAR (la **lettura** numerica accanto al controllo) | il cursore taglia **tipografia**: metà `grafite` con «stato attuale», metà `calce` con «progetto» — taglio a **21:1** | **4** la maniglia rotonda con l'ombra · **5** «PRIMA — dopo» in maiuscoletto | **è il blocco che rende B mostrabile oggi.** Prima erano due grigi a 1,17:1: un cursore che non rivelava niente. **Lettura, non quota**: `50 %` è il valore di un controllo, e si rende anche senza JavaScript |
+| **Prima / dopo** (wow B) | Storey (l'immagine che sborda) · ecoLINEAR (la **lettura** numerica accanto al controllo) | il cursore taglia fra i **due piani**: la metà «stato attuale» è la tavola nera, quella «progetto» è il foglio bianco — taglio a **21:1**. Con i media di esempio dentro, ogni riga porta la propria targhetta piena, così il contrasto sotto il testo è un piano e non una fotografia | **4** la maniglia rotonda con l'ombra · **5** «PRIMA — dopo» in maiuscoletto | **è il blocco che rende B mostrabile oggi.** Prima erano due grigi a 1,17:1: un cursore che non rivelava niente. **Lettura, non quota**: `50 %` è il valore di un controllo, e si rende anche senza JavaScript |
 | **Le persone** | Kononenko (la tabella con l'etichetta nel margine) · Pelizzari (altezze disuguali) | quattro campi a **quote verticali disuguali**; sotto il ritratto una piccola tabella: nome · ruolo · **abilitazione** | **4** quattro card uguali col ritratto tondo e l'ombra. E il divieto: **nessun ritratto generato** | il dato che conta è l'**abilitazione**, non la faccia, ed è quella che alla fase 6 finisce in `Person.hasCredential`. **Nessuna quota**: il solo numero sarebbe «4 caselle», che si leggerebbe «lo studio ha 4 persone» — un dato inventato |
 | **Territorio** (A) | `lib/territorio.ts` · Kononenko · ecoLINEAR (la quota che porta un numero) | il perimetro vero a 1 px su `carta`; la sede come **croce di quota** | nessuna mappa a tile (un tile server è un terzo che vede l'IP) · niente pin a goccia | **Q: `128 comuni nell'autocomplete · FM 40, MC 55, AP 33`** — la sola quota con una fonte pubblica citabile. **L'annotazione dice cos'è**: le tre province dell'autocomplete del brief, non «dove abbiamo lavorato». `comuniServiti = []`: nessun comune acceso |
 | **Brief** ★ | ecoLINEAR (la CTA prima della galleria) · Storey (il vuoto disuguale prima) · AS (una domanda per schermata) | **200 px di silenzio** davanti; in A l'**unica** banda che porta una scheda chiara; la barra di avanzamento ridisegnata come **linea di misura a cinque tacche** | **4** la scheda con l'ombra e il raggio · **1/5** in A era un blocco pieno color accento, cioè l'unica area grande di colore del sito | **Q: `passo n di 5`** — l'unica quota che si muove, perché l'unico posto dove la quantità cambia. Senza JS dice «passo 1 di 5», che è vero. Tutto il resto della fase 2 non si tocca: un solo form, radio col pallino, `<datalist>`, honeypot, niente CAPTCHA |
-| **Footer** | Storey `1440-meta-52` (la schedina col piè a tre tempi) · Pelizzari (l'azione al bordo) | tre tempi: indirizzo · contatti · dati fiscali al bordo destro, il vuoto in mezzo. In **A** banda `ink` **saldata al brief**; in **B** il `getto` continua | **5** le quattro colonne di link con un occhiello sopra ognuna, i dati uniti da puntini, le icone social | il **telefono è il corpo più grande** del footer: la gerarchia racconta quella delle azioni. La mappa non è più un segnaposto ma un **ritaglio dello stesso SVG del territorio** con la croce sulla sede. In **B** il footer ospita la quota `128 comuni`, perché B non ha il blocco Territorio |
-| **Barra CTA mobile** (B) | AS (la barra fissa piatta, etichette a peso disuguale) | tre celle a larghezza **disuguale** — 22 % · 29 % · 49 % — `calce` con filetti `ink`, solo testo | **4** tre pastiglie tonde galleggianti con l'ombra · **5** «→» | le larghezze dicono la priorità, e con metà barra ci sta «raccontaci il progetto» intero. La cella del WhatsApp resta un segnaposto dichiarato |
+| **Footer** | Storey `1440-meta-52` (la schedina col piè a tre tempi) · Pelizzari (l'azione al bordo) | tre tempi: indirizzo · contatti · dati fiscali al bordo destro, il vuoto in mezzo. In **A** banda `ink` **saldata al brief**; in **B** la tavola continua e cambia solo un filetto in testa | **5** le quattro colonne di link con un occhiello sopra ognuna, i dati uniti da puntini, le icone social | il **telefono è il corpo più grande** del footer: la gerarchia racconta quella delle azioni. La mappa non è più un segnaposto ma un **ritaglio dello stesso SVG del territorio** con la croce sulla sede. In **B** il footer ospita la quota `128 comuni`, perché B non ha il blocco Territorio |
+| **Barra CTA mobile** (B) | AS (la barra fissa piatta, etichette a peso disuguale) | tre celle a larghezza **disuguale** — 22 % · 29 % · 49 % — tre fogli bianchi con la tavola nelle fughe, solo testo | **4** tre pastiglie tonde galleggianti con l'ombra · **5** «→» | le larghezze dicono la priorità, e con metà barra ci sta «raccontaci il progetto» intero. La cella del WhatsApp resta un segnaposto dichiarato |
 | **Segnaposto immagine** | ecoLINEAR (i **segni di registro**) · AS · Kononenko (il disegno dove la foto non c'è) | quattro **squadrette d'angolo** in `line` (4,61:1) e la **scheda di specifica** dentro: cosa manca *e in che formato* | **3** il tratteggio (A) e la carta millimetrata (B): due texture decorative su ogni blocco che dicono «disegno» e non dicono niente | il campo dice `2400 × 1650 px · AVIF · ≤ 250 KB`: legge «modulo in attesa», non «buco», e in call è la lista della spesa. È anche ciò che refero chiama *intentional placeholder* |
 | **Segnaposto di testo** (62) | ecoLINEAR (l'annotazione come segno di stato) | i **tre canali** restano tutti e tre; cambia solo il colore | **zero accenti**, che sarebbe la mossa elegante e sbagliata: con la sola palette neutra i canali scendono a due e il fondo torna a 1,1:1 dalla carta | **è l'unico posto del sito dove c'è colore, e ha una data di scadenza.** Dentro una banda scura il token è vincolato al piano (`timbro-chiaro`, 10,07:1) |
 
-### Misure a fine fase (build di produzione, Slow 4G + CPU 4×, viewport 390)
+### Misure a fine fase 2/2 (build di produzione, Slow 4G + CPU 4×, viewport 390)
+
+Rifatte **dopo** l'inversione di B e dopo l'ingresso dei media di esempio: i numeri della
+parte 1/2 non valgono più, perché la home adesso carica un poster, una fotografia e un video.
 
 | Metrica | Obiettivo | `/` (A) | `/opzione-b` (B) | `/servizi/strutture` | Esito |
 |---|---|---|---|---|---|
-| LCP | < 2,0 s | **0,69 s** | 0,69 s | — | OK. L'LCP è **testo**, non un'immagine: il display della hero |
-| CLS | < 0,05 | **0,00** | 0,00 | — | OK |
-| Peso primo caricamento | < 1,2 MB | **265 KB** | ~263 KB | **234 KB** | OK |
-| JS primo caricamento | < 180 KB gz | **149 KB** | 149 KB | 144 KB | invariato: il ridisegno non aggiunge un byte di JavaScript |
-| Richieste | < 40 | **21** | 18 | 20 | OK |
-| **Font per rotta** | — | **40,7 KB** (era 60,8) | 67,7 KB (era 138,3) | 40,7 KB | **−20 e −71 KB**, un file per tema |
-| Documento HTML | — | 28,5 KB | ~20 KB | 12,9 KB | dentro ci sono l'esploso coi retini, la mappa, i cinque pannelli di B e i 128 `<option>` |
-| Lighthouse mobile | ≥ 90 | **100 · 100 · 100 · 100** (56 controlli, 0 falliti) | — | **100 · 100 · 100 · 100** (52 controlli, 0 falliti) | OK |
-| **Contrasto** | AA | **81 coppie distinte** misurate sulle sette rotte renderizzate, **zero sotto soglia** | | | OK |
+| LCP | < 2,0 s | **0,74 s** | — | — | OK. L'LCP resta **testo**: il display della hero |
+| CLS | < 0,05 | **0,00** | — | — | OK |
+| Peso fino a `load` | < 1,2 MB | **283 KB** | **254 KB** | **210 KB** | OK. In A ci sono 51 KB di immagini (poster 36 + prima copertina) |
+| Video della hero | < 2,5 MB | **2,09 MB** | — | — | OK, e **fuori dal percorso critico**: parte a 194 ms, cioè dopo `load` (145 ms) |
+| Immagine della hero (poster) | < 250 KB | **36 KB** | — | — | OK |
+| JS al primo caricamento | < 180 KB gz | **150 KB** | 150 KB | 144 KB | +1 KB sulla parte 1/2: è `MediaEsempio`, l'unico componente client aggiunto |
+| Richieste fino a `load` | < 40 | **17** (28 con il video e i prefetch) | 13 (20) | 12 (21) | OK |
+| **Font per rotta** | — | **40,7 KB** | 67,7 KB | 40,7 KB | invariato |
+| Documento HTML | — | 30 KB | 24 KB | 13 KB | dentro ci sono l'esploso coi retini, la mappa, i cinque pannelli di B e i 128 `<option>` |
+| Lighthouse mobile | ≥ 90 | **100 · 100 · 100 · 100** (56 controlli, 0 falliti) | 100 · 100 · **60** · 100 (58 controlli, 1 fallito) | 100 · 100 · 100 · 100 | il 60 di B è il `noindex` dichiarato: è una rotta di proposta |
+| **Contrasto** | AA | **72 coppie distinte** sulle sette rotte renderizzate, **zero sotto soglia** | | | OK, rimisurato dopo l'inversione: in B è cambiata ogni coppia |
+
+**Il video non entra nel peso della pagina**, ed è una scelta di codice, non un'interpretazione
+del budget: con l'attributo `autoplay` il browser ignora `preload="none"` e mette i 2,1 MB sul
+percorso di caricamento — misurato, la home passava da 283 KB a 2,4 MB, cioè oltre il *limite*.
+Il video parte quindi da `requestIdleCallback` (`components/MediaEsempio.tsx`), e a reggere
+l'LCP c'è il poster da 36 KB.
 
 Il debito del preload resta e si è **dimezzato**: `/opzione-b` scarica ancora i 40,7 KB di
 Archivo che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo e Next
@@ -158,21 +169,66 @@ con la rotta non scelta.
 | Controllo | Esito |
 |---|---|
 | **Senza JavaScript**, cinque rotte | tutto si rende: il brief è un solo form con i cinque `<fieldset>` visibili e «passo 1 di 5» in chiaro; in B **un solo pannello** visibile, quello scelto; il cursore del prima/dopo non c'è (sarebbe un controllo morto) ma la **lettura «50 %» sì**; nessun overflow orizzontale |
-| **Contrasto AA** | 81 coppie distinte di colore su sette rotte renderizzate, **zero sotto soglia** (`scratchpad/contrasto.mjs`, misurate sul DOM vero e non sui token) |
+| **Contrasto AA** | **72 coppie distinte** di colore su sette rotte renderizzate, **zero sotto soglia** (`scratchpad/contrasto.mjs`, misurate sul DOM vero e non sui token). Rimisurate dopo l'inversione di B, dove **ogni coppia è cambiata**: il primo giro dava 11 difetti, fra cui il brief tutto bianco su bianco |
 | **Overflow orizzontale** | zero a 1440, 390 e 320 su entrambe le home (`scrollWidth == clientWidth`) |
 | **Bersagli tattili** | i link isolati e il lockup del marchio portati a 44 px sotto i 56 rem; i `radio` restano 18 px ma la loro `<label>` è 48 |
-| **Lighthouse mobile** | 100 · 100 · 100 · 100 su `/` e su `/servizi/strutture` |
+| **Lighthouse mobile** | 100 · 100 · 100 · 100 su `/`, su `/opzione-b` (tranne il SEO 60 del `noindex` dichiarato) e su `/servizi/strutture` |
 | **L'asse di B non attraversa più nessun testo** | era il difetto visibile («sembra buggata»): 28 elementi tagliati, ora zero fuori dalle figure, davanti alle quali il filetto passa dietro |
+| **`prefers-reduced-motion`** | il video della hero non viene reso affatto: al suo posto il poster come immagine. Non è nascosto in CSS — sarebbero 2 MB scaricati per chi ha chiesto meno movimento |
+| **Bersaglio del menu su telefono** | era 36,3 × 44 px (largo quanto la parola). Ora **56 × 44** a 390 e a 320 |
+| **Prima/dopo a 390 px** | le due didascalie non attraversano più il taglio: ognuna sta nella sua metà. Verificato che il `clip-path` continui a rivelare al 50 % del riquadro (la prima correzione, con `left: 50%`, tagliava al 75 %) |
+| **Legenda dell'esploso a 390 px** | da due colonne da 192 e 150 px a una sola da 358: le descrizioni passano da 3-4 righe a 2 |
+
+### Cosa è cambiato nella parte 2/2
+
+**1. L'opzione B è rovesciata** (decisione n. 26). FT l'aveva detto guardandola: «è troppo
+simile all'opzione A». Il fondo medio `#C0C3C1` era difendibile sui numeri e non si vedeva. Ora
+B è nera dall'header al footer e il contenuto denso sta su **fogli bianchi**. Costo: in B i
+token vanno legati al **piano** e non alla pagina, perché un elemento non sa su quale piano si
+trova. L'elenco dei fogli sta in `app/globals.css`. Trappola pagata e scritta: `@theme inline`
+risolve i `var()` sulla radice **una volta sola**, quindi ridichiarare `--regolo-ink` su un
+sottoalbero non tocca `--color-ink` — misurato sul pannello, `#000` e `#fff` insieme. Vanno
+ridichiarati tutti e due i prefissi.
+
+**2. I campi mostrano media di esempio** (decisione n. 27), dietro `NEXT_PUBLIC_MEDIA_DEMO`.
+Otto fotografie CC0 da StockSnap e un video Mixkit, tutti in bianco e nero. **Restano
+segnaposto**: squadrette, specifica del formato, riga di fonte e licenza, e la barra della
+proposta cambia frase da sé. **Nessun ritratto.** L'elenco file per file, con licenza e peso, è
+in `TODO-MEDIA.md`.
+
+**3. Ventiquattro rilievi di un audit avversariale** (sei revisori indipendenti, ogni rilievo
+passato a chi doveva smontarlo). Chiusi in questa passata: il brief bianco su bianco di B, le
+due metà del prima/dopo dello stesso bianco, la griglia a tre zone dei sei percorsi (una regola
+duplicata fuori dal suo selettore vinceva su tutte le righe), il `theme-color` della palette
+morta su otto rotte, lo skip link che non spostava il fuoco, la croce dell'errore che entrava
+nel parlato, la barra di avanzamento che senza JS diceva zero su cinque, il bersaglio del menu a
+36 px, le didascalie del prima/dopo che si attraversavano a 390, la legenda dell'esploso a due
+colonne strette, la home senza JSON-LD e `/contatti` senza `LocalBusiness`, i due eventi di
+analytics mai chiamati, le legali con filetti e monospazio, e la mail del brief ancora tutta
+nella palette del kick-off.
 
 ### Cosa resta aperto
 
-- **I media dei blocchi di prova** restano campi dichiarati: progetti, persone, prima/dopo e
-  la fotografia della hero. È dove lo stock costa la vendita. Due segnaposto sono invece
-  spariti per sempre, perché non aspettavano niente dal cliente: l'**immagine Open Graph**
-  (disegnata in codice, la pagina in miniatura) e la **mappa del footer** (ritaglio dello
-  stesso SVG del territorio).
+- **I media dei blocchi di prova** restano campi dichiarati: quello che si vede è un livello
+  dimostrativo con l'interruttore, non un contenuto. Le foto vere sono ancora la cosa che manca
+  di più, ed è dove lo stock costa la vendita. Due segnaposto sono invece spariti per sempre,
+  perché non aspettavano niente dal cliente: l'**immagine Open Graph** (disegnata in codice, la
+  pagina in miniatura) e la **mappa del footer** (ritaglio dello stesso SVG del territorio).
+- **La answer capsule non è mai stata confermata dallo studio.** L'abbiamo scritta noi dal
+  profilo LinkedIn (`kit/00-KICKOFF.md`: «non c'è ancora un trascritto del meeting»), e due
+  delle sue frasi sono promesse operative — «con la stessa squadra», «una persona di
+  riferimento dall'inizio alla fine» — che vivono in quattro punti del sito e finiscono nel
+  `description` del JSON-LD, cioè in una forma che una macchina ripete. Aggiunta la riga
+  bloccante in `CONTENUTI-DA-CLIENTE.md`; il testo in pagina **non è stato toccato**, perché è
+  copy di vendita e la decisione è di chi la fa.
+- **Rilievi dell'audit non ancora chiusi**, tutti minori o di redazione: il ritmo a tre passi
+  non esiste sulle rotte interne; in A restano filetti fra le righe di alcuni elenchi;
+  `.cta-contestuale` è una card il cui contenitore non è interattivo; restano metadati uniti da
+  «·»; `.fasi-quota` si chiama quota pur non essendolo; `Persone` ha la prop di variante
+  chiamata come il tema.
 - **I crediti Higgsfield** (1,79) non servono più per l'Open Graph. Restano utili solo se si
-  decide di generare qualcosa di materico, che oggi il piano esclude.
+  decide di generare qualcosa di materico, che oggi il piano esclude. Nano Banana Pro **non è
+  gratis**: costa 2 crediti, provato — «Out of credits in the selected workspace».
 - Il **debito del preload** resta e si è dimezzato: `/opzione-b` scarica i 40,7 KB di Archivo
   che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo. Prima
   erano 105 KB nella direzione opposta. Sparisce alla fase 5 con la rotta non scelta.
@@ -240,7 +296,7 @@ Su `/opzione-b` il peso totale sale per i font in più — debito tecnico della 
 | **Le 18 risposte alle FAQ da validare** | studio | niente: in pagina si vedono marcate «proposta». Bloccano solo lo schema `FAQPage`, che oggi non si emette |
 | **Decisione n. 16**: che risposta del passo 1 dare a «Comfort, energia, acustica» | NB con FT | niente. Oggi quella CTA manda al brief senza precompilare |
 | Foto e dati dei progetti | cliente | fase 4 (contenuti reali) |
-| Quale analytics (decisione n. 10) | NB | fase 7. Gli eventi sono già cablati: `lib/analytics.ts` è muto finché non c'è la libreria |
+| Quale analytics (decisione n. 10) | NB | fase 7. **Tutti e quattro** gli eventi sono ora cablati: `brief_apertura` e `brief_inviato` in `BriefForm`, `click_telefono` e `click_whatsapp` in `components/Misurazione.tsx` (un ascoltatore delegato, non un componente per link). `lib/analytics.ts` resta muto finché non c'è la libreria. *Fino all'08/09 questa riga diceva «già cablati» e valeva per due su quattro: gli altri due erano solo una voce del tipo `Evento`* |
 | Node locale v25.7.0, non LTS | NB | niente: `.nvmrc` e `engines` fissano 22 LTS, che è quello che usa Vercel |
 
 ## Debiti tecnici, da saldare alla fase 5

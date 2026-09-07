@@ -27,8 +27,8 @@ import { comuni, province } from '@/lib/territorio'
  * documento.
  *
  * In A il footer è una banda `ink` **saldata al brief** (passo zero fra i due):
- * il terzo piano della pagina non si interrompe per ricominciare. In B il fondo
- * `getto` continua e cambia solo un filetto in testa — perché in B il fondo non
+ * il terzo piano della pagina non si interrompe per ricominciare. In B la
+ * tavola continua e cambia solo un filetto in testa — perché in B il fondo non
  * cambia mai.
  *
  * La «mappa statica» di `CLAUDE.md` è un **ritaglio dello stesso SVG del

@@ -237,25 +237,41 @@
   --regolo-footer-filo: none;
 }
 
-/* ---------- Tema B — «Il registro» ---------------------------------------
-   Fondo a luminanza media dall'header al footer senza un cambio, quattro
-   corpi dentro la stessa scala e nessun salto, asse verticale, il bianco come
-   figura e non come fondo.
+/* ---------- Tema B — «Il cantiere» ----------------------------------------
+   **Il rovescio esatto di A.** A è il tavolo da disegno: carta bianca, con due
+   tagli netti verso il nero. B è la **tavola di cantiere**: fondo nero
+   dall'header al footer, e il contenuto denso sta su **fogli bianchi** appuntati
+   sopra — le righe scelte, i pannelli, le schede progetto, la scheda del brief.
+
+   Perché è così e non un grigio a luminanza media, che è quello che c'era prima:
+   il grigio `#C0C3C1` era una scelta difendibile sui numeri (la luminanza di
+   refero) ma **non si vedeva**. Due pagine chiare, con lo stesso nero e la
+   stessa famiglia di grottesco, leggono come due varianti della stessa pagina —
+   e due proposte che si somigliano non sono due proposte. Il rovescio di figura
+   e fondo, invece, si riconosce in una miniatura al 25 %.
+
+   E risolve il problema che un fondo scuro di solito crea: un registro è denso,
+   e il testo denso in bianco su nero stanca. Qui la densità sta **sui fogli**,
+   che sono bianchi; il nero è il piano su cui stanno, non la superficie di
+   lettura.
+
+   Il nero è **pieno**: `#0B0B0B` e `#111` sono la tell n. 5, ed è lo stesso
+   inchiostro con cui A taglia le sue due bande — stessa materia, ruolo opposto.
    -------------------------------------------------------------------------- */
 [data-theme='b'] {
-  --regolo-paper: #c0c3c1; /* getto — L relativa 0,541, la luminanza di refero (11,82:1 col nero) */
-  --regolo-surface: #ffffff; /* calce: la FIGURA. 1,78:1 dal getto ⇒ 1 px di ink sul bordo, non negoziabile */
-  --regolo-ink: #000000; /* 11,82:1 su getto · 21,00:1 su calce */
-  --regolo-muted: #454a47; /*  5,09:1 su getto ·  9,04:1 su calce */
-  --regolo-muted-invert: #9a9a9a;
-  --regolo-line: #4a4a4a; /*  4,99:1 su getto ·  8,86:1 su calce — in B la quota pesa quanto la parola */
-  --regolo-ph: #ffffff; /* il segnaposto è una figura: 1,78:1, quindi porta il bordo */
-  --regolo-ph-ink: #454a47; /*  9,04:1 sulla figura */
-  --regolo-bordo-campo: var(--regolo-line);
-  --regolo-errore: #8e1b10; /*  5,11:1 su getto ·  9,07:1 su calce */
+  --regolo-paper: #000000; /* la tavola */
+  --regolo-surface: #ffffff; /* il foglio: la FIGURA, 21,00:1 dal fondo */
+  --regolo-ink: #ffffff; /* 21,00:1 sulla tavola — in B l'inchiostro è chiaro */
+  --regolo-muted: #9a9a9a; /*  7,46:1 sulla tavola */
+  --regolo-muted-invert: #454a47; /*  9,04:1 sul foglio — il secondario DENTRO una figura */
+  --regolo-line: #5c5c5c; /*  3,14:1 sulla tavola: è un filetto, non testo (WCAG 1.4.11) */
+  --regolo-ph: #000000; /* il segnaposto è un campo sulla tavola, e porta il bordo */
+  --regolo-ph-ink: #9a9a9a; /*  7,46:1 */
+  --regolo-bordo-campo: #8a8a8a; /*  6,10:1 sulla tavola */
+  --regolo-errore: #f08c7a; /*  8,74:1 sulla tavola ·  2,40:1 sul foglio → vincolato al piano */
 
-  --regolo-timbro: #123c7a; /*  6,05:1 su getto · 10,75:1 su calce */
-  --regolo-timbro-soft: #ffffff; /* in B il terzo canale è la figura bianca: un token in meno */
+  --regolo-timbro: #93b7de; /* 10,07:1 sulla tavola — in B l'accento è la variante chiara */
+  --regolo-timbro-soft: transparent; /* sulla tavola il terzo canale è il filetto, non una tinta */
   --regolo-timbro-chiaro: #93b7de;
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
@@ -265,23 +281,21 @@
 
   --regolo-display-weight: 600;
   --regolo-display-tracking: -0.02em;
-  --regolo-display-wdth: 100; /* Chivo non ha l'asse di larghezza, e non gli serve: A comprime, B no */
+  --regolo-display-wdth: 100; /* Chivo non ha l'asse di larghezza: A comprime, B no */
 
-  /* Nessun salto: 43,6 è il gradino 8 della stessa scala 1,125 da base 17.
-     Il valore 48 px — che la lista di calibrazione nomina e che non appartiene
-     a nessuna scala 1,125 — non compare da nessuna parte. */
+  /* Nessun salto: 43,6 è il gradino 8 della stessa scala 1,125 da base 17. */
   --regolo-text-h1: clamp(1.9125rem, 7.85vw, 2.725rem); /* 30,6 a 390 · 43,6 a 1440 */
   --regolo-lh-h1: 1;
   --regolo-text-h2: clamp(1.5125rem, 6.2vw, 1.9125rem); /* 24,2 a 390 · 30,6 */
   --regolo-lh-h2: 1.1;
-  --regolo-text-h3: 1.195rem; /* 19,1 — gradino 1: non scala */
+  --regolo-text-h3: 1.195rem; /* 19,1 — non scala */
   --regolo-lh-h3: 1.25;
 
   --regolo-wrap: 1440px;
   --regolo-margine: clamp(1rem, 1.7vw, 1.5rem);
   --regolo-gutter: clamp(1rem, 1.7vw, 1.5rem);
   --regolo-colonne: 12;
-  --regolo-radius: 0px; /* via anche i 3 px di B */
+  --regolo-radius: 0px;
   --regolo-misura: 30rem; /* 480 px */
 
   --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem);
@@ -290,17 +304,18 @@
 
   --regolo-ph-pattern: none;
   --regolo-ph-size: auto;
-  --regolo-ph-border: 1px solid var(--regolo-ink);
+  --regolo-ph-border: 1px solid var(--regolo-line);
 
   --regolo-font-eyebrow: var(--regolo-font-body);
   --regolo-eyebrow-tracking: -0.01em;
   --regolo-eyebrow-transform: none;
 
-  /* in B il bottone è inchiostro sulla FIGURA bianca: il verso è invertito */
-  --regolo-btn-bg: var(--regolo-ink);
-  --regolo-btn-fg: var(--regolo-surface);
-  --regolo-btn-border: var(--regolo-ink);
-  --regolo-btn-bg-hover: #2b2b2b;
+  /* Il verso è invertito rispetto ad A: là il bottone è inchiostro sulla carta,
+     qui è **il foglio sulla tavola**. */
+  --regolo-btn-bg: var(--regolo-surface);
+  --regolo-btn-fg: #000000;
+  --regolo-btn-border: var(--regolo-surface);
+  --regolo-btn-bg-hover: #d8d8d8;
 
   --regolo-header-h: 72px;
   --regolo-logo-size: 1.375rem;
@@ -311,45 +326,53 @@
 
   --regolo-focus: var(--regolo-ink);
 
-  /* In B il brief non cambia fondo: il getto continua e la scheda è la figura. */
+  /* Il brief non cambia fondo: la tavola continua e la scheda è il foglio. */
   --regolo-brief-bg: var(--regolo-paper);
-  --regolo-brief-fg: var(--regolo-ink); /* 11,82:1 */
-  --regolo-brief-occhiello: var(--regolo-muted); /*  5,09:1 */
-  --regolo-brief-lead: var(--regolo-muted); /*  5,09:1 */
+  --regolo-brief-fg: var(--regolo-ink); /* 21,00:1 */
+  --regolo-brief-occhiello: var(--regolo-muted); /*  7,46:1 */
+  --regolo-brief-lead: var(--regolo-muted); /*  7,46:1 */
   --regolo-brief-bordo-sezione: none;
   --regolo-brief-card: var(--regolo-surface);
-  --regolo-brief-controllo-bg: var(--regolo-paper); /* il campo è getto sulla figura bianca */
-  --regolo-brief-controllo-bordo: var(--regolo-line); /*  4,99:1 su getto ·  8,86:1 su calce */
+  --regolo-brief-controllo-bg: #f4f4f4; /* il campo, sul foglio */
+  --regolo-brief-controllo-bordo: #767676; /*  4,54:1 sul foglio */
   --regolo-brief-scelta-bg: var(--regolo-surface);
-  --regolo-brief-scelta-bordo: var(--regolo-ink);
-  --regolo-brief-errore: var(--regolo-errore);
+  --regolo-brief-scelta-bordo: #000000;
+  --regolo-brief-errore: #8e1b10; /*  9,07:1 sul foglio */
+  /* Il blocco brief di B sta **sulla tavola**: qui l'anello è chiaro. Dentro
+     la scheda torna scuro da sé, perché `.brief-scheda` è un foglio e il
+     foglio ridichiara i token del piano (vedi il blocco `.piano-foglio`). */
   --regolo-brief-fuoco: var(--regolo-ink);
 
   --regolo-quota-riga: block;
-  --regolo-quota-colore: var(--regolo-line);
+  /* In A la quota si scrive con il colore del filetto, perché `line` sulla
+     carta sta a 4,61:1 ed è anche testo valido. Sulla tavola non si può:
+     `line` è 3,14:1 e regge solo come **linea** (WCAG 1.4.11), non come parola.
+     Quindi in B il filetto resta `line` e le voci passano a `muted` — 7,46:1.
+     Il token è uno solo perché è usato solo per `color:` (sei occorrenze,
+     tutte testo): la linea la disegnano i bordi. */
+  --regolo-quota-colore: var(--regolo-muted);
 
-  /* In B l'apparato è un ASSE VERTICALE. La frazione è **del contenuto**, non
-     della pagina: il filetto è posizionato dentro `.wrap`, che ha il margine nel
-     padding, mentre le colonne della griglia stanno nel content box. Con la sola
-     percentuale i due cadevano a 16 px di distanza e l'asse passava **dentro**
-     le celle invece che sul loro bordo — che è il difetto che faceva sembrare la
-     pagina rotta. Un solo numero per tutti e due, e la conversione sta nella
-     regola che disegna il filetto. */
+  /* l'asse verticale che attraversa dall'header al footer */
   --regolo-asse: block;
   --regolo-asse-frazione: 0.344; /* Kononenko misurato comincia la sua tabella al 34,2 % */
 
   --regolo-sezione-alt: var(--regolo-paper); /* in B il fondo non cambia MAI */
   --regolo-sezione-alt-filo: none;
 
-  --regolo-pannello-bg: var(--regolo-surface); /* il pannello non è più scuro: è la figura bianca */
-  --regolo-pannello-fg: var(--regolo-ink); /* 21,00:1 */
-  --regolo-pannello-chiave: var(--regolo-muted); /*  9,04:1 sulla figura */
-  --regolo-pannello-voce: var(--regolo-ink);
+  /* il pannello **è** il foglio */
+  --regolo-pannello-bg: var(--regolo-surface);
+  --regolo-pannello-fg: #000000; /* 21,00:1 */
+  --regolo-pannello-chiave: var(--regolo-muted-invert); /*  9,04:1 sul foglio */
+  --regolo-pannello-voce: #000000;
   --regolo-scuro-bg: var(--regolo-surface);
-  --regolo-scuro-fg: var(--regolo-ink);
-  --regolo-scuro-muted: var(--regolo-muted); /*  9,04:1 */
-  --regolo-scuro-linea: var(--regolo-line); /*  8,86:1 */
+  --regolo-scuro-fg: #000000;
+  --regolo-scuro-muted: var(--regolo-muted-invert); /*  9,04:1 */
+  --regolo-scuro-linea: #767676; /*  4,54:1 sul foglio */
 
+  /* Le tre facce non cambiano fra i due temi: la faccia dice la luce, e la
+     luce non dipende dal piano. Cambiano solo contorno e apertura, che sono
+     il vuoto — e il vuoto è il colore del piano. Questi sono i valori della
+     **tavola**; sul foglio li ridichiara `.piano-foglio`. */
   --regolo-esploso-faccia-alta: #d8d8d8;
   --regolo-esploso-faccia-sx: #a8a8a8;
   --regolo-esploso-faccia-dx: #7a7a7a;
@@ -364,16 +387,122 @@
   --regolo-esploso-acqua: #1a1a1a;
   --regolo-esploso-aria: #1a1a1a;
 
+  /* la mappa: il perimetro chiaro sulla tavola */
   --regolo-mappa-linea: var(--regolo-ink);
-  --regolo-mappa-fondo: var(--regolo-surface);
+  --regolo-mappa-fondo: var(--regolo-paper);
   --regolo-mappa-sede: var(--regolo-ink);
 
-  /* In B il fondo non cambia mai: il footer continua sul getto e si stacca dal
-     brief con un filetto, non con una banda. */
+  /* Il footer continua sulla tavola: non cambia fondo, cambia un filetto. */
   --regolo-footer-bg: var(--regolo-paper);
-  --regolo-footer-fg: var(--regolo-ink); /* 11,82:1 */
-  --regolo-footer-muted: var(--regolo-muted); /*  5,09:1 */
+  --regolo-footer-fg: var(--regolo-ink); /* 21,00:1 */
+  --regolo-footer-muted: var(--regolo-muted); /*  7,46:1 */
   --regolo-footer-filo: 1px solid var(--regolo-line);
+}
+
+/* ---------- B: i token sono legati al PIANO, non alla pagina ---------------
+   Questo è il pezzo che fa funzionare l'inversione, e senza di lui l'opzione B
+   è illeggibile: il rovescio di figura e fondo non è un cambio di due valori,
+   è un cambio di **regola**.
+
+   In A c'è un piano solo — la carta — e due bande che lo tagliano; per quelle
+   bastano i token `--regolo-scuro-*` e `--regolo-brief-*`, che sono cinque
+   eccezioni dichiarate. In B i piani sono due e si alternano di continuo: la
+   tavola nera e i fogli bianchi appuntati sopra. Un elemento non sa su quale
+   piano si trova, e non deve saperlo: **è il piano a ridichiarare i token**.
+
+   Quindi qui non si ricolora niente. Si elenca chi *è* un foglio, e dentro un
+   foglio `--regolo-ink` torna nero, `--regolo-paper` torna bianco, il
+   secondario e il filetto tornano quelli della carta. Tutto il resto — le
+   utility Tailwind comprese, perché `@theme inline` legge le stesse variabili —
+   segue da sé, comprese le regole scritte prima che B esistesse.
+
+   Due cose da NON fare qui dentro, entrambe già pagate:
+
+   1. **non si ridichiara `--regolo-surface`.** Il fondo del foglio *è*
+      `surface`, e più di un elemento della lista lo usa per dipingersi
+      (`.pannello`, `.sezione-scura`, `.brief-scheda`, `.barra-mobile > *`).
+      Una variabile ridichiarata sullo stesso elemento che la consuma si
+      risolve col valore nuovo: il foglio si dipingerebbe del proprio interno;
+   2. **non si mette in lista chi usa `--color-ink` come fondo.** La barra
+      della proposta è `background: var(--color-ink)` — in B è bianca perché
+      l'inchiostro è bianco, ed è giusto così: è chrome invertito, non un
+      foglio. In lista diventerebbe nera.
+
+   La riga del registro entra in lista con `:hover` e `:has(:checked)` e non da
+   ferma: la riga scelta **diventa** un foglio, ed è quello il gesto di B.
+   -------------------------------------------------------------------------- */
+[data-theme='b'] .pannello,
+[data-theme='b'] .sezione-scura,
+[data-theme='b'] .riga:hover,
+[data-theme='b'] .riga:has(input:checked),
+[data-theme='b'] .brief-scheda,
+[data-theme='b'] .cta-contestuale,
+[data-theme='b'] .confronto > .confronto-dopo,
+[data-theme='b'] .barra-mobile > * {
+  --regolo-paper: #ffffff;
+  --regolo-ink: #000000; /* 21,00:1 sul foglio */
+  --regolo-muted: #454a47; /*  9,04:1 */
+  --regolo-muted-invert: #ffffff; /* il rovescio DENTRO il foglio: 21,00:1 */
+  --regolo-line: #767676; /*  4,54:1 — sul foglio il filetto è anche testo valido */
+  --regolo-quota-colore: #767676;
+  --regolo-bordo-campo: #767676;
+  --regolo-errore: #8e1b10; /*  9,07:1 */
+  --regolo-focus: #000000;
+  --regolo-ph: #ececec; /* un campo NEL foglio è un incavo, non un buco nero */
+  --regolo-ph-ink: #5e5e5e; /*  6,48:1 */
+
+  /* Il timbro sul foglio è quello di A: `#93B7DE` sul bianco sta a 1,95:1.
+     È esattamente il caso per cui esiste la coppia legata al piano. */
+  --regolo-timbro: #123c7a; /* 10,75:1 */
+  --regolo-timbro-soft: #e7ecf6;
+  --regolo-timbro-piano: #123c7a;
+  --regolo-timbro-piano-soft: #e7ecf6;
+
+  /* Il verso del bottone si rovescia di nuovo: sulla tavola è il foglio, sul
+     foglio è l'inchiostro. Senza questo, «Avanti» e «Raccontaci il progetto»
+     sono bianchi su bianco — cioè non ci sono. */
+  --regolo-btn-bg: #000000;
+  --regolo-btn-fg: #ffffff;
+  --regolo-btn-border: #000000;
+  --regolo-btn-bg-hover: #333333;
+
+  /* Il contorno e le aperture dell'esploso sono il colore del piano. */
+  --regolo-esploso-contorno: #000000;
+  --regolo-esploso-apertura: #ffffff;
+
+  /* --- e ora gli stessi valori un'altra volta, con l'altro prefisso --------
+     Non è una ripetizione per pigrizia: è una **trappola di CSS**, la terza
+     che questo progetto paga, e la sola cura è scriverla.
+
+     `@theme inline` genera `--color-ink: var(--regolo-ink)` su `:root`. Un
+     `var()` dentro la dichiarazione di una custom property viene sostituito
+     **dove è dichiarata**, non dove è usata: `--color-ink` si risolve una
+     volta sola, sulla radice, e da lì in giù eredita un colore già deciso.
+     Ridichiarare `--regolo-ink` su un sottoalbero quindi non tocca
+     `--color-ink`, e con lui non tocca nessuna utility Tailwind e nessuna
+     regola scritta con i token del tema.
+
+     Misurato sul `.pannello`, prima di queste dieci righe:
+       --regolo-ink: #000   ·   --color-ink: #fff   → testo bianco su foglio bianco.
+
+     `inline` continua a servire — è quello che fa cambiare tema al cambio di
+     `data-theme`, perché `[data-theme]` sta sullo stesso `<html>` che è `:root`
+     — ma vale solo per la radice. Per un piano dentro la pagina la coppia va
+     ridichiarata a mano.
+
+     `--color-surface` NON è in lista, per la stessa ragione per cui non lo è
+     `--regolo-surface`: il foglio si dipinge con quello. */
+  --color-paper: #ffffff;
+  --color-ink: #000000;
+  --color-muted: #454a47;
+  --color-muted-invert: #ffffff;
+  --color-line: #767676;
+  --color-ph: #ececec;
+  --color-ph-ink: #5e5e5e;
+  --color-timbro: #123c7a;
+  --color-timbro-soft: #e7ecf6;
+  --color-timbro-chiaro: #123c7a;
+  --color-errore: #8e1b10;
 }
 
 /* Interlinea del display: è funzione del CORPO, non una costante. 0,84 vale
@@ -669,7 +798,7 @@
      Il fondo da solo non basta: una tinta abbastanza chiara da lasciare
      leggibile il testo sta a 1,1:1 dalla carta, cioè non si vede. I canali sono
      tre e il primo è il filetto: `timbro` a 10,42:1 sulla carta (5,86:1 sul
-     getto di B), più la tinta, più la sottolineatura punteggiata.
+     tavola di B), più la tinta, più la sottolineatura punteggiata.
      È l'inchiostro del timbro professionale, cioè il segno con cui si annota lo
      stato di un documento: qui dichiara che il contenuto manca. Sono 62 in
      pagina (33 in A, 29 in B) e **quando i contenuti arrivano l'accento
@@ -691,6 +820,47 @@
 
   /* La scheda di specifica del segnaposto: dice cosa manca **e in che formato
      deve arrivare**. Minuscola, non maiuscoletto spaziato. */
+  /* --- l'esempio dentro il campo ------------------------------------------
+     Copre il campo e sta **sotto** squadrette e targhetta, che restano gli
+     ultimi due elementi del segnaposto: il campo non smette di essere un
+     segnaposto perché c'è dentro una fotografia.
+
+     `grayscale(1)` sul video e non sul file: il sito non ha colori, e otto
+     sorgenti diverse a colori avrebbero portato in pagina la sola cosa che il
+     progetto ha deciso di non avere. Le fotografie sono già in grigio dalla
+     conversione; il video resta a colori sul disco e si desatura qui, così la
+     decisione si può ribaltare senza ricodificarlo. */
+  .placeholder-esempio {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+  /* Con `reduce` non c'è nessuna regola da scrivere qui, ed è voluto: il video
+     non viene **reso affatto**, al suo posto arriva il poster come immagine
+     (`components/MediaEsempio.tsx`). Spegnerlo in CSS avrebbe lasciato i 2,1 MB
+     sul filo per chi ha chiesto meno movimento. */
+  /* La riga di provenienza, all'angolo opposto della targhetta. Fondo pieno
+     come la targhetta, per la stessa ragione: sopra una fotografia il
+     contrasto di un testo non si può prevedere, quindi non lo si prevede — lo
+     si decide. */
+  .placeholder-fonte {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 2;
+    max-width: calc(100% - 1.5rem);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--color-paper);
+    color: var(--color-muted);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    text-transform: var(--regolo-eyebrow-transform);
+    font-variant-numeric: tabular-nums;
+  }
+
   .placeholder-etichetta {
     position: absolute;
     bottom: 0.75rem;
@@ -862,7 +1032,14 @@
     display: flex;
     align-items: center;
     min-height: 2.75rem;
-    padding: 0.5rem 0;
+    /* Il bersaglio era 36,3 × 44: alto per il `min-height`, largo quanto la
+       parola perché il padding orizzontale era zero. Passa comunque WCAG 2.5.8
+       (24 × 24), ma è l'unico accesso alla navigazione nell'header sotto i
+       56 rem e sta nell'angolo, dove il pollice arriva peggio. Il margine
+       negativo ricompra il padding destro, così la parola resta sul filo del
+       margine e il bersaglio arriva a 44. */
+    padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+    margin-right: -0.5rem;
     font-size: var(--text-small);
     font-weight: 500;
     text-decoration: underline;
@@ -886,7 +1063,7 @@
      FOOTER — la riga in tre tempi, con il vuoto in mezzo
      In A è una banda `ink` **saldata al brief** (nessun filetto e nessuno
      stacco: il terzo piano non si interrompe per ricominciare); in B il fondo
-     `getto` continua e cambia solo un filetto in testa.
+     la tavola continua e cambia solo un filetto in testa.
      ========================================================================== */
   .site-footer {
     background-color: var(--regolo-footer-bg);
@@ -1009,6 +1186,14 @@
   }
 
   /* Salta al contenuto: invisibile finché non riceve il focus da tastiera. */
+  /* Il bersaglio dello skip link è `<main tabindex="-1">`: quando riceve il
+     fuoco l'anello sarebbe disegnato **fuori** da un elemento largo quanto la
+     pagina, cioè oltre il bordo della finestra. Verso l'interno si vede. */
+  main:focus-visible {
+    outline: 2px solid var(--regolo-focus);
+    outline-offset: -2px;
+  }
+
   .skip-link {
     position: absolute;
     left: -9999px;
@@ -1392,7 +1577,11 @@
     color: var(--regolo-brief-errore);
   }
   .brief-errore::before {
-    content: '\2715\00a0'; /* una croce: l'errore non si dice col solo colore */
+    /* Il testo alternativo vuoto: il segno resta per chi guarda — l'errore
+       non è affidato al solo colore — e sparisce dal parlato, dove un «×»
+       premesso al messaggio è solo rumore. Stessa sintassi del `+` della FAQ
+       in `app/css/pagine.css`. */
+    content: '\2715\00a0' / '';
   }
 
   .brief-guasto {

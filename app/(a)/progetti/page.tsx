@@ -9,6 +9,7 @@ import { etichettaDi } from '@/lib/brief/domande'
 import { progetti, progettiVeri, type Progetto } from '@/lib/contenuti/progetti'
 import { INTERVENTI, RUOLI, type Immagine, type Ruolo } from '@/lib/contenuti/schema'
 import { ctaPrimaria, eSegnaposto, site } from '@/lib/site'
+import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
 
 /**
  * L'indice dei progetti (CLAUDE.md § Struttura · § SEO · catalogo blocchi D1).
@@ -258,9 +259,9 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
 
         {risultati.length > 0 && (
           <ul className="griglia-progetti mt-10" role="list">
-            {risultati.map((p) => (
+            {risultati.map((p, i) => (
               <li key={p.slug}>
-                <Scheda progetto={p} />
+                <Scheda progetto={p} demo={operaPerIndice(i)} />
               </li>
             ))}
           </ul>
@@ -439,9 +440,9 @@ function RigaFiltro({ riga, attivi }: { riga: Riga; attivi: Attivi }) {
  * senza, l'indice avrebbe continuato a mostrare rettangoli grigi il giorno che
  * le foto arrivano, e nessuno se ne accorgerebbe leggendo il codice.
  */
-function Copertina({ immagine }: { immagine: Immagine }) {
+function Copertina({ immagine, demo }: { immagine: Immagine; demo?: ChiaveEsempio }) {
   if (!immagine.file) {
-    return <Placeholder label={immagine.segnaposto} ratio="4 / 3" />
+    return <Placeholder label={immagine.segnaposto} ratio="4 / 3" demo={demo} />
   }
   return (
     <div className="relative" style={{ aspectRatio: '4 / 3' }}>
@@ -468,13 +469,13 @@ function Copertina({ immagine }: { immagine: Immagine }) {
  * il committente che non si può citare, per esempio: dove capita si vede che è
  * un segnaposto, non lo si stampa come dato.
  */
-function Scheda({ progetto: p }: { progetto: Progetto }) {
+function Scheda({ progetto: p, demo }: { progetto: Progetto; demo?: ChiaveEsempio }) {
   const testo = (v: string) => (eSegnaposto(v) ? <DaCliente>{v}</DaCliente> : v)
 
   return (
     <article>
       <Link href={`/progetti/${p.slug}`}>
-        <Copertina immagine={p.copertina} />
+        <Copertina immagine={p.copertina} demo={demo} />
         <div className="progetto-meta">
           <h3 className="progetto-nome">{testo(p.titolo)}</h3>
           <p className="progetto-riga">

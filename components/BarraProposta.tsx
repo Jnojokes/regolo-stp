@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { MEDIA_DEMO } from '@/lib/media-demo'
 
 /**
  * Barra della proposta: dice quale delle due home si sta guardando e permette
@@ -34,9 +35,15 @@ export function BarraProposta({ opzione }: { opzione: 'a' | 'b' }) {
         </span>
 
         <span>
+          {/* La riga cambia con l'interruttore dei media: quando i campi
+              portano un esempio, dire «sono segnaposto dichiarati» sarebbe
+              falso — chi guarda vede delle fotografie. Con la dimostrazione
+              accesa la frase dice esattamente quello che si sta guardando, e
+              con `NEXT_PUBLIC_MEDIA_DEMO=0` torna quella di prima. */}
           <span className="barra-proposta-avvertenza">
-            le fotografie, i numeri, i nomi e i progetti arrivano dallo studio: in pagina sono
-            segnaposto dichiarati
+            {MEDIA_DEMO
+              ? 'le fotografie e il video sono esempi liberi da licenza, non opere dello studio; numeri, nomi e progetti sono segnaposto dichiarati'
+              : 'le fotografie, i numeri, i nomi e i progetti arrivano dallo studio: in pagina sono segnaposto dichiarati'}
           </span>
           <Link href={altra.href}>{altra.label}</Link>
         </span>

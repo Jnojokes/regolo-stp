@@ -6,8 +6,8 @@ import { DaCliente, Placeholder } from '@/components/Placeholder'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { notaPersone, persone } from '@/lib/persone'
 import { fasi, introProcesso } from '@/lib/processo'
-import { servizi } from '@/lib/servizi'
 import { ctaPrimaria, eSegnaposto, site } from '@/lib/site'
+import { nodoStudio } from '@/lib/seo/studio'
 
 /**
  * La pagina dello studio (CLAUDE.md § Struttura: «chi siamo, metodo, persone»).
@@ -224,38 +224,7 @@ export default function Studio() {
 
           `telephone` in forma E.164 (`+39…`), che è quella che una macchina
           può chiamare; in pagina il numero resta scritto come si legge. */}
-      <JsonLd
-        dati={{
-          '@context': 'https://schema.org',
-          '@type': ['ProfessionalService', 'LocalBusiness'],
-          name: site.nomeEsteso,
-          description: CAPSULE_UNA_RIGA,
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: site.via,
-            postalCode: site.cap,
-            addressLocality: site.citta,
-            addressRegion: site.provincia,
-            addressCountry: 'IT',
-          },
-          telephone: site.telefonoHref,
-          /* «Fermo + provincia», come il nodo `Service` di `/servizi/[slug]` e
-             come `kit/REGOLO_SEO-GEO-LEGAL.md` § Entità. **Non** le tre province
-             del blocco Territorio: quel perimetro è il riquadro geografico
-             dell'autocomplete del brief e non un'affermazione su dove lo studio
-             lavori (`lib/territorio.ts`, decisione del 07/09 sui comuni spenti).
-             Qui un'area di servizio è invece esattamente un'affermazione, e in
-             forma leggibile da una macchina: si dichiara solo quella che risulta
-             dalla sede. I comuni entrano con la decisione n. 13. */
-          areaServed: `${site.citta} e provincia`,
-          /* `knowsAbout` vuole argomenti, non slogan: il titolo di un servizio
-             è un esito per il committente («la tua casa, dal disegno al
-             cantiere»), il sottotitolo è la competenza («progettazione
-             architettonica e direzione lavori»). Il catalogo con i titoli è già
-             l'`ItemList` di `/servizi`. */
-          knowsAbout: servizi.map((s) => s.sottotitolo),
-        }}
-      />
+      <JsonLd dati={nodoStudio(CAPSULE_UNA_RIGA)} />
 
       {/* Una `Person` per chi firma — oggi nessuna, perché nessuno dei quattro
           nomi c'è: il documento resta senza questi nodi finché non arrivano. */}

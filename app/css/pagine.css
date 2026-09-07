@@ -301,6 +301,9 @@
      intercetta chi legge nel momento di massima persuasione. */
   .cta-contestuale {
     background-color: var(--regolo-brief-card);
+    /* stessa ragione di `.riga:has(input:checked)`: in B la scheda è un foglio
+       bianco sulla tavola nera, e il testo eredita l'inchiostro della tavola. */
+    color: var(--color-ink);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-edge);
     padding: clamp(1.5rem, 3vw, 2.5rem);

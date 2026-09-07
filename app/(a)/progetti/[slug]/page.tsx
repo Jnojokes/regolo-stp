@@ -13,6 +13,7 @@ import { etichettaDi } from '@/lib/brief/domande'
 import { progetti, progettoBySlug, progettoSuccessivo } from '@/lib/contenuti/progetti'
 import type { Immagine } from '@/lib/contenuti/schema'
 import { eSegnaposto, site } from '@/lib/site'
+import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
 
 /**
  * La scheda progetto (CLAUDE.md § Scheda progetto).
@@ -118,15 +119,26 @@ function Foto({
   sizes,
   priorita = false,
   className = '',
+  demo,
 }: {
   immagine: Immagine
   ratio: string
   sizes: string
   priorita?: boolean
   className?: string
+  /** Solo il prototipo: riempie il campo con un esempio dichiarato. */
+  demo?: ChiaveEsempio
 }) {
   if (!immagine.file) {
-    return <Placeholder label={immagine.segnaposto} ratio={ratio} className={className} />
+    return (
+      <Placeholder
+        label={immagine.segnaposto}
+        ratio={ratio}
+        className={className}
+        demo={demo}
+        priorita={priorita}
+      />
+    )
   }
   return (
     <div className={`relative ${className}`} style={{ aspectRatio: ratio }}>
@@ -343,6 +355,7 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
                 immagine={immagine}
                 ratio="4 / 3"
                 sizes="(max-width: 30rem) 100vw, (max-width: 48rem) 50vw, 33vw"
+                demo={operaPerIndice(i)}
               />
             ))}
           </div>
@@ -363,6 +376,8 @@ export default async function SchedaProgetto({ params }: { params: Promise<{ slu
             prima={p.primaDopo.prima}
             dopo={p.primaDopo.dopo}
             specifica="1600 × 1000 px · AVIF · ≤ 250 KB"
+            demoPrima="prima-01"
+            demoDopo="dopo-01"
           />
         </Sezione>
       )}

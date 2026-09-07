@@ -4,6 +4,7 @@ import { fontsThemeA } from '@/lib/fonts/tema-a'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
 import { site } from '@/lib/site'
+import { Misurazione } from '@/components/Misurazione'
 
 /**
  * Root layout dell'opzione A — «Lo studio».
@@ -26,8 +27,12 @@ export const metadata: Metadata = {
     'Studio di ingegneria civile e architettura a Fermo. Progettazione e direzione lavori su edifici nuovi ed esistenti, pubblici e privati.',
 }
 
+/* Il colore della barra del browser su mobile. Era `#F4F2ED`, cioè la carta
+   calda del kick-off: uno dei due valori che la fase 3 bis ha sostituito, e
+   restava servito su tutte e otto le rotte del gruppo A. È la carta del tema,
+   e va tenuto allineato a `--regolo-paper` in `app/globals.css`. */
 export const viewport: Viewport = {
-  themeColor: '#F4F2ED',
+  themeColor: '#FFFFFF',
 }
 
 export default function LayoutA({ children }: { children: React.ReactNode }) {
@@ -38,9 +43,16 @@ export default function LayoutA({ children }: { children: React.ReactNode }) {
           Salta al contenuto
         </a>
         <SiteHeader />
-        <main id="contenuto" className="flex-1">
+        {/* `tabIndex={-1}` sul bersaglio dello skip link, e non è pignoleria:
+            senza, il browser sposta il punto di partenza della tabulazione ma
+            **non muove il fuoco**, e su parte dei lettori di schermo il cursore
+            virtuale resta dov'era — cioè il link fa una cosa diversa da quella
+            che dice. `outline-offset` negativo perché l'anello su un elemento
+            largo quanto la pagina, disegnato fuori, esce dalla finestra. */}
+        <main id="contenuto" tabIndex={-1} className="flex-1">
           {children}
         </main>
+        <Misurazione />
         <SiteFooter />
       </body>
     </html>

@@ -574,8 +574,15 @@
       padding-left: clamp(1.5rem, 3vw, 2.5rem);
     }
   }
+  /* Chi dipinge un fondo deve dichiarare anche il colore del testo. Non è
+     zelo: `color` si eredita dal *valore calcolato* del genitore, quindi
+     ridichiarare i token del piano su questa riga non ricalcola il colore che
+     arriva dal `body`. In B la riga scelta diventa un foglio bianco e il testo
+     restava l'inchiostro della tavola, cioè bianco su bianco. In A le due
+     dichiarazioni non cambiano niente. */
   .riga:hover {
     background-color: var(--color-surface);
+    color: var(--color-ink);
   }
   .riga-chiave {
     font-size: var(--text-small);
@@ -611,6 +618,7 @@
   }
   .riga:has(input:checked) {
     background-color: var(--color-surface);
+    color: var(--color-ink);
   }
   .riga:has(input:checked) .riga-nome {
     text-decoration: underline;
@@ -626,9 +634,11 @@
   }
 
   /* --- il pannello: la figura bianca -------------------------------------
-     1 px di inchiostro sul bordo **non è stile**: `calce` su `getto` sta a
-     1,78:1, e un rettangolo bianco che porta una CTA senza confine non chiude
-     WCAG 1.4.11. Il filetto lo chiude. */
+     Il filetto di 1 px sul bordo nasce con il fondo medio che B aveva prima:
+     il foglio su quel fondo stava a 1,78:1, e un rettangolo bianco che porta
+     una CTA senza confine non chiudeva WCAG 1.4.11. Con l'inversione (n. 26)
+     il foglio sta a 21:1 dalla tavola e il filetto non serve più a quello —
+     resta perché delimita la figura anche in A, dove il piano è chiaro. */
   .pannello {
     display: none;
     background-color: var(--regolo-pannello-bg);
@@ -797,8 +807,17 @@
     font-weight: 500;
   }
   @media (min-width: 56rem) {
-    /* Nel tema B la riga è a due zone come quella della hero: la chiave a
-       sinistra dell'asse, il corpo a destra. Niente padding: la griglia. */
+    /* Nel tema B la riga è a **tre** zone: la chiave a sinistra dell'asse, il
+       corpo subito a destra, la coda spinta al bordo. Sono tre perché i figli
+       di `.voce` sono tre (`chiave`, `corpo`, `coda`).
+
+       Qui sotto c'era una seconda `[data-asse] .voce { grid-template-columns:
+       … }` a due colonne, scritta per il caso senza chiave e rimasta fuori dal
+       suo selettore: essendo dopo, vinceva su tutte le righe. Effetto in
+       pagina (misurato a 1440): la coda finiva a capo nella prima colonna e,
+       essendo `text-align: right`, si allineava al bordo dell'asse mentre il
+       titolo stava schiacciato in 320 px all'estremo destro. Sembrava un
+       errore di impaginazione perché lo era. */
     [data-asse] .voce {
       grid-template-columns:
         calc(var(--regolo-asse-frazione) * 100%)
@@ -818,9 +837,6 @@
        di cantiere, e vale per ogni elemento con un `max-width`. */
     [data-asse] .voce-serve {
       margin-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
-    }
-    [data-asse] .voce {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
     }
   }
 
@@ -1058,7 +1074,7 @@
   }
 
   /* B — la scheda dei dati duri. Non ha cornice: il segnaposto è già una figura
-     `calce` con il suo bordo, e una cornice attorno a una figura bordata è due
+     una figura con il suo bordo, e una cornice attorno a una figura bordata è due
      bordi. I dati sono una `<table>` vera con `<th scope="row">`: sono dati,
      non didascalie. **Nessun filetto fra le righe.** */
   .progetto-dati {
@@ -1194,6 +1210,17 @@
     font-size: var(--text-small);
     color: var(--regolo-scuro-muted);
   }
+  /* Sotto i 48 rem le due colonne diventavano 192 e 150 px: il nome sprecava
+     metà della sua, e le cinque descrizioni andavano su 3-4 righe in una
+     colonna da 150. È il blocco wow di A, e `CLAUDE.md` § Regole, 5 chiede una
+     versione mobile **progettata**, non la desktop stretta. Una colonna sola:
+     campione e nome in riga, descrizione a capo su tutti i 358 px. */
+  @media (max-width: 47.999rem) {
+    .legenda-esploso > li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.125rem;
+    }
+  }
   .legenda-nome {
     display: flex;
     align-items: center;
@@ -1282,9 +1309,57 @@
     gap: 0.25rem;
     padding: clamp(1rem, 2.5vw, 2rem);
   }
+  /* --- con la fotografia di esempio dentro --------------------------------
+     Sopra una fotografia il contrasto di un testo **non si può calcolare**, e
+     questa metà porta una riga di 43,6 px e due di 13,4. La prima soluzione era
+     un velo sfumato sul fondo della metà: sbagliata, e per due ragioni
+     misurate in pagina — mangiava il terzo basso di tutt'e due le fotografie
+     (`.confronto-prima` è `inset: 0`, quindi il suo velo copre anche la metà
+     accanto), e restava comunque un fondo *variabile* sotto il testo.
+
+     Qui invece ogni riga porta la **propria targhetta piena**, che è lo stesso
+     apparato del segnaposto (`.placeholder-etichetta`): il fondo sotto il testo
+     è un piano, non una sfumatura, quindi il rapporto è quello dei token —
+     21:1 — e si può misurare. La fotografia resta intera.
+
+     `align-self` invece di `width: 100%`: la targhetta è larga la parola, e le
+     due metà la spingono ai due bordi opposti come già fanno con il testo. */
+  .confronto-meta > .placeholder-esempio {
+    z-index: 0;
+  }
+  .confronto-meta:has(> .placeholder-esempio) > span {
+    position: relative;
+    z-index: 2;
+    align-self: flex-start;
+    max-width: 100%;
+    padding: 0.125rem 0.5rem;
+    /* `inherit` e non un token: la targhetta deve essere **il piano della
+       metà che la contiene**, e le metà sono quattro casi diversi (chiara e
+       scura, per due temi). In A `.confronto-prima` è la banda `ink` con il
+       testo `paper`: con `var(--color-paper)` la targhetta usciva bianca sotto
+       testo bianco, 1:1 — misurato su `/progetti/esempio-scheda`. Con
+       `inherit` il fondo della targhetta è per definizione quello su cui il
+       colore del testo era già stato deciso. */
+    background-color: inherit;
+  }
+  .confronto > .confronto-dopo:has(> .placeholder-esempio) > span {
+    align-self: flex-end;
+  }
   .confronto-prima {
     background-color: var(--regolo-scuro-bg);
     color: var(--regolo-scuro-fg);
+  }
+  /* In B le due metà cadono sui **due piani**, ed è la lettura giusta del
+     blocco: lo stato attuale è la tavola grezza, il progetto è il foglio
+     disegnato. Serve una regola esplicita perché in B `--regolo-scuro-bg` *è*
+     il foglio (là la banda scura è la figura chiara), quindi senza questa
+     riga le due metà uscivano tutte e due bianche e il cursore non rivelava
+     niente — lo stesso difetto che il blocco aveva prima della fase 3 bis,
+     per la ragione opposta. Il rapporto fra le due resta 21:1. */
+  [data-theme='b'] .confronto,
+  [data-theme='b'] .confronto-prima {
+    background-color: var(--regolo-paper);
+    color: var(--regolo-ink);
   }
   /* `> .confronto-dopo` e la specificità: la metà «dopo» è ritagliata dal
      cursore e deve vincere sulla metà «prima», che occupa lo stesso spazio. */
@@ -1306,6 +1381,13 @@
     font-size: var(--text-small);
     opacity: 0.85;
   }
+  /* Il cursore corre **esattamente sul confine** fra due metà a 21:1: qualunque
+     tinta gli si dia, metà del tratto cade sul proprio stesso colore e sparisce.
+     Con il solo `ink` il cursore era invisibile sulla metà scura in A e su
+     quella chiara in B — cioè in tutt'e due i temi, per la ragione opposta.
+     L'alone di 1 px in `paper` lo chiude senza aggiungere un token: da qualunque
+     lato si guardi, o si vede il tratto o si vede l'alone.
+     Sono i 4 px che rendono il blocco usabile, non uno stile. */
   .confronto-maniglia {
     position: absolute;
     top: 0;
@@ -1313,9 +1395,13 @@
     left: var(--x, 50%);
     width: 2px;
     background-color: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-paper);
     pointer-events: none;
   }
-  /* La tacca sul cursore: lo stesso tratto obliquo a 45° della quota. */
+  /* La tacca sul cursore: lo stesso tratto obliquo a 45° della quota.
+     `drop-shadow` e non `box-shadow`: qui è dipinto solo il bordo sinistro di
+     una scatola ruotata, e `box-shadow` disegnerebbe il contorno del quadrato
+     intero. `drop-shadow` segue l'alfa di quello che si vede davvero. */
   .confronto-maniglia::after {
     content: '';
     position: absolute;
@@ -1324,6 +1410,7 @@
     width: 0.75rem;
     height: 0.75rem;
     border-left: 2px solid var(--color-ink);
+    filter: drop-shadow(1px 0 0 var(--color-paper)) drop-shadow(-1px 0 0 var(--color-paper));
     transform: translateY(-50%) rotate(45deg);
     transform-origin: top left;
   }
@@ -1355,10 +1442,38 @@
     color: var(--color-ink);
     font-weight: 500;
   }
+  /* Sotto i 40 rem le due metà del confronto sono da 179 px, e `.confronto-meta`
+     è `inset: 0` su tutt'e due: ogni didascalia era larga quanto il riquadro
+     intero e veniva tagliata dal cursore a metà parola — si leggeva
+     `[[DA CLIENTE: foto dello st` sopra `stesso punto di ripresa]]`, cioè un
+     segnaposto che non è più inequivocabile (`CLAUDE.md` § Regole, 1).
+     Qui ogni metà occupa **la propria metà**: il testo non attraversa più il
+     taglio. A 1440 non serviva, perché lì la didascalia ci sta. */
   @media (max-width: 40rem) {
     .confronto-stato {
       font-size: var(--text-h2);
     }
+    /* `padding` e non `right`/`left`: il `clip-path` della metà «dopo» è
+       `inset(0 0 0 var(--x))`, cioè una percentuale **dell'elemento**. Se
+       l'elemento comincia a metà riquadro, il cursore al 50 % taglia al 75 %
+       del riquadro e mangia la didascalia — provato e misurato. La scatola
+       resta quindi larga quanto il riquadro, e a stringersi è il contenuto. */
+    .confronto-prima {
+      padding-right: calc(50% + clamp(1rem, 2.5vw, 2rem));
+    }
+    .confronto > .confronto-dopo {
+      padding-left: calc(50% + clamp(1rem, 2.5vw, 2rem));
+    }
+  }
+
+  /* La provenienza dell'esempio: una riga di metadati sotto il riquadro,
+     accanto alla lettura del cursore. Sopra le fotografie era una targhetta
+     che a 390 px andava a capo e copriva la testa di tutt'e due le metà. */
+  .confronto-fonte {
+    margin-top: 0.25rem;
+    font-size: var(--text-eyebrow);
+    color: var(--color-muted);
+    letter-spacing: var(--regolo-eyebrow-tracking);
   }
 
   /* ==========================================================================
@@ -1526,7 +1641,7 @@
     justify-content: center;
     /* tre bersagli da 44 px: è la barra più toccata del sito */
     min-height: 2.75rem;
-    /* La barra è una **figura** `calce` con i filetti in inchiostro: in B il
+    /* La barra è una **figura**: tre fogli con le fughe in inchiostro. In B il
        bianco è figura e non fondo, e questa è la barra più toccata del sito.
        Nessuna icona: solo testo. */
     background-color: var(--color-surface);
@@ -1539,6 +1654,14 @@
   .barra-mobile > .barra-mobile-brief {
     background-color: var(--color-ink);
     color: var(--color-paper);
+  }
+  /* Le fughe da 1 px fra le celle sono il `background` del contenitore. In B
+     le celle sono fogli e l'inchiostro è bianco: la fuga sarebbe bianca su
+     bianco, cioè niente. Qui la fuga è la **tavola** che si vede fra i tre
+     fogli, che è anche il modo in cui la barra si stacca dalla pagina. */
+  [data-theme='b'] .barra-mobile {
+    background-color: var(--regolo-paper);
+    border-top-color: var(--regolo-line);
   }
   /* La voce senza dato non è un link: è una casella dichiarata vuota. */
   .barra-mobile > .barra-mobile-manca {

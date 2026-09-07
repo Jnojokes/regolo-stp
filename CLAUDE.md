@@ -31,7 +31,7 @@ domanda fredda.
 - Deploy **Vercel**. Form via route handler + Resend.
 - Contenuti in file MDX/JSON nel repo (niente CMS, salvo decisione contraria).
 
-## Direzione visiva — rifatta dalle prove, fase 3 bis (07/09/2026)
+## Direzione visiva — rifatta dalle prove, fase 3 bis (07-08/09/2026)
 
 > I valori qui sotto **sostituiscono** quelli del kick-off. I precedenti (`paper #F4F2ED`,
 > Instrument Serif display, `accent #2F4A42`, e per l'opzione B `ground #F3F4F1`,
@@ -43,7 +43,7 @@ domanda fredda.
 > Le prove stanno in **`kit/reference/`**: nove siti catturati a 1440 e a 390, guardati, e con
 > gli stili **misurati** nel browser (`SCHEDA.md`); quattordici caratteri OFL impaginati con le
 > parole vere del brief e pesati (`_provini/PROVINI.md`); lo stato di partenza in `_prima/`.
-> Il perché di ogni scelta è in `DECISIONI.md` (voci 17-24).
+> Il perché di ogni scelta è in `DECISIONI.md` (voci 17-27).
 
 ### Le reference, dopo la revisione del 07/09
 
@@ -74,24 +74,46 @@ esattamente ciò che questa fase esiste per non avere. `#123C7A` sta a **216°**
 entrambi i fondi, e in Italia il tampone del timbro professionale è blu. Non entra mai in header, bottoni, stati, anello di fuoco, filetti,
 esploso, mappa.
 
+**Le due opzioni sono lo stesso inchiostro con i ruoli scambiati** (decisione n. 26, che emenda
+la n. 21). A è il **tavolo da disegno**: carta bianca, con due tagli netti verso il nero. B è la
+**tavola di cantiere**: nera dall'header al footer, con il contenuto denso su **fogli bianchi**
+appuntati sopra. Il fondo medio che B aveva prima era difendibile sui numeri e non si vedeva:
+due pagine chiare con lo stesso nero e la stessa famiglia leggono come due varianti della stessa
+pagina, e due proposte che si somigliano non sono due proposte. Il rovescio di figura e fondo si
+riconosce in una miniatura al 25 %.
+
 ```
-A «L'elevato»                         B «Il registro»
---paper   #FFFFFF  carta              --paper   #C0C3C1  getto (L 0,541, 11,82:1)
---surface #FFFFFF  = carta            --surface #FFFFFF  calce: la FIGURA, con 1 px di ink
---ink     #000000  21,00:1            --ink     #000000  11,82:1 su getto · 21,00:1 su calce
---muted   #5E5E5E   6,48:1            --muted   #454A47   5,09:1 su getto ·  9,04:1 su calce
---line    #757575   4,61:1            --line    #4A4A4A   4,99:1 su getto ·  8,86:1 su calce
---ph      #ECECE9  superficie          --ph      #FFFFFF  figura, quindi bordata
---muted-invert #9A9A9A  7,46:1 su ink (il testo dentro le bande nere di A)
---timbro  #123C7A  10,75:1 su carta · 6,05:1 su getto   ← l'unico accento, solo sui segnaposto
---timbro-soft #E7ECF6 (A) · #FFFFFF (B)    --timbro-chiaro #93B7DE 10,07:1, solo su banda nera
---errore  #8E1B10   9,07:1 su carta ·  5,11:1 su getto
+A «L'elevato» — la carta              B «Il registro» — la tavola
+--paper   #FFFFFF  carta              --paper   #000000  la tavola
+--surface #FFFFFF  = carta            --surface #FFFFFF  il foglio: la FIGURA, 21,00:1 dal fondo
+--ink     #000000  21,00:1            --ink     #FFFFFF  21,00:1 — in B l'inchiostro è chiaro
+--muted   #5E5E5E   6,48:1            --muted   #9A9A9A   7,46:1 sulla tavola
+--line    #757575   4,61:1            --line    #5C5C5C   3,14:1 — filetto, MAI testo (1.4.11)
+--ph      #ECECE9  superficie         --ph      #000000  campo sulla tavola, quindi bordato
+--muted-invert #9A9A9A 7,46:1 su ink  --muted-invert #454A47  9,04:1 sul foglio
+--timbro  #123C7A  10,75:1 su carta   --timbro  #93B7DE  10,07:1 sulla tavola
+--timbro-soft #E7ECF6                 --timbro-soft transparent (sulla tavola il canale è il filetto)
+--errore  #8E1B10   9,07:1 su carta   --errore  #F08C7A   8,74:1 sulla tavola
+--btn: inchiostro su carta (A)        --btn: il foglio sulla tavola (B) — verso invertito
 ```
+
+**In B i token sono legati al PIANO, non alla pagina.** È la regola che fa funzionare
+l'inversione, e senza di lei l'opzione B è illeggibile: un elemento non sa su quale piano si
+trova, quindi è il piano a ridichiarare i token. Chi *è* un foglio sta in un elenco solo, in
+`app/globals.css` (blocco «B: i token sono legati al PIANO»), con due trappole già pagate: non
+si ridichiara `--regolo-surface` — il foglio si dipinge con quello — e non entra in lista chi usa
+`--color-ink` come **fondo** (la barra della proposta è chrome invertito, non un foglio). Il
+foglio ridichiara i `--regolo-*` **e** i gemelli `--color-*`, perché `@theme inline` risolve i
+`var()` sulla radice una volta sola: misurato sul pannello, `--regolo-ink: #000` e
+`--color-ink: #fff` insieme, cioè testo bianco su foglio bianco.
 
 Il nero è **pieno**: `#0B0B0B` e `#111` sono la tell n. 5, e tre delle quattro reference
 misurate usano `rgb(0,0,0)`. Il fuoco non è mai colorato — è inchiostro sulla carta e carta
 sull'inchiostro, quindi 21:1 per costruzione. Ogni rapporto qui sopra è verificato con
-`node scripts/contrasto.mjs`, e il valore misurato sta in coda a ogni token in `globals.css`.
+`node scripts/contrasto.mjs` (72 coppie distinte su 7 pagine, zero sotto soglia), e il valore
+misurato sta in coda a ogni token in `globals.css`. Il `theme-color` dei due layout è la carta
+del proprio tema — `#FFFFFF` e `#000000` — e va tenuto allineato a mano: era rimasta la palette
+del kick-off su tutte e otto le rotte.
 
 ### Tipografia — una famiglia per tema, zero monospace
 
@@ -120,7 +142,7 @@ Il corpo **non scala**: 18 px in A e 17 px in B da 320 a 1440.
 |---|---|---|---|---|
 | display | **132** (lh 0,86 · ls −0,018em) | 56 (lh 0,94) | **43,6** (lh 1,0) | 30,6 |
 | titolo | 41 (lh 0,96) | 25,6 | 30,6 (lh 1,1) | 24,2 |
-| sezione / sottotitolo | 32,4 · 22,8 | 24,2 · 20,3 | 19,1 · 19,1 | 19,1 |
+| sezione / sottotitolo | 32,4 · 22,8 | 24,2 · 20,3 | 19,1 · 19,1 | 19,1 · **17,0** |
 | corpo | **18** (lh 1,5) | 18 | **17** | 17 |
 | dato · micro | 14,2 · 12,6 | 14,2 · 12,6 | 13,4 · 12,6 | 13,4 |
 | **contrasto** | **7,3×** (= Storey misurato) | 3,1× | **2,6×** (= AS misurato) | 1,8× |
@@ -180,6 +202,11 @@ il colore del marchio è **uno**: il segno sulla voce corrente del menu. Non inv
    `CONTENUTI-DA-CLIENTE.md`.
 2. **Nessuna immagine stock nei blocchi di prova** (progetti, persone, prima/dopo, cantieri).
    In sviluppo si usano rettangoli grigi con la dicitura di cosa andrà lì.
+   *Eccezione dichiarata, solo per il prototipo* (decisione n. 27): dietro
+   `NEXT_PUBLIC_MEDIA_DEMO` i campi mostrano media **di esempio** — CC0 e Mixkit Free,
+   in bianco e nero — restando segnaposto: squadrette, specifica del formato e riga di
+   fonte e licenza in pagina. **Mai sui ritratti**, e si spegne con una variabile.
+   Alla fase 5 si cancellano `lib/media-demo.ts` e `public/demo/`.
 3. **Massimo 2 blocchi wow**, mai due di fila.
 4. **Tutto degrada**: senza JS il contenuto resta leggibile e il form inviabile; con
    `prefers-reduced-motion: reduce` le animazioni non partono.
@@ -311,15 +338,21 @@ FT vende con due toni; il cliente sceglie (`DECISIONI.md` n. 1). Stessa architet
 componenti, due ordini e due set di token. I prototipi stanno nel repo, in
 `kit/opzioni/REGOLO_Opzione_A.html` e `kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo.
 
+> **I token e i font di questa tabella sono stati rifatti alla fase 3 bis**: la riga qui sotto è
+> quella corrente, e § Direzione visiva è la fonte. L'ordine dei blocchi non è cambiato.
+
 | | A «Lo studio» — route `/` | B «Il cantiere» — route `/opzione-b` |
 |---|---|---|
-| Token | `paper #F4F2ED · ink #17171A · muted #6E6B66 · line #DCD8D0 · accent #2F4A42` | `ground #F3F4F1 · ink #14181C · steel #5C6670 · grid #D5D9D3 · accent #E4572E` |
-| Font | display Instrument Serif · testo Instrument Sans | display Bricolage Grotesque · testo Instrument Sans · dati JetBrains Mono |
+| Token | il **tavolo da disegno**: `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575`, due tagli netti verso il nero | la **tavola di cantiere**: `paper #000000 · surface #FFFFFF · ink #FFFFFF · muted #9A9A9A · line #5C5C5C`, nera dall'header al footer, con i fogli bianchi sopra |
+| Accento | `timbro #123C7A`, **solo** sui segnaposto | `timbro #93B7DE` sulla tavola, `#123C7A` sui fogli |
+| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Chivo** (`wght` 400-600): nessuna compressione, nessun salto di scala |
+| Meccanismo | l'audacia sta nella **scala** — 7,3× di contrasto, display 132 | l'audacia sta nella **densità** — 2,6×, display 43,6, e l'asse verticale al 34,4 % |
 | Ordine | hero foto → smistamento → progetti → servizi → come lavoriamo → **esploso SVG** → persone → territorio → brief → footer | **hero-domanda con percorso** → numeri → sei percorsi con «serve da te» → come lavoriamo (timeline) → progetti con dati duri → **prima/dopo** → persone → brief → footer + barra mobile |
 | Motivi | quote da disegno tecnico, carta millimetrata nei placeholder di B; tratteggio nei placeholder di A | |
 
-Implementazione: `data-theme="a|b"` sull'`<html>` della route, token in `tailwind.config` per
-entrambi, sezioni come componenti riusati con `order`. Dopo la decisione, la route non scelta si
+Implementazione: `data-theme="a|b"` sull'`<html>` della route, token nel blocco `@theme inline`
+di `app/globals.css` (Tailwind v4 non ha più un `tailwind.config`), sezioni come componenti
+riusati con `order`. Dopo la decisione, la route non scelta si
 elimina (fase 5): non restano due home in produzione.
 
 ## SEO, GEO, legal — il minimo deciso

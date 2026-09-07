@@ -264,7 +264,12 @@ export function BriefForm({
       <div className="brief-avanzamento">
         <ol className="brief-tacche" aria-hidden="true">
           {passi.map((p, i) => (
-            <li key={p.id} data-fatto={montato && i <= passo ? '' : undefined} />
+            /* Senza JavaScript nessuna tacca prendeva `data-fatto`: il disegno
+               diceva zero su cinque mentre l'annotazione accanto diceva
+               «passo 1 di 5». Sono le due metà della stessa quota e devono
+               dire la stessa cosa. Senza JS si è al passo 1, quindi si accende
+               la prima e una sola — non tutte, che direbbe «finito». */
+            <li key={p.id} data-fatto={i <= (montato ? passo : 0) ? '' : undefined} />
           ))}
         </ol>
         <p className="brief-avanzamento-conta" aria-hidden="true" data-numero="">

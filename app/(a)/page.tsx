@@ -9,6 +9,8 @@ import { Progetti } from '@/components/sezioni/Progetti'
 import { Servizi } from '@/components/sezioni/Servizi'
 import { Smistamento } from '@/components/sezioni/Smistamento'
 import { Territorio } from '@/components/sezioni/Territorio'
+import { JsonLd } from '@/components/JsonLd'
+import { nodoStudio } from '@/lib/seo/studio'
 
 export const metadata: Metadata = {
   description:
@@ -37,6 +39,12 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      {/* `CLAUDE.md` § SEO: `ProfessionalService` + `LocalBusiness` su **home e
+          contatti**. La home era l'unica delle otto rotte senza nessun nodo —
+          e proprio quella che il capitolato nomina per prima. Il `description`
+          è la stessa frase del `metadata` qui sopra, non un testo nuovo: due
+          descrizioni diverse della stessa pagina sono un dato che diverge. */}
+      <JsonLd dati={nodoStudio(metadata.description as string)} />
       <BarraProposta opzione="a" />
       {/* Il ritmo di A: **quattro silenzi da 200 px** e due tagli netti verso il
           nero. Il passo lo dichiara il blocco che *arriva*, non quello che

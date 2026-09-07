@@ -219,7 +219,12 @@ export default async function Contatti({
           name: `Contatti — ${site.nomeEsteso}`,
           inLanguage: 'it-IT',
           about: {
-            '@type': 'ProfessionalService',
+            /* `LocalBusiness` accanto a `ProfessionalService`: `CLAUDE.md`
+               § SEO chiede la coppia su **home e contatti**, ed era proprio
+               questa la pagina in cui c'era un tipo solo. Un'attività con un
+               indirizzo civico e un telefono è entrambe le cose, e i due tipi
+               si dichiarano su uno stesso nodo, non su due. */
+            '@type': ['ProfessionalService', 'LocalBusiness'],
             name: site.nomeEsteso,
             legalName: site.ragioneSociale,
             description: `Studio di ${site.qualifica} a ${site.citta}.`,

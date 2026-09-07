@@ -2,11 +2,60 @@
 
 > Ogni immagine o video placeholder da sostituire prima del go-live, e ogni file generato con IA.
 > Regola: nei blocchi di prova (progetti, persone, prima/dopo, cantieri) solo foto dello studio.
-> Aggiornato alla **fase 3 bis** (parte 1/2).
+> Aggiornato alla **fase 3 bis** (parte 2/2).
 >
 > Da adesso ogni segnaposto immagine **porta in pagina la propria specifica**
 > (`2400 × 1650 px · AVIF · ≤ 250 KB`): la riga di questa tabella e il campo in pagina dicono
 > la stessa cosa, e quella in pagina è quella che il cliente vede in call.
+
+## Il livello dimostrativo — otto foto e un video di esempio (fase 3 bis, 2/2)
+
+**Questi file non sono contenuti: sono un'impalcatura, e hanno un interruttore.**
+`NEXT_PUBLIC_MEDIA_DEMO=0` li spegne tutti e ogni campo torna il rettangolo dichiarato che era.
+Alla fase 5 si cancellano `lib/media-demo.ts`, `components/MediaEsempio.tsx` e `public/demo/`, e
+non resta traccia. La decisione, con le tre condizioni che la circoscrivono, è la **n. 27**.
+
+Perché esistono: un prototipo di rettangoli vuoti si guarda male in call, e la discussione
+finisce sui buchi invece che sull'impaginazione. Perché non annullano la regola n. 2: **i campi
+restano segnaposto mentre si vedono** — squadrette d'angolo, targhetta con la specifica del
+formato richiesto, riga di fonte e licenza in pagina, e la barra della proposta che cambia frase
+da sé. E **nessun ritratto**: i quattro campi delle persone restano vuoti, perché una faccia
+presa altrove sotto il nome di un ingegnere non è la stessa cosa di una facciata sotto la
+dicitura «esempio».
+
+Tutte in **bianco e nero**, e non è un filtro: il sito non ha colori tranne il timbro dei
+segnaposto. Otto sorgenti a colori, con otto bilanciamenti del bianco diversi, avrebbero portato
+in pagina l'unica cosa che il progetto ha deciso di non avere. Le fotografie sono convertite in
+grigio alla sorgente; il video resta a colori sul disco e si desatura in CSS, così la decisione
+si può ribaltare senza ricodificarlo.
+
+| File | Dove | Soggetto | Autore | Fonte | Licenza | Peso |
+|---|---|---|---|---|---|---|
+| `cantiere-loop.mp4` + poster | hero A | scheletro in costruzione e gru, in controluce | Mixkit | [Mixkit](https://mixkit.co/free-stock-video/sunset-behind-a-building-under-construction-3971/) | Mixkit Free | **2,09 MB** + 36 KB |
+| `opera-01.jpg` | progetti 01 | edificio a piani sfalsati dal basso | Chuttersnap | [StockSnap](https://stocksnap.io/photo/building-structure-4KWA8Y07O4) | CC0 1.0 | 41 KB |
+| `opera-02.jpg` | progetti 02 | facciata residenziale con logge | The Building Envelope | [StockSnap](https://stocksnap.io/photo/abstract-modern-I6XJM4PDE1) | CC0 1.0 | 85 KB |
+| `opera-03.jpg` | progetti 04 | spigolo bianco con finestre irregolari | The Building Envelope | [StockSnap](https://stocksnap.io/photo/building-exterior-AJU8JTAEJQ) | CC0 1.0 | 47 KB |
+| `cantiere-01.jpg` | progetti 03 | edificio con ponteggi e due gru | 贝莉儿 NG | [StockSnap](https://stocksnap.io/photo/building-construction-QDDPZH3YSO) | CC0 1.0 | 92 KB |
+| `interno-01.jpg` | progetti 05 | interno a pianta libera con pilastri | Marc Mueller | [StockSnap](https://stocksnap.io/photo/architecture-building-LJRZ7AR6G4) | CC0 1.0 | 54 KB |
+| `dettaglio-01.jpg` | progetti 06 | bordo di copertura grecata contro il cielo | Scott Webb | [StockSnap](https://stocksnap.io/photo/blue-sky-F16UC7XO6F) | CC0 1.0 | 38 KB |
+| `prima-01.jpg` | prima/dopo, metà «stato attuale» | stanza al grezzo, infissi smontati | Skitter Photo | [StockSnap](https://stocksnap.io/photo/construction-renovation-XEOT0ES7GA) | CC0 1.0 | 97 KB |
+| `dopo-01.jpg` | prima/dopo, metà «progetto» | stanza finita, intonaco e luce | David Hellmann | [StockSnap](https://stocksnap.io/photo/house-architecture-Y3U84QOQNW) | CC0 1.0 | 52 KB |
+
+CC0 1.0 è pubblico dominio: uso commerciale libero, **nessuna attribuzione dovuta**. L'autore è
+scritto lo stesso, in pagina e qui, perché è giusto e perché serve a chi le sostituirà.
+Mixkit Free è uso commerciale libero senza attribuzione. Le fonti sono state scelte apposta
+**fuori** dai siti di reference del progetto: `regolo-stp.vercel.app` è già pubblico, e le
+fotografie di progetto di studi concorrenti non ci vanno nemmeno per finta.
+
+Le sorgenti StockSnap sono a **960 px** sul lato lungo — è tutto quello che il CDN serve — mentre
+la specifica in pagina continua a chiedere 2400. Lo scarto è voluto e visibile: è la differenza
+fra un esempio e una fotografia commissionata.
+
+Il video: 8 s, 640 × 360, 2,09 MB — dentro l'obiettivo di 2,5 MB di § Performance budget.
+`preload="none"` e il poster da 36 KB reggono l'LCP da soli. Con `prefers-reduced-motion: reduce`
+**non viene reso affatto**: al suo posto arriva il poster come immagine, perché un `<video
+autoplay>` scarica e parte comunque e nasconderlo in CSS avrebbe lasciato 2 MB sul filo per chi
+ha chiesto meno movimento (`components/MediaEsempio.tsx`).
 
 ## Da sostituire prima del go-live
 
@@ -84,7 +133,7 @@ legge «modulo in attesa», non «buco», e in call è la lista della spesa da m
 
 Il **prima/dopo** è il caso in cui questo ha cambiato il blocco: prima erano due segnaposto
 grigi sovrapposti a 1,17:1 — un cursore che non rivelava niente. Ora le due metà sono
-`grafite` e `calce`, il taglio sta a **21:1**, e il blocco dimostra **lo strumento** finché le
+i **due piani** del tema, il taglio sta a **21:1**, e il blocco dimostra **lo strumento** finché le
 due fotografie dallo stesso punto non arrivano.
 
 ### Se un giorno serve generare

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { DaCliente, Placeholder } from '@/components/Placeholder'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { notaProgetti, progetti, type Progetto } from '@/lib/progetti'
+import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
 
 /**
  * Progetti in evidenza (CLAUDE.md § Homepage, blocco 4 · catalogo blocchi D2):
@@ -60,12 +61,17 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
       <div className={conDati ? 'progetti-due' : 'progetti-tre'}>
         {inEvidenza.map((progetto, indice) =>
           conDati ? (
-            <SchedaDati key={progetto.copertina} progetto={progetto} />
+            <SchedaDati
+              key={progetto.copertina}
+              progetto={progetto}
+              demo={operaPerIndice(indice)}
+            />
           ) : (
             <SchedaFoto
               key={progetto.copertina}
               progetto={progetto}
               ratio={RATIO[indice % RATIO.length]}
+              demo={operaPerIndice(indice)}
             />
           ),
         )}
@@ -78,13 +84,22 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
  * A — foto in 4/3 e i dati sotto il filetto. Il nome è un `h3`: la scheda ha un
  * titolo, e la gerarchia della pagina deve restare leggibile in outline.
  */
-function SchedaFoto({ progetto, ratio }: { progetto: Progetto; ratio: string }) {
+function SchedaFoto({
+  progetto,
+  ratio,
+  demo,
+}: {
+  progetto: Progetto
+  ratio: string
+  demo?: ChiaveEsempio
+}) {
   return (
     <article className="progetto">
       <Placeholder
         label={progetto.copertina}
         specifica={SPECIFICA[ratio] ?? '≥ 1600 px sul lato lungo · AVIF · ≤ 250 KB'}
         ratio={ratio}
+        demo={demo}
       />
       <h3 className="progetto-nome">
         <DaCliente>{progetto.titolo}</DaCliente>
@@ -128,18 +143,19 @@ const SPECIFICA: Record<string, string> = {
  * La foto è 16/9 perché entra nella cornice della scheda.
  *
  * **Fase 3 bis**: la cornice della scheda è sparita. Il segnaposto è già una
- * figura `calce` con il suo bordo di 1 px, e una cornice attorno a una figura
+ * figura con il suo bordo di 1 px, e una cornice attorno a una figura
  * bordata sono due bordi — che è come si arriva al cluster n. 4 senza
  * accorgersene. E i dati **non hanno filetti fra le righe**: AS regge una
  * tabella di 25 righe con sette colonne senza un divisore.
  */
-function SchedaDati({ progetto }: { progetto: Progetto }) {
+function SchedaDati({ progetto, demo }: { progetto: Progetto; demo?: ChiaveEsempio }) {
   return (
     <article className="progetto-scheda">
       <Placeholder
         label={progetto.copertina}
         specifica="2400 × 1350 px · AVIF · ≤ 250 KB"
         ratio="16 / 9"
+        demo={demo}
       />
       <h3 className="progetto-nome">
         <DaCliente>{progetto.titolo}</DaCliente>

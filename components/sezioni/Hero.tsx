@@ -118,11 +118,20 @@ function HeroFoto() {
               griglia. Quando arriva la foto vera diventa un `next/image` con
               `priority` e `sizes`, ed è l'LCP di questa metà di pagina — che
               oggi invece è il payoff, cioè testo (TODO-MEDIA.md). */}
+          {/* `demo` riempie il campo con il video di esempio: è il solo posto
+              del sito dove c'è del movimento, e dice la stessa cosa del payoff
+              — «dal disegno al cantiere». Resta un segnaposto: squadrette,
+              specifica e riga di provenienza sono ancora tutte lì, e
+              `NEXT_PUBLIC_MEDIA_DEMO=0` lo riporta al rettangolo dichiarato.
+              L'LCP non cambia: quello che si carica subito è il poster da
+              36 KB, il file da 2,1 MB arriva dopo. */}
           <Placeholder
             label="Fotografia di un’opera realizzata — dallo studio, non un render"
             specifica="2400 × 1650 px · AVIF · ≤ 250 KB"
             className="hero-figura"
             ratio="4 / 3"
+            demo="cantiere-loop"
+            priorita
           />
         </div>
       </div>

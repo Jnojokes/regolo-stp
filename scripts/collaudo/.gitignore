@@ -1,6 +1,8 @@
 # Playwright si installa qui (`npm i playwright`) o si collega da fuori con un
-# symlink: in tutti e due i casi non entra nel repo.
-node_modules/
+# symlink: in tutti e due i casi non entra nel repo. **Senza la barra finale**:
+# `node_modules/` matcha solo una cartella vera, e con il symlink — che è il
+# modo scritto nel README — git lo mostrava fra i file non tracciati.
+node_modules
 package.json
 package-lock.json
 

@@ -40,6 +40,14 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  * - `lockup` (A) — il marchio e la sede in colonna, il menu che è **una frase**
  *   con le virgole (Kononenko misurato: `Index, Work, About, Contact`), la
  *   barra **sticky** che segue la lettura. È un sito: il chrome resta.
+ * - `centrato` (C) — il menu **al centro** sopra la fotografia, il marchio
+ *   piccolo a sinistra, la pastiglia «contatti» a destra: è la composizione
+ *   misurata su `kit/reference/studio-foundry/1440-hero.jpeg`. Sostituisce la
+ *   variante `puntini`, che riduceva ogni voce a un punto di 8 px con il nome in
+ *   uno `sr-only` — veniva dalla direzione «la parete», scartata dal committente,
+ *   e il risultato in pagina era **un menu che a 1440 non si vedeva**.
+ * - `pastiglia` (D) — la stessa griglia a tre celle, ma il menu resta piccolo e
+ *   quieto sopra la fotografia, come in `kit/reference/storey/1440-hero.jpeg`.
  * - `cartiglio` (B) — la testata **del documento**, e cade sulla stessa griglia
  *   a due colonne di tutti i campi (`components/campo/Campo.tsx`): il nome nel
  *   margine di classificazione, la sede e il menu sul foglio, il menu ai due
@@ -51,9 +59,32 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  */
 export function SiteHeader({
   variante = 'lockup',
+  conPastiglia = false,
 }: {
-  variante?: 'lockup' | 'cartiglio' | 'puntini' | 'pastiglia'
+  variante?: 'lockup' | 'cartiglio' | 'centrato' | 'pastiglia'
+  /**
+   * La pastiglia «contatti» all'estremo destro della testata.
+   *
+   * In A **non c'è, e non deve tornarci**: sopra la piega la CTA è una sola,
+   * quella della hero (`CLAUDE.md` § Homepage, blocco 1), e la nota qui sopra
+   * spiega perché è stata togliata. Le due reference misurate ce l'hanno tutte
+   * e due — `CONTACT` in Studio Foundry, `Contact` in Storey, sempre a destra e
+   * sempre sopra la fotografia — e nelle proposte che aprono con una fotografia
+   * è **l'unica** CTA sopra la piega, perché lì la hero non ne ha: quindi il
+   * conto di `CLAUDE.md` resta uno.
+   *
+   * Arriva dal layout, non da un `if` sul tema nel markup.
+   */
+  conPastiglia?: boolean
 }) {
+  /* Con la pastiglia, «contatti» **esce dal menu**: è la composizione delle due
+     reference misurate — Storey ha `Projects Studio Journal` più la pastiglia
+     `Contact`, Studio Foundry ha `Works Studio Approach` più `CONTACT` — e
+     senza questo filtro la voce compare due volte nella stessa riga, che è il
+     difetto che si vedeva in pagina. La pastiglia non è una CTA in più: è
+     **quella** voce, in un'altra forma. */
+  const voci = conPastiglia ? menu.filter((v) => v.href !== '/contatti') : menu
+
   return (
     <header className={`site-header site-header-${variante}`}>
       {/* `lockup` è A e basta; tutte le altre tre proposte usano lo stesso
@@ -93,28 +124,40 @@ export function SiteHeader({
             né in un eventuale copia-incolla della voce. */}
         <nav
           aria-label="Principale"
-          className={`site-nav nav:block hidden ${variante === 'lockup' ? '' : 'site-nav-registro'}`}
+          className={`site-nav nav:block hidden ${variante === 'lockup' ? '' : `site-nav-${variante}`}`}
         >
           <ul>
-            {menu.map((v) => (
+            {voci.map((v) => (
               <li key={v.href}>
-                {/* In `puntini` la voce è un puntino di 8 px e il nome sta in
-                    uno `sr-only`: nascosto alla vista, **non** a chi ascolta né
-                    al comando vocale. Con `text-indent: -9999px` il nome
-                    restava un nodo di testo dentro il link — invisibile, ma
-                    misurabile: il collaudo del contrasto lo prendeva come
-                    difetto, e aveva ragione a chiederselo. */}
-                <Link href={v.href}>
-                  {variante === 'puntini' ? (
-                    <span className="sr-only">{v.label.toLowerCase()}</span>
-                  ) : (
-                    v.label.toLowerCase()
-                  )}
-                </Link>
+                {/* La voce è **sempre testo visibile**, in ogni variante. La
+                    variante `puntini` la riduceva a un punto di 8 px con il nome
+                    in uno `sr-only`: veniva dalla direzione «la parete», che il
+                    committente ha scartato, e a 1440 il risultato era un menu
+                    che **non si vedeva** — l'unica cosa che restava in cima
+                    alla pagina era il marchio. Le due reference misurate dicono
+                    il contrario: Studio Foundry e Storey hanno il menu
+                    **centrato sopra la fotografia**, in chiaro, con una
+                    pastiglia a destra (`kit/reference/studio-foundry/1440-hero.jpeg`
+                    e `kit/reference/storey/1440-hero.jpeg`). Un nome accessibile
+                    che nessuno vede non è una scelta di stile: è una voce di
+                    menu mancante. */}
+                <Link href={v.href}>{v.label.toLowerCase()}</Link>
               </li>
             ))}
           </ul>
         </nav>
+
+        {/* La pastiglia all'estremo destro: è l'azione, ed è il solo oggetto
+            con un raggio in tutto il tema (`--regolo-radius` vale 0 su ogni
+            rettangolo). Punta a `/contatti` e non al brief, perché la reference
+            dice «Contact» e perché il brief ha già la sua CTA in fondo alla
+            pagina: due bottoni che portano allo stesso posto sopra la piega
+            erano il difetto corretto ad aprile su A. */}
+        {conPastiglia && (
+          <Link href="/contatti" className="testata-pastiglia nav:inline-flex hidden">
+            contatti
+          </Link>
+        )}
 
         {/* Mobile: disclosure nativa, nessun JS. Qui la CTA c'è, perché il menu
             è chiuso e la hero è più lontana. */}

@@ -37,12 +37,12 @@ export default function LayoutC({ children }: { children: React.ReactNode }) {
         <a href="#contenuto" className="skip-link">
           Salta al contenuto
         </a>
-        <SiteHeader variante="puntini" />
+        <SiteHeader variante="centrato" conPastiglia />
         <main id="contenuto" tabIndex={-1} className="flex-1">
           {children}
         </main>
         <Misurazione />
-        <SiteFooter conTerritorio variante="puntini" />
+        <SiteFooter conTerritorio variante="centrato" />
       </body>
     </html>
   )

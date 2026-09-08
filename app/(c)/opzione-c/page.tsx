@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
-import { Documento } from '@/components/campo/Campo'
+import { Campo, Documento } from '@/components/campo/Campo'
+import { Registro } from '@/components/campo/Registro'
 import { Lastra } from '@/components/campo/Rottura'
 import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
 import { HeroFonderia } from '@/components/sezioni/HeroFonderia'
@@ -50,11 +51,25 @@ export default function OpzioneC() {
   return (
     <>
       <BarraProposta opzione="c" />
-      {/* La pagina apre con **una fotografia a piena finestra** e il marchio in
-          serif che ci sta sopra: è il gesto di Studio Foundry, ed è quello che
-          nessuna delle altre proposte ha. */}
+      {/* La pagina apre su **carta**, con una scheggia di fotografia in mezzo
+          che si apre mentre si scorre: è il gesto di Studio Foundry preso dalle
+          schermate *durante* lo scorrimento e non dal fotogramma finale. Il
+          perché sta in `components/sezioni/HeroFonderia.tsx`. */}
       <HeroFonderia />
       <Documento>
+        {/* Il registro è uscito dalla hero e per adesso sta qui: alla parte 2/3
+            di questa passata esce da C del tutto — il funnel di C parte dal
+            brief, quello di D dall'indice. Fino a lì la pagina non cambia
+            niente sotto la piega, così la fermata si giudica sulla sola prima
+            schermata. */}
+        <Campo primo id="percorsi" etichetta="il punto di partenza">
+          <h2 className="fonderia-domanda">Che intervento hai in mente?</h2>
+          <p className="hero-lead">
+            Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da
+            parte tua. Ingegneria civile e architettura, a Fermo.
+          </p>
+          <Registro />
+        </Campo>
         <Numeri />
         <Servizi variante="tabella" />
         <ComeLavoriamo variante="sequenza" />

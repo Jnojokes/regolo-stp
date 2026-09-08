@@ -48,7 +48,7 @@ export function SiteFooter({
    * arriva dal layout, che è dove il tema si sceglie: composizione, non un
    * `if` sul tema nel markup.
    */
-  variante?: 'lockup' | 'cartiglio' | 'puntini' | 'pastiglia'
+  variante?: 'lockup' | 'cartiglio' | 'centrato' | 'pastiglia'
 }) {
   return (
     <footer className={`site-footer site-footer-${variante}`}>

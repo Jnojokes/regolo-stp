@@ -35,7 +35,7 @@ export default function LayoutD({ children }: { children: React.ReactNode }) {
         <a href="#contenuto" className="skip-link">
           Salta al contenuto
         </a>
-        <SiteHeader variante="pastiglia" />
+        <SiteHeader variante="pastiglia" conPastiglia />
         <main id="contenuto" tabIndex={-1} className="flex-1">
           {children}
         </main>

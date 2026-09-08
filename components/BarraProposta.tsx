@@ -19,8 +19,8 @@ import { MEDIA_DEMO } from '@/lib/media-demo'
 const PROPOSTE = {
   a: { nome: 'opzione A — «lo studio»', href: '/' },
   b: { nome: 'opzione B — «il manifesto»', href: '/opzione-b' },
-  c: { nome: 'opzione C — «la parete»', href: '/opzione-c' },
-  d: { nome: 'opzione D — «il marmo»', href: '/opzione-d' },
+  c: { nome: 'opzione C — «la fonderia»', href: '/opzione-c' },
+  d: { nome: 'opzione D — «la monografia»', href: '/opzione-d' },
 } as const
 
 type Opzione = keyof typeof PROPOSTE

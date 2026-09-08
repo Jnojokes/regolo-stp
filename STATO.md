@@ -4,8 +4,8 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | **fase 3 quinquies (2/2) — le due alternative rifatte «identiche» alle reference indicate** (08/09/2026) |
-| Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / B / C), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
+| Ultima fase chiusa | **ripassata di design, passo 0 — strumenti e inventario** (08/09/2026). La fase piena chiusa prima resta la 3 quinquies (2/2) |
+| Prossima fase | **ripassata di design, passo 1 — le tre tabelle di composizione** (`/fase-3-ripassa`), che è a uno stop: le tabelle le approva FT prima che si scriva codice. Dopo la ripassata: la decisione n. 1 (A / B / C), poi `/fase-5-movimento` |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
@@ -66,6 +66,146 @@
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 | 08/09/2026 | **3 quinquies (2/2)** | **le due alternative rifatte «identiche» ai due indirizzi indicati dal committente**: B = ecoLINEAR, C = Halston, con le lettere rinominate da C/D a B/C | catturate e misurate nel browser; classi condivise con A da 65/54 % a **46 %**; il `<main>` di A byte-identico. Il dettaglio qui sotto |
 
+
+## Ripassata di design — passo 0: strumenti e inventario (08/09/2026)
+
+Prima di guardare il design si verifica lo strumento (regola 10 del protocollo). `install.sh` non
+era **mai** stato lanciato su questo Mac: mancavano quattro voci su sette. Adesso ci sono tutte.
+
+### Strumenti, una riga per voce
+
+| Voce | Prima | Adesso | Prova |
+|---|---|---|---|
+| skill `sito-*` + `web-references` | ✔ 10 symlink | ✔ invariate | `ls ~/.claude/skills` |
+| `web-design-guidelines` (Vercel) | ✘ assente | **✔ installata** | `~/.claude/skills/web-design-guidelines` |
+| `humanizer` | ✘ assente | **✔ installata** | `~/.claude/skills/humanizer` (serve solo ai testi EN: qui non si usa) |
+| `playwright-cli` | ✘ assente | **✔ installata** (skill + binario globale) | `~/.claude/skills/playwright-cli` |
+| `impeccable` (plugin) | ✘ assente | **✔ v4.2.2, scope utente, abilitato** | `claude plugin list` |
+| `~/.blulang-tools` | ✘ **la cartella non esisteva** | **✔ playwright 1.63.0 + @axe-core/playwright 4.13.0 + Chromium 153.0.8010.12** | prova a vuoto: browser avviato, axe caricato, `40px` letto su un `h1` finto |
+| MCP `chrome-devtools` · `context7` | ✔ già presenti | ✔ rispondono | `claude mcp list` |
+
+Nessuna voce è rimasta fuori: **non c'è nessun controllo da dichiarare «non fatto»**. (Il binario
+di `impeccable` si scarica da GitHub Releases al **primo uso**, non all'installazione: se fallisce
+lo si scoprirà al passo 3, e lì varrà la deroga.) L'MCP `blender` continua a non connettersi
+(`uvx` non è nel PATH) e non serve a questa ripassata.
+
+### Gli script nel repo
+
+`scripts/misura-reference.mjs`, `scripts/opzioni-diff.mjs` e `scripts/qa-browser.mjs` copiati
+dalle skill e provati a vuoto: tutti e tre stampano l'uso ed escono 0. Il loro `importa()` cerca i
+moduli **prima nel repo e poi in `~/.blulang-tools`**, ed è la seconda strada quella che funziona:
+il repo non ha `playwright` fra le `devDependencies` e non gliela si aggiunge, perché non è una
+dipendenza del sito. Siti dietro Cloudflare:
+`PW_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" node …`.
+
+Nota su `opzioni-diff.mjs`, che serve al passo 3: per il `CONFRONTO.png` gli basta
+`kit/reference/<slug>/1440-hero.*` — che c'è per tutti gli slug, anche in JPEG. **Non gli serve
+`misure.json`**, che infatti non esiste (sotto).
+
+### L'inventario, in una tabella sola
+
+Le rotte in `app/` si chiamano come il prompt le chiama: `/` (gruppo `(a)`), `/opzione-b` (`(b)`),
+`/opzione-c` (`(c)`). I numeri qui sotto sono **contati sull'HTML servito** dal build dell'08/09,
+non sul JSX: un frammento che rende due `<section>` conta due.
+
+| | **A** «lo studio» — `/` | **B** «il foglio» — `/opzione-b` | **C** «le bande» — `/opzione-c` |
+|---|---|---|---|
+| Pagina · tema | `app/(a)/page.tsx` · `data-theme="a"` | `app/(b)/opzione-b/page.tsx` · `"b"` | `app/(c)/opzione-c/page.tsx` · `"c"` |
+| Foglio | `sezioni.css` (1.447 righe) | `ecolinear.css` (1.378) | `halston.css` (1.066) |
+| Componenti propri | `sezioni/` × 10 (`Hero` `Smistamento` `Progetti` `Servizi` `ComeLavoriamo` `Esploso` `Persone` `Territorio` + `Sezione` guscio + `Confronto`, quest'ultimo **non montato qui**) | `ecolinear/Blocchi.tsx` (7 export) + `Disegni.tsx` + `Cursore.tsx` | `halston/Blocchi.tsx` (8 export, uno rende 2 sezioni) |
+| Condivisi | `SiteHeader` `SiteFooter` `Brief` `BriefForm` `BarraProposta` `Quota` `Placeholder`/`DaCliente` `MediaEsempio` `MappaSede` `Misurazione` `JsonLd` | gli stessi **meno** `Quota`/`Territorio`, **più** `BarraMobile` e `Segnaposto` | come B |
+| Blocchi resi in `<main>` | **10** (9 di contenuto + la barra della proposta) | **10** (9 + barra) | **12** (10 + barra + barra mobile) |
+| Famiglie di layout | **6** | **7** su 9 misurate | **7** su 10 misurate |
+| Due di fila della stessa famiglia | **sì, quattro**: `#smistamento` `#progetti` `#servizi` `#processo` hanno lo stesso guscio esterno (`.sezione > .wrap > .testa-sezione`), e `#persone` è la quinta istanza | **sì, una**: `.opere` e `.ecolinear-persone`, tutte e due `auto-fit minmax()` | **sì, tre di fila a due colonne**: `.banda-granata` → `.banda-mauve` (stessa regola `.banda`) → `.citazione` |
+| Reference misurate **sue** | **nessuna.** I commenti citano storey · kononenko · as-associates · pelizzari · eladio-dieste (+ ecolinear e halston, che però sono di B e C): A è un **composito** del fondo comune, non ha un indirizzo suo | **`ecolinear/`** — 10 catture, citata riga per riga nei commenti (`1440-hero`, `-meta-18/52/88`) | **`halston/`** — 9 catture, citata riga per riga (`1440-hero`, `-meta-18/35/52/70`, `390-hero`) |
+| Blocco in `SCHEDA.md` | i blocchi delle sue reference ci sono | ✔ righe 157-181 | ✔ righe 183-205 |
+| `misure.json` | ✘ | ✘ | ✘ — **non esiste per nessuno slug** |
+| Tabella in `kit/OPZIONI.md` | ✘ | ✘ | ✘ — **il file non esiste** |
+| Momento orchestrato | **nessuno.** Zero `@keyframes` applicati, zero `animation-timeline`, zero JS di movimento. Ci sono un header `sticky`, l'attenuazione dell'esploso in `:hover` e le transizioni dei bottoni: nessuna delle tre è una sequenza | **uno: le fasi pinnate** (`ecolinear.css:768-824`) — `view-timeline` per fase, il pannello e il righello `sticky`, sola `opacity`, spento con `prefers-reduced-motion`. **Ed è rotto: vedi sotto.** Accanto: la pastiglia della testata (`scroll(root)`) e il mirino CAD (JS) | **nessuno**, e lo dichiara il codice (`page.tsx:61-66`): «quella pagina non ha un gesto di scorrimento». Il foglio `halston.css` non ha **nessuna** at-rule di animazione |
+| CTA primaria sopra la piega | «Raccontaci il progetto» nella hero (`Hero.tsx:77`) — **ma punta a `/contatti#brief`**, cioè fuori dalla pagina, mentre la home ha il suo `#brief` in fondo | **no**: la copertina non ha CTA. La prima è nell'`Invito`, terzo blocco (`→ #brief`) | sì, nella copertina (`Blocchi.tsx:141`, `→ #brief`) |
+
+**Cosa manca** (una riga, come chiesto): a tutte e tre manca la **tabella di composizione**
+(`kit/OPZIONI.md` non esiste); ad A manca una **reference sua** e il **momento orchestrato**; a C
+manca il **momento orchestrato**; a B il momento c'è ma **non funziona come dichiarato**; e manca
+il file su cui si spuntano le righe, `CHECKLIST-SITO.md`, che nel repo non c'è mai stato.
+
+### Difetti trovati inventariando, che nessuno aveva chiesto di cercare
+
+1. **L'unico momento orchestrato del progetto è rotto, e si vede.** Su `/opzione-b`
+   `.fasi-disegno[data-fase='0'] { opacity: 1 }` (`ecolinear.css:402-404`) sta **fuori**
+   dall'`@supports`, ma **non** dentro un `@supports not(...)`: il commento sopra dice che è il
+   fallback per chi non ha `animation-timeline`, e il selettore non lo condiziona. Siccome
+   l'animazione è dichiarata senza `animation-fill-mode` (scelta esplicita), fuori dal proprio
+   range torna a valere il valore base — che per il disegno 0 è `1`. Misurato su
+   `next start`, 1440×900, a cinque quote della sezione:
+
+   | avanzamento | opacità dei cinque disegni | didascalie visibili |
+   |---|---|---|
+   | 0,10 | `1 · 0 · 0 · 0 · 0` | `fig. 01` |
+   | 0,30 | `1 · 1 · 0 · 0 · 0` | `fig. 01` + `fig. 02`, **allo stesso pixel** (x 94, y 645) |
+   | 0,50 | `1 · 0 · 1 · 0 · 0` | `fig. 01` + `fig. 03` — a schermo si legge `fig. 0⅓` |
+   | 0,70 | `1 · 0 · 0 · 1 · 0,35` | **tre** |
+   | 0,90 | `1 · 0 · 0 · 0 · 0,95` | due |
+
+   Il pannello mostra quindi **due disegni sovrapposti** dalla seconda fase in poi. È il gesto che
+   in call spiega tutta l'opzione B, ed è la cosa che si guarda per prima. La correzione è di una
+   riga (condizionare il selettore a `@supports not (animation-timeline: view())`, oppure metterlo
+   in `@layer` sotto l'animazione), **e non si fa qui**: è codice, e il codice è del passo 2.
+
+2. **Il segnaposto di A entra in B e in C dalla barra mobile.** `BarraMobile.tsx:41` usa
+   `<DaCliente>`, cioè il `[[DA CLIENTE: WhatsApp]]` **visibile** di A, e la barra è montata solo
+   da `/opzione-b` e `/opzione-c` — le due rotte dove la decisione n. 41 dice che il segnaposto
+   rende lorem ipsum con la richiesta in `data-chiede`. Si vede a 390 in
+   `kit/reference/_dopo/TRE-390.jpeg`, in tutte e tre le colonne.
+
+3. **La CTA della hero di A esce dalla pagina.** `ctaPrimaria.href` è `/contatti#brief`
+   (`lib/site.ts:48`), e su `/` la usano la hero **e** il menu mobile dell'header: da telefono,
+   sopra la piega, il bottone principale della home porta a un'altra rotta invece che al brief che
+   sta in fondo alla stessa pagina (`Brief.tsx:43`, `id="brief"`). B e C usano `#brief`. Le tre
+   proposte devono differire per gesto, non per dove finisce l'azione primaria.
+
+4. **`prefers-reduced-motion` copre meno di quanto sembra.** La regola globale
+   (`globals.css:779-787`) azzera `animation-duration`, `iteration-count`, `transition-duration` e
+   `scroll-behavior`: non tocca `position: sticky`, e non toglie gli **stati** di `:hover`
+   (l'attenuazione a `opacity: .28` dell'esploso resta, perde solo il raccordo). I tre gesti allo
+   scorrimento veri sono protetti a mano (`ecolinear.css:769`, `:963`, `sezioni.css:1428`), che è
+   giusto: la nota è che la rete globale non è una rete.
+
+5. **Nel repo ci sono 14 skill di terze parti che il protocollo dice di non installare.** Sono
+   symlink tracciati in `.claude/skills/` verso `.agents/skills/`, committati con `8972b3a`; 13
+   vengono da `Leonxlnx/taste-skill`, la sorgente che `sito-design` § 1 cita per le sue **liste**
+   dichiarando che **le skill non si installano** (chiedono di inventare nomi e numeri
+   «realistici» e di generare i mockup con l'IA prima del codice: contro le regole 1 e 14). Sono
+   attive in ogni sessione aperta in questo repo. Vanno tolte, ed è una riga di `git rm`: **la
+   decisione è di FT**, perché è lui che le ha aggiunte.
+
+### I gate del protocollo, voce per voce (checklist A · reference e ricerca)
+
+Verificati sul file, non su quello che `STATO.md` dichiarava.
+
+| # | Esito | Dove sta / cosa manca |
+|---|---|---|
+| A1 ricognizione della nicchia | ✘ | `kit/ricerca/` non esiste. La scheda `studi-tecnici.md` è stata usata (è citata in `SCHEDA.md`), ma non è depositata né datata nel repo |
+| A2 Awwwards ≥ 20 voci | ✘ | nessun `kit/ricerca/awwwards/`. Lo script esiste solo fuori dal repo |
+| A3 Refero ≥ 10 DESIGN.md contati | ✘ | ce n'è **uno** (`kit/reference/refero/DESIGN-structured.md`), e non è contato |
+| A4 tetti dei tier + 1 anti-pattern catturato | parziale | i tetti sono rispettati e dichiarati (`SCHEDA.md` § 0). **L'anti-pattern non esiste come cattura**: c'è solo una riga *descritta* dentro il blocco Pelizzari («apre con un muro di cookie a schermo pieno»). La skill dice «va visto, non descritto» |
+| A5 ogni reference misurata (PNG + `misure.json` + blocco) | parziale | PNG sì, per 10 slug, a 1440 e 390. **`misure.json`: zero file in tutta `kit/reference/`.** Le catture sono state fatte con l'MCP Playwright a mano (lo dichiara `SCHEDA.md:5-7`), non con `misura-reference.mjs`: si vede dai nomi (`1440-hero.jpeg` invece di `<slug>-1440-hero.png`). I numeri esistono, ma **trascritti a mano nella scheda**, non ricontrollabili da un file macchina |
+| A6 `SCHEDA.md` scritta guardando i PNG | ✔ sui 10 slug | 30 KB, nove blocchi. Manca però qualche riga richiesta: **nessuno** dei blocchi ha «il difetto misurato»; «non prendo» manca a storey, kononenko, ecolinear, halston, pelizzari, sbp; `studio-foundry` e `nabil-issa` hanno le catture ma **nessun blocco** |
+| A7 token derivati dalla scheda e passati contro la § 1 | parziale | derivati sì, e in modo tracciabile (`CLAUDE.md` § Direzione visiva dichiara quali valori sostituisce e perché). **La passata riga per riga della § 1 sulle tre rotte come sono adesso non è mai stata fatta**: è il passo 2 |
+| A8 tabella blocco → reference in `STATO.md` | parziale | esiste **tre volte**, e tutte e tre dentro passate superate (3 bis, 3 ter, 3 quater), con blocchi cancellati e reference uscite. Per le tre rotte di oggi non c'è |
+| A9 nessun asset di terzi copiato | ✔ | `git ls-files public/` → 14 file, tutti CC0/Mixkit dichiarati in `TODO-MEDIA.md`; niente dalle reference |
+| A10 ogni reference è un URL misurato; nessun DESIGN.md come input | parziale | 10 slug sono URL veri. Ma `DESIGN-structured.md` sta **dentro `kit/reference/`** ed è citato come fonte nella riga «Token, tutti»: è la pelle che la regola 14 vieta come input. Va spostato in `kit/ricerca/refero/` e usato solo per il conteggio |
+| A11 `kit/OPZIONI.md` approvato prima del codice | ✘ | il file non esiste. `kit/opzioni/` (minuscolo) sono i due prototipi HTML del kick-off, e `REGOLO_Due_Opzioni.md` è il documento di vendita: nessuno dei due è la tabella di composizione. **L'«prima del codice» non è più recuperabile in ordine**: il codice c'è già |
+| A12 diversità misurata | parziale | il numero c'è (46 % · 46 % · 49 %) ma **non viene da `opzioni-diff.mjs`** e non c'è nessun `collaudo/opzioni/CONFRONTO.png` su disco. Gli assi diversi su 5 non sono mai stati riportati. E due delle tre condizioni non sono soddisfatte: **il momento orchestrato manca ad A e a C**, e la CTA nel primo viewport manca a B |
+| A13 revisori terzi | ✘ | zero occorrenze di «impeccable» e «web-design-guidelines» in tutto il repo. Fino a oggi gli strumenti non erano nemmeno installati |
+| regola 11 — la lista unica | ✘ | **`CHECKLIST-SITO.md` non esiste**, e `CLAUDE.md` § File di servizio non lo nomina. Il modello è `web-references/blocchi/checklist-sito.md` (122 righe). Senza quel file la voce A13 non ha dove stare, e il passo 3 di questa ripassata non ha niente da spuntare |
+
+## Revisori (stop delle fasi 3 e 5, collaudo — checklist A13)
+
+| Data | Revisore | Rotta | Rilievi | Esito |
+|---|---|---|---|---|
+| — | `/impeccable critique` + `audit` | / · /opzione-b · /opzione-c | — | **da fare al passo 3 della ripassata.** Gli strumenti sono stati installati l'08/09: prima non c'erano |
+| — | `web-design-guidelines` | componenti toccati | — | idem |
 
 ## Fase 3 quinquies (2/2) — le due alternative rifatte «identiche» alle reference indicate (08/09/2026)
 

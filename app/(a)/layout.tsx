@@ -5,6 +5,7 @@ import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
 import { site } from '@/lib/site'
 import { Misurazione } from '@/components/Misurazione'
+import { BarraMobile } from '@/components/BarraMobile'
 
 /**
  * Root layout dell'opzione A — «Lo studio».
@@ -58,6 +59,26 @@ export default function LayoutA({ children }: { children: React.ReactNode }) {
         </main>
         <Misurazione />
         <SiteFooter />
+        {/* La barra CTA fissa sotto i 768 px, **su tutte le rotte del tema A** e
+            non solo sulla home. `CLAUDE.md` § Homepage la chiedeva («+ Barra CTA
+            mobile fissa sotto 768 px») e stava solo su B e C; misurato a 390
+            prima di questa riga, cinque rotte interne — `/progetti`,
+            `/progetti/[slug]`, `/servizi`, `/studio`, `/privacy` — **non avevano
+            nessuna azione nel primo viewport**, perché a quella larghezza la
+            testata è marchio più `menu` chiuso. Voci B3 e B4 della lista unica.
+
+            Sta nel layout e non nelle nove pagine perché è chrome, e il chrome
+            di questo tema vive qui: la spaziatura in fondo se la prende da sola
+            con `body:has(.barra-mobile)`, quindi non c'è una classe da ricordare
+            pagina per pagina.
+
+            **La cella del brief porta a `/contatti#brief` e non a `#brief`**, ed
+            è voluto: questa barra è la scorciatoia di tutto il sito e su otto
+            rotte su nove il brief non è in pagina. Sulla home la CTA della hero
+            invece è un'ancora interna — il form è lì sotto, e mandare altrove
+            chi è già sulla pagina giusta era il difetto misurato al passo 0. Le
+            due cose fanno lavori diversi e dicono la stessa frase. */}
+        <BarraMobile />
       </body>
     </html>
   )

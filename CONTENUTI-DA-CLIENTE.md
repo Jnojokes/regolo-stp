@@ -127,6 +127,6 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 | superficie del progetto 3 | /opzione-b · /opzione-c | lorem ipsum |
 | superficie in mq | /progetti/esempio-scheda | visibile |
 | una riga che dica cosa è questo intervento | /progetti/esempio-scheda | visibile |
-| WhatsApp | / | visibile |
+| WhatsApp | / · /cookie · /note-legali · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
 
 <!-- SEGNAPOSTO:fine -->

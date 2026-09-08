@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
@@ -69,16 +68,6 @@ export default function Home() {
       <Persone />
       <Territorio />
       <Brief pagina="/" />
-      {/* `CLAUDE.md` § Homepage la chiede («+ Barra CTA mobile fissa sotto
-          768 px») e nessuna decisione la toglie: era montata solo da B e da C.
-          `href="#brief"` perché il brief sta in fondo a questa pagina, e il
-          segnaposto resta **visibile** — l'eccezione del riempimento vale per
-          le due demo di vendita, non per A (decisione n. 41).
-          Lo spazio in fondo alla pagina lo fa `body:has(.barra-mobile)` in
-          `app/css/sezioni.css`: la classe `con-barra-mobile` di B e C sta sul
-          `<body>` del loro layout, e il layout di `app/(a)` serve otto rotte
-          mentre la barra la monta la sola home. */}
-      <BarraMobile href="#brief" />
     </>
   )
 }

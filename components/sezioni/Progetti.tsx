@@ -115,9 +115,20 @@ function SchedaFoto({
    sola). Tre 4/3 identici sono tre card, cioè il cluster n. 4; tre rapporti
    diversi sono tre fotografie. La specifica cambia con il rapporto, così la
    riga che il cliente legge in call è quella giusta. */
-const RATIO = ['16 / 10', '3 / 4', '4 / 3'] as const
+/* **Il primo è il progetto di testa**, ed è largo quanto la pagina: sborda oltre
+   il margine destro fino al bordo della finestra, e gli altri due gli stanno
+   sotto in due colonne. Sono tre gesti misurati messi insieme — l'immagine che
+   sborda da **un** lato (Storey: un file da 1512 px a `x = −36`; Kononenko a
+   `x = −32`), le colonne di **altezza disuguale** (Pelizzari), e i rapporti
+   diversi nella stessa fila (Kononenko: 643×405 · 361×525 · 549×405) — e
+   servono a togliere l'ultima cosa che in questo blocco somigliava a un
+   catalogo: **tre schede uguali in fila sono tre card**, cioè il cluster n. 4.
+   `CLAUDE.md` § Impaginazione lo chiedeva già («fotografia a piena larghezza,
+   mai in cornice, e quando c'è sborda da un lato solo») e questo blocco non lo
+   faceva. */
+const RATIO = ['21 / 9', '3 / 4', '4 / 3'] as const
 const SPECIFICA: Record<string, string> = {
-  '16 / 10': '2400 × 1500 px · AVIF · ≤ 250 KB',
+  '21 / 9': '3200 × 1370 px · AVIF · ≤ 300 KB',
   '3 / 4': '1600 × 2133 px · AVIF · ≤ 250 KB',
   '4 / 3': '1600 × 1200 px · AVIF · ≤ 250 KB',
 }

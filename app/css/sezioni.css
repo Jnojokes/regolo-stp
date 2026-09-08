@@ -997,21 +997,37 @@
      una griglia sola) e Pelizzari (due colonne di altezza disuguale). Tre 4/3
      identici sono tre card — cluster n. 4 — e questo blocco è quello su cui il
      confronto si vince o si perde. */
+  /* **Un progetto di testa e due sotto**, non tre schede in fila. Le tre in fila
+     erano l'ultima cosa di questo blocco che leggeva come un catalogo, e la
+     misura lo dice: `opzioni-diff.mjs` contava **zero** immagini a piena
+     larghezza su A, contro la voce di `CLAUDE.md` § Impaginazione che ne chiede
+     una — «fotografia a piena larghezza, mai in cornice, e quando c'è sborda da
+     un lato solo». Adesso il primo campo è largo quanto il foglio e **sborda a
+     destra** fino al bordo della finestra: mai a sinistra, perché il margine
+     sinistro è la spina della griglia (Storey misurato: un file da 1512 px a
+     `x = −36`; Kononenko a `x = −32`). */
   .progetti-tre {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.25rem, 2.5vw, 2.5rem);
     align-items: start;
   }
-  /* Lo sfalsamento verticale: la seconda colonna scende, la terza risale. Non è
-     un vezzo — è quello che impedisce alle tre schede di leggersi come una
-     griglia — e su mobile non esiste, perché in colonna sarebbe solo spazio. */
+  .progetti-tre > *:first-child {
+    grid-column: 1 / -1;
+    /* Lo sconfinamento è **solo a destra** e vale esattamente il margine di
+       pagina, quindi il campo arriva al bordo della finestra e non oltre: a
+       larghezze maggiori di 1440 + 2 × margine il contenitore è già rientrato e
+       i 24 px cadono dentro la fascia vuota. Nessuno scroll orizzontale —
+       verificato da `sweep.mjs`, `scrollW == clientW`. */
+    margin-right: calc(-1 * var(--regolo-margine));
+    margin-bottom: clamp(1rem, 2vw, 2rem);
+  }
+  /* Lo sfalsamento verticale fra i due sotto: uno scende. Non è un vezzo — è
+     quello che impedisce alle due schede di leggersi come una griglia — e su
+     mobile non esiste, perché in colonna sarebbe solo spazio. */
   @media (min-width: 56rem) {
-    .progetti-tre > *:nth-child(2) {
-      margin-top: clamp(2rem, 4vw, 4rem);
-    }
     .progetti-tre > *:nth-child(3) {
-      margin-top: clamp(1rem, 1.5vw, 1.5rem);
+      margin-top: clamp(2rem, 4vw, 4rem);
     }
   }
   @media (max-width: 55.999rem) {

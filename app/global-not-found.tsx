@@ -63,17 +63,17 @@ export default function QuattroZeroQuattro() {
             L’indirizzo è sbagliato, oppure la pagina è stata spostata. Da qui si riparte.
           </p>
 
-          <ul className="border-line mt-12 max-w-[42ch] border-t">
+          <ul className="border-line mt-8 max-w-[42ch] border-t">
             {menu.map((v) => (
               <li key={v.href} className="border-line border-b">
-                <Link href={v.href} className="text-h3 block py-4 hover:underline">
+                <Link href={v.href} className="text-h3 block py-3 hover:underline">
                   {v.label}
                 </Link>
               </li>
             ))}
           </ul>
 
-          <p className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <p className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
             <Link href="/" className="btn">
               Torna alla home
             </Link>

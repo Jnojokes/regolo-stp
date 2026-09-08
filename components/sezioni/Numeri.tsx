@@ -60,10 +60,17 @@ import { VALORE_ATTESO, notaNumeri, numeri } from '@/lib/numeri'
  * Il blocco è solo di B, quindi il guscio è direttamente `Campo`: niente
  * variante, niente ramo morto.
  */
-export function Numeri({ banda = 'osso' }: { banda?: 'osso' | 'indaco' }) {
+export function Numeri({
+  banda = 'osso',
+  contatore,
+}: {
+  banda?: 'osso' | 'indaco'
+  contatore?: string
+}) {
   return (
     <Campo
       banda={banda}
+      contatore={contatore}
       id="numeri"
       etichetta="i numeri"
       nota={

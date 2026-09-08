@@ -36,7 +36,14 @@ import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
  * Diventano link alla fase 4, quando i progetti esistono. L'unica uscita è
  * «Tutti i progetti» in A, che porta a una pagina che esiste.
  */
-export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
+export function Progetti({
+  variante,
+  contatore,
+}: {
+  variante: 'schede' | 'dati'
+  /** Il contatore tono su tono dell'opzione D: decorazione, `aria-hidden`. */
+  contatore?: string
+}) {
   const conDati = variante === 'dati'
 
   /* B mostra due schede, non tre: con i dati duri in tabella la colonna è più
@@ -64,6 +71,7 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
     return (
       <Campo
         id="progetti"
+        contatore={contatore}
         etichetta="progetti in evidenza"
         titolo="I dati che un committente serio legge."
         azione={

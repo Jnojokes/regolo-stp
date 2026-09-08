@@ -76,6 +76,7 @@ export function Campo({
   primo = false,
   pieno = false,
   banda = 'osso',
+  contatore,
   className = '',
 }: {
   id?: string
@@ -116,6 +117,14 @@ export function Campo({
    * questo in B il ritmo verticale non esiste e c'è un solo `--regolo-banda-y`.
    */
   banda?: 'osso' | 'indaco'
+  /**
+   * Il contatore di sezione **tono su tono**: il gesto misurato di Storey — un
+   * numero grigio su grigio, grande, che fa da atmosfera dietro il blocco.
+   * È **decorazione e basta**: `aria-hidden` e `data-decorativo`, perché a
+   * 1,48:1 non può portare informazione. Lo usa solo l'opzione D; negli altri
+   * temi il CSS non lo disegna nemmeno.
+   */
+  contatore?: string
   className?: string
 }) {
   const classi = ['campo', primo ? 'campo-primo' : '', pieno ? 'campo-pieno' : '', className]
@@ -130,6 +139,11 @@ export function Campo({
           dal CSS. Sotto i 14 px — sopra la mono smetterebbe di essere
           un'annotazione e diventerebbe contenuto. */}
       <div className="campo-margine">
+        {contatore ? (
+          <span className="campo-contatore" aria-hidden="true" data-decorativo="">
+            {contatore}
+          </span>
+        ) : null}
         {etichetta && <p className="campo-etichetta">{etichetta}</p>}
         {margine}
       </div>

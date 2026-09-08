@@ -52,7 +52,7 @@ domanda fredda.
 | A | Storey Architecture | interlinea 1,0, spaziatura negativa anche sulle maiuscole, vuoto disuguale, l'immagine che sborda da **un** lato |
 | A | Kononenko Architectural Bureau | interlinea 0,70-0,80 sopra i 60 px, titolo a due voci, il **disegno** al posto della foto, la tabella a filetti con l'etichetta nel margine vuoto |
 | A | **AS Associates** *(entrata)* | l'indice come **scheda tecnica** con il ruolo in colonna, i conteggi fra parentesi, le etichette fra `[quadre]`, l'opacità come gerarchia |
-| — | Studio Foundry *(uscita dal tier A)* | è la reference che i prototipi avevano già parafrasato, e i suoi token misurati sono i cluster 1 e 5. Restano due gesti: il marchio che si sovrappone alla foto, i metadati ai due estremi della riga |
+| A | **Studio Foundry** *(uscita alla 3 bis, rientrata alla 3 ter)* | era uscita perché i suoi token misurati sono i cluster 1 e 5; **rientra scelta per nome dal committente** (`DECISIONI.md` n. 37) ed è il sistema dell'opzione C. Quello che dà: la fotografia a piena finestra con tutto il resto sopra, il marchio che le passa sopra da bordo a bordo, i metadati ai due estremi della riga |
 | — | Nabil Issa *(fuori)* | il suo gesto è già nel progetto via tier B; quello che aggiungerebbe è cluster 2 + cluster 5, più un banner cookie |
 | narrativa | Eladio Dieste | la **linea di quota come struttura**, l'asse verticale delle fasi, la luce radente, e la regola: l'accento viene dal materiale, non da un catalogo |
 | B | ecoLINEAR · Pelizzari | impianto: le fasi al posto dei servizi, la CTA prima della galleria, la riga di metadati in tre tempi con l'azione al bordo |
@@ -350,7 +350,7 @@ apertura form · completamento form · click telefono · click WhatsApp. Quattro
 
 ## Le quattro opzioni di homepage (fino alla fase 5)
 
-FT vende con più toni; il cliente sceglie (`DECISIONI.md` n. 1 e n. 36). **Quattro proposte, uno
+FT vende con più toni; il cliente sceglie (`DECISIONI.md` n. 1, n. 36 e n. 37). **Quattro proposte, uno
 stesso contenuto**: stessi blocchi, stesso ordine, stesse parole. È la condizione perché il
 cliente giudichi la *lingua visiva* e non quattro pagine diverse — e perché, in call, passare da
 una scheda all'altra sia la dimostrazione.
@@ -359,9 +359,22 @@ una scheda all'altra sia la dimostrazione.
 |---|---|---|
 | **A** «Lo studio» — `/` | il progetto, fase 3 bis | carta bianca, payoff a 132 px, fotografia |
 | **B** «Il manifesto» — `/opzione-b` | Outsource Consultants | carta osso, bande **indaco** a piena larghezza, display 160 |
-| **C** «La parete» — `/opzione-c` | Iad-lab | **carbone**, due parole colossali che sbordano, tre puntini al posto del menu |
-| **D** «Il marmo» — `/opzione-d` | IDHEAL | marmo bianco, masthead 105, **il corpo è un serif**, filetti magenta | I prototipi stanno nel repo, in
-`kit/opzioni/REGOLO_Opzione_A.html` e `kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo.
+| **C** «La fonderia» — `/opzione-c` | Studio Foundry | fotografia a **piena finestra** e `REGOLO STP` in serif che ci passa sopra da bordo a bordo |
+| **D** «La casa» — `/opzione-d` | Storey Architecture | fotografia a **piena finestra** e sopra quasi niente: marchio piccolo, cinque segmenti, una pastiglia |
+
+I prototipi del kick-off stanno nel repo, in `kit/opzioni/REGOLO_Opzione_A.html` e
+`kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo di A e B, non di C e D.
+
+> **C e D sono state rifatte due volte** (`DECISIONI.md` n. 36, poi n. 37). Alla prima passata
+> venivano da Iad-lab («La parete») e da IDHEAL («Il marmo») e il committente le ha respinte con
+> una frase sola — *«non hanno senso»*. La diagnosi è un numero: **condividevano il 97 % delle
+> classi con B**, cioè erano B ricolorata due volte. Adesso vengono dai due indirizzi che ha
+> indicato lui, ed erano già tutti e due in `kit/reference/`, catturati e misurati.
+>
+> **Il residuo è dichiarato**: la differenza sta nella prima schermata e nel sistema tipografico;
+> sotto la piega C e D riusano ancora i blocchi di B, vestiti dal tema ma non ricomposti. Classi
+> condivise con B, misurate sul build: **C 94 %, D 90 %**. Il lavoro che resta è ricomporre quei
+> blocchi, non ricolorarli.
 
 > **L'opzione B è stata rifatta alla fase 3 ter** (08/09/2026, decisioni 28-34). La riga qui sotto
 > è quella corrente. L'ordine dei blocchi non è cambiato; è cambiato **il modo in cui B

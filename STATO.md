@@ -66,6 +66,91 @@
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 
 
+## Fase 3 quater — C e D rifatte sulle due reference indicate (08/09/2026)
+
+FT ha guardato le due proposte nuove e ha detto: *«non hanno senso le opzioni C e D»*. La
+diagnosi non è un'impressione, è la stessa misura della 3 ter presa sul build: **C e D
+condividevano il 97 % delle classi con B**. Erano **B ricolorata due volte**, cioè l'errore della
+n. 28 ripetuto un livello più su — si era corretto un *valore* (palette e carattere) dove serviva
+un *meccanismo*. L'argomento con cui la n. 36 lo difendeva («contenuto identico è la condizione
+perché il cliente giudichi la lingua visiva») è giusto in astratto e sbagliato per quello che
+serve qui: **quattro schede che in miniatura si somigliano non sono quattro proposte.**
+
+Il committente ha chiuso la questione dando due indirizzi — `studio-foundry.sujen.co` e
+`storeyarchitecture.co.uk` — ed erano **già tutti e due in `kit/reference/`**, catturati a 1440 e
+a 390 e misurati nel browser. Storey è anche l'unica delle quattro già nel tier A di `SCHEDA.md`.
+Tensione da dichiarare: Studio Foundry era **uscita** dal tier A alla 3 bis con una motivazione
+scritta (i suoi token misurati sono i cluster 1 e 5). Rientra perché l'ha scelta il committente
+guardandola, e la skill `sito-design` lo prevede alla lettera.
+
+### Il gesto che cambia: che cos'è la prima schermata
+
+Non una tinta. C e D aprono tutte e due con una **fotografia a piena finestra e il testo sopra** —
+che né A né B hanno, perché A mette la foto accanto al testo e B apre con una domanda su fondo
+nero — e ci mettono sopra **l'opposto**:
+
+```
+C «La fonderia»                          D «La casa»
+┌──────────────────────────────┐         ┌──────────────────────────────┐
+│ REGOLO · menu centrato · CTA │         │ regolo · menu centrato · CTA │
+│                              │         │                              │
+│ REGOLO STP  ← 194 px a 1440, │         │            (foto)            │
+│   serif 900, da bordo a bordo│         │                              │
+│           (foto)             │         │ ▓▓ ░░ ░░ ░░ ░░  ← 5 segmenti │
+│                              │         │ Uno studio di ingegneria…    │
+│ Progettiamo e dirigiamo.     │         │ progetto arch. · strutt. · … │
+│ Dal disegno al cantiere.     │         │ ( Raccontaci il progetto )   │
+└──────────────────────────────┘         └──────────────────────────────┘
+il tipo è il soggetto                    il tipo si toglie di mezzo
+```
+
+### Blocco → reference → cosa ho preso → quale cluster NON uso
+
+| Blocco | Reference | Cosa ho preso | Cluster che NON uso | Cosa c'è al suo posto |
+|---|---|---|---|---|
+| **Hero C** ★ | `studio-foundry/1440-hero` | la fotografia a **100 svh** e il marchio che le passa sopra **da bordo a bordo**: il corpo non è un gradino di scala ma una funzione della finestra e delle 10 lettere di `REGOLO STP` — `(100vw − 2×margine)/10 × 1,44`, cioè **194 px a 1440** e proporzionalmente a ogni altra larghezza | **4** il riquadro: niente card, niente fondo, niente ombra sotto il testo · **5** l'occhiello sopra il claim | in questo sistema l'`h1` **è il nome dello studio**, non una frase — e su un sito che è il secondo contatto, il nome che il passaparola ha pronunciato è esattamente la prima cosa da vedere. La frase arriva dopo, in basso, in lineare |
+| **Hero D** ★ | `storey/1440-hero` (tier A, misurata) | il contrario: **niente tipo grande**. Marchio piccolo, menu piccolo, e in basso a sinistra un paragrafo in lineare leggero con sopra **una barra a cinque segmenti**, il primo pieno. Il vuoto sopra il paragrafo è **disuguale di proposito** — nella reference l'immagine parte a 500 px e il testo a 440, con 400 px di nero sopra che non fanno niente | **5** i metadati uniti da puntini con l'occhiello sopra · la quota di A: qui **non ci sono terminatori obliqui**, non è una misura | i cinque segmenti portano i **cinque ruoli firmabili** (`RUOLI.length`, contati dal repo) e sono un **avanzamento**, non una quota. L'elenco in chiaro sta sotto, in mono a **−0,1em**, e il disegno è `aria-hidden`: sentirlo due volte è rumore |
+| **La testata** (C e D) | Studio Foundry · Storey | menu **centrato** sopra la fotografia, marchio a sinistra, pastiglia a destra | **5** il logotipo spaziato | il velo sotto la testata è un **`background-color` vero** e non un gradiente, perché il collaudo del contrasto sa misurare solo quello: caso peggiore calcolato a mano (foto bianca pura → `#575757`), **6,36:1** in C e **6,19:1** in D. Il gradiente morbido sta su un `::after` dichiarato decorativo (decisione n. 38) |
+| **Il carattere** | `_provini/` | **C: Elsie 900** per display e titoli (11.176 B) + Inter per il corpo + Plex Mono per le micro-etichette. **D: Inter sola** per display e corpo, Plex Mono per le annotazioni, e **Caveat** per una riga sola | **1** il serif display su carta calda *come default* — qui è una scelta del committente su una schermata, non una ricaduta | i tre sistemi tipografici non si scambiano in miniatura: B è un grottesco meccanico, C è un serif ad altissimo contrasto, D è un lineare neutro con l'interlinea a **1,0** e la spaziatura negativa **anche sulle maiuscole** (−0,03em sul display) — i due gesti misurati su Storey |
+| **Le fotografie** (C) | Studio Foundry | il ritaglio **non rettangolare**: `clip-path` a poligono angolare su copertine, ritratti e lastra, con la diagonale che si specchia sulle schede pari | **4** la card con raggio e ombra | l'unico raggio del tema sta sulle pastiglie, e la fotografia non è mai in cornice |
+| **Il vuoto** (D) | Storey (misurato) | il **vuoto disuguale** come regola, non come padding: dopo una lastra il campo successivo respira **2,2×**, `#persone` **2,8×**, e fra i blocchi **non c'è nessun filetto** perché nella reference non ce ne sono | la voce di casa «lo stesso padding fra tutti i blocchi» | i **contatori tono su tono** (`--regolo-tono #d4d4d4`, 1,48:1) fanno atmosfera dietro ogni campo: sono `aria-hidden` **e** `data-decorativo`, cioè un contratto — un elemento che porta informazione non può avere quell'attributo |
+| **Il footer** (D) | Storey | una riga scritta a mano — «Grazie di essere arrivato fin qui.» — in **Caveat 500** | **5** la firma calligrafica come decorazione sparsa | è **una sola**, in un posto solo, e solo in D. 28.048 B per un gesto che in call si vede: è il prezzo dichiarato |
+| **Il meccanismo** | — | **non si tocca**: il registro è ancora il passo 1 del brief, la scelta si propaga fino al form con `form="brief-form"` e `:has()`, zero byte di JavaScript | — | in C e in D il registro sta **sotto la piega**: sopra c'è il manifesto, sotto comincia il lavoro. È la stessa scelta delle due reference, che sopra la piega non chiedono niente |
+
+### Il criterio di accettazione, e come è andato davvero
+
+Lo stesso della n. 28 — **classi condivise misurate sul build**, non un'impressione:
+
+| | prima | dopo | |
+|---|---|---|---|
+| C vs B | 97 % | **94 %** | −3 punti |
+| D vs B | 97 % | **90 %** | −7 punti |
+
+**Non è un risultato pieno, e va detto come sta.** Le prime schermate e i tre sistemi tipografici
+sono tre siti diversi — quello si vede in una miniatura al 25 %, che era il test. **Sotto la
+piega no**: C e D riusano ancora `Numeri`, `Servizi`, `ComeLavoriamo`, `Progetti`, `PrimaDopo` e
+`Persone` di B, vestiti dal tema (ritagli angolari in C, contatori e vuoto disuguale in D) ma
+**non ricomposti**. Il lavoro che resta è ricomporre quei blocchi, non ricolorarli.
+
+### Verifiche fatte
+
+| Cosa | Esito |
+|---|---|
+| Contrasto misurato sul DOM reale | **A+B 89 coppie · C+D 72 coppie · zero sotto soglia** |
+| Sfondamento orizzontale a 390, 768, 1440 | nessuno su nessuna delle quattro rotte |
+| `next build` · `tsc --noEmit` · `eslint` | puliti |
+| L'opzione A | **non toccata**: nessun token, nessun componente suo, nessun `if` sul tema nel markup |
+
+### Cosa resta aperto
+
+- **I blocchi sotto la piega di C e D**, come sopra. È il residuo dichiarato, non un difetto
+  scoperto dopo.
+- Il collaudo completo (Lighthouse sulle quattro rotte, prova senza JS su C e D, mobile reale)
+  **non è stato rifatto** per C e D: il committente ha chiesto una demo pronta *a livello di
+  design* per una pre-sales, non il gate della fase 8. Va rifatto prima di considerarle finite.
+- I debiti di font restano quelli della 3 ter (le rotte di proposta scaricano l'Archivo di A per
+  via del chunk unico di Turbopack): spariscono alla fase 5 con le tre rotte non scelte.
+
 ## Fase 3 ter — l'opzione B rifatta per meccanismo (08/09/2026)
 
 FT ha guardato B e ha detto che non gli piaceva. Aveva ragione, e la ragione era **misurabile**:

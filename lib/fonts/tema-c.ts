@@ -1,33 +1,35 @@
 import localFont from 'next/font/local'
 
 /**
- * Opzione C «La parete» — il sistema di **Iad-lab**, una delle tre reference
- * portate dal committente (`DECISIONI.md` n. 35).
+ * Opzione C «La fonderia» — il sistema di **Studio Foundry**
+ * (https://studio-foundry.sujen.co/), chiesto dal committente per nome.
  *
- * Due caratteri con due ruoli che non si toccano mai, ed è la sua firma:
+ * Tre caratteri, tre ruoli che non si sovrappongono mai:
  *
- * - **Anybody wide** per le due parole colossali, e solo per quelle. Asse di
- *   larghezza tenuto e portato a 150, peso fino a 900: è il sostituto OFL più
- *   vicino a «Obviously Wide Black». Interlinea 0,85. Non scende mai sotto i
- *   60 px — sotto quella soglia non è più un manifesto, è un titolo.
- *   *Nota*: è lo **stesso file sorgente** di Anybody in B, con l'asse istanziato
- *   al contrario — in B è bloccato a 100, qui va a 150. Stessa famiglia, due
- *   strumenti opposti, e nessuna delle due proposte può fare il gesto dell'altra.
- * - **Inter** per tutta la copia di interfaccia, pesi 400 e 700. È il sostituto
- *   dichiarato di Neue Haas Unica. *«Use weight 400 as default; reserve 700 for
- *   active or emphasized labels only. Do not mix intermediate weights.»*
+ * - **Elsie 900** per il marchio e i nomi dei progetti. È *il* carattere del
+ *   display di Studio Foundry, non un sostituto: la richiesta era «l'opzione C
+ *   deve essere come questa». Serif ad altissimo contrasto, **sempre tutto
+ *   maiuscolo e mai sotto i 40 px** — a corpo piccolo le grazie sottili
+ *   spariscono e resta una macchia. 10,9 KB, un peso solo.
+ * - **Inter** per il corpo e il claim: un lineare leggero, che nella reference
+ *   sta sopra la fotografia in peso normale e non contende niente al serif.
+ * - **IBM Plex Mono** per le micro-etichette maiuscole a 10-14 px — i metadati
+ *   ai due estremi della riga (`RESIDENZIALE` a sinistra, `2025` a destra) e le
+ *   pastiglie `CONTATTI` e `MENU`.
+ *
+ * `SCHEDA.md` aveva escluso Geist perché «è il carattere di Studio Foundry:
+ * usarlo sarebbe copiare la reference». Qui la reference **è** il brief, e la
+ * regola della skill è esplicita: dove il brief fissa una direzione la si segue
+ * alla lettera. La nota resta scritta perché la distinzione conti ancora la
+ * prossima volta.
  */
-const anybodyWide = localFont({
-  variable: '--font-wide',
+const elsie = localFont({
+  variable: '--font-elsie',
   display: 'swap',
-  fallback: ['Impact', 'Haettenschweiler', 'sans-serif'],
+  fallback: ['Playfair Display', 'Didot', 'Georgia', 'serif'],
   preload: false,
   src: [
-    {
-      path: '../../public/fonts/anybody-wide-regolo-latin-var.woff2',
-      weight: '700 900',
-      style: 'normal',
-    },
+    { path: '../../public/fonts/elsie-regolo-latin-900.woff2', weight: '900', style: 'normal' },
   ],
 })
 
@@ -38,12 +40,18 @@ const inter = localFont({
   fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
   preload: false,
   src: [
-    {
-      path: '../../public/fonts/inter-regolo-latin-var.woff2',
-      weight: '400 700',
-      style: 'normal',
-    },
+    { path: '../../public/fonts/inter-regolo-latin-var.woff2', weight: '400 700', style: 'normal' },
   ],
 })
 
-export const fontsThemeC = `${anybodyWide.variable} ${inter.variable}`
+const plexMono = localFont({
+  variable: '--font-mono',
+  display: 'swap',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+  preload: false,
+  src: [
+    { path: '../../public/fonts/plexmono-regolo-latin-400.woff2', weight: '400', style: 'normal' },
+  ],
+})
+
+export const fontsThemeC = `${elsie.variable} ${inter.variable} ${plexMono.variable}`

@@ -1,26 +1,27 @@
 import localFont from 'next/font/local'
 
 /**
- * Opzione D «Il marmo» — il sistema di **IDHEAL**, una delle tre reference
- * portate dal committente (`DECISIONI.md` n. 35).
+ * Opzione D «La casa» — il sistema di **Storey Architecture**
+ * (https://www.storeyarchitecture.co.uk/), chiesto dal committente per nome.
+ * È l'unica delle reference che era già nel tier A di `SCHEDA.md`, quindi i
+ * suoi valori qui sotto sono **misurati nel browser**, non descritti.
  *
- * La sua firma è **la tensione fra due generi nella stessa pagina**:
- * *«industrial sans for headlines, literary serif for reading»*. È l'unica
- * delle quattro proposte in cui il corpo del testo non è un lineare — e si
- * riconosce leggendo una riga, non guardando un colore.
+ * Tre caratteri, e il terzo è la firma:
  *
- * - **Inter** per il masthead e i titoli, peso 500 a 105 px: il sostituto
- *   dichiarato di Helvetica Neue LT Pro (Md). *«The medium weight at extreme
- *   sizes is signature: heavy enough to anchor the page, never so heavy it
- *   becomes a poster.»* Niente 700 sul display.
- * - **Source Serif 4** a `opsz 20` per il corpo e i titoli editoriali. New
- *   Century Schoolbook non è libero e i sostituti dichiarati sono Charter,
- *   Source Serif, Crimson: Source Serif è l'unico con un asse ottico, e a
- *   `opsz 20` ha le grazie **robuste** dello Schoolbook invece delle grazie
- *   fini di un didone — che sarebbe il cluster n. 1 della lista di
- *   calibrazione, cioè il difetto da cui tutta la fase 3 bis era partita.
- *   *«Never set body text below 16px in New Century Schoolbook — the serif
- *   needs size to remain readable.»*
+ * - **Inter** (400/500) come New Grotesk: il corpo, i titoli e il claim.
+ * - **IBM Plex Mono** come New Grotesk Mono: numerazione `01)` — con la
+ *   parentesi chiusa, non `01 —` — e micro-etichette. Spaziatura **−10 %**,
+ *   che è il valore misurato e l'opposto del `+0,14em` di default.
+ * - **Caveat**, e **una volta sola in tutta la pagina**. Storey usa una
+ *   calligrafica (Biro) esattamente una volta, ed è una firma proprio perché
+ *   non si ripete: se in pagina se ne trovano due, la regola è stata violata.
+ *   Istanziata a un peso solo, 27,4 KB.
+ *
+ * I numeri che governano questo tema, misurati su `kit/reference/storey/`:
+ * interlinea **1,0 esatta a ogni corpo display** (115,2/115,2 · 100,8/100,8 ·
+ * 31,7/31,7), spaziatura **−3 %** sul display, contrasto di scala **7,3×**,
+ * **nessun `max-width`** (il contenuto sta al 100 %), gutter **20 px**,
+ * `border-radius` **zero occorrenze** e `box-shadow` **zero**.
  */
 const inter = localFont({
   variable: '--font-inter',
@@ -29,27 +30,28 @@ const inter = localFont({
   fallback: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
   preload: false,
   src: [
-    {
-      path: '../../public/fonts/inter-regolo-latin-var.woff2',
-      weight: '400 700',
-      style: 'normal',
-    },
+    { path: '../../public/fonts/inter-regolo-latin-var.woff2', weight: '400 700', style: 'normal' },
   ],
 })
 
-const sourceSerif = localFont({
-  variable: '--font-serif',
+const plexMono = localFont({
+  variable: '--font-mono',
   display: 'swap',
-  adjustFontFallback: 'Times New Roman',
-  fallback: ['Charter', 'Georgia', 'serif'],
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
   preload: false,
   src: [
-    {
-      path: '../../public/fonts/sourceserif-regolo-latin-var.woff2',
-      weight: '400 600',
-      style: 'normal',
-    },
+    { path: '../../public/fonts/plexmono-regolo-latin-400.woff2', weight: '400', style: 'normal' },
   ],
 })
 
-export const fontsThemeD = `${inter.variable} ${sourceSerif.variable}`
+const caveat = localFont({
+  variable: '--font-mano',
+  display: 'swap',
+  fallback: ['Bradley Hand', 'cursive'],
+  preload: false,
+  src: [
+    { path: '../../public/fonts/caveat-regolo-latin-500.woff2', weight: '500', style: 'normal' },
+  ],
+})
+
+export const fontsThemeD = `${inter.variable} ${plexMono.variable} ${caveat.variable}`

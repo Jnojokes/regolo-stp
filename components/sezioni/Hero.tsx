@@ -3,7 +3,7 @@ import { Campo } from '@/components/campo/Campo'
 import { Placeholder } from '@/components/Placeholder'
 import { Quota } from '@/components/Quota'
 import { RUOLI } from '@/lib/contenuti/schema'
-import { hrefPercorso, righeIntervento, servizioDelPercorso } from '@/lib/percorsi'
+import { Registro } from '@/components/campo/Registro'
 import { ctaPrimaria, site } from '@/lib/site'
 
 /**
@@ -222,100 +222,7 @@ function HeroDomanda({ interventoIniziale }: { interventoIniziale?: string | nul
         className="hero-quota-registro"
       />
 
-      {/* Un `radiogroup` etichettato dall'`h1`: la domanda è già in pagina, e
-          ripeterla in una `legend` la farebbe sentire due volte.
-          Ogni riga e il suo pannello sono **interlacciati**: così la regola
-          `:has()` è una sola invece di sei, e il pannello è il fratello
-          immediatamente successivo alla riga scelta. */}
-      <div className="registro" role="radiogroup" aria-label="Che intervento hai in mente?">
-        {righeIntervento.map((r) => {
-          const servizio = r.percorso ? servizioDelPercorso(r.percorso) : null
-          return (
-            <div key={r.intervento} className="registro-coppia">
-              <label className="riga" htmlFor={`percorso-${r.intervento}`}>
-                <span className="riga-scelta">
-                  <input
-                    type="radio"
-                    id={`percorso-${r.intervento}`}
-                    name="intervento"
-                    value={r.intervento}
-                    /* Il legame con il brief in fondo alla pagina. Non è una
-                       scorciatoia: è il meccanismo. */
-                    form="brief-form"
-                    defaultChecked={interventoIniziale === r.intervento}
-                  />
-                  <span className="riga-nome">{r.etichetta}</span>
-                </span>
-                {/* Il tecnicismo, che è il sottotitolo del servizio: la stessa
-                    relazione esito/tecnicismo dei sei servizi. «Altro» non ne
-                    ha uno, e la cella resta vuota — come AS, che spedisce la
-                    tabella con i buchi invece di riempirli. */}
-                <span className="riga-ruolo">{servizio ? servizio.sottotitolo : ''}</span>
-              </label>
-
-              {r.percorso && servizio ? (
-                <div className="pannello" data-percorso={r.intervento}>
-                  <div>
-                    <p className="pannello-chiave" id={`${r.intervento}-comprende`}>
-                      cosa comprende
-                    </p>
-                    <ul aria-labelledby={`${r.intervento}-comprende`}>
-                      {r.percorso.comprende.map((v) => (
-                        <li key={v}>{v}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p className="pannello-chiave" id={`${r.intervento}-svolge`}>
-                      come si svolge
-                    </p>
-                    <ul aria-labelledby={`${r.intervento}-svolge`}>
-                      {r.percorso.svolge.map((v) => (
-                        <li key={v}>{v}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p className="pannello-chiave" id={`${r.intervento}-serve`}>
-                      cosa serve da te
-                    </p>
-                    <ul aria-labelledby={`${r.intervento}-serve`}>
-                      {r.percorso.serve.map((v) => (
-                        <li key={v}>{v}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="pannello-azioni">
-                    {/* In B il brief è **nella stessa pagina** e la risposta è
-                        già data: l'ancora ci porta, non ricomincia. */}
-                    <a href="#brief" className="btn">
-                      Raccontaci il progetto
-                    </a>
-                    <Link href={hrefPercorso(r.percorso)} className="pannello-vai">
-                      {servizio.titolo}
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                /* «Altro» non ha un pannello, e non gliene inventiamo uno: non
-                   è un percorso, è la risposta di chi non si riconosce negli
-                   altri cinque. Porta solo al brief, dove lo racconta. */
-                <div className="pannello pannello-scarno" data-percorso={r.intervento}>
-                  <p>Raccontacelo nel brief: cinque domande, e la prima l’hai già risposta.</p>
-                  <div className="pannello-azioni">
-                    <a href="#brief" className="btn">
-                      Raccontaci il progetto
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
+      <Registro interventoIniziale={interventoIniziale} />
     </Campo>
   )
 }

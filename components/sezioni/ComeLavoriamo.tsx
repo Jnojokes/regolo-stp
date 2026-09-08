@@ -38,12 +38,15 @@ export function ComeLavoriamo({
   variante,
   id = 'processo',
   banda = 'osso',
+  contatore,
 }: {
   /** `elenco` = opzione A · `sequenza` = opzione B, una banda del manifesto. */
   variante: 'elenco' | 'sequenza'
   id?: string
   /** Solo per `sequenza`: la superficie della banda. */
   banda?: 'osso' | 'indaco'
+  /** Il contatore tono su tono dell'opzione D: decorazione, `aria-hidden`. */
+  contatore?: string
 }) {
   const inCampo = variante === 'sequenza'
 
@@ -77,6 +80,7 @@ export function ComeLavoriamo({
       <Campo
         id={id}
         banda={banda}
+        contatore={contatore}
         etichetta="come lavoriamo"
         titolo="E poi cosa succede?"
         intro={introProcesso}

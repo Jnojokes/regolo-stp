@@ -88,17 +88,7 @@ fai plexmono \
   "" \
   "plexmono-regolo-latin-400.woff2"
 
-# --- opzione C «la parete» (Iad-lab) ----------------------------------------
-# Display: Anybody con l'asse di larghezza TENUTO e portato a 150 — e' il
-# sostituto OFL piu' vicino a «Obviously Wide Black»: un grottesco meccanico
-# largo e pesantissimo, che a 900 e wdth 150 fa la parola colossale che sborda.
-# In B lo stesso file ha l'asse istanziato via a 100: stessa famiglia, due
-# strumenti opposti, e nessuna delle due puo' fare il gesto dell'altra.
-fai anybodywide \
-  "https://cdn.jsdelivr.net/fontsource/fonts/anybody:vf@latest/latin-wdth-normal.woff2" \
-  "wght=700:900 wdth=100:150" \
-  "anybody-wide-regolo-latin-var.woff2"
-
+# --- C e D: la copia di interfaccia -----------------------------------------
 # Inter: il sostituto dichiarato di Neue Haas Unica (C) e di Helvetica Neue (D).
 # Una famiglia sola per tutta la copia di interfaccia, pesi 400 e 700 in C,
 # 400 e 500 in D.
@@ -107,15 +97,31 @@ fai inter \
   "wght=400:700" \
   "inter-regolo-latin-var.woff2"
 
-# --- opzione D «il marmo» (IDHEAL) ------------------------------------------
-# Il serif editoriale: New Century Schoolbook non e' libero, e i sostituti
-# dichiarati sono Charter / Source Serif / Crimson. Source Serif 4 e' l'unico
-# con un asse ottico, e a `opsz 20` ha le grazie robuste dello Schoolbook invece
-# delle grazie fini di un didone — che sarebbe il cluster n. 1.
-fai sourceserif \
-  "https://cdn.jsdelivr.net/fontsource/fonts/source-serif-4:vf@latest/latin-opsz-normal.woff2" \
-  "wght=400:600 opsz=20" \
-  "sourceserif-regolo-latin-var.woff2"
+# Anybody Wide (35,9 KB) e Source Serif 4 (32,0 KB) erano il display di «la
+# parete» e il corpo di «il marmo»: le due direzioni scartate dal committente
+# (DECISIONI n. 37). Sono uscite di qui e dal repo — un file generato che
+# nessun @font-face nomina non e' un avanzo innocuo, e' 68 KB che alla prossima
+# lettura qualcuno prova a rimettere in pagina.
+
+# --- opzione C «la fonderia» (Studio Foundry) -------------------------------
+# Elsie 900: e' **il** carattere del display di Studio Foundry, e qui non e' un
+# sostituto ne' un'ispirazione — il committente ha chiesto quella pagina.
+# Serif ad altissimo contrasto, sempre TUTTO MAIUSCOLO e mai sotto i 40 px: a
+# corpo piccolo le grazie sottili spariscono e resta una macchia.
+fai elsie \
+  "https://cdn.jsdelivr.net/fontsource/fonts/elsie@latest/latin-900-normal.woff2" \
+  "" \
+  "elsie-regolo-latin-900.woff2"
+
+# --- opzione D «la casa» (Storey) -------------------------------------------
+# La calligrafica. Storey usa **Biro una volta sola in tutta la pagina** — e' la
+# sua firma, ed e' una firma proprio perche' non si ripete. Caveat e' il
+# sostituto OFL: entra in un punto solo, e se un giorno se ne trova un secondo
+# la regola e' stata violata.
+fai caveat \
+  "https://cdn.jsdelivr.net/fontsource/fonts/caveat:vf@latest/latin-wght-normal.woff2" \
+  "wght=500" \
+  "caveat-regolo-latin-500.woff2"
 
 # --- due istanze STATICHE per l'immagine Open Graph -------------------------
 # `next/og` (satori) non legge i woff2 variabili: vuole un file statico a un
@@ -150,7 +156,18 @@ for f in sorted(glob.glob(os.path.join(sys.argv[1], "*-regolo-*.woff2"))):
     # definizione, e infatti IBM Plex Mono non espone la funzione: chiederla
     # anche a lei sarebbe come pretendere una chiave inglese da una chiave fissa.
     mono = t["post"].isFixedPitch != 0
-    if not mono:
+    # Le famiglie che non portano mai un dato non hanno bisogno di `tnum`: una
+    # monospace ce l'ha per costruzione (tutte le cifre sono gia' larghe uguale),
+    # e una calligrafica non incolonnera' mai niente — Caveat entra in pagina
+    # una volta sola, per una riga scritta a mano. Chiederlo a loro sarebbe
+    # pretendere una chiave inglese da una chiave fissa.
+    # Le famiglie di solo display: entrano in pagina a corpo grande e non
+    # portano mai una colonna di numeri. Elsie sta sempre TUTTO MAIUSCOLO sopra
+    # i 40 px; Caveat entra una volta sola, per una riga scritta a mano.
+    SOLO_DISPLAY = ("elsie", "caveat")
+    senza_dati = mono or os.path.basename(f).startswith(SOLO_DISPLAY)
+    if not senza_dati:
         assert "tnum" in gsub, f"{f}: manca tnum, le colonne di numeri si disallineano"
-    print(f"  {os.path.basename(f)}  {assi}  {'monospace' if mono else 'tnum:sì'}  glifi:{len(t.getGlyphOrder())}")
+    nota = "monospace" if mono else ("senza dati" if senza_dati else "tnum:sì")
+    print(f"  {os.path.basename(f)}  {assi}  {nota}  glifi:{len(t.getGlyphOrder())}")
 PY

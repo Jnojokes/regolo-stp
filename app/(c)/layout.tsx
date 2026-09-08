@@ -7,9 +7,12 @@ import { site } from '@/lib/site'
 import { Misurazione } from '@/components/Misurazione'
 
 /**
- * Root layout dell'opzione C — «La parete».
+ * Root layout dell'opzione C — «La fonderia», dal sistema di **Studio
+ * Foundry** (`kit/reference/studio-foundry/`), chiesto per nome dal
+ * committente.
+ *
  * Rotta di proposta, non indicizzabile: sparisce alla fase 5 con le altre non
- * scelte (`DECISIONI.md` n. 1 e n. 35).
+ * scelte (`DECISIONI.md` n. 1, n. 35 e n. 37).
  */
 export const metadata: Metadata = {
   title: {
@@ -17,12 +20,14 @@ export const metadata: Metadata = {
     template: `%s — ${site.nome} (opzione C)`,
   },
   description:
-    'Proposta di homepage per REGOLO, variante «La parete». Rotta di lavoro, non indicizzata.',
+    'Proposta di homepage per REGOLO, variante «La fonderia». Rotta di lavoro, non indicizzata.',
   robots: { index: false, follow: false },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#222222',
+  // La carta del tema, come in A, B e D: `--regolo-paper` di `[data-theme='c']`.
+  // Era rimasto il carbone della direzione precedente («La parete»).
+  themeColor: '#f3f0ec',
 }
 
 export default function LayoutC({ children }: { children: React.ReactNode }) {

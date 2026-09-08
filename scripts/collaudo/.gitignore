@@ -1,0 +1,10 @@
+# Playwright si installa qui (`npm i playwright`) o si collega da fuori con un
+# symlink: in tutti e due i casi non entra nel repo.
+node_modules/
+package.json
+package-lock.json
+
+# `sweep.mjs` scrive gli screenshot a scorrimento nella cartella da cui gira.
+# Sono materiale di una passata, non del repo: quelli che restano si scelgono
+# a mano e si mettono in `kit/reference/_dopo/`.
+sweep-*.jpeg

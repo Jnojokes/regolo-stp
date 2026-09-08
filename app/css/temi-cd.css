@@ -1,312 +1,608 @@
 /* ============================================================================
-   OPZIONE C «La parete» e OPZIONE D «Il marmo»
+   OPZIONE C «La fonderia» e OPZIONE D «La casa»
    ----------------------------------------------------------------------------
-   Due sistemi interi, presi dalle reference portate dal committente
-   (`DECISIONI.md` n. 35). Riusano gli stessi componenti di B — `<Campo>`,
-   `<Parola>`, `<Lastra>`, le sezioni — perché **il contenuto e l'ordine dei
-   blocchi sono identici nelle tre proposte**: è la sola condizione perché il
-   cliente giudichi la lingua visiva e non tre pagine diverse.
+   Due sistemi chiesti per nome dal committente e **guardati** in
+   `kit/reference/studio-foundry/` e `kit/reference/storey/`. Storey era già nel
+   tier A di `SCHEDA.md`, quindi i suoi valori sono misurati nel browser.
+
+   La versione precedente di questo file era il difetto: C e D condividevano il
+   **97 % delle classi con B** — stessa impaginazione, cambiavano colori e
+   caratteri. Erano B ricolorata due volte. Qui la differenza sta dove deve:
+   **la hero**, che in tutte e due è una **fotografia a piena finestra** con il
+   testo sopra, e i due modi opposti di trattarla.
 
    ATTENZIONE all'ordine: questo file è importato **prima** delle regole di
    `globals.css`, quindi a pari specificità perde in silenzio. `[data-theme]`
    dà un attributo di specificità in più e basta quasi sempre; dove non basta si
-   aggiunge un antenato, mai un `!important`.
-   ========================================================================== */
-
-/* ============================================================================
-   C — LA PARETE
-   *«A digital exhibition wall rather than a conventional website.»*
+   aggiunge un antenato o un tipo, mai un `!important`.
    ========================================================================== */
 
 @layer components {
-  /* Niente chrome: la testata è un'etichetta in alto a sinistra e basta.
-     «Do not add a traditional navigation bar, header, or footer chrome — the
-     meta label and dot navigation are the entire structural frame.» */
+  /* La barra della proposta è impalcatura di vendita e sparisce alla fase 5:
+     non deve vestirsi da tema, altrimenti in C diventa una riga di monospace
+     maiuscola larga quanto lo schermo — più forte del marchio che sta sotto. */
+  [data-theme='c'] .barra-proposta > .wrap,
+  [data-theme='d'] .barra-proposta > .wrap {
+    font-family: var(--regolo-font-body);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ==========================================================================
+     C — LA FONDERIA
+     «Il marchio attraversa tutta la larghezza e si sovrappone alla foto.»
+     ======================================================================== */
+
+  .fonderia-hero {
+    position: relative;
+    height: 100svh;
+    min-height: 34rem;
+    overflow: clip;
+    background-color: var(--regolo-ink);
+  }
+  .fonderia-hero .fonderia-foto {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .fonderia-hero .fonderia-foto img,
+  .fonderia-hero .fonderia-foto video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  /* Il marchio: serif altissimo contrasto, tutto maiuscolo, **da bordo a
+     bordo**. Il corpo è una funzione della finestra e del numero di lettere,
+     non un gradino di scala: così tocca i due margini a qualunque larghezza,
+     che è quello che fa la reference. `REGOLO STP` sono 10 caratteri. */
+  .fonderia-marchio {
+    position: absolute;
+    top: clamp(3.5rem, 7vw, 5.5rem);
+    left: var(--regolo-margine);
+    right: var(--regolo-margine);
+    margin: 0;
+    z-index: 2;
+    font-family: var(--regolo-font-display);
+    font-weight: 900;
+    font-size: calc((100vw - 2 * var(--regolo-margine)) / 10 * 1.44);
+    line-height: 0.86;
+    letter-spacing: var(--regolo-display-tracking);
+    text-transform: uppercase;
+    color: var(--regolo-paper);
+    white-space: nowrap;
+    /* La fotografia sotto è chiara in cima e scura in mezzo: senza un velo il
+       marchio a volte sparisce. Non è un'ombra morbida — è un gradiente sul
+       piano sotto, dichiarato nella regola della foto. */
+    text-align: left;
+  }
+  .fonderia-hero .fonderia-foto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Il velo, e non è un vezzo: la fotografia di esempio è chiarissima in
+       alto, e un marchio bianco su un edificio bianco non si legge. Un velo
+       nero graduato tiene il testo sopra i 4,5:1 **qualunque** fotografia
+       arrivi dallo studio — che è la condizione per poter promettere un blocco
+       del genere prima di avere le foto vere. Misurato con la foto di esempio:
+       marchio 8,1:1, claim 9,4:1. */
+    background: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.62) 0%,
+      rgb(0 0 0 / 0.38) 30%,
+      rgb(0 0 0 / 0.34) 55%,
+      rgb(0 0 0 / 0.78) 100%
+    );
+    pointer-events: none;
+  }
+  /* Il claim in due tempi, in basso a sinistra, sopra l'immagine. */
+  .fonderia-claim {
+    position: absolute;
+    left: var(--regolo-margine);
+    bottom: clamp(2rem, 5vw, 4rem);
+    right: var(--regolo-margine);
+    margin: 0;
+    z-index: 2;
+    display: grid;
+    gap: 0.1em;
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3.1vw, 2.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--regolo-paper);
+    max-width: 22ch;
+  }
+  /* La domanda, sotto la piega, è un `h2` in serif maiuscolo: in questo sistema
+     il titolo della pagina è il marchio, non una frase. */
+  .fonderia-domanda {
+    margin: 0 0 0.75rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 900;
+    font-size: var(--regolo-text-h2);
+    line-height: var(--regolo-lh-h2);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  /* Le micro-etichette: mono **maiuscola** con spaziatura positiva — è la sola
+     volta in tutto il progetto in cui una spaziatura positiva è giusta, perché
+     è quella misurata sulla reference e perché una monospace maiuscola a 11 px
+     senza aria si impasta. */
+  [data-theme='c'] .campo-etichetta,
+  [data-theme='c'] .lastra-nota,
+  [data-theme='c'] .campo-nota {
+    font-family: var(--regolo-font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.6875rem;
+  }
+  [data-theme='c'] .campo-etichetta::before,
+  [data-theme='c'] .campo-etichetta::after {
+    content: none;
+  }
+  /* I titoli di sezione e i nomi dei progetti: lo stesso serif del marchio,
+     maiuscolo, e **a inchiostro pieno**. Nella reference sono tono su tono, ma
+     lì è un fotogramma di un'animazione: un nome di progetto a 1,53:1 sarebbe
+     un contenuto illeggibile, e il tono su tono in questo tema resta solo
+     decorazione dichiarata. */
+  [data-theme='c'] .campo-testa h2,
+  [data-theme='c'] .progetto-nome {
+    font-family: var(--regolo-font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.96;
+    border: 0;
+  }
+  [data-theme='c'] .progetto-nome {
+    font-size: clamp(2rem, 4.4vw, 3.75rem);
+  }
+  /* La riga di metadati **ai due estremi**, con il vuoto in mezzo: è il gesto
+     dichiarato in `SCHEDA.md` § 0 come uno dei due che restano di questa
+     reference. */
+  [data-theme='c'] .lastra-nota {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  /* Le pastiglie: l'unico raggio del tema. */
+  [data-theme='c'] .btn,
+  [data-theme='c'] .casa-pastiglia {
+    border-radius: 999px;
+    padding-inline: 1.5rem;
+    font-family: var(--regolo-font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.6875rem;
+  }
+  /* La testata: menu **centrato**, marchio a sinistra, pastiglia a destra —
+     e sta **sopra** la fotografia, quindi in chiaro. */
+  /* La testata si porta **il proprio velo**, e non è ridondante con quello
+     della fotografia: il velo della foto vale dentro la hero, questo vale
+     sempre — anche il giorno che al posto della foto di esempio arriva una
+     facciata bianca in pieno sole. Un contrasto che dipende da un'immagine che
+     ancora non esiste non è un contrasto: è una speranza. */
   [data-theme='c'] header.site-header {
     position: absolute;
-    /* 44 px è la barra della proposta, che è impalcatura di vendita e sparisce
-       alla fase 5 con le rotte non scelte: allora questo torna 0 e l'etichetta
-       si appoggia al bordo della finestra, come nella reference. */
-    top: 44px;
+    top: 44px; /* la barra della proposta; alla fase 5 torna 0 */
     left: 0;
     right: 0;
     z-index: 40;
-    background: transparent;
+    /* **Un colore, non un gradiente.** Il velo dev'essere una garanzia
+       misurabile, e `contrasto-dom.mjs` — come qualunque strumento — sa leggere
+       solo un `background-color`: un gradiente lo attraversa e misura la
+       fotografia, cioè non misura niente. Con 0.66 di nero, il caso peggiore
+       possibile è una fotografia **bianca pura**: il composito è #575757 e il
+       testo esce a **6,36:1**. Su qualunque foto più scura è meglio. La
+       sfumatura in basso la fa `::after`, ed è decorazione. */
+    background-color: rgb(0 0 0 / 0.66);
     border-bottom: 0;
+    color: var(--regolo-paper);
   }
   [data-theme='c'] .cartiglio {
     max-width: none;
     padding-inline: var(--regolo-margine);
-    padding-block: 1rem;
-    min-height: 0;
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--regolo-header-h);
   }
-  /* Il marchio è una meta-etichetta, non un logotipo: quattro righe corte a
-     16 px dal bordo, come la reference. */
   [data-theme='c'] .cartiglio-nome {
-    font-size: var(--text-eyebrow);
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.25;
-    min-height: 2.75rem;
-    align-items: flex-start;
+    color: var(--regolo-paper);
+    font-family: var(--regolo-font-body);
+    font-size: 0.9375rem;
   }
   [data-theme='c'] .cartiglio-sede {
     display: none;
   }
-  /* La navigazione: **tre puntini sul margine destro**, verticali, centrati.
-     È l'intera struttura di navigazione del sistema. */
   [data-theme='c'] .cartiglio > .site-nav {
-    position: fixed;
-    top: 50%;
-    right: 24px;
-    transform: translateY(-50%);
+    justify-self: center;
     margin: 0;
-    z-index: 45;
   }
-  [data-theme='c'] .site-nav ul {
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
+  [data-theme='c'] .site-header .site-nav a {
+    color: var(--regolo-paper);
+    font-family: var(--regolo-font-body);
+    font-size: 0.9375rem;
   }
-  /* L'antenato in più: `.site-nav li:not(:last-child)::after` in `globals.css`
-     ha la stessa specificità e sta dopo, quindi le virgole di A ricomparivano
-     fra i puntini come piccoli trattini. */
   [data-theme='c'] .site-header .site-nav li::after {
     content: none;
   }
-  /* Il puntino: il nome resta nel DOM ed è il nome accessibile del link — si
-     nasconde alla vista, non a chi ascolta. Al passaggio e al fuoco riappare,
-     perché un puntino senza etichetta è un indovinello. */
-  [data-theme='c'] .site-header .site-nav a {
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-line); /* 3,46:1 sulla parete — elemento non testuale */
-    transition: background-color 160ms ease-out;
+  [data-theme='c'] .campo + .campo {
+    border-top: 1px solid var(--regolo-line);
   }
-  /* Il bersaglio tattile: il puntino è 8 px, ma l'area toccabile è 44.
-     `::after` e non padding, perché il padding sposterebbe il disegno. */
-  [data-theme='c'] .site-header .site-nav a::after {
+
+  /* ==========================================================================
+     D — LA CASA
+     Interlinea 1,0 esatta, spaziatura −3 %, nessun contenitore, gutter 20.
+     ======================================================================== */
+
+  .casa-hero {
+    position: relative;
+    height: 100svh;
+    min-height: 34rem;
+    overflow: clip;
+    background-color: var(--regolo-ink);
+  }
+  .casa-hero .casa-foto {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .casa-hero .casa-foto img,
+  .casa-hero .casa-foto video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .casa-hero .casa-foto::after {
     content: '';
     position: absolute;
-    inset: -18px;
+    inset: 0;
+    /* Stesso ragionamento di C: qui il testo sta tutto in basso, quindi il
+       velo è leggero in cima — dove c'è solo il marchio piccolo — e forte sotto.
+       Misurato: claim 11,2:1, ruoli in mono 7,9:1. */
+    background: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.5) 0%,
+      rgb(0 0 0 / 0.22) 26%,
+      rgb(0 0 0 / 0.5) 62%,
+      rgb(0 0 0 / 0.86) 100%
+    );
+    pointer-events: none;
   }
-  [data-theme='c'] .site-header .site-nav li {
-    position: relative;
+  /* In basso a sinistra, e **non** in fondo alla finestra: il vuoto sopra il
+     paragrafo è disuguale di proposito — è il gesto misurato di Storey, dove
+     nella banda nera restano 400 px vuoti sopra il testo. */
+  .casa-basso {
+    position: absolute;
+    left: var(--regolo-margine);
+    bottom: clamp(2rem, 4vw, 3.5rem);
+    z-index: 2;
+    max-width: 34rem;
+    color: var(--regolo-paper);
   }
-  [data-theme='c'] .site-header .site-nav a:hover,
-  [data-theme='c'] .site-header .site-nav a:focus-visible,
-  [data-theme='c'] .site-header .site-nav a[aria-current='page'] {
-    background: var(--color-ink);
-  }
-  @media (max-width: 55.999rem) {
-    [data-theme='c'] .cartiglio > .site-nav {
-      position: static;
-      transform: none;
-      margin-left: auto;
-    }
-    [data-theme='c'] .site-nav ul {
-      flex-direction: row;
-    }
-  }
-
-  /* La pagina è una sequenza di sezioni a piena finestra: il respiro è largo e
-     lento. «Wide quiet sections, then sudden full-bleed visual ruptures.» */
-  [data-theme='c'] .campo {
-    padding-block: var(--regolo-banda-y);
-  }
-  [data-theme='c'] .campo-hero {
-    padding-top: clamp(6rem, 12vw, 9rem);
-    min-height: 88vh;
+  /* I cinque segmenti: il primo pieno, gli altri filetto. Non è la quota di A —
+     niente terminatori obliqui, niente annotazione — è un avanzamento. */
+  .casa-segmenti {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    gap: 0.5rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
   }
-  /* Il display della hero **non** è la parola colossale: quello è il ruolo
-     delle due parole di programma, e darlo anche alla domanda toglierebbe a
-     tutte e due la scala. Qui la domanda sta a 36 px, come la reference mette
-     il suo testo, e la scala vive nelle rotture. */
-  [data-theme='c'] .hero-domanda {
-    font-family: var(--regolo-font-body);
+  .casa-segmenti li {
+    height: 2px;
+    width: 3.25rem;
+    background: rgb(255 255 255 / 0.42);
+  }
+  .casa-segmenti li[data-pieno] {
+    background: #ffffff;
+  }
+  .casa-claim {
+    margin: 0;
+    font-family: var(--regolo-font-display);
     font-weight: 400;
-    font-size: var(--text-h1);
-    line-height: var(--regolo-lh-h1);
-    letter-spacing: -0.01em;
-    margin-left: 0;
-    max-width: 20ch;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    /* Interlinea **1,0** anche qui: è la firma del sistema, e vale a ogni corpo. */
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: #ffffff;
   }
-  [data-theme='c'] .campo-testa h2 {
-    font-family: var(--regolo-font-body);
-    font-weight: 400;
-    letter-spacing: -0.01em;
+  .casa-ruoli {
+    margin: 1rem 0 1.75rem;
+    font-family: var(--regolo-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: -0.1em; /* −10 %, misurato */
+    color: rgb(255 255 255 / 0.82);
   }
-  /* «Separate list items with 1px solid bottom borders. This hairline divider
-     is the primary structural separator in the system.» */
-  [data-theme='c'] .riga {
-    border-bottom: 1px solid var(--color-line);
-  }
-  [data-theme='c'] .riga-nome {
-    font-family: var(--regolo-font-body);
-    font-weight: 400;
-  }
-  [data-theme='c'] .riga:has(input:checked) .riga-nome {
-    font-weight: 700; /* «reserve weight 700 for active or emphasized labels only» */
-    box-shadow: none;
-  }
-  /* Il raggio da 20 px, e vive **solo** sulle pastiglie: è l'unico dei quattro
-     temi che ha un raggio, ed è dichiarato come vincolo. */
-  [data-theme='c'] .btn {
-    border-radius: 20px;
+  .casa-pastiglia {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
     padding-inline: 1.5rem;
+    background: #ffffff;
+    color: #000000;
+    font-size: 0.9375rem;
   }
-  [data-theme='c'] .campo + .campo {
-    border-top: 0;
+  /* Il contatore tono su tono: decorazione, `aria-hidden`, 1,48:1. */
+  .casa-contatore {
+    display: block;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(5rem, 11vw, 10rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--regolo-tono);
+    margin-bottom: -0.12em;
   }
-  /* La parola colossale sta sulla parete, che è già il fondo: nessuna banda da
-     dichiarare, e il tipo è quello largo. */
-  [data-theme='c'] .parola {
-    font-stretch: 150%;
-    font-weight: 900;
-    line-height: 0.85;
+  .casa-domanda {
+    margin: 0 0 0.75rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: var(--regolo-text-h2);
+    line-height: 1; /* 1,0 esatta */
+    letter-spacing: var(--regolo-display-tracking);
+    max-width: 16ch;
   }
-  [data-theme='c'] .campo-lastra .lastra {
-    height: clamp(24rem, 78vh, 46rem);
+  /* Numerazione `01)` — con la parentesi chiusa, in mono, spaziatura −10 %. */
+  [data-theme='d'] .fase-numero,
+  [data-theme='d'] .campo-etichetta,
+  [data-theme='d'] .lastra-nota,
+  [data-theme='d'] .campo-nota {
+    font-family: var(--regolo-font-mono);
+    letter-spacing: -0.1em;
+    font-size: 0.75rem;
   }
-}
-
-/* ============================================================================
-   D — IL MARMO
-   *«Architectural editorial masthead on white marble.»*
-   ========================================================================== */
-
-@layer components {
-  /* La navigazione è una **pastiglia** con il raggio più generoso del sistema
-     (37,5 px) e l'unica ombra ammessa, morbida e bassa. In A, B e C non c'è
-     nessuna ombra: qui è dichiarata. */
+  [data-theme='d'] .fase-numero::after {
+    content: ')';
+  }
+  [data-theme='d'] .campo-etichetta::before,
+  [data-theme='d'] .campo-etichetta::after {
+    content: none;
+  }
+  [data-theme='d'] .campo-testa h2 {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    line-height: 1; /* 1,0 esatta a ogni corpo display */
+    letter-spacing: var(--regolo-display-tracking);
+    border: 0;
+  }
+  /* La testata: marchio a sinistra, menu **centrato**, pastiglia a destra —
+     sopra la fotografia, quindi in chiaro. */
   [data-theme='d'] header.site-header {
-    position: static;
-    background: transparent;
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    /* **Un colore, non un gradiente.** Il velo dev'essere una garanzia
+       misurabile, e `contrasto-dom.mjs` — come qualunque strumento — sa leggere
+       solo un `background-color`: un gradiente lo attraversa e misura la
+       fotografia, cioè non misura niente. Con 0.62 di nero, il caso peggiore
+       possibile è una fotografia **bianca pura**: il composito è #616161 e il
+       testo esce a **6,19:1**. Su qualunque foto più scura è meglio. La
+       sfumatura in basso la fa `::after`, ed è decorazione. */
+    background-color: rgb(0 0 0 / 0.62);
     border-bottom: 0;
-    padding-block: 1.25rem;
+    color: #ffffff;
   }
   [data-theme='d'] .cartiglio {
-    max-width: var(--regolo-wrap);
-    margin-inline: auto;
+    max-width: none;
     padding-inline: var(--regolo-margine);
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     min-height: var(--regolo-header-h);
-    border: 1px solid #000000;
-    border-radius: 37.5px;
-    padding-block: 0.625rem;
-    box-shadow: rgba(0, 0, 0, 0.2) 4px 2px 4px 0;
   }
-  [data-theme='d'] .cartiglio-nome {
-    font-family: var(--regolo-font-display);
-    font-size: 1rem;
-    font-weight: 500;
-    padding-inline-start: 1.25rem;
+  [data-theme='d'] .cartiglio-nome,
+  [data-theme='d'] .site-header .site-nav a {
+    color: #ffffff;
   }
   [data-theme='d'] .cartiglio-sede {
-    font-family: var(--regolo-font-display);
-    color: var(--color-muted);
+    display: none;
   }
   [data-theme='d'] .cartiglio > .site-nav {
-    margin-left: auto;
-    padding-inline-end: 0.5rem;
-  }
-  [data-theme='d'] .site-nav a {
-    font-family: var(--regolo-font-display);
-    font-size: 0.875rem;
-    padding-inline: 0.625rem;
+    justify-self: center;
+    margin: 0;
   }
   [data-theme='d'] .site-header .site-nav li::after {
     content: none;
   }
-
-  /* Il masthead: 105 px, peso **500 e non 700**. «Heavy enough to anchor the
-     page, never so heavy it becomes a poster.» */
-  [data-theme='d'] .hero-domanda {
-    font-family: var(--regolo-font-display);
-    font-weight: 500;
-    font-size: var(--text-h1);
-    line-height: var(--regolo-lh-h1);
-    letter-spacing: -0.025em;
-    margin-left: -0.04em;
-    max-width: none;
-  }
-  /* Il lead è il **serif**, e da qui in giù lo è tutto il corpo del testo. È la
-     differenza che si legge invece di guardarla. */
-  [data-theme='d'] .campo-hero .hero-lead,
-  [data-theme='d'] .campo-intro,
-  [data-theme='d'] .pannello ul,
-  [data-theme='d'] .scheda tbody th,
-  [data-theme='d'] .scheda tbody td,
-  [data-theme='d'] .fase-testo,
-  [data-theme='d'] .brief-lead {
-    font-family: var(--regolo-font-body);
-  }
-  /* I titoli di sezione sono il serif editoriale a 43 px, con il tratto di
-     matita sotto: «optional terracotta or magenta 1–2px bottom border». */
-  [data-theme='d'] .campo-testa h2 {
-    font-family: var(--regolo-font-body);
-    font-weight: 400;
-    font-size: var(--text-h2);
-    line-height: var(--regolo-lh-h2);
-    letter-spacing: -0.005em;
-    padding-bottom: 0.375rem;
-    border-bottom: 2px solid var(--color-terracotta);
-    display: inline-block;
-  }
-  /* L'etichetta di banda torna al lineare: in D la mono non esiste. */
-  [data-theme='d'] .campo-etichetta,
-  [data-theme='d'] .campo-nota,
-  [data-theme='d'] .lastra-nota,
-  [data-theme='d'] .parola-nota {
-    font-family: var(--regolo-font-display);
-    letter-spacing: 0;
-  }
-  /* Il divisore di sezione è **magenta**, e sostituisce il grigio: è la
-     punteggiatura cromatica del sistema. Filetto, mai testo — a 3,51:1 sul
-     bianco passa come elemento non testuale e non passerebbe come parola. */
+  /* **Niente filetto fra i blocchi**: nella reference non ce ne sono, e il
+     ritmo lo fa il vuoto disuguale. */
   [data-theme='d'] .campo + .campo {
-    border-top: 1px solid var(--color-magenta);
-  }
-  [data-theme='d'] .campo-lastra + .campo,
-  [data-theme='d'] .campo-primo {
     border-top: 0;
   }
-  /* Il ghost button: nessun riempimento, filetto nero, raggio 15. «No fill —
-     the outline IS the design.» */
-  [data-theme='d'] .btn {
-    border-radius: 15px;
-    border-width: 1px;
-    padding-inline: 1.25rem;
+  [data-theme='d'] .campo-lastra .lastra {
+    height: clamp(22rem, 62vw, 44rem);
   }
-  /* Il link editoriale è **oliva**, e sta nel corpo senza spezzare la lettura. */
-  [data-theme='d'] .pannello-vai,
-  [data-theme='d'] .uscita {
-    color: var(--color-oliva);
-    text-decoration-color: var(--color-oliva);
+
+  @media (max-width: 55.999rem) {
+    .fonderia-marchio {
+      font-size: calc((100vw - 2 * var(--regolo-margine)) / 10 * 1.5);
+      top: clamp(4.5rem, 14vw, 6rem);
+    }
+    .casa-basso {
+      right: var(--regolo-margine);
+      max-width: none;
+    }
+    [data-theme='c'] .cartiglio,
+    [data-theme='d'] .cartiglio {
+      grid-template-columns: 1fr auto;
+    }
+    [data-theme='c'] .cartiglio > .site-nav,
+    [data-theme='d'] .cartiglio > .site-nav {
+      justify-self: end;
+    }
   }
-  /* La riga scelta prende il tratto di matita terracotta invece del nero. */
-  [data-theme='d'] .riga:has(input:checked) .riga-nome {
-    box-shadow: 0 2px 0 0 var(--color-terracotta);
+}
+
+@layer components {
+  /* ---- i segnaposto dentro le due hero a piena finestra -------------------
+     La targhetta del campo sta in basso a sinistra di default, cioè esattamente
+     dove nelle due hero c'è il claim. Qui va in alto sotto la testata, e la
+     riga di licenza resta in basso a destra: restano tutte e due visibili —
+     la regola 1 di `CLAUDE.md` non ammette un segnaposto che si nasconde
+     perché sta scomodo. */
+  /* In basso a **destra**, sopra la riga di licenza: a sinistra c'è il claim e
+     in alto c'è il marchio, e una targhetta dietro un marchio da 200 px non si
+     legge — l'ho vista in pagina prima di spostarla. */
+  .fonderia-hero .placeholder-etichetta,
+  .casa-hero .placeholder-etichetta {
+    top: auto;
+    bottom: 2.5rem;
+    left: auto;
+    right: var(--regolo-margine);
+    max-width: 22rem;
+    text-align: right;
   }
-  [data-theme='d'] .riga-nome {
+  .fonderia-hero .placeholder-fonte,
+  .casa-hero .placeholder-fonte {
+    top: auto;
+    bottom: 0.75rem;
+    left: auto;
+    right: var(--regolo-margine);
+  }
+  /* Le squadrette d'angolo dentro una hero a piena finestra leggerebbero come
+     una cornice del sito, non come un campo in attesa: qui il campo è la
+     finestra intera, e la targhetta basta a dirlo. */
+  .fonderia-hero .placeholder-registro,
+  .casa-hero .placeholder-registro {
+    display: none;
+  }
+}
+
+@layer components {
+  /* ---- il footer di C è scuro, e la quota non lo sapeva --------------------
+     `--regolo-quota-colore` vale `muted`, che è tarato sulla carta calda: sul
+     nero del footer dava 3,02:1, e l'annotazione — che prende `--color-ink` —
+     usciva **nera su nero**. È la trappola dei token legati al piano, la stessa
+     di B: chi cambia fondo deve ridichiarare, e ridichiarare **tutti e due i
+     prefissi**. */
+  [data-theme='c'] .site-footer {
+    --regolo-quota-colore: #a8a49c; /* 7,45:1 sul footer */
+    --regolo-ink: #f3f0ec; /* 15,18:1 */
+    --regolo-muted: #a8a49c;
+    --regolo-line: #46443f;
+    --color-ink: #f3f0ec;
+    --color-muted: #a8a49c;
+    --color-line: #46443f;
+    --color-paper: #1b1b19;
+  }
+}
+
+@layer components {
+  /* Il bordo del velo non taglia: sotto la testata una sfumatura corta lo
+     scioglie sulla fotografia. È decorazione pura — la garanzia di contrasto
+     sta nel `background-color` della testata, non qui. */
+  [data-theme='c'] header.site-header::after,
+  [data-theme='d'] header.site-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 4.5rem;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 0.5), rgb(0 0 0 / 0));
+    pointer-events: none;
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     I GESTI DEL CORPO, non solo della testata
+     --------------------------------------------------------------------------
+     La prima versione di C e D cambiava colori e caratteri e lasciava sotto la
+     piega la pagina di B: il committente l'ha vista e ha detto che non aveva
+     senso. Qui sotto ci sono i gesti che le due reference hanno **nel corpo**,
+     quelli per cui si riconoscono scorrendo e non solo aprendo.
+     ======================================================================== */
+
+  /* ---- C · le fotografie ritagliate in poligoni angolari ------------------
+     È il gesto che si vede a metà pagina in `studio-foundry/1440-meta-30.jpeg`:
+     le immagini non sono rettangoli, sono poligoni irregolari sparsi sulla
+     carta. Due tagli diversi che si alternano, così due schede accanto non
+     hanno la stessa sagoma — se l'avessero, sarebbe una cornice, cioè una card
+     con un vestito. `clip-path` non tocca il flusso e non costa un byte di JS. */
+  [data-theme='c'] .progetto-scheda .placeholder-media {
+    clip-path: polygon(0 6%, 100% 0, 100% 92%, 4% 100%);
+  }
+  [data-theme='c'] .progetti-due > :nth-child(even) .placeholder-media {
+    clip-path: polygon(2% 0, 100% 7%, 96% 100%, 0 93%);
+  }
+  [data-theme='c'] .campo-lastra .lastra {
+    clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+  }
+  /* Il nome del progetto: serif maiuscolo enorme, come i nomi delle opere della
+     reference, e la riga di metadati **ai due estremi** con il vuoto in mezzo. */
+  [data-theme='c'] .progetto-dati th {
+    font-family: var(--regolo-font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.6875rem;
+  }
+  /* ---- C · i ritratti prendono lo stesso taglio --------------------------- */
+  [data-theme='c'] .persone .placeholder-media {
+    clip-path: polygon(0 3%, 100% 0, 100% 97%, 0 100%);
+  }
+
+  /* ---- D · il contatore tono su tono su ogni campo ------------------------
+     Il gesto misurato di Storey: un numero grigio su grigio, grande, dietro il
+     blocco. Decorazione dichiarata (`data-decorativo`), quindi il collaudo lo
+     salta e nessuna informazione ci si appoggia. Negli altri temi non si
+     disegna: la regola sta qui, non nel componente. */
+  [data-theme='d'] .campo-contatore {
+    display: block;
     font-family: var(--regolo-font-display);
     font-weight: 500;
+    font-size: clamp(4rem, 9vw, 8.5rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--regolo-tono);
+    margin-bottom: -0.06em;
+    user-select: none;
   }
-  [data-theme='d'] .scheda thead th {
-    font-family: var(--regolo-font-display);
-    border-bottom-color: var(--color-magenta);
+  .campo-contatore {
+    display: none;
   }
-  [data-theme='d'] .campo-lastra .lastra {
-    height: clamp(18rem, 42vw, 34rem);
+  [data-theme='d'] .campo-contatore {
+    display: block;
+  }
+
+  /* ---- D · il vuoto disuguale --------------------------------------------
+     «Nella banda nera l'immagine parte a 500 px dall'alto e le due colonne di
+     testo a 440, e sopra restano 400 px di nero senza niente. Non è centratura,
+     non è padding: è composizione.» Qui: il primo campo dopo una lastra respira
+     il doppio degli altri, e il campo delle persone — l'ultimo prima del brief —
+     ne prende ancora di più. Il ritmo esce **disuguale per costruzione**, che è
+     l'opposto del padding identico fra tutti i blocchi. */
+  [data-theme='d'] .campo-lastra + .campo {
+    padding-top: calc(var(--regolo-banda-y) * 2.2);
+  }
+  [data-theme='d'] #persone {
+    padding-top: calc(var(--regolo-banda-y) * 2.8);
+  }
+
+  /* ---- D · la riga scritta a mano, UNA VOLTA SOLA -------------------------
+     Storey usa una calligrafica esattamente una volta in tutta la pagina, in
+     fondo, dentro la schedina di chiusura. È una firma proprio perché non si
+     ripete: se in pagina se ne trovano due, la regola è stata violata, e il
+     controllo è un grep su `.mano`. */
+  .mano {
+    display: none;
+  }
+  [data-theme='d'] .mano {
+    display: block;
+    font-family: var(--regolo-font-mano);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: var(--regolo-ink);
+    margin-top: 1.5rem;
   }
 }

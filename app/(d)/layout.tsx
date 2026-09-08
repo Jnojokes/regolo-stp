@@ -7,9 +7,12 @@ import { site } from '@/lib/site'
 import { Misurazione } from '@/components/Misurazione'
 
 /**
- * Root layout dell'opzione D — «Il marmo».
+ * Root layout dell'opzione D — «La casa», dal sistema di **Storey
+ * Architecture** (`kit/reference/storey/`), chiesto per nome dal committente e
+ * unica delle quattro reference già misurata nel tier A di `SCHEDA.md`.
+ *
  * Rotta di proposta, non indicizzabile: sparisce alla fase 5 con le altre non
- * scelte (`DECISIONI.md` n. 1 e n. 35).
+ * scelte (`DECISIONI.md` n. 1, n. 35 e n. 37).
  */
 export const metadata: Metadata = {
   title: {
@@ -17,7 +20,7 @@ export const metadata: Metadata = {
     template: `%s — ${site.nome} (opzione D)`,
   },
   description:
-    'Proposta di homepage per REGOLO, variante «Il marmo». Rotta di lavoro, non indicizzata.',
+    'Proposta di homepage per REGOLO, variante «La casa». Rotta di lavoro, non indicizzata.',
   robots: { index: false, follow: false },
 }
 

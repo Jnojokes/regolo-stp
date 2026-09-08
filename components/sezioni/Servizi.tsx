@@ -62,12 +62,15 @@ const MANCA_SERVE = daCliente('cosa serve da te per energia e acustica')
 export function Servizi({
   variante,
   id = 'servizi',
+  contatore,
 }: {
   /** `essenziale` = opzione A, sei righe d'indice · `tabella` = opzione B, la scheda tecnica. */
   variante: 'essenziale' | 'tabella'
   id?: string
+  /** Il contatore tono su tono dell'opzione D: decorazione, `aria-hidden`. */
+  contatore?: string
 }) {
-  if (variante === 'tabella') return <ServiziTabella id={id} />
+  if (variante === 'tabella') return <ServiziTabella id={id} contatore={contatore} />
 
   return (
     <Sezione
@@ -138,10 +141,11 @@ export function Servizi({
  * buchi** invece di riempirli (misurato: `Site Area` e `Floor Area` sono vuote
  * su circa un terzo delle 25 righe).
  */
-function ServiziTabella({ id }: { id: string }) {
+function ServiziTabella({ id, contatore }: { id: string; contatore?: string }) {
   return (
     <Campo
       id={id}
+      contatore={contatore}
       etichetta="cosa facciamo"
       titolo="Sei percorsi. Ognuno con quello che serve da te."
       azione={

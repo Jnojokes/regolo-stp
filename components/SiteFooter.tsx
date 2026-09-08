@@ -126,6 +126,17 @@ export function SiteFooter({
         </div>
       )}
 
+      {/* La riga scritta a mano: **una volta sola in tutta la pagina**, e solo
+          nell'opzione D. È la firma di Storey, che usa una calligrafica
+          esattamente una volta, in fondo. Negli altri tre temi il CSS non la
+          disegna nemmeno — la regola sta lì, non qui, così non si può
+          «accendere» per sbaglio da un altro blocco. */}
+      {variante === 'pastiglia' ? (
+        <div className="wrap">
+          <p className="mano">Grazie di essere arrivato fin qui.</p>
+        </div>
+      ) : null}
+
       <div className="wrap site-footer-coda">
         <p>
           © {new Date().getFullYear()} {site.nomeEsteso} — {site.qualifica}, {site.citta}

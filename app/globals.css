@@ -493,99 +493,94 @@
 }
 
 /* ============================================================================
-   Tema C — «La parete» · il sistema di Iad-lab
+   Tema C — «La fonderia» · il sistema di Studio Foundry
    ----------------------------------------------------------------------------
-   *«Iad-lab operates as a digital exhibition wall rather than a conventional
-   website.»* È la descrizione, ed è anche la regola di composizione: la pagina
-   è una **sequenza di sezioni a piena finestra** — parola colossale, testo
-   breve, fotografia a 100vw, testo breve, parola colossale.
+   Chiesto per nome dal committente. Le prove stanno in
+   `kit/reference/studio-foundry/`, guardate: la hero è **una fotografia a piena
+   finestra** con tutto sovrapposto, il marchio in serif altissimo contrasto
+   TUTTO MAIUSCOLO che attraversa l'intera larghezza sopra la foto, il menu
+   centrato piccolo, la pastiglia scura in alto a destra; più giù i nomi dei
+   progetti allo stesso corpo enorme, i metadati **ai due estremi della riga**
+   con il vuoto in mezzo, e le fotografie **ritagliate in poligoni angolari**
+   invece che in rettangoli.
 
-   Tre cose che nessuna delle altre tre proposte fa:
-
-   1. **La palette è binaria e i colori sono vietati.** *«Do not introduce any
-      color beyond the four neutrals. Chromatic accents are forbidden.»* La
-      fotografia è l'unica sorgente di colore di tutto il sistema — ed è per
-      questo che qui le immagini pesano più che altrove: senza, la pagina è
-      grigia per costruzione.
-   2. **Non c'è chrome.** *«Do not add a traditional navigation bar, header, or
-      footer chrome. The meta label and dot navigation are the entire structural
-      frame.»* Niente barra, niente hamburger, niente bottoni: tre puntini sul
-      margine destro e un'etichetta in alto a sinistra.
-   3. **Gli angoli sono tondi, e solo a 20 px.** È l'unico dei quattro temi con
-      un raggio, ed è dichiarato come vincolo: *«do not use border-radius values
-      other than 15px or 20px»*. In A, B e D il raggio è zero.
-
-   L'unico segnaposto colorato resta il timbro: su carbone si schiarisce.
+   `SCHEDA.md` aveva escluso Studio Foundry dal tier A perché era la reference
+   che i primi prototipi avevano già parafrasato e perché i suoi token misurati
+   sono i cluster 1 e 5. Quella nota resta vera **come difesa da un default** —
+   qui la reference *è* il brief, e la skill dice di seguirlo alla lettera.
    ========================================================================== */
 
 [data-theme='c'] {
-  --regolo-paper: #222222; /* la parete: l'unico fondo del sistema */
-  --regolo-surface: #2a2b2d; /* la sola superficie appena staccata, per i campi */
-  --regolo-ink: #f8f8f8; /* 14,98:1 sulla parete */
-  /* 5,39:1 sulla parete **e** 4,80:1 sul campo `#2A2B2D`: il secondario deve
-     passare su tutte e due le superfici del tema, non solo sul fondo di pagina.
-     A `#8E8E90` stava a 4,33 sul campo — sotto soglia, e il collaudo l'ha preso
-     su tre stringhe del brief. */
-  --regolo-muted: #969698;
-  --regolo-muted-invert: #222222;
-  --regolo-line: #757577; /*  3,46:1 — hairline e stato a riposo dei puntini, MAI testo */
-  --regolo-ph: #2a2b2d; /*  1,10:1 dalla parete: superficie, non testo */
-  --regolo-ph-ink: #969698;
-  --regolo-bordo-campo: #969698;
-  --regolo-errore: #ffb4a8; /*  9,49:1 sulla parete */
+  --regolo-paper: #f3f0ec; /* la carta calda misurata sulla reference */
+  --regolo-surface: #ffffff;
+  --regolo-ink: #1b1b19; /* 15,18:1 sulla carta */
+  --regolo-muted: #6a665f; /*  5,03:1 */
+  --regolo-muted-invert: #f3f0ec;
+  --regolo-line: #b9b3a8; /*  1,90:1 — filetto decorativo, MAI informazione né testo */
+  --regolo-linea-forte: #6a665f; /*  5,03:1 — il filetto quando porta informazione */
+  --regolo-ph: #e7e2da;
+  --regolo-ph-ink: #6a665f;
+  --regolo-bordo-campo: #6a665f;
+  --regolo-errore: #8e1b10; /*  8,15:1 sulla carta */
 
-  --regolo-timbro: #a9c4e8; /*  9,08:1 sulla parete */
-  --regolo-timbro-soft: transparent;
+  /* Il tono su tono: **solo decorazione**, e sempre `aria-hidden`. Sta a
+     1,53:1, quindi non può portare informazione — nella reference è
+     l'atmosfera dietro il nome, non il nome. */
+  --regolo-tono: #c9c4bb;
+
+  --regolo-timbro: #123c7a; /*  8,86:1 sulla carta */
+  --regolo-timbro-soft: #e2e6f1;
   --regolo-timbro-chiaro: #a9c4e8;
   --regolo-timbro-piano: var(--regolo-timbro);
-  --regolo-timbro-piano-soft: transparent;
+  --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  --regolo-font-display: var(--font-wide), Impact, sans-serif;
+  --regolo-font-display: var(--font-elsie), 'Playfair Display', Didot, Georgia, serif;
   --regolo-font-body: var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-mono: var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-mono: var(--font-mono), ui-monospace, Menlo, monospace;
   --regolo-display-weight: 900;
-  --regolo-display-tracking: -0.03em;
-  --regolo-display-wdth: 150;
+  --regolo-display-tracking: -0.01em;
+  --regolo-display-wdth: 100;
 
-  /* Cinque corpi e basta, come la reference: 36 · 27 · 24 · 18 · 16. Il display
-     non è in scala — è una funzione della larghezza della finestra. */
-  --regolo-text-h1: clamp(2rem, 4.4vw, 2.25rem); /* 32 · 36 */
-  --regolo-lh-h1: 1.1;
-  --regolo-text-h2: clamp(1.5rem, 3vw, 1.6875rem); /* 24 · 27 */
-  --regolo-lh-h2: 1.3;
-  --regolo-text-h3: 1.5rem; /* 24 */
-  --regolo-lh-h3: 1.3;
+  /* Il display **è il marchio**, e attraversa tutta la larghezza: il corpo è
+     una funzione della finestra, non un gradino di scala. Sotto, la scala vera
+     del sistema — 96 · 40 · 24 · 17 · 12. */
+  --regolo-text-h1: clamp(2.75rem, 9.4vw, 6rem);
+  --regolo-lh-h1: 0.92;
+  --regolo-text-h2: clamp(1.75rem, 3vw, 2.5rem);
+  --regolo-lh-h2: 1;
+  --regolo-text-h3: 1.5rem;
+  --regolo-lh-h3: 1.2;
 
-  --regolo-wrap: 100%; /* niente contenitore: l'allineamento è al bordo */
-  --regolo-margine: clamp(1rem, 1.7vw, 1.5rem);
+  --regolo-wrap: 1440px;
+  --regolo-margine: clamp(1.25rem, 3.4vw, 3rem);
   --regolo-gutter: 1.5rem;
   --regolo-colonne: 12;
-  --regolo-radius: 20px; /* l'unico tema con un raggio, ed è solo questo */
+  --regolo-radius: 0px; /* angoli vivi ovunque; il raggio vive solo sulle pastiglie */
   --regolo-misura: 34rem;
-  --regolo-appeso: 16px;
+  --regolo-appeso: 12px;
   --regolo-banda-y: clamp(4rem, 9vw, 8rem);
   --regolo-silenzio: clamp(6rem, 13.9vw, 12.5rem);
   --regolo-attenua: 0.55;
 
   --regolo-ph-pattern: none;
   --regolo-ph-size: auto;
-  --regolo-ph-border: 1px solid var(--regolo-line);
-  --regolo-font-eyebrow: var(--regolo-font-body);
-  --regolo-eyebrow-tracking: 0;
-  --regolo-eyebrow-transform: none;
+  --regolo-ph-border: none;
+  --regolo-font-eyebrow: var(--regolo-font-mono);
+  --regolo-eyebrow-tracking: 0.06em; /* la mono maiuscola si apre, non si stringe */
+  --regolo-eyebrow-transform: uppercase;
 
-  /* Le pastiglie: l'unico posto in cui il raggio esiste. */
-  --regolo-btn-bg: #f8f8f8;
-  --regolo-btn-fg: #222222;
-  --regolo-btn-border: #f8f8f8;
-  --regolo-btn-bg-hover: #ffffff;
+  /* La pastiglia scura: è il solo oggetto con un raggio, ed è l'azione. */
+  --regolo-btn-bg: #1b1b19;
+  --regolo-btn-fg: #f3f0ec;
+  --regolo-btn-border: #1b1b19;
+  --regolo-btn-bg-hover: #333330;
 
-  --regolo-header-h: 56px;
-  --regolo-logo-size: 0.875rem;
+  --regolo-header-h: 64px;
+  --regolo-logo-size: 1rem;
   --regolo-logo-weight: 400;
   --regolo-logo-tracking: 0;
   --regolo-logo-family: var(--regolo-font-body);
-  --regolo-logo-direction: column;
+  --regolo-logo-direction: row;
   --regolo-focus: var(--regolo-ink);
 
   --regolo-brief-bg: var(--regolo-paper);
@@ -594,162 +589,10 @@
   --regolo-brief-lead: var(--regolo-muted);
   --regolo-brief-bordo-sezione: none;
   --regolo-brief-card: var(--regolo-surface);
-  --regolo-brief-controllo-bg: #222222;
-  --regolo-brief-controllo-bordo: #969698;
-  --regolo-brief-scelta-bg: transparent;
-  --regolo-brief-scelta-bordo: #757577;
-  --regolo-brief-errore: #ffb4a8;
-  --regolo-brief-fuoco: var(--regolo-ink);
-
-  --regolo-quota-riga: block;
-  --regolo-quota-colore: var(--regolo-muted);
-  --regolo-asse: none;
-  --regolo-asse-frazione: 0;
-  --regolo-sezione-alt: var(--regolo-paper);
-  --regolo-sezione-alt-filo: none;
-
-  --regolo-pannello-bg: transparent;
-  --regolo-pannello-fg: var(--regolo-ink);
-  --regolo-pannello-chiave: var(--regolo-muted);
-  --regolo-pannello-voce: var(--regolo-ink);
-  --regolo-scuro-bg: var(--regolo-surface);
-  --regolo-scuro-fg: var(--regolo-ink);
-  --regolo-scuro-muted: var(--regolo-muted);
-  --regolo-scuro-linea: var(--regolo-line);
-
-  --regolo-esploso-faccia-alta: #d8d8d8;
-  --regolo-esploso-faccia-sx: #a8a8a8;
-  --regolo-esploso-faccia-dx: #7a7a7a;
-  --regolo-esploso-contorno: #f8f8f8;
-  --regolo-esploso-fondazioni: #d8d8d8;
-  --regolo-esploso-struttura: #c4c4c4;
-  --regolo-esploso-involucro: #a8a8a8;
-  --regolo-esploso-impianti: #8f8f8f;
-  --regolo-esploso-finiture: #ededed;
-  --regolo-esploso-apertura: #222222;
-  --regolo-esploso-calore: #2a2b2d;
-  --regolo-esploso-acqua: #2a2b2d;
-  --regolo-esploso-aria: #2a2b2d;
-
-  --regolo-mappa-linea: var(--regolo-ink);
-  --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-ink);
-
-  --regolo-footer-bg: var(--regolo-paper);
-  --regolo-footer-fg: var(--regolo-ink);
-  --regolo-footer-muted: var(--regolo-muted);
-  --regolo-footer-filo: 1px solid var(--regolo-line);
-}
-
-/* ============================================================================
-   Tema D — «Il marmo» · il sistema di IDHEAL
-   ----------------------------------------------------------------------------
-   *«A stark white canvas where massive black sans-serif display type dominates
-   the top of the page like a masthead, paired with full-bleed architectural
-   photography.»*
-
-   Due cose che nessuna delle altre tre fa:
-
-   1. **Il corpo del testo è un serif.** *«Industrial sans for headlines,
-      literary serif for reading»* — la tensione da doppia pagina di rivista. È
-      l'unica proposta che si riconosce **leggendo una riga**, non guardando un
-      colore, ed è anche la ragione per cui il corpo qui non scende sotto i
-      16 px: *«the serif needs size to remain readable»*.
-   2. **Il colore esiste, e solo come tratto di matita.** Terracotta, oliva e
-      magenta compaiono **esclusivamente come filetti da 1-2 px** su bordi,
-      titoli e divisori: *«never as fills or backgrounds»*. Tre tinte invece di
-      una, e nessuna riempie niente — l'effetto è quello di annotazioni a matita
-      colorata su una pagina bianca.
-
-   Il magenta sta a 3,51:1 sul bianco: **non è mai testo**, e la regola non è
-   una preferenza — è la condizione perché passi WCAG 1.4.11 come elemento non
-   testuale. Terracotta (4,70) e oliva (6,56) reggono anche come parola.
-   ========================================================================== */
-
-[data-theme='d'] {
-  --regolo-paper: #ffffff; /* marmo: l'unico fondo, e non ce n'è un secondo */
-  --regolo-surface: #ffffff;
-  --regolo-ink: #000000; /* 21,00:1 */
-  --regolo-muted: #565656; /*  7,46:1 */
-  --regolo-muted-invert: #ffffff;
-  --regolo-line: #767676; /*  4,54:1 — il filetto che porta informazione */
-  --regolo-hairline: #e5e5e5; /*  1,26:1 — il divisore decorativo, MAI informazione */
-  --regolo-ph: #f2f2f2;
-  --regolo-ph-ink: #565656;
-  --regolo-bordo-campo: #767676;
-  --regolo-errore: #8e1b10; /*  9,07:1 */
-
-  /* I tre tratti di matita. Non riempiono mai niente. */
-  --regolo-terracotta: #bc5346; /*  4,70:1 — regge anche come testo */
-  --regolo-oliva: #51633c; /*  6,56:1 — regge anche come testo */
-  --regolo-magenta: #ff00bc; /*  3,51:1 — SOLO filetto, mai parola */
-
-  --regolo-timbro: #123c7a;
-  --regolo-timbro-soft: #eef2fa;
-  --regolo-timbro-chiaro: #93b7de;
-  --regolo-timbro-piano: var(--regolo-timbro);
-  --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
-
-  --regolo-font-display: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --regolo-font-body: var(--font-serif), Charter, Georgia, serif;
-  --regolo-font-mono: var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-display-weight: 500; /* Medium, non Bold: «never so heavy it becomes a poster» */
-  --regolo-display-tracking: -0.025em;
-  --regolo-display-wdth: 100;
-
-  /* La scala della reference: 105 · 67 · 43 · 39 · 23 · 20 · 16 · 12. */
-  --regolo-text-h1: clamp(3.25rem, 7.3vw, 6.5625rem); /* 52 · 105 */
-  --regolo-lh-h1: 0.86;
-  --regolo-text-h2: clamp(1.875rem, 3vw, 2.6875rem); /* 30 · 43 — ed è il SERIF */
-  --regolo-lh-h2: 1.08;
-  --regolo-text-h3: clamp(1.25rem, 1.6vw, 1.4375rem); /* 20 · 23 */
-  --regolo-lh-h3: 1.1;
-
-  --regolo-wrap: 1200px; /* la reference misura 1200, non 1440 */
-  --regolo-margine: clamp(1rem, 2vw, 1.875rem);
-  --regolo-gutter: 1.25rem;
-  --regolo-colonne: 12;
-  --regolo-radius: 0px; /* le card sono a spigolo: il raggio vive solo su link e pastiglie */
-  --regolo-misura: 42rem; /* 672: «reading width ~600-700px» */
-  --regolo-appeso: 10px;
-  /* Densità **compact**: passo di sezione 30 px, gap fra elementi 10.
-     «Gallery-tight rhythm rather than a marketing-page rhythm.» */
-  --regolo-banda-y: clamp(1.875rem, 3vw, 3.75rem);
-  --regolo-silenzio: clamp(3.75rem, 7vw, 6.25rem);
-  --regolo-attenua: 0.6;
-
-  --regolo-ph-pattern: none;
-  --regolo-ph-size: auto;
-  --regolo-ph-border: 1px solid var(--regolo-hairline);
-  --regolo-font-eyebrow: var(--regolo-font-display);
-  --regolo-eyebrow-tracking: 0;
-  --regolo-eyebrow-transform: none;
-
-  /* Il ghost button: fondo bianco, filetto nero, raggio 15. «No fill — the
-     outline IS the design.» */
-  --regolo-btn-bg: #ffffff;
-  --regolo-btn-fg: #000000;
-  --regolo-btn-border: #000000;
-  --regolo-btn-bg-hover: #f2f2f2;
-
-  --regolo-header-h: 64px;
-  --regolo-logo-size: 1rem;
-  --regolo-logo-weight: 500;
-  --regolo-logo-tracking: 0;
-  --regolo-logo-family: var(--regolo-font-display);
-  --regolo-logo-direction: row;
-  --regolo-focus: var(--regolo-ink);
-
-  --regolo-brief-bg: var(--regolo-paper);
-  --regolo-brief-fg: var(--regolo-ink);
-  --regolo-brief-occhiello: var(--regolo-muted);
-  --regolo-brief-lead: var(--regolo-muted);
-  --regolo-brief-bordo-sezione: 1px solid var(--regolo-magenta);
-  --regolo-brief-card: var(--regolo-paper);
   --regolo-brief-controllo-bg: #ffffff;
-  --regolo-brief-controllo-bordo: #767676;
+  --regolo-brief-controllo-bordo: #6a665f;
   --regolo-brief-scelta-bg: #ffffff;
-  --regolo-brief-scelta-bordo: var(--regolo-hairline);
+  --regolo-brief-scelta-bordo: #b9b3a8;
   --regolo-brief-errore: var(--regolo-errore);
   --regolo-brief-fuoco: var(--regolo-ink);
 
@@ -764,8 +607,160 @@
   --regolo-pannello-fg: var(--regolo-ink);
   --regolo-pannello-chiave: var(--regolo-muted);
   --regolo-pannello-voce: var(--regolo-ink);
-  --regolo-scuro-bg: var(--regolo-ink);
-  --regolo-scuro-fg: var(--regolo-paper);
+  --regolo-scuro-bg: #1b1b19;
+  --regolo-scuro-fg: #f3f0ec;
+  --regolo-scuro-muted: #a8a49c;
+  --regolo-scuro-linea: #46443f;
+
+  --regolo-esploso-faccia-alta: #e7e2da;
+  --regolo-esploso-faccia-sx: #c9c4bb;
+  --regolo-esploso-faccia-dx: #a8a49c;
+  --regolo-esploso-contorno: #1b1b19;
+  --regolo-esploso-fondazioni: #d8d3ca;
+  --regolo-esploso-struttura: #c9c4bb;
+  --regolo-esploso-involucro: #b9b3a8;
+  --regolo-esploso-impianti: #a8a49c;
+  --regolo-esploso-finiture: #e7e2da;
+  --regolo-esploso-apertura: #f3f0ec;
+  --regolo-esploso-calore: #e7e2da;
+  --regolo-esploso-acqua: #e7e2da;
+  --regolo-esploso-aria: #e7e2da;
+
+  --regolo-mappa-linea: var(--regolo-ink);
+  --regolo-mappa-fondo: var(--regolo-paper);
+  --regolo-mappa-sede: var(--regolo-ink);
+
+  --regolo-footer-bg: #1b1b19;
+  --regolo-footer-fg: #f3f0ec; /* 15,18:1 */
+  --regolo-footer-muted: #a8a49c; /*  7,45:1 */
+  --regolo-footer-filo: none;
+}
+
+/* ============================================================================
+   Tema D — «La casa» · il sistema di Storey Architecture
+   ----------------------------------------------------------------------------
+   Chiesto per nome dal committente, ed è l'unica delle reference che era già
+   nel **tier A** di `SCHEDA.md`: i valori qui sotto sono **misurati nel
+   browser**, non descritti.
+
+   | Voce | Misurato |
+   |---|---|
+   | interlinea | **1,0 esatta a ogni corpo display** (115,2/115,2 · 100,8/100,8 · 31,7/31,7) |
+   | spaziatura | display **−3 %**, mono **−10 %** — negativa anche sul maiuscolo |
+   | contrasto di scala | 115,2 / 15,8 = **7,3×** |
+   | contenitore | **nessun `max-width`** (100 %), gutter **20 px** |
+   | angoli / ombre | `border-radius` **zero occorrenze**, `box-shadow` **zero** |
+   | numerazione | `01)` — con la parentesi chiusa, in mono |
+
+   E le tre cose che fa lui e gli altri no: il **vuoto verticale disuguale**
+   dentro uno stesso blocco, il **numerone tono su tono** come contatore di
+   sezione, e una **calligrafica usata una volta sola** in tutta la pagina.
+   ========================================================================== */
+
+[data-theme='d'] {
+  --regolo-paper: #ffffff;
+  --regolo-surface: #ffffff;
+  --regolo-ink: #000000; /* 21,00:1 */
+  --regolo-muted: #5e5e5e; /*  6,48:1 */
+  --regolo-muted-invert: #ffffff;
+  --regolo-line: #d4d4d4; /*  1,48:1 — filetto decorativo, MAI informazione */
+  --regolo-linea-forte: #767676; /*  4,54:1 — quando il filetto porta informazione */
+  --regolo-ph: #ececec;
+  --regolo-ph-ink: #5e5e5e;
+  --regolo-bordo-campo: #767676;
+  --regolo-errore: #8e1b10; /*  9,07:1 */
+
+  /* Il numerone di sezione: 1,48:1, quindi **decorazione e basta**, sempre
+     `aria-hidden`. È il gesto misurato di Storey — un `3` grigio su grigio —
+     e vale solo finché non porta informazione che non stia anche altrove. */
+  --regolo-tono: #d4d4d4;
+
+  --regolo-timbro: #123c7a; /* 10,75:1 */
+  --regolo-timbro-soft: #e7ecf6;
+  --regolo-timbro-chiaro: #93b7de;
+  --regolo-timbro-piano: var(--regolo-timbro);
+  --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
+
+  --regolo-font-display: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --regolo-font-body: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --regolo-font-mono: var(--font-mono), ui-monospace, Menlo, monospace;
+  --regolo-font-mano: var(--font-mano), 'Bradley Hand', cursive;
+  --regolo-display-weight: 500;
+  --regolo-display-tracking: -0.03em; /* −3 %, misurato */
+  --regolo-display-wdth: 100;
+
+  /* La scala misurata: 115,2 · 100,8 · 31,7 · 23 · 15,8 · 14,4 · 11,5.
+     E **l'interlinea è 1,0 esatta** su tutti e tre i corpi display. */
+  --regolo-text-h1: clamp(3.5rem, 8vw, 7.2rem); /* 56 · 115,2 */
+  --regolo-lh-h1: 1;
+  --regolo-text-h2: clamp(2.25rem, 4.4vw, 6.3rem); /* 36 · 100,8 */
+  --regolo-lh-h2: 1;
+  --regolo-text-h3: clamp(1.5rem, 2.2vw, 1.98rem); /* 24 · 31,7 */
+  --regolo-lh-h3: 1;
+
+  /* **Nessun contenitore**: il contenuto sta al 100 % e si allinea al bordo.
+     Gutter 20 px, che è il valore misurato e il più stretto delle nove
+     reference. */
+  --regolo-wrap: 100%;
+  --regolo-margine: 20px;
+  --regolo-gutter: 20px;
+  --regolo-colonne: 12;
+  --regolo-radius: 0px; /* zero occorrenze in tutta la pagina della reference */
+  --regolo-misura: 30rem;
+  --regolo-appeso: 12px;
+  --regolo-banda-y: clamp(3rem, 6vw, 5.5rem);
+  --regolo-silenzio: clamp(6rem, 13.9vw, 12.5rem);
+  --regolo-attenua: 0.6;
+
+  --regolo-ph-pattern: none;
+  --regolo-ph-size: auto;
+  --regolo-ph-border: none;
+  /* La mono con spaziatura **negativa**, −10 %: è il valore misurato, ed è
+     l'opposto del `+0,14em` che è il default generato. */
+  --regolo-font-eyebrow: var(--regolo-font-mono);
+  --regolo-eyebrow-tracking: -0.1em;
+  --regolo-eyebrow-transform: none;
+
+  --regolo-btn-bg: #ffffff;
+  --regolo-btn-fg: #000000;
+  --regolo-btn-border: #ffffff;
+  --regolo-btn-bg-hover: #ececec;
+
+  --regolo-header-h: 64px;
+  --regolo-logo-size: 1.5rem;
+  --regolo-logo-weight: 500;
+  --regolo-logo-tracking: -0.02em;
+  --regolo-logo-family: var(--regolo-font-display);
+  --regolo-logo-direction: row;
+  --regolo-focus: var(--regolo-ink);
+
+  /* La banda nera con il vuoto disuguale: è il blocco firmato di Storey. */
+  --regolo-brief-bg: #000000;
+  --regolo-brief-fg: #ffffff;
+  --regolo-brief-occhiello: #a8a8a8;
+  --regolo-brief-lead: #a8a8a8;
+  --regolo-brief-bordo-sezione: none;
+  --regolo-brief-card: #ffffff;
+  --regolo-brief-controllo-bg: #ffffff;
+  --regolo-brief-controllo-bordo: #767676;
+  --regolo-brief-scelta-bg: #ffffff;
+  --regolo-brief-scelta-bordo: #d4d4d4;
+  --regolo-brief-errore: var(--regolo-errore);
+  --regolo-brief-fuoco: #ffffff;
+
+  --regolo-quota-riga: block;
+  --regolo-quota-colore: var(--regolo-muted);
+  --regolo-asse: none;
+  --regolo-asse-frazione: 0;
+  --regolo-sezione-alt: var(--regolo-paper);
+  --regolo-sezione-alt-filo: none;
+
+  --regolo-pannello-bg: transparent;
+  --regolo-pannello-fg: var(--regolo-ink);
+  --regolo-pannello-chiave: var(--regolo-muted);
+  --regolo-pannello-voce: var(--regolo-ink);
+  --regolo-scuro-bg: #000000;
+  --regolo-scuro-fg: #ffffff;
   --regolo-scuro-muted: #a8a8a8;
   --regolo-scuro-linea: #4a4a4a;
 
@@ -785,12 +780,12 @@
 
   --regolo-mappa-linea: var(--regolo-ink);
   --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-terracotta);
+  --regolo-mappa-sede: var(--regolo-ink);
 
-  --regolo-footer-bg: var(--regolo-paper);
-  --regolo-footer-fg: var(--regolo-ink);
-  --regolo-footer-muted: var(--regolo-muted);
-  --regolo-footer-filo: 1px solid var(--regolo-magenta);
+  --regolo-footer-bg: #ffffff;
+  --regolo-footer-fg: #000000;
+  --regolo-footer-muted: #5e5e5e;
+  --regolo-footer-filo: 1px solid var(--regolo-line);
 }
 
 /* ---------- B: i token sono legati alla BANDA, non alla pagina -------------
@@ -912,6 +907,8 @@
   --color-oliva: var(--regolo-oliva);
   --color-magenta: var(--regolo-magenta);
   --color-hairline: var(--regolo-hairline);
+  --color-tono: var(--regolo-tono);
+  --color-linea-forte: var(--regolo-linea-forte);
 
   --font-display: var(--regolo-font-display);
   --font-body: var(--regolo-font-body);

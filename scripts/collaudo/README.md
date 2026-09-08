@@ -13,11 +13,20 @@ cd scripts/collaudo && npm i playwright && npx playwright install chromium   # u
 
 | Script | Cosa misura | Cosa deve dire |
 |---|---|---|
-| `contrasto-dom.mjs` | ogni coppia testo/fondo **calcolata sul DOM vero** di sette rotte, non sui token | `sotto soglia: 0`. Alla fine della 3 bis: 72 coppie distinte |
-| `sweep.mjs` | screenshot a scorrimento di A e B a 1440 e 390, più overflow orizzontale e bersagli sotto i 40 px | `sfora: []`. `path.[object` sulla mappa è un falso positivo noto (è un figlio SVG misurato sul documento) |
+| `contrasto-dom.mjs` | ogni coppia testo/fondo **calcolata sul DOM vero** di **nove** rotte (le quattro home + cinque interne), non sui token | `sotto soglia: 0`. Alla fine della 3 quater: **145 coppie distinte, zero sotto soglia** |
+| `sweep.mjs` | screenshot a scorrimento di **A, B, C e D** a 1440 e 390, più overflow orizzontale e bersagli sotto i 40 px | `sfora: []` a 1440 e `scrollW == clientW` a 390 su tutte e quattro. `path.[object` sulla mappa è un falso positivo noto (è un figlio SVG misurato sul documento). Gli screenshot li scrive **nella cartella da cui gira** e sono ignorati dal git: quelli che restano si scelgono a mano e vanno in `kit/reference/_dopo/` |
 | `nojs.mjs` | le due home **senza JavaScript**: quote, pannelli visibili, payoff, asse | in B **un solo pannello** visibile; in A zero (non ne ha) |
-| `nojs-rotte.mjs` | cinque rotte senza JS: testo reso, passi del brief, form, segnaposto | `passiVisibili: 5` e `contaBrief: passo 1 di 5` dove c'è il brief; `overflow: false` ovunque |
+| `nojs-rotte.mjs` | **sette** rotte senza JS: testo reso, passi del brief, form, segnaposto | dove il passo 1 sta **fuori** dal form (B, C, D) `passiVisibili: 4` e `contaBrief: passo 2 di 5` — è la prova che il registro della hero propaga la scelta **senza una riga di JavaScript**; su A e `/contatti` `passiVisibili: 5` e `passo 1 di 5`. `overflow: false` ovunque |
 | `peso.mjs` | byte **sul filo** fino a `load`, e cosa arriva dopo | A: ~283 KB e 17 richieste fino a `load`; il video della hero deve comparire **solo** in `dopo` |
+
+**Due salti espliciti in `contrasto-dom.mjs`, e sono contratti** (`DECISIONI.md` n. 38):
+`.sr-only` (testo che esiste solo per il lettore di schermo, e non ha un fondo da misurare) e
+`[data-decorativo]` (i contatori tono su tono di D, a 1,48:1 di proposito). Un elemento che porta
+informazione **non può** avere quell'attributo: se lo prende, il collaudo smette di guardarlo.
+La regola gemella vale a monte — *quello che il collaudo non sa misurare va reso misurabile*: lo
+script risale gli antenati cercando un `background-color`, quindi un `linear-gradient` o una
+fotografia lo rendono cieco. Per questo il velo sotto la testata di C e D è un colore vero e il
+gradiente morbido sta su un `::after` decorativo.
 
 `scripts/contrasto.mjs` (fuori da questa cartella) è un'altra cosa: calcola i rapporti fra due
 valori esadecimali, e serve **prima** di scrivere un token. Questo qui li misura **dopo**, in

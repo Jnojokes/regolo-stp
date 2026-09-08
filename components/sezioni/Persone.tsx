@@ -31,7 +31,14 @@ import { eSegnaposto } from '@/lib/site'
  * e tenerlo identico impedisce che la griglia salti quando arrivano quattro
  * foto scattate in quattro modi diversi (TODO-MEDIA.md).
  */
-export function Persone({ variante }: { variante: 'ritratti' | 'registro' }) {
+export function Persone({
+  variante,
+  contatore,
+}: {
+  variante: 'ritratti' | 'registro'
+  /** Il contatore tono su tono dell'opzione D: decorazione, `aria-hidden`. */
+  contatore?: string
+}) {
   /* La prop **non nomina più il tema**. Si chiamava `'a' | 'b'`, cioè era un
      `if` sul tema spostato di un livello, e cambiava solo il testo del titolo:
      griglia, ritratti e dati erano identici. Adesso `registro` cambia il
@@ -79,7 +86,13 @@ export function Persone({ variante }: { variante: 'ritratti' | 'registro' }) {
 
   if (inCampo) {
     return (
-      <Campo id="persone" etichetta="le persone" titolo="Chi firma il progetto." nota={notaPersone}>
+      <Campo
+        id="persone"
+        contatore={contatore}
+        etichetta="le persone"
+        titolo="Chi firma il progetto."
+        nota={notaPersone}
+      >
         {griglia}
       </Campo>
     )

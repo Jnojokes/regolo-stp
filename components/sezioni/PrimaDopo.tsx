@@ -1,5 +1,5 @@
 import { Confronto } from '@/components/sezioni/Confronto'
-import { Sezione } from '@/components/sezioni/Sezione'
+import { Campo } from '@/components/campo/Campo'
 
 /**
  * Prima / dopo (CLAUDE.md § Homepage, blocco 8 · catalogo blocchi B4).
@@ -24,10 +24,9 @@ import { Sezione } from '@/components/sezioni/Sezione'
  */
 export function PrimaDopo() {
   return (
-    <Sezione
+    <Campo
       id="prima-dopo"
-      passo="normale"
-      asse
+      pieno
       etichetta="prima e dopo"
       titolo="La prova che chiunque capisce al volo."
       intro="Due fotografie dallo stesso punto. Su un recupero è la cosa più convincente che si possa mettere in una pagina, e non ha bisogno di essere spiegata."
@@ -40,6 +39,6 @@ export function PrimaDopo() {
         demoPrima="prima-01"
         demoDopo="dopo-01"
       />
-    </Sezione>
+    </Campo>
   )
 }

@@ -25,27 +25,69 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  *
  * Il menu a scomparsa mobile resta una `<details>`: funziona senza JavaScript e
  * da tastiera (CLAUDE.md § Regole, 4 e 5).
+ *
+ * ## Le due varianti (fase 3 ter)
+ *
+ * Fino a ieri questo componente non accettava **nessuna prop**, e il markup che
+ * rendeva nelle due home era byte-identico: 1.343 byte, zero righe di diff.
+ * Tutto ciò che distingueva i due header stava in tre token. Su un blocco che
+ * è la prima riga di ogni pagina, era metà della diagnosi «B è A con il
+ * negativo».
+ *
+ * La variante arriva dal **layout**, che è il posto dove il tema si sceglie
+ * (`app/(b)/layout.tsx`): è composizione, non un `if` sul tema nel markup.
+ *
+ * - `lockup` (A) — il marchio e la sede in colonna, il menu che è **una frase**
+ *   con le virgole (Kononenko misurato: `Index, Work, About, Contact`), la
+ *   barra **sticky** che segue la lettura. È un sito: il chrome resta.
+ * - `cartiglio` (B) — la testata **del documento**, e cade sulla stessa griglia
+ *   a due colonne di tutti i campi (`components/campo/Campo.tsx`): il nome nel
+ *   margine di classificazione, la sede e il menu sul foglio, il menu ai due
+ *   estremi con il vuoto in mezzo. **Niente virgole** — quel gesto è di A — e
+ *   **non è sticky**: la testata di un documento non ti segue mentre lo leggi.
+ *   È una differenza di comportamento, non di colore, e libera la prima
+ *   schermata al contenuto, che in una pagina densa è quello che conta. Su
+ *   telefono B ha comunque la barra fissa con la CTA.
  */
-export function SiteHeader() {
+export function SiteHeader({ variante = 'lockup' }: { variante?: 'lockup' | 'cartiglio' }) {
   return (
-    <header className="site-header">
-      <div className="wrap site-header-riga">
+    <header className={`site-header site-header-${variante}`}>
+      <div className={variante === 'cartiglio' ? 'cartiglio' : 'wrap site-header-riga'}>
         {/* Niente aria-label: sostituirebbe il testo visibile con uno diverso,
             e per chi usa il comando vocale il nome accessibile deve contenere
             quello che si legge. Il testo del link basta da solo. */}
-        <Link href="/" className="logo-lockup">
-          <span className="logo-name">{site.nomeEsteso}</span>
-          {/* Sotto i 480 px la seconda riga manderebbe a capo un lockup che è
-              dentro una barra sticky: lì resta il solo nome. */}
-          <span className="logo-qualifier hidden min-[30rem]:block">
-            {site.via} — {site.cap} {site.citta} ({site.provincia})
-          </span>
-        </Link>
+        {variante === 'cartiglio' ? (
+          /* Nel cartiglio di un disegno il nome e la sede non sono un lockup:
+             sono **due celle del riquadro delle iscrizioni**, e cadono sulle
+             due colonne del documento — il nome nel margine di
+             classificazione, la sede sul foglio, come ogni altro campo. Non è
+             un lockup impaginato diversamente: è un'altra cosa. */
+          <>
+            <Link href="/" className="cartiglio-nome">
+              {site.nomeEsteso}
+            </Link>
+            <p className="cartiglio-sede">
+              {site.via} — {site.cap} {site.citta} ({site.provincia})
+            </p>
+          </>
+        ) : (
+          <Link href="/" className="logo-lockup">
+            <span className="logo-name">{site.nomeEsteso}</span>
+            {/* Sotto i 480 px la seconda riga manderebbe a capo un lockup che è
+                dentro una barra sticky: lì resta il solo nome. */}
+            <span className="logo-qualifier hidden min-[30rem]:block">
+              {site.via} — {site.cap} {site.citta} ({site.provincia})
+            </span>
+          </Link>
+        )}
 
         {/* Il menu è una frase: le voci sono separate da virgole vere, messe dal
             CSS e non dal testo, così non entrano nel nome accessibile dei link
             né in un eventuale copia-incolla della voce. */}
-        <nav aria-label="Principale" className="site-nav nav:block hidden">
+        <nav
+          aria-label="Principale"
+          className={`site-nav nav:block hidden ${variante === 'cartiglio' ? 'site-nav-registro' : ''}`}
+        >
           <ul>
             {menu.map((v) => (
               <li key={v.href}>

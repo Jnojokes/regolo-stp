@@ -1,5 +1,5 @@
 import { DaCliente } from '@/components/Placeholder'
-import { Sezione } from '@/components/sezioni/Sezione'
+import { Campo } from '@/components/campo/Campo'
 import { VALORE_ATTESO, notaNumeri, numeri } from '@/lib/numeri'
 
 /**
@@ -52,16 +52,18 @@ import { VALORE_ATTESO, notaNumeri, numeri } from '@/lib/numeri'
  * **uno**, nella nota: il collaudo lo trova comunque cercando `[[DA CLIENTE`, e
  * chi guarda capisce a occhio che le cifre mancano (vedi `lib/numeri.ts`).
  *
- * La nota sta sotto perché `Sezione` la mette dopo i figli, ed è giusto: sopra
- * sembrerebbe un'introduzione, cioè contenuto; sotto si legge per quello che è,
- * una nota di cantiere — e sotto stanno anche quelle degli altri blocchi.
+ * La nota non sta più sotto i numeri: sta **nel margine di classificazione**,
+ * che in un documento è il posto di un'annotazione a margine — e libera il
+ * foglio, dove interrompeva la lettura con una riga di servizio
+ * (`components/campo/Campo.tsx`).
+ *
+ * Il blocco è solo di B, quindi il guscio è direttamente `Campo`: niente
+ * variante, niente ramo morto.
  */
 export function Numeri() {
   return (
-    <Sezione
+    <Campo
       id="numeri"
-      passo="corto"
-      asse
       etichetta="i numeri"
       nota={
         <>
@@ -80,6 +82,6 @@ export function Numeri() {
           </li>
         ))}
       </ul>
-    </Sezione>
+    </Campo>
   )
 }

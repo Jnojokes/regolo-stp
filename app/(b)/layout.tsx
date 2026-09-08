@@ -37,7 +37,7 @@ export default function LayoutB({ children }: { children: React.ReactNode }) {
         <a href="#contenuto" className="skip-link">
           Salta al contenuto
         </a>
-        <SiteHeader />
+        <SiteHeader variante="cartiglio" />
         {/* `tabIndex={-1}` sul bersaglio dello skip link, e non è pignoleria:
             senza, il browser sposta il punto di partenza della tabulazione ma
             **non muove il fuoco**, e su parte dei lettori di schermo il cursore
@@ -48,7 +48,7 @@ export default function LayoutB({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Misurazione />
-        <SiteFooter conTerritorio />
+        <SiteFooter conTerritorio variante="cartiglio" />
       </body>
     </html>
   )

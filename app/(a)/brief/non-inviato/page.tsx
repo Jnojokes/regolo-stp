@@ -59,7 +59,7 @@ export default async function BriefNonInviato({
         <p className="eyebrow">Chiama lo studio</p>
         <a
           href={`tel:${site.telefonoHref}`}
-          className="text-h3 hover:text-accent-text mt-3 inline-block font-medium"
+          className="text-h3 mt-3 inline-block font-medium hover:underline"
         >
           {site.telefono}
         </a>

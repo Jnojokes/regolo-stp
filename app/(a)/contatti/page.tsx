@@ -187,7 +187,7 @@ export default async function Contatti({
                 href={hrefMappe}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-accent-text underline underline-offset-4"
+                className="underline underline-offset-4"
               >
                 Cerca l’indirizzo nelle mappe
               </a>{' '}

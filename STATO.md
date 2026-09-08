@@ -66,6 +66,156 @@
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 
 
+## Fase 3 ter — l'opzione B rifatta per meccanismo (08/09/2026)
+
+FT ha guardato B e ha detto che non gli piaceva. Aveva ragione, e la ragione era **misurabile**:
+non era una questione di gusto, era che B non era una direzione diversa da A — era **A con il
+negativo**.
+
+### La diagnosi, in cinque cifre prese sul build
+
+| | prima | dopo |
+|---|---|---|
+| classi CSS distinte rese da B, di quelle che rende anche A | **123 su 165 → 74,5 %** | **101 su 162 → 62,3 %** |
+| markup di B che è chrome condiviso (header + brief + footer) | **26,9 KB su 51,7 → 52,0 %** | 27,3 KB su 132,3 → **20,6 %** |
+| `SiteHeader` reso dalle due home | **1.343 byte, diff 0 righe** | due componenti diversi |
+| il blocco brief | **267 elementi, 6 righe di diff** | il passo 1 non c'è: è la hero |
+| token con lo **stesso identico valore** nei due temi | **42 su 98** | 39 su 95, e **nessuno di impaginazione** |
+
+I 42 token uguali erano il punto: fra loro c'erano `--regolo-passo-corto/normale/largo`,
+`--regolo-margine`, `--regolo-gutter`, `--regolo-wrap`, `--regolo-colonne`. *L'intero sistema di
+impaginazione era byte-identico nei due temi.* Finché è così, qualunque cosa si cambi produce una
+terza colorazione della stessa pagina — che è l'errore già fatto due volte (prima il grigio
+medio, poi l'inversione a nero).
+
+E la prova peggiore non era a 1440, era **a 390**: le due hero condividevano la **stessa identica
+striscia di quota**, stesse cinque parole, stesso ordine, stessi terminatori obliqui, stessa
+altezza. Non «simile»: lo stesso oggetto. Sta in `kit/reference/_prima/3bis-B-390-hero.jpeg`.
+
+### Come si è deciso: quattro direzioni, dodici giudizi, un confronto
+
+Quattro direzioni indipendenti scritte dalle stesse prove — la scheda tecnica (AS), il disegno al
+posto della fotografia (Kononenko), la linea di quota come struttura (Dieste), la pagina che
+risponde — **dodici giudizi**, tre lenti per direzione (anti-default, differenza da A per
+meccanismo, brief e fattibilità), e un confronto finale che le vedeva tutte.
+
+La parte che è servita di più non è chi ha vinto: è **quello che tutte e quattro hanno sbagliato
+allo stesso modo**. Se quattro direzioni indipendenti fanno la stessa scelta, quella scelta non è
+una scelta: è la mediana del modello. Sette casi, tutti corretti:
+
+| # | Cosa facevano tutte e quattro | Cosa c'è al suo posto |
+|---|---|---|
+| 1 | toglievano **volti e opere** dalla home di B | la fotografia resta e cambia ruolo (decisione n. 33). Il campo ritratto vuoto è l'unico segnaposto della home che fa un lavoro vero: è la lista della spesa che fa arrivare le foto |
+| 2 | mettevano la **tabella AS sui progetti**, che ha **zero righe** e cinque colonne su sette `[[DA CLIENTE]]` — e proponevano di «mostrare `/progetti`», che sta in `app/(a)` e si renderizza con Archivo su carta bianca | la tabella va **dove i dati ci sono**: i sei percorsi (`.scheda`) e le cinque fasi. I progetti restano campi dichiarati con la copertina |
+| 3 | spendevano l'apertura sulle animazioni in una **rivelazione allo scorrimento** | decisione n. 32: in B il movimento è **solo la risposta a un'azione**. Una eccezione, e ripara un difetto |
+| 4 | sceglievano il carattere **per genere** (due Bitter, due Chivo + un serif) | decisione n. 30: si sceglie sul **Δ x/cap**. Bitter, la mossa ovvia, è *più vicino* ad Archivo di quanto lo sia Chivo |
+| 5 | **rigonfiavano l'apparato** appena potato: tredici filetti a piena larghezza sopra i titoli, sette intestazioni ancorate, otto indici di campo | l'apparato di B è **più piccolo** di quello di A, non più grande: in una pagina densa ogni segno ripetuto diventa fondo. In B un filetto esiste solo se delimita un piano o porta uno stato |
+| 6 | lasciavano **`BriefForm` identico** e lo vestivano col CSS — cioè l'ultima schermata delle due proposte restava la stessa in tutte e quattro | il brief si è fatto **per secondo**, non per ultimo: 30 righe su 559, zero righe di logica |
+| 7 | non sapevano che **B è una pagina sola** | progetti, servizi, studio, contatti e le legali stanno tutte in `app/(a)`: alla fase 5 la rotta superstite eredita le pagine interne di A qualunque proposta vinca |
+
+### Il meccanismo: **la pagina risponde**
+
+A è un foglio stampato: dichiara, sempre uguale a chiunque. B è uno **strumento**. Le sei righe
+della hero sono `radio` con `name="intervento"` e `form="brief-form"`, cioè membri del form che
+sta cinquemila pixel più giù. Scegliendo:
+
+- si apre il pannello del percorso;
+- la riga corrispondente della **scheda dei sei percorsi** resta a inchiostro pieno e le altre
+  cinque scendono al pavimento di attenuazione (l'opacità come gerarchia, AS misurato);
+- la **riga di lettura del brief** scrive la risposta;
+- e il brief comincia a **«passo 2 di 5»**.
+
+**Zero byte di JavaScript**, verificato a JS spento. In A il brief comincia a «passo 1 di 5»; in B
+a 2, perché la prima domanda l'hai già risposta nella prima schermata. **A non lo può fare per
+costruzione**: non ha una domanda in hero, non ha uno stato da propagare.
+
+### Blocco → reference → cosa ho preso → quale cluster NON uso
+
+| Blocco | Reference | Cosa ho preso | Cluster che NON uso | Cosa c'è al suo posto |
+|---|---|---|---|---|
+| **Il guscio** (`components/campo/Campo.tsx`) | Kononenko (`1440-meta-16`: l'etichetta nel margine vuoto a x≈417, la tabella a x=493 = 34,2 %) · Storey (il vuoto disuguale) | il documento a due colonne: margine di classificazione sulla tavola, contenuto sul foglio. **Nessun ritmo verticale**: `--regolo-appeso` 12 px, e lo spazio fra due campi è quello che il contenuto occupa | la voce di casa «lo stesso padding fra tutti i blocchi» — che i tre passi garantivano identici nei due temi · **4** gli otto fogli bianchi su un fondo, cioè otto card | intervalli disuguali **per costruzione**, un solo filetto di confine, e **un foglio solo**: una classe, non una lista di otto selettori da ricordare a mano |
+| **La testata** (`cartiglio`) | Kononenko (il menu-frase, che resta di A) · Pelizzari (i metadati ai due estremi) | tre celle sulla stessa griglia dei campi: nome nel margine, sede al bordo del foglio, menu al bordo destro. **Niente virgole** e **non sticky** | **5** il logotipo spaziato · il menu-frase, che è il gesto di A e non si divide in due | la testata di un documento non ti segue mentre lo leggi: restituisce la prima schermata al contenuto, e su telefono la CTA resta nella barra fissa |
+| **Hero B** | AS (l'indice) · le sei risposte del brief | sei righe di registro che **sono** il passo 1 del brief; il pannello si apre come un record, senza bordo né fondo | **4** le card · **5** l'occhiello · e la `01…05` come chiave di riga: cinque alternative non hanno un primo e un ultimo | l'opacità come gerarchia più un filetto che porta uno **stato** — e finché non si sceglie **non si attenua niente** |
+| **Numeri** | Storey · AS | quattro celle sul foglio, il trattino finché il dato non arriva | **4** quattro card con bordo | la nota va **nel margine**: è un'annotazione a margine, che è letteralmente il posto suo |
+| **Sei percorsi** ★ | **AS `1440-meta-datasheet`** (7 colonne, 25 righe, passo 27,5 px, **nessun filetto fra le righe**) | la **tabella vera**, ed è il ramo del bivio che B doveva prendere e non aveva mai preso. Le colonne sono tre perché tre sono i dati che esistono | **3** il broadsheet · la colonna «ruolo firmabile» del primo schizzo, che avrebbe richiesto una mappa servizio → ruolo che nel repo **non esiste** | la riga **risponde alla hero**; la cella vuota del sesto servizio resta vuota — AS spedisce la tabella **con i buchi** invece di riempirli |
+| **Come lavoriamo** | Dieste `1440-meta-22` (la dimensione dice l'importanza) | il numero in **colonna a sinistra**, non sopra il titolo; le due fasi che il committente vive a corpo maggiore | **5** «FASE 01 —» sopra ogni titolo | qui la numerazione è **legittima**: cinque fasi sono una sequenza vera. È l'unico numero progressivo rimasto in B |
+| **Progetti** | Pelizzari (la riga a tre tempi) · Kononenko (rapporti misti) | due schede con i dati duri, la copertina in 16/9 | **4** tre card identiche | i cinque dati restano `[[DA CLIENTE]]`, e il **ruolo** non si omette mai |
+| **Prima / dopo** (wow) | Storey (l'immagine che sborda) | **l'unico campo `pieno`**: esce dal foglio e attraversa i due piani, perché lì il taglio *è* il contenuto | **4** la maniglia rotonda con l'ombra | e A non lo può avere: non ha due piani nella stessa banda |
+| **Le persone** | Kononenko · Pelizzari (altezze disuguali) | quattro campi a quote verticali disuguali; il dato che conta è l'**abilitazione** | **4** quattro card uguali col ritratto tondo | `MediaEsempio` **non è montato** in `Persone`: il divieto della n. 27 (c) non dipende da una variabile d'ambiente che qualcuno può accendere |
+| **Il brief** ★ | — | il passo 1 non è un `fieldset`: è una **riga di lettura** con «cambia», e la barra di avanzamento perde i terminatori obliqui | **5** l'ultima occorrenza del motivo di A dentro B | «passo 2 di 5», e la frase si dice in call |
+| **Il carattere** | `_provini/provino-b2-1440.jpeg` | Anybody, scelto sul Δ x/cap (+14,6 %) e non sul genere | **1** il serif display · lo slab, che *misurato* è più vicino ad Archivo di Chivo | 19.488 byte, **−7,3 KB** su Chivo, e l'asse di larghezza istanziato via dentro il file |
+
+### Misure a fine fase (build di produzione)
+
+| Metrica | Obiettivo | `/` (A) | `/opzione-b` (B) | Esito |
+|---|---|---|---|---|
+| LCP mobile, Slow 4G + CPU 4× | < 2,0 s | **0,90 s** | **0,82 s** | OK — l'LCP resta testo (`.hero-lead`) |
+| CLS | < 0,05 | 0,000 | **0,004** | OK |
+| Peso fino a `load` | < 1,2 MB | 285 KB | **268 KB** | OK |
+| JS al primo caricamento | < 180 KB gz | 150 KB | **150 KB** | OK — **nessuna libreria di animazione**: il meccanismo è `:has()` |
+| Richieste fino a `load` | < 40 | 17 | **15** | OK |
+| Font per rotta | — | 40,7 KB | **59 KB** (19 Anybody + 40 Archivo che non usa) | il debito del preload, vedi sotto |
+| **Contrasto** | AA | **75 coppie distinte** su sette rotte, **zero sotto soglia** | | OK |
+| Overflow orizzontale | zero | `sfora: []` a 1440 e 390 | | OK (`path.[object` a 390 è il falso positivo noto) |
+| Senza JavaScript | tutto si rende | ✓ | ✓ **e il meccanismo funziona**: pannello, attenuazione, riga di lettura, `FormData` | OK |
+| Lighthouse mobile | ≥ 90 | **99 · 100 · 100 · 100** | **93 · 100 · 100 · 60** | OK; il 60 è il `noindex` dichiarato |
+
+**Il debito del preload, adesso è misurato.** `/opzione-b` scarica i 40 KB di Archivo che non usa
+— Turbopack fonde i `@font-face` dei due temi in un chunk solo e Next precarica quello che ci
+trova — e **non precarica il proprio**. Sotto la simulazione di Lighthouse costa **1,1 s di LCP**
+(3,1 s contro i 2,0 di A); con il preload di Anybody scende a 2,7 s. Non si può correggere senza
+toccare A: mettere `preload: true` su Anybody fa precaricare Anybody **anche ad A** — verificato.
+Sparisce alla fase 5 con la rotta non scelta. Con il metodo di misura del repo (throttling vero,
+Slow 4G + CPU 4×) il numero è 0,82 s, cioè dentro il budget: le due misure rispondono a domande
+diverse e vanno lette tutte e due.
+
+### Il criterio di accettazione, e come è andato davvero
+
+Era: **classi condivise sotto il 50 %**. Risultato: **74,5 % → 62,3 %**. Non è sotto la soglia, e
+va detto perché — non per aggirarla:
+
+delle 101 classi ancora condivise, **24 sono le interne del form del brief** (`brief-campo`,
+`brief-opzione`, `brief-passo`…), la cui logica il piano dichiara intoccabile — 559 righe testate,
+validazione, honeypot, rate limit, consenso; **~14 sono le interne del footer**; **~12 sono
+utility Tailwind** (`mt-3`, `flex`, `text-h3`). Scendere sotto il 50 % da qui richiederebbe di
+**rinominare** quelle classi, che sposterebbe il numero senza cambiare niente: cosmesi travestita
+da meccanismo, cioè esattamente l'errore che il criterio esisteva per prendere.
+
+Quello che il criterio doveva prendere l'ha preso: sono uscite tutte le classi **strutturali** —
+il guscio (`.sezione`, `.passo-*`, `.testa-sezione`, `.corpo-sezione`), l'indice condiviso con lo
+Smistamento di A (`.indice`, `.voce*`), il lockup della testata, l'apparato dell'asse. La prova
+del grigio in forma severa — **la stessa carta bianca sotto tutte e due** — le lascia in piedi
+come due proposte: un foglio continuo rientrato al 34,4 % contro blocchi a piena larghezza, campi
+contigui contro tre passi verticali, una tabella dove A ha un elenco, e **uno stato che si
+propaga**. La prova della miniatura al 25 % sta in `kit/reference/_dopo/PROVA-MINIATURA-25.jpeg`.
+
+### Igiene chiusa strada facendo
+
+- **`text-accent-text`** era usata in 7 file ma `--color-accent-text` non esiste più da due
+  palette: in Tailwind v4 la classe non veniva generata affatto. Codice morto che fingeva una
+  regola di stile che non c'era.
+- **`Persone` aveva `variante: 'a' | 'b'`** — una prop che nomina il tema, cioè un `if` sul tema
+  spostato di un livello, e cambiava solo il testo del titolo. Ora è `'ritratti' | 'registro'`, e
+  la regola vale da qui in avanti: **nessuna variante porta il nome di una proposta.**
+- **L'asse è uscito dal tema e dal repo**: `Sezione` aveva una prop `asse` che nessuno passava più
+  e ~65 righe di CSS che disegnavano un filetto e poi spostavano ogni contenuto per non farsi
+  tagliare da lui. In B l'asse **è diventato il bordo del foglio**: non c'è più niente da riparare.
+- **La favicon mancava** (404 su `/favicon.ico`). Ora `app/(a)/icon.svg` e `app/(b)/icon.svg`:
+  non un logo inventato — `CLAUDE.md` lo vieta — ma il **meccanismo di ciascuna proposta a 16 px**,
+  la linea di quota per A e il foglio sulla tavola per B. Si rifanno quando arriva il marchio.
+
+### Cosa resta aperto
+
+- **Il debito del preload** (sopra): 40 KB e 1,1 s di LCP simulato su `/opzione-b`. Sparisce alla
+  fase 5 con la rotta non scelta, e non è correggibile prima senza toccare A.
+- **`apple-icon` e un `favicon.ico` di ripiego** per i client che lo chiedono comunque.
+- **La answer capsule non è mai stata confermata dallo studio**, e due sue frasi sono promesse
+  operative che finiscono nel `description` del JSON-LD. La riga bloccante è in
+  `CONTENUTI-DA-CLIENTE.md`, e **non è compito nostro chiuderla**.
+- Restano i rilievi minori dell'audit della 3 bis che non toccavano B: il ritmo a tre passi sulle
+  rotte interne, i filetti fra le righe di alcuni elenchi in A, `.cta-contestuale`, i metadati
+  uniti da «·», `.fasi-quota` che si chiama quota pur non essendolo.
+
 ## Fase 3 bis — il ridisegno sulle reference vere (07-08/09/2026)
 
 La fase 3 era uscita generica per due motivi che la skill `sito-design` documenta: **nessuno

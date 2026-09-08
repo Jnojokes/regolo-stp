@@ -323,18 +323,12 @@
      lettura letterale del vuoto disuguale misurato su Storey, e nega alla
      radice l'aggiunta di casa «lo stesso padding fra tutti i blocchi».
 
-     ATTENZIONE — e questo è il motivo per cui i tre passi qui sotto ci sono
-     ANCORA. Un `var()` non definito rende la dichiarazione invalida e il
-     `padding-top` torna a **0 in silenzio**: `.sezione` legge
-     `--regolo-passo-normale`, e finché una sola sezione di B non è stata
-     convertita in `Campo` togliere il token non fa una pagina densa, fa una
-     pagina rotta. Si tolgono **per ultimi**, quando l'ultima `<Sezione>` esce
-     da `app/(b)`, e allora questo commento resta e le tre righe no.
-     Stato alla fermata 1: convertita la hero. Restano numeri, sei percorsi,
-     fasi, progetti, prima/dopo, persone. */
-  --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem); /* TRANSITORIO — esce alla fermata 2 */
-  --regolo-passo-normale: clamp(4rem, 6.67vw, 6rem); /* TRANSITORIO — esce alla fermata 2 */
-  --regolo-passo-largo: clamp(6rem, 13.9vw, 12.5rem); /* TRANSITORIO — esce alla fermata 2 */
+     ATTENZIONE se un giorno si rimette una `.sezione` in B: `--passo` diventa
+     un `var()` non definito, la dichiarazione è invalida e il `padding-top`
+     torna a **0 in silenzio**. Per questo i tre passi sono usciti **per
+     ultimi**, quando l'ultima `<Sezione>` ha lasciato `app/(b)`, e non prima:
+     toglierli con una sezione ancora in pagina non fa una pagina densa, fa una
+     pagina rotta. Il collaudo che lo prende è `sweep.mjs`. */
   --regolo-appeso: 12px;
   /* L'unico silenzio della pagina: i 200 px di tavola davanti al brief. In A
      ce ne sono quattro, in B uno — ed è l'unico posto in cui il vuoto è

@@ -116,14 +116,6 @@
       gap: 0 clamp(1.5rem, 3vw, 2.5rem);
       align-items: baseline;
     }
-    /* in B il campo dell'etichetta è l'asse */
-    [data-asse] .testa-sezione-titolo {
-      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
-      gap: 0;
-    }
-    [data-asse] .testa-sezione-titolo > div {
-      padding-left: clamp(1.5rem, 3vw, 2.5rem);
-    }
   }
   .corpo-sezione {
     margin-top: clamp(1.75rem, 3vw, 2.75rem);
@@ -423,71 +415,22 @@
     padding-top: clamp(1.5rem, 3vw, 3rem);
     padding-bottom: var(--regolo-passo-corto);
   }
-  /* ---- l'asse verticale del tema B --------------------------------------
-     Un filetto a 1 px alla colonna 5 (34,4 % del contenuto; Kononenko misurato
-     comincia la sua tabella al 34,2 %) che attraversa la pagina dall'header al
-     footer. È l'identità del tema.
+  /* ---- l'asse verticale del tema B: non c'è più, ed è un guadagno ---------
+     Qui c'erano ~65 righe che disegnavano un filetto a 1 px al 34,4 % e poi
+     spostavano ogni contenuto per non farsi tagliare da lui: `[data-asse]
+     .corpo-sezione { padding-left: … }`, la nota con il `margin-left`, e due
+     eccezioni per i blocchi che avevano già una griglia. Un apparato che
+     costava tre regole di riparazione per una linea.
 
-     **Si disegna solo dove la sezione è composta sull'asse**, cioè dove ha
-     `data-asse`. Non è prudenza: un asse che attraversa un blocco impaginato a
-     piena larghezza **taglia i paragrafi a metà**, e la pagina non sembra
-     rigorosa, sembra rotta (misurato: 28 elementi di testo tagliati). Un blocco
-     entra nell'asse quando è stato composto su di lui, non prima.
+     Alla fase 3 ter l'asse **è diventato il bordo del foglio**
+     (`app/css/campi.css`): non è più una linea disegnata sopra la pagina che
+     rischia di attraversare il testo — è il confine fra i due piani, cioè un
+     oggetto che porta informazione. Non c'è più niente da riparare, e la prop
+     `asse` di `Sezione.tsx` è uscita con lui: non la passava più nessuno.
 
-     La posizione è calcolata dal **contenuto**, non dalla larghezza di `.wrap`:
-     il filetto sta dentro `.wrap`, che ha il margine nel padding, mentre le
-     colonne della griglia stanno nel content box. Con la sola percentuale i due
-     cadevano a 16 px di distanza.
-
-     Su telefono la frazione è 0 e l'asse va al margine (8 px). */
-  [data-theme='b'] [data-asse] > .wrap {
-    position: relative;
-  }
-  [data-theme='b'] [data-asse] > .wrap::before {
-    content: '';
-    display: var(--regolo-asse);
-    position: absolute;
-    /* Il filetto si estende **oltre** il `.wrap` fino ai bordi della sezione:
-       il `.wrap` sta dentro il padding, e senza questo l'asse si interrompeva
-       fra un blocco e l'altro — un tratteggio involontario invece di un datum.
-       `--passo` è dichiarato sulla sezione e inherita fin qui. */
-    top: calc(-1 * var(--passo, 0px));
-    bottom: calc(-0.6 * var(--passo, 0px));
-    left: calc(
-      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
-    );
-    width: 1px;
-    background-color: var(--color-line);
-    pointer-events: none;
-  }
-  @media (max-width: 55.999rem) {
-    [data-theme='b'] [data-asse] > .wrap::before {
-      left: 0.5rem;
-    }
-  }
-
-  /* **Il contenuto di un blocco sull'asse vive nella zona destra.** Senza
-     questa regola ogni griglia a piena larghezza — i quattro numeri, i quattro
-     ritratti, le note di cantiere — viene tagliata a metà dal filetto, e la
-     pagina non sembra rigorosa: sembra rotta. È il difetto che ha fatto dire
-     «l'opzione B sembra buggata», e si misura: 29 elementi di testo attraversati.
-     Le teste di sezione hanno già la loro griglia a due zone (`.testa-sezione`). */
-  @media (min-width: 56rem) {
-    [data-asse] .corpo-sezione {
-      padding-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
-    }
-    /* La nota si sposta con il **margine** e non con il padding: ha un filetto
-       pieno a sinistra, e con il padding il filetto restava nel campo vuoto a
-       500 px dal suo testo — un tratto che non appartiene a niente. */
-    [data-asse] > .wrap > .nota-cantiere {
-      margin-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
-    }
-    /* Le due eccezioni: chi ha già una griglia a due zone non si sposta. */
-    [data-asse] .corpo-sezione:has(> .fasi-asse),
-    [data-asse] .corpo-sezione:has(> .indice) {
-      padding-left: 0;
-    }
-  }
+     La differenza si vede in una riga di storia: il difetto che aveva fatto
+     dire «l'opzione B sembra buggata» erano 28 elementi di testo tagliati da
+     quel filetto. Il modo di non tagliarli non era spostarli. */
 
   /* Le **figure** stanno davanti all'asse, non sotto: il filetto è un datum che
      corre dietro le cose, e attraversare una scheda bianca o il confronto lo
@@ -615,39 +558,18 @@
     color: var(--color-ink);
     font-weight: 500;
   }
-  @media (min-width: 56rem) {
-    /* Nel tema B la riga è a **tre** zone: la chiave a sinistra dell'asse, il
-       corpo subito a destra, la coda spinta al bordo. Sono tre perché i figli
-       di `.voce` sono tre (`chiave`, `corpo`, `coda`).
+  /* Qui c'erano quattro regole `[data-asse] .voce …` che impaginavano la riga
+     d'indice su tre zone per l'opzione B. Sono uscite con l'asse: in B l'indice
+     non esiste più — i sei percorsi sono una **tabella** (`.scheda` in
+     `app/css/campi.css`), che è il meccanismo di AS Associates che a B era
+     stato assegnato e non era mai arrivato. Restano le classi `.voce-serve*`
+     qui sopra perché le usano le pagine interne, che stanno tutte in `app/(a)`.
 
-       Qui sotto c'era una seconda `[data-asse] .voce { grid-template-columns:
-       … }` a due colonne, scritta per il caso senza chiave e rimasta fuori dal
-       suo selettore: essendo dopo, vinceva su tutte le righe. Effetto in
-       pagina (misurato a 1440): la coda finiva a capo nella prima colonna e,
-       essendo `text-align: right`, si allineava al bordo dell'asse mentre il
-       titolo stava schiacciato in 320 px all'estremo destro. Sembrava un
-       errore di impaginazione perché lo era. */
-    [data-asse] .voce {
-      grid-template-columns:
-        calc(var(--regolo-asse-frazione) * 100%)
-        minmax(0, 1fr) minmax(0, 20rem);
-      gap: 0 clamp(1.5rem, 3vw, 2.5rem);
-    }
-    [data-asse] .voce > .voce-corpo {
-      padding-left: clamp(1.5rem, 3vw, 2.5rem);
-    }
-    [data-asse] .voce:not(:has(> .voce-chiave)) {
-      padding-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
-      grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
-    }
-    /* `margin` e non `padding`: `.voce-serve` ha un `max-width`, e con
-       `box-sizing: border-box` il padding glielo mangiava — 560 − 519 = 41 px
-       di contenuto, cioè una parola per riga. È lo stesso inciampo della nota
-       di cantiere, e vale per ogni elemento con un `max-width`. */
-    [data-asse] .voce-serve {
-      margin-left: calc(var(--regolo-asse-frazione) * 100% + clamp(1.5rem, 3vw, 2.5rem));
-    }
-  }
+     Vale la pena tenerne memoria: una di quelle quattro regole era una seconda
+     `[data-asse] .voce { grid-template-columns: … }` rimasta fuori dal suo
+     selettore e, essendo dopo, vinceva su tutte le righe — la coda finiva a
+     capo e il titolo stava schiacciato in 320 px. Sembrava un errore di
+     impaginazione perché lo era. */
 
   /* L'uscita di sezione: «tutti i progetti», «tutti i servizi». Non è un
      bottone — un bottone in alto a destra su ogni sezione è chrome — ed è

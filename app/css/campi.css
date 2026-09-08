@@ -626,14 +626,387 @@
    ========================================================================== */
 
 @layer components {
-  .brief-tacche-registro li::before {
+  /* Di nuovo la specificità (trappola n. 8): `.brief-tacche li::before` in
+     `globals.css` ha la stessa specificità di `.brief-tacche-registro li::before`
+     e sta **dopo**, quindi vinceva lei — la barra di B ha reso i terminatori
+     obliqui di A fino a quando non è stato aggiunto l'antenato. Verificato in
+     pagina: `content` era `""` e non `none`, e l'altezza 10 px invece di 4.
+     Un antenato in più, non un `!important`. */
+  .brief .brief-tacche-registro li::before {
     content: none;
   }
-  .brief-tacche-registro li {
+  .brief .brief-tacche-registro li {
     height: 0.25rem;
     margin-right: 0.375rem;
   }
-  .brief-tacche-registro li:last-child {
+  .brief .brief-tacche-registro li:last-child {
     margin-right: 0;
+  }
+}
+
+/* ============================================================================
+   IL CARTIGLIO — testata e chiusura del documento (opzione B)
+   ----------------------------------------------------------------------------
+   Fino alla fase 3 bis `SiteHeader` non accettava nessuna prop e rendeva
+   **1.343 byte identici** nelle due home: zero righe di diff. Era la prima riga
+   di ogni pagina, ed era la stessa.
+
+   Qui la testata cade sulla **stessa griglia a due colonne dei campi** — il
+   nome nel margine di classificazione, la sede e il menu sul foglio — e fa due
+   cose che A non fa:
+
+   1. **niente virgole nel menu.** Il menu-frase è il gesto misurato di
+      Kononenko (`Index, Work, About, Contact`) ed è di A. In B le voci sono
+      celle di una riga, spinte al bordo con il vuoto in mezzo (Pelizzari);
+   2. **non è sticky.** La testata di un documento non ti segue mentre lo
+      leggi. È una differenza di comportamento, non di colore, e restituisce
+      la prima schermata al contenuto — che in una pagina densa è quello che
+      conta. Su telefono B ha comunque la barra fissa con la CTA, quindi
+      l'azione primaria non si allontana mai.
+   ========================================================================== */
+
+@layer components {
+  .site-header-cartiglio {
+    position: static;
+  }
+  .cartiglio {
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+    --campo-x: calc(
+      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
+    );
+    display: grid;
+    grid-template-columns: var(--campo-x) minmax(0, 1fr);
+    align-items: center;
+    gap: 0;
+    min-height: var(--regolo-header-h);
+    padding-block: 0.75rem;
+  }
+  /* Tre celle su due colonne: il nome nel margine, la sede e il menu sul
+     foglio, ai due estremi con il vuoto in mezzo (Pelizzari misurato). */
+  .cartiglio {
+    grid-template-areas: 'nome resto';
+  }
+  .cartiglio-nome {
+    grid-area: nome;
+    margin-inline-start: var(--regolo-margine);
+    margin-inline-end: var(--regolo-gutter);
+    font-family: var(--regolo-logo-family);
+    font-size: var(--regolo-logo-size);
+    font-weight: var(--regolo-logo-weight);
+    letter-spacing: var(--regolo-logo-tracking);
+    line-height: 1.1;
+    /* Bersaglio da 44 px: è il link alla home, e senza il testo è alto 24. */
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  .cartiglio-sede {
+    grid-area: resto;
+    /* Il bordo sinistro del foglio, come ogni altro contenuto del documento:
+       centrata nella cella leggeva come una didascalia messa lì per riempire. */
+    justify-self: start;
+    margin: 0 0 0 var(--regolo-gutter);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .cartiglio > .site-nav,
+  .cartiglio > .menu-mobile {
+    grid-area: resto;
+  }
+  .cartiglio > .site-nav,
+  .cartiglio > .menu-mobile {
+    justify-self: end;
+    margin-inline-end: var(--regolo-margine);
+  }
+  /* Il menu di B: celle di una riga, non una frase. */
+  .site-header-cartiglio .site-nav ul {
+    gap: clamp(1rem, 2.2vw, 2rem);
+  }
+  /* Vale anche in chiusura: il menu del footer perdeva le virgole solo in
+     testa, e due grammatiche diverse nella stessa pagina sono una svista, non
+     una scelta. */
+  /* ATTENZIONE alla specificità, ed è la trappola annotata in testa a
+     `sezioni.css`: questo file è importato **prima** delle regole di
+     `globals.css`, quindi a pari specificità **perde in silenzio**. La regola
+     di A è `.site-nav li:not(:last-child)::after` — stessa specificità di
+     `.site-nav-registro li:…`, e siccome sta dopo vinceva lei: il menu del
+     cartiglio ha reso le virgole di A fino a quando non è stato aggiunto
+     l'antenato. Una classe in più, non un `!important`. */
+  .site-header-cartiglio .site-nav li:not(:last-child)::after,
+  .site-footer-cartiglio .site-footer-menu li:not(:last-child)::after {
+    content: none;
+  }
+  .site-footer-cartiglio .site-footer-menu {
+    gap: clamp(1rem, 2.2vw, 2rem);
+  }
+
+  @media (max-width: 55.999rem) {
+    .cartiglio {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 1rem;
+    }
+    .cartiglio-nome {
+      margin-inline-end: 0;
+    }
+    /* Sotto i 56 rem la sede sparisce dal cartiglio: sta già nel footer in
+       chiaro, e in testa ruberebbe la riga al nome. */
+    .cartiglio-sede {
+      display: none;
+    }
+  }
+
+  /* ---- la chiusura ------------------------------------------------------
+     Stesso allineamento: il documento finisce dove è cominciato. */
+  .site-footer-cartiglio > .wrap {
+    max-width: var(--regolo-wrap);
+  }
+}
+
+/* ============================================================================
+   LA SCHEDA — i sei percorsi come tabella di dati (opzione B)
+   ----------------------------------------------------------------------------
+   È il ramo del bivio che B doveva prendere: `SCHEDA.md` § 2 misura che le tre
+   tier A si dividono fra **contrasto di scala estremo** (Kononenko 10,9× ·
+   Storey 7,3×) e **densità con tabella** (AS 2,6×). A ha preso la scala; a B
+   era assegnato l'altro ramo e per due passate le era arrivato solo il numero.
+
+   AS misurato: 7 colonne, 25 righe, passo 27,5 px, **nessun filetto fra le
+   righe** — il passo di riga fa il lavoro — e i numeri a destra. Qui le colonne
+   sono tre perché tre sono i dati che esistono davvero.
+
+   Le righe **rispondono alla hero**: `data-intervento` porta la stessa chiave
+   chiusa del passo 1 del brief, e sei regole `:has()` lasciano a inchiostro
+   pieno la riga scelta portando le altre al pavimento di attenuazione. Zero
+   JavaScript. Le regole si generano dalle chiavi vere di `lib/brief/domande.ts`
+   — `:has()` non porta il valore fuori, quindi non si scrivono con un selettore
+   solo.
+   ========================================================================== */
+
+@layer components {
+  .scheda {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+    text-align: left;
+  }
+  .scheda th,
+  .scheda td {
+    /* Niente filetto fra le righe: il passo fa il lavoro (AS regge 25 righe con
+       sette colonne senza un divisore). L'unico filetto è sotto l'intestazione,
+       e quello **delimita** la testa della tabella dal corpo. */
+    padding: 0.5rem var(--regolo-gutter) 0.5rem 0;
+    vertical-align: baseline;
+    font-weight: 400;
+  }
+  .scheda thead th {
+    padding-top: 0;
+    color: var(--color-muted);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .scheda tbody th {
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
+    font-weight: 500;
+    width: 34%;
+  }
+  .scheda tbody th a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  .scheda tbody th a:hover {
+    text-decoration-line: underline;
+  }
+  .scheda tbody td:first-of-type {
+    width: 28%;
+    color: var(--color-muted);
+  }
+  .scheda tbody tr:first-child th,
+  .scheda tbody tr:first-child td {
+    padding-top: var(--regolo-appeso);
+  }
+  .scheda tbody tr {
+    opacity: 1;
+  }
+
+  /* ---- la riga risponde alla hero --------------------------------------- */
+  body:has(input[name='intervento']:checked) .scheda tbody tr {
+    opacity: var(--regolo-attenua);
+  }
+  body:has(#percorso-casa-nuova:checked) .scheda tbody tr[data-intervento='casa-nuova'] {
+    opacity: 1;
+  }
+  body:has(#percorso-ristrutturazione:checked) .scheda tbody tr[data-intervento='ristrutturazione'] {
+    opacity: 1;
+  }
+  body:has(#percorso-pratica-bonus:checked) .scheda tbody tr[data-intervento='pratica-bonus'] {
+    opacity: 1;
+  }
+  body:has(#percorso-struttura-sisma:checked) .scheda tbody tr[data-intervento='struttura-sisma'] {
+    opacity: 1;
+  }
+  body:has(#percorso-opera-pubblica:checked) .scheda tbody tr[data-intervento='opera-pubblica'] {
+    opacity: 1;
+  }
+  body:has(#percorso-altro:checked) .scheda tbody tr[data-intervento='altro'] {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .scheda tbody tr {
+      transition: opacity 180ms ease-out;
+    }
+  }
+
+  /* A 390 px la tabella **butta le colonne**, non le impila e non scrolla —
+     è la regola di AS, misurata sulla sua schermata a 390. Con una deviazione
+     argomentata: dove AS tiene `No + Title`, qui restano **esito + cosa serve
+     da te**, perché «serve da te» è la colonna che fa fare qualcosa a chi
+     legge, e il tecnicismo è ripetuto altrove in pagina. */
+  @media (max-width: 55.999rem) {
+    .scheda thead th:nth-child(2),
+    .scheda tbody td:first-of-type {
+      display: none;
+    }
+    .scheda tbody th {
+      width: 45%;
+    }
+  }
+}
+
+/* ============================================================================
+   LE CINQUE FASI — la sequenza, come campo del documento (opzione B)
+   ----------------------------------------------------------------------------
+   Qui la numerazione è **legittima** e la skill `sito-design` § 5 la autorizza:
+   cinque fasi sono una sequenza vera, con un primo e un ultimo. È l'unico posto
+   di B dove un numero progressivo resta — nel registro della hero e nella
+   scheda dei sei percorsi è stato tolto, perché lì cinque o sei alternative non
+   hanno un ordine e un numero che il lettore conta a vista non è informazione.
+
+   Il numero sta in una **colonna a sinistra**, non sopra il titolo: sopra un
+   titolo è l'occhiello «01 —», cioè la tell n. 5 con un altro materiale.
+
+   E **la dimensione dice l'importanza** (Dieste misurato: le foto a cavallo
+   dell'asse a scale disuguali). Le due fasi che il committente *vive* — il
+   primo incontro e il cantiere — stanno a corpo di titolo; le tre nostre a
+   corpo di sottotitolo. Non è decorazione: è la gerarchia del contenuto.
+   ========================================================================== */
+
+@layer components {
+  .fasi-sequenza {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .fasi-sequenza > li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0 var(--regolo-gutter);
+    align-items: baseline;
+    padding-block: 0.625rem;
+  }
+  .fasi-sequenza .fase-numero {
+    font-size: var(--text-eyebrow);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .fasi-sequenza .fase-corpo {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .fasi-sequenza .fase-titolo {
+    font-family: var(--regolo-font-display);
+    font-size: var(--text-lead);
+    line-height: 1.15;
+    font-weight: 500;
+  }
+  /* Le due vissute dal committente: un gradino sopra. */
+  .fasi-sequenza > li[data-vissuta] .fase-titolo {
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
+  }
+  .fasi-sequenza .fase-testo {
+    font-size: var(--text-small);
+    color: var(--color-muted);
+    max-width: var(--regolo-misura);
+  }
+
+  /* ---- il campo pieno: le righe di servizio tornano al margine di pagina --
+     Le fotografie del prima/dopo vanno da bordo a bordo, ma la lettura del
+     cursore e la riga di fonte sono testo: senza questo cominciavano a x=0 e
+     si leggeva «0 %» invece di «50 %». */
+  .campo-pieno .campo-testa,
+  .campo-pieno .confronto-lettura,
+  .campo-pieno .confronto-fonte {
+    padding-inline: var(--regolo-margine);
+  }
+  /* Il pieno vale per la **figura**, non per il testo: titolo, introduzione,
+     lettura e fonte restano dentro il margine di pagina. Senza, cominciavano a
+     x = 0 e si leggeva «0 %» invece di «50 %» — un testo a filo di finestra non
+     legge «a piena larghezza», legge «rotto». */
+}
+
+/* ============================================================================
+   L'UNICA ANIMAZIONE ALLO SCORRIMENTO DI TUTTA L'OPZIONE B
+   ----------------------------------------------------------------------------
+   La regola di B, controllabile con un grep, è: **nessuna animazione comincia
+   perché la pagina ha scorso.** Il movimento è la risposta a un'azione del
+   visitatore — è la differenza fra uno strumento e un foglio stampato, e la
+   rivelazione allo scorrimento è il pattern di movimento più generato che
+   esista sul web.
+
+   L'eccezione è qui, ed è una sola perché **ripara un difetto**: senza
+   JavaScript il cursore del prima/dopo non viene reso (sarebbe un controllo
+   morto) e il blocco «wow» di B resta fermo a 50 %, cioè una fotografia divisa
+   a metà che non dimostra niente. Con `view()` il taglio fa quello che il
+   controllo farebbe se ci fosse.
+
+   Le quattro cautele, tutte necessarie:
+
+   1. `@property` su `--x`: una custom property non registrata **non si anima**,
+      interpola a scatti fra due valori discreti;
+   2. tutto dentro `@supports (animation-timeline: view())`, e fuori di lì lo
+      stato del CSS è quello finito. Supporto verificato l'08/09/2026: Chrome ed
+      Edge 115+, Safari e Safari iOS 26+, **Firefox no** — è quello che blocca
+      il Baseline da settembre 2025. Dove manca, il blocco resta com'è oggi;
+   3. **niente `animation-fill-mode: both`**: è la trappola con cui questa
+      tecnica lascia il contenuto bloccato sul primo fotogramma dove la
+      dichiarazione cade a metà;
+   4. `[data-guidato]`: al primo `input` l'attributo sparisce e l'animazione con
+      lui, perché **una dichiarazione di animazione batte lo stile inline** e
+      senza questo il cursore smetterebbe di controllare il taglio mentre lo si
+      trascina.
+   ========================================================================== */
+
+@property --x {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+@layer components {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .confronto[data-guidato] {
+        animation: confronto-si-rivela linear;
+        animation-timeline: view();
+        /* Il taglio si muove mentre il blocco attraversa la finestra, e si
+           ferma quando è al centro: da lì in poi è fermo al 50 %, dove sta il
+           controllo. Non è un effetto continuo che segue lo scorrimento. */
+        animation-range: entry 20% cover 50%;
+      }
+      @keyframes confronto-si-rivela {
+        from {
+          --x: 8%;
+        }
+        to {
+          --x: 50%;
+        }
+      }
+    }
   }
 }

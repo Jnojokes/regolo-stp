@@ -76,14 +76,22 @@ esploso, mappa.
 
 **Le due opzioni sono lo stesso inchiostro con i ruoli scambiati** (decisione n. 26, che emenda
 la n. 21). A è il **tavolo da disegno**: carta bianca, con due tagli netti verso il nero. B è la
-**tavola di cantiere**: nera dall'header al footer, con il contenuto denso su **fogli bianchi**
-appuntati sopra. Il fondo medio che B aveva prima era difendibile sui numeri e non si vedeva:
-due pagine chiare con lo stesso nero e la stessa famiglia leggono come due varianti della stessa
-pagina, e due proposte che si somigliano non sono due proposte. Il rovescio di figura e fondo si
-riconosce in una miniatura al 25 %.
+**tavola**: nera dall'header al footer, con il contenuto denso su **fogli bianchi** appuntati
+sopra. Il fondo medio che B aveva prima era difendibile sui numeri e non si vedeva.
+
+**Ma il colore non è la differenza fra le due proposte, e crederlo è stato l'errore di due
+passate** (decisione n. 29, che chiude la questione). Alla fase 3 bis il nero portava il **100 %**
+della differenza — misurato: 123 classi CSS uguali su 165, `SiteHeader` byte-identico, 42 token su
+98 con lo stesso identico valore, l'intero sistema di impaginazione compreso. Adesso ne porta
+**zero**, e il valore resta `#000000` non perché sia il migliore ma perché è già stato cambiato
+due volte e la terza correzione di un valore è l'errore da non fare. Al nero resta un compito
+solo, e nessun altro colore lo farebbe: **è ciò che rende il foglio un oggetto** — su carta bianca
+non puoi avere «un foglio», hai una pagina. La differenza vera sta in § Due opzioni, ed è di
+meccanismo. Il rovescio di figura e fondo si riconosce comunque in una miniatura al 25 %
+(`kit/reference/_dopo/PROVA-MINIATURA-25.jpeg`).
 
 ```
-A «L'elevato» — la carta              B «Il registro» — la tavola
+A «L'elevato» — la carta              B «Lo strumento» — la tavola
 --paper   #FFFFFF  carta              --paper   #000000  la tavola
 --surface #FFFFFF  = carta            --surface #FFFFFF  il foglio: la FIGURA, 21,00:1 dal fondo
 --ink     #000000  21,00:1            --ink     #FFFFFF  21,00:1 — in B l'inchiostro è chiaro
@@ -117,22 +125,30 @@ del kick-off su tutte e otto le rotte.
 
 ### Tipografia — una famiglia per tema, zero monospace
 
-- **A: Archivo** (OFL, `wght` 400-600 + **`wdth` 62-100**) · **B: Chivo** (OFL, `wght` 400-600).
-  Si generano con `bash scripts/genera-font.sh`: 40,6 KB e 27,0 KB, **un file per rotta**,
-  contro i 60,8 (A) e 138,3 (B) di prima.
+- **A: Archivo** (OFL, `wght` 400-600 + **`wdth` 62-100**) · **B: Anybody** (OFL, `wght` 400-600,
+  `wdth` **istanziato via dentro il file**). Si generano con `bash scripts/genera-font.sh`:
+  **40,6 KB e 19,0 KB**, un file per rotta, contro i 60,8 (A) e 138,3 (B) di prima.
+- **Il carattere di B si sceglie su una metrica, non su un genere** (decisione n. 30). Archivo e
+  Chivo — il carattere che B aveva — hanno la **cap-height identica al millesimo, 0,686**: alla
+  stessa dimensione nominale depositano la stessa quantità di nero, ed è per questo che a occhio
+  erano lo stesso carattere. La regola: **Δ x/cap ≥ 5 % da Archivo**, e sotto non si sceglie.
+  Anybody sta a +14,6 %. La mossa ovvia — uno slab, «cambio genere» — è misurata e scartata:
+  Bitter sta a −1,4 %, cioè *più vicino* di Chivo.
 - **L'asse di larghezza è la leva del mobile**, e ha una ragione funzionale: a 390 px il
   contrasto di scala estremo si ottiene solo se il display può stringersi, che è il gesto del
   disegnatore quando comprime la scritta per farla stare dentro una quota. Nella hero di A
   «Progettiamo e dirigiamo.» sta a `wdth 100` e «Dal disegno al cantiere.» a `wdth 75`: stessa
   famiglia, stesso corpo, due larghezze. **A comprime, B no** — ed è una delle differenze fra
   le due proposte.
-- **Niente monospace.** Archivo e Chivo hanno `tnum` e cifre già di larghezza fissa: le colonne
+- **Niente monospace.** Archivo e Anybody hanno `tnum` e cifre già di larghezza fissa: le colonne
   di numeri si incolonnano con `font-variant-numeric: tabular-nums`. Via JetBrains Mono, −31 KB
   e una tell del cluster 5 in meno.
 - **Nessun asse `ital` nei due file**: «una sola parola del titolo in corsivo» non è vietata, è
   tecnicamente impossibile.
-- Trappola verificata con fontTools: il peso **di default** è 600 (Archivo) e 500 (Chivo).
-  Senza un `font-weight` esplicito tutto il corpo esce semibold.
+- Trappola verificata con fontTools: il peso **di default** è 600 (Archivo). Anybody in sorgente
+  ha `usWeightClass 100` — un corpo senza `font-weight` uscirebbe *filiforme*, che è peggio del
+  semibold — ma dopo `varLib.instancer wght=400:600` diventa 400. Il `font-weight` esplicito resta
+  comunque obbligatorio.
 
 **Scala** — rapporto fitto 1,125 sul testo (il meccanismo misurato in refero), e la differenza
 fra i temi è il **salto**: in A il display è *fuori* dalla scala, in B non c'è nessun salto.
@@ -338,22 +354,37 @@ FT vende con due toni; il cliente sceglie (`DECISIONI.md` n. 1). Stessa architet
 componenti, due ordini e due set di token. I prototipi stanno nel repo, in
 `kit/opzioni/REGOLO_Opzione_A.html` e `kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo.
 
-> **I token e i font di questa tabella sono stati rifatti alla fase 3 bis**: la riga qui sotto è
-> quella corrente, e § Direzione visiva è la fonte. L'ordine dei blocchi non è cambiato.
+> **L'opzione B è stata rifatta alla fase 3 ter** (08/09/2026, decisioni 28-34). La riga qui sotto
+> è quella corrente. L'ordine dei blocchi non è cambiato; è cambiato **il modo in cui B
+> funziona**, e il perché sta in `STATO.md` § Fase 3 ter.
 
-| | A «Lo studio» — route `/` | B «Il cantiere» — route `/opzione-b` |
+**La regola che governa questa tabella, e che due passate hanno violato: le due proposte devono
+differire per come FUNZIONANO, non per come sono colorate.** Alla fase 3 bis B era A con il
+negativo, e il difetto era misurabile: 123 classi CSS uguali su 165, `SiteHeader` byte-identico,
+il brief con sei righe di diff su 267 elementi, e **42 token su 98 con lo stesso identico valore**
+— l'intero sistema di impaginazione compreso. Correggere un valore (il grigio, poi il nero) non
+poteva bastare, e non è bastato due volte.
+
+| | A «Lo studio» — route `/` | B «Lo strumento» — route `/opzione-b` |
 |---|---|---|
-| Token | il **tavolo da disegno**: `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575`, due tagli netti verso il nero | la **tavola di cantiere**: `paper #000000 · surface #FFFFFF · ink #FFFFFF · muted #9A9A9A · line #5C5C5C`, nera dall'header al footer, con i fogli bianchi sopra |
+| **Meccanismo** | un **foglio stampato**: dichiara, sempre uguale a chiunque. L'audacia sta nella **scala** — 7,3× di contrasto, display 132 | **la pagina risponde.** Le sei righe della hero *sono* il passo 1 del brief (`form="brief-form"`): scegliendo si apre il pannello, la riga della scheda resta a inchiostro pieno e le altre si attenuano, il brief comincia a «passo 2 di 5». **Zero byte di JavaScript**, e A non lo può fare per costruzione |
+| **Guscio** | `components/sezioni/Sezione.tsx`: sezioni separate dal vuoto, **tre passi** 48 · 96 · 200 | `components/campo/Campo.tsx`: **campi contigui** divisi da un filetto. Niente ritmo verticale — `--regolo-appeso` 12 px, e lo spazio fra due campi è quello che il contenuto occupa, quindi gli intervalli escono disuguali *per costruzione*. Un solo silenzio, davanti al brief |
+| Impianto | un piano solo, la carta, con due tagli netti verso il nero | **un foglio solo**, dal 34,4 % (Kononenko misurato: x=493 su 1440) al margine destro, continuo dalla hero al brief. L'asse non è più un filetto disegnato: **è il bordo del foglio** |
+| Token | il **tavolo da disegno**: `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575` | la **tavola**: `paper #000000 · surface #FFFFFF · ink #FFFFFF · muted #9A9A9A · line #5C5C5C`. Il nero resta `#000000` e **la questione è chiusa** (n. 29): non porta più la differenza, fa un lavoro solo — rende il foglio un **oggetto** |
 | Accento | `timbro #123C7A`, **solo** sui segnaposto | `timbro #93B7DE` sulla tavola, `#123C7A` sui fogli |
-| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Chivo** (`wght` 400-600): nessuna compressione, nessun salto di scala |
-| Meccanismo | l'audacia sta nella **scala** — 7,3× di contrasto, display 132 | l'audacia sta nella **densità** — 2,6×, display 43,6, e l'asse verticale al 34,4 % |
-| Ordine | hero foto → smistamento → progetti → servizi → come lavoriamo → **esploso SVG** → persone → territorio → brief → footer | **hero-domanda con percorso** → numeri → sei percorsi con «serve da te» → come lavoriamo (timeline) → progetti con dati duri → **prima/dopo** → persone → brief → footer + barra mobile |
-| Motivi | quote da disegno tecnico, carta millimetrata nei placeholder di B; tratteggio nei placeholder di A | |
+| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Anybody** (`wght` 400-600, `wdth` istanziato via **dentro il file**), 19,0 KB. Scelto sul **Δ x/cap** e non sul genere: Archivo e Chivo avevano la cap-height identica al millesimo (0,686) |
+| Apparato | la quota è una **linea di misura**: filetto + terminatore obliquo a 45° ISO 129-1 | la quota è una **riga di documento**: etichetta a sinistra, valore incolonnato a destra, **nessun terminatore**. Un documento non disegna quote su se stesso |
+| Testata | lockup + menu-frase con le virgole, barra **sticky** | **cartiglio**: tre celle sulla griglia dei campi, niente virgole, **non sticky** |
+| Movimento | nessuno | **solo come risposta a un'azione.** Una eccezione, e ripara un difetto: il prima/dopo che senza JS resterebbe fermo a 50 % |
+| Ordine | hero foto → smistamento → progetti → servizi → come lavoriamo → **esploso SVG** → persone → territorio → brief → footer | **hero-domanda con i percorsi** → numeri → sei percorsi (**tabella**) → come lavoriamo → progetti con dati duri → **prima/dopo** → persone → brief → footer + barra mobile |
 
 Implementazione: `data-theme="a|b"` sull'`<html>` della route, token nel blocco `@theme inline`
-di `app/globals.css` (Tailwind v4 non ha più un `tailwind.config`), sezioni come componenti
-riusati con `order`. Dopo la decisione, la route non scelta si
-elimina (fase 5): non restano due home in produzione.
+di `app/globals.css` (Tailwind v4 non ha più un `tailwind.config`). **Le varianti si passano dal
+layout o dalla pagina** — che è dove il tema si sceglie: è composizione, non un `if` sul tema nel
+markup. E **nessuna variante porta il nome di una proposta**: `'ritratti' | 'registro'`, non
+`'a' | 'b'`. Dopo la decisione, la route non scelta si elimina (fase 5): non restano due home in
+produzione, e con quella sparisce anche il debito del preload (`/opzione-b` scarica 40 KB di
+Archivo che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo).
 
 ## SEO, GEO, legal — il minimo deciso
 

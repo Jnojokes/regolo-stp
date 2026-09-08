@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { DaCliente, Placeholder } from '@/components/Placeholder'
+import { Campo } from '@/components/campo/Campo'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { notaProgetti, progetti, type Progetto } from '@/lib/progetti'
 import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
@@ -42,40 +43,55 @@ export function Progetti({ variante }: { variante: 'schede' | 'dati' }) {
      alta, e due schede piene leggono meglio di tre. */
   const inEvidenza = conDati ? progetti.slice(0, 2) : progetti
 
-  return (
-    <Sezione
-      id="progetti"
-      passo={conDati ? 'normale' : 'largo'}
-      asse={conDati}
-      etichetta="progetti in evidenza"
-      titolo={conDati ? 'I dati che un committente serio legge.' : 'Quello che abbiamo costruito.'}
-      azione={
-        conDati ? undefined : (
+  const schede = (
+    <div className={conDati ? 'progetti-due' : 'progetti-tre'}>
+      {inEvidenza.map((progetto, indice) =>
+        conDati ? (
+          <SchedaDati key={progetto.copertina} progetto={progetto} demo={operaPerIndice(indice)} />
+        ) : (
+          <SchedaFoto
+            key={progetto.copertina}
+            progetto={progetto}
+            ratio={RATIO[indice % RATIO.length]}
+            demo={operaPerIndice(indice)}
+          />
+        ),
+      )}
+    </div>
+  )
+
+  if (conDati) {
+    return (
+      <Campo
+        id="progetti"
+        etichetta="progetti in evidenza"
+        titolo="I dati che un committente serio legge."
+        azione={
           <Link className="uscita" href="/progetti">
             tutti i progetti
           </Link>
-        )
+        }
+        nota={notaProgetti}
+      >
+        {schede}
+      </Campo>
+    )
+  }
+
+  return (
+    <Sezione
+      id="progetti"
+      passo="largo"
+      etichetta="progetti in evidenza"
+      titolo="Quello che abbiamo costruito."
+      azione={
+        <Link className="uscita" href="/progetti">
+          tutti i progetti
+        </Link>
       }
       nota={notaProgetti}
     >
-      <div className={conDati ? 'progetti-due' : 'progetti-tre'}>
-        {inEvidenza.map((progetto, indice) =>
-          conDati ? (
-            <SchedaDati
-              key={progetto.copertina}
-              progetto={progetto}
-              demo={operaPerIndice(indice)}
-            />
-          ) : (
-            <SchedaFoto
-              key={progetto.copertina}
-              progetto={progetto}
-              ratio={RATIO[indice % RATIO.length]}
-              demo={operaPerIndice(indice)}
-            />
-          ),
-        )}
-      </div>
+      {schede}
     </Sezione>
   )
 }

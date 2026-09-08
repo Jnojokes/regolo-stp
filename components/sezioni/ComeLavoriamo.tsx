@@ -1,3 +1,4 @@
+import { Campo } from '@/components/campo/Campo'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { fasi, introProcesso } from '@/lib/processo'
 
@@ -37,39 +38,55 @@ export function ComeLavoriamo({
   variante,
   id = 'processo',
 }: {
-  variante: 'elenco' | 'timeline'
+  /** `elenco` = opzione A · `sequenza` = opzione B, un campo del documento. */
+  variante: 'elenco' | 'sequenza'
   id?: string
 }) {
-  const suAsse = variante === 'timeline'
+  const inCampo = variante === 'sequenza'
+
+  /* Una `<ol>` e non cinque `<div>`: la sequenza è il contenuto del blocco, e
+     deve stare nel markup e non solo nel disegno. Qui la numerazione è
+     **legittima** (skill `sito-design` § 5): cinque fasi sono una sequenza
+     vera, con un primo e un ultimo. È l'unico posto di B dove un numero
+     progressivo resta — nel registro della hero e nell'indice dei servizi è
+     stato tolto, perché lì cinque o sei alternative non hanno un ordine. */
+  const elenco = (
+    <ol className={inCampo ? 'fasi fasi-sequenza' : 'fasi fasi-quota'} role="list">
+      {fasi.map((fase, indice) => {
+        const vissuta = indice === 0 || indice === fasi.length - 1
+        return (
+          <li key={fase.titolo} data-vissuta={vissuta ? '' : undefined}>
+            <span className="fase-numero" data-numero="">
+              {String(indice + 1).padStart(2, '0')}
+            </span>
+            <span className="fase-corpo">
+              <strong className="fase-titolo">{fase.titolo}</strong>
+              <span className="fase-testo">{inCampo ? fase.testoBreve : fase.testoLungo}</span>
+            </span>
+          </li>
+        )
+      })}
+    </ol>
+  )
+
+  if (inCampo) {
+    return (
+      <Campo id={id} etichetta="come lavoriamo" titolo="E poi cosa succede?" intro={introProcesso}>
+        {elenco}
+      </Campo>
+    )
+  }
 
   return (
     <Sezione
       id={id}
-      asse={suAsse}
-      passo={suAsse ? 'corto' : 'normale'}
+      passo="normale"
       etichetta="come lavoriamo"
       titolo="E poi cosa succede?"
       intro={introProcesso}
       titoloLargo
     >
-      {/* Una `<ol>` e non cinque `<div>`: la sequenza è il contenuto del blocco,
-          e deve stare nel markup e non solo nel disegno. */}
-      <ol className={suAsse ? 'fasi fasi-asse' : 'fasi fasi-quota'} role="list">
-        {fasi.map((fase, indice) => {
-          const vissuta = indice === 0 || indice === fasi.length - 1
-          return (
-            <li key={fase.titolo} data-vissuta={vissuta ? '' : undefined}>
-              <span className="fase-numero" data-numero="">
-                {String(indice + 1).padStart(2, '0')}
-              </span>
-              <span className="fase-corpo">
-                <strong className="fase-titolo">{fase.titolo}</strong>
-                <span className="fase-testo">{suAsse ? fase.testoBreve : fase.testoLungo}</span>
-              </span>
-            </li>
-          )
-        })}
-      </ol>
+      {elenco}
     </Sezione>
   )
 }

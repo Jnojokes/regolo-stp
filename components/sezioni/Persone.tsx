@@ -1,4 +1,5 @@
 import { DaCliente, Placeholder } from '@/components/Placeholder'
+import { Campo } from '@/components/campo/Campo'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { notaPersone, persone } from '@/lib/persone'
 import { eSegnaposto } from '@/lib/site'
@@ -30,58 +31,69 @@ import { eSegnaposto } from '@/lib/site'
  * e tenerlo identico impedisce che la griglia salti quando arrivano quattro
  * foto scattate in quattro modi diversi (TODO-MEDIA.md).
  */
-export function Persone({ variante }: { variante: 'a' | 'b' }) {
-  /* La variante cambia solo la testa: griglia, dati e ordine sono gli stessi. */
-  const testa =
-    variante === 'b'
-      ? { etichetta: 'le persone', titolo: 'Chi firma il progetto.' }
-      : {
-          etichetta: 'le persone',
-          titolo: 'In una società tra professionisti si sceglie chi firma.',
-        }
+export function Persone({ variante }: { variante: 'ritratti' | 'registro' }) {
+  /* La prop **non nomina più il tema**. Si chiamava `'a' | 'b'`, cioè era un
+     `if` sul tema spostato di un livello, e cambiava solo il testo del titolo:
+     griglia, ritratti e dati erano identici. Adesso `registro` cambia il
+     guscio — il campo di un documento invece di una sezione — e la regola vale
+     da qui in avanti: **nessuna variante porta il nome di una proposta**. */
+  const inCampo = variante === 'registro'
+
+  {
+    /* Una lista, non quattro <div>: quante sono le persone è un'informazione,
+      e chi usa uno screen reader la sente prima di scorrerle una per una. */
+  }
+  const griglia = (
+    <ul className="persone">
+      {persone.map((persona, indice) => (
+        <li key={indice}>
+          {/* I quattro ritratti stanno a **quote verticali disuguali**: quattro
+                rettangoli identici allineati sono una griglia di card, e questo
+                è l'ultimo blocco di prova prima del brief. Il rapporto resta
+                3/4 per tutti, così quando arrivano le foto vere la riga non
+                salta (TODO-MEDIA.md). */}
+          <Placeholder
+            label={persona.ritratto}
+            specifica="1200 × 1600 px · AVIF · ≤ 200 KB"
+            ratio="3 / 4"
+          />
+          {/* Il nome è un <h3> come il nome delle schede progetto: una scheda
+                con un nome è un titolo, e chi naviga per titoli deve poter
+                entrare nelle persone. Che adesso siano quattro segnaposto
+                identici è un problema dei segnaposto, non della struttura. */}
+          <h3 className="persona-nome">
+            <DaCliente>{persona.nome}</DaCliente>
+          </h3>
+          <span className="persona-ruolo">
+            {/* Il mestiere è vero per tre caselle e un segnaposto per la
+                  quarta: si evidenzia solo quello che manca. */}
+            {eSegnaposto(persona.ruolo) ? <DaCliente>{persona.ruolo}</DaCliente> : persona.ruolo}
+          </span>
+          <span className="persona-abilitazioni">
+            <DaCliente>{persona.abilitazioni}</DaCliente>
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+
+  if (inCampo) {
+    return (
+      <Campo id="persone" etichetta="le persone" titolo="Chi firma il progetto." nota={notaPersone}>
+        {griglia}
+      </Campo>
+    )
+  }
 
   return (
     <Sezione
       id="persone"
       passo="largo"
-      asse={variante === 'b'}
-      etichetta={testa.etichetta}
-      titolo={testa.titolo}
+      etichetta="le persone"
+      titolo="In una società tra professionisti si sceglie chi firma."
       nota={notaPersone}
     >
-      {/* Una lista, non quattro <div>: quante sono le persone è un'informazione,
-          e chi usa uno screen reader la sente prima di scorrerle una per una. */}
-      <ul className="persone">
-        {persone.map((persona, indice) => (
-          <li key={indice}>
-            {/* I quattro ritratti stanno a **quote verticali disuguali**: quattro
-                rettangoli identici allineati sono una griglia di card, e questo
-                è l'ultimo blocco di prova prima del brief. Il rapporto resta
-                3/4 per tutti, così quando arrivano le foto vere la riga non
-                salta (TODO-MEDIA.md). */}
-            <Placeholder
-              label={persona.ritratto}
-              specifica="1200 × 1600 px · AVIF · ≤ 200 KB"
-              ratio="3 / 4"
-            />
-            {/* Il nome è un <h3> come il nome delle schede progetto: una scheda
-                con un nome è un titolo, e chi naviga per titoli deve poter
-                entrare nelle persone. Che adesso siano quattro segnaposto
-                identici è un problema dei segnaposto, non della struttura. */}
-            <h3 className="persona-nome">
-              <DaCliente>{persona.nome}</DaCliente>
-            </h3>
-            <span className="persona-ruolo">
-              {/* Il mestiere è vero per tre caselle e un segnaposto per la
-                  quarta: si evidenzia solo quello che manca. */}
-              {eSegnaposto(persona.ruolo) ? <DaCliente>{persona.ruolo}</DaCliente> : persona.ruolo}
-            </span>
-            <span className="persona-abilitazioni">
-              <DaCliente>{persona.abilitazioni}</DaCliente>
-            </span>
-          </li>
-        ))}
-      </ul>
+      {griglia}
     </Sezione>
   )
 }

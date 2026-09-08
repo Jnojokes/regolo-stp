@@ -59,7 +59,7 @@ export default function Home() {
       <Servizi variante="essenziale" />
       <ComeLavoriamo variante="elenco" />
       <Esploso />
-      <Persone variante="a" />
+      <Persone variante="ritratti" />
       <Territorio />
       <Brief pagina="/" />
     </>

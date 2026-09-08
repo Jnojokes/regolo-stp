@@ -250,7 +250,7 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
           {attiviIn.length > 0 && (
             <>
               {' '}
-              <Link href={href({})} className="text-accent-text underline underline-offset-2">
+              <Link href={href({})} className="underline underline-offset-2">
                 Togli i filtri
               </Link>
             </>
@@ -288,7 +288,7 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
               Intanto si può vedere com’è fatta una scheda:{' '}
               <Link
                 href={`/progetti/${esempio.slug}`}
-                className="text-accent-text underline underline-offset-2"
+                className="underline underline-offset-2"
               >
                 apri la scheda di esempio
               </Link>

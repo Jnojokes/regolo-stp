@@ -195,7 +195,13 @@ function HeroFoto() {
  */
 function HeroDomanda({ interventoIniziale }: { interventoIniziale?: string | null }) {
   return (
-    <Campo primo id="percorsi" etichetta="il punto di partenza" className="campo-hero">
+    <Campo
+      primo
+      id="percorsi"
+      etichetta="il punto di partenza"
+      className="campo-hero"
+      nota="Gli elenchi «cosa serve da te» sono una proposta: quali documenti servano davvero per partire lo dice lo studio, servizio per servizio."
+    >
       <h1 className="hero-domanda">Che intervento hai in mente?</h1>
       <p className="hero-lead">
         Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da parte
@@ -310,10 +316,6 @@ function HeroDomanda({ interventoIniziale }: { interventoIniziale?: string | nul
         })}
       </div>
 
-      <p className="nota-cantiere">
-        Gli elenchi «cosa serve da te» sono una proposta: quali documenti servano davvero per
-        partire lo dice lo studio, servizio per servizio.
-      </p>
     </Campo>
   )
 }

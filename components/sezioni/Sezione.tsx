@@ -42,7 +42,6 @@ export function Sezione({
   children,
   fondo = 'carta',
   passo = 'normale',
-  asse = false,
   titoloLargo = false,
   className = '',
 }: {
@@ -68,13 +67,6 @@ export function Sezione({
    * precedente sono un solo pensiero, `largo` quando deve atterrare da solo.
    */
   passo?: 'corto' | 'normale' | 'largo' | 'nessuno'
-  /**
-   * Il blocco è composto sull'asse verticale del tema B, quindi l'asse si
-   * disegna. **Senza questo l'asse non passa**, ed è voluto: un asse che
-   * attraversa un blocco impaginato a piena larghezza taglia i paragrafi a
-   * metà, e la pagina non sembra rigorosa, sembra rotta.
-   */
-  asse?: boolean
   /** Titolo a piena larghezza, per i titoli lunghi. */
   titoloLargo?: boolean
   className?: string
@@ -86,7 +78,7 @@ export function Sezione({
   const haTesta = etichetta || titolo || intro || azione
 
   return (
-    <section id={id} className={classi} data-asse={asse ? '' : undefined}>
+    <section id={id} className={classi}>
       <div className="wrap">
         {haTesta && (
           <div className="testa-sezione">

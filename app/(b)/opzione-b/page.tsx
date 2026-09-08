@@ -61,23 +61,13 @@ export default function OpzioneB() {
           selettori elencati a mano in `globals.css`, cioè otto card. */}
       <Documento>
         <Hero variante="domanda" />
+        <Numeri />
+        <Servizi variante="tabella" />
+        <ComeLavoriamo variante="sequenza" />
+        <Progetti variante="dati" />
+        <PrimaDopo />
+        <Persone variante="registro" />
       </Documento>
-
-      {/* FERMATA 1 — questi sei blocchi sono ancora quelli della fase 3 bis, e
-          stanno **fuori** dal documento apposta. Il foglio è una banda di
-          sfondo continua: se passasse dietro una `<Sezione>`, che impagina a
-          piena larghezza, il titolo finirebbe sul bianco senza dichiarare il
-          piano — cioè bianco su bianco (la trappola n. 2, verificata in pagina
-          proprio così). Entrano nel documento alla fermata 2, uno alla volta,
-          convertiti in `<Campo>`; e solo allora escono da `[data-theme='b']` i
-          tre `--regolo-passo-*`, che è l'ultimo passo perché è quello che
-          rompe in silenzio. */}
-      <Numeri />
-      <Servizi variante="percorsi" />
-      <ComeLavoriamo variante="timeline" />
-      <Progetti variante="dati" />
-      <PrimaDopo />
-      <Persone variante="b" />
       {/* Il brief sta **fuori** dal documento: davanti a lui c'è l'unico
           silenzio della pagina — 200 px di tavola — e in A ce ne sono quattro.
           `passo1Esterno`: la prima domanda l'ha già fatta la hero, e le sue sei

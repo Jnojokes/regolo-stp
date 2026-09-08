@@ -37,9 +37,21 @@ import { comuni, province } from '@/lib/territorio'
  */
 const contaComuni = (sigla: string) => comuni.filter((c) => c.sigla === sigla).length
 
-export function SiteFooter({ conTerritorio = false }: { conTerritorio?: boolean }) {
+export function SiteFooter({
+  conTerritorio = false,
+  variante = 'lockup',
+}: {
+  conTerritorio?: boolean
+  /**
+   * `lockup` (A) chiude un sito; `cartiglio` (B) chiude un **documento**, e
+   * cade sulla stessa griglia a due colonne di tutti i campi. La variante
+   * arriva dal layout, che è dove il tema si sceglie: composizione, non un
+   * `if` sul tema nel markup.
+   */
+  variante?: 'lockup' | 'cartiglio'
+}) {
   return (
-    <footer className="site-footer">
+    <footer className={`site-footer site-footer-${variante}`}>
       <div className="wrap site-footer-riga">
         <div className="site-footer-sede">
           <p className="logo-name">{site.nomeEsteso}</p>
@@ -107,6 +119,9 @@ export function SiteFooter({ conTerritorio = false }: { conTerritorio?: boolean 
             numero={comuni.length}
             unita="comuni nell’autocomplete"
             dettaglio={province.map((p) => `${p.sigla} ${contaComuni(p.sigla)}`).join(', ')}
+            /* In B anche l'ultima quota della pagina è una riga di documento:
+               niente terminatori obliqui, che sono la firma di A. */
+            forma={variante === 'cartiglio' ? 'registro' : 'misura'}
           />
         </div>
       )}

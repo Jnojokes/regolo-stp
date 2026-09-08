@@ -14,7 +14,7 @@ export default function NonTrovata() {
       <ul className="border-line mt-12 max-w-[42ch] border-t">
         {menu.map((v) => (
           <li key={v.href} className="border-line border-b">
-            <Link href={v.href} className="hover:text-accent-text text-h3 block py-4">
+            <Link href={v.href} className="text-h3 block py-4 hover:underline">
               {v.label}
             </Link>
           </li>

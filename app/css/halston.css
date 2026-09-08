@@ -148,7 +148,7 @@
   [data-theme='c'] .testa-banda-capo,
   [data-theme='c'] .servizi-valore,
   [data-theme='c'] .metodo-numero,
-  [data-theme='c'] .progetto-dati dt,
+  [data-theme='c'] .halston-progetto-dati dt,
   [data-theme='c'] .numeri-celle dt,
   [data-theme='c'] .citazione-ruolo {
     font-family: var(--regolo-font-mono);
@@ -567,7 +567,7 @@
     width: 100%;
     object-fit: cover;
   }
-  .progetto-nome {
+  .halston-progetto-nome {
     margin: 0 0 1.25rem;
     font-family: var(--regolo-font-display);
     font-weight: 500;
@@ -577,12 +577,12 @@
     text-transform: uppercase;
     color: var(--regolo-ink);
   }
-  .progetto-dati {
+  .halston-progetto-dati {
     margin: 0;
     display: grid;
     gap: 0.5rem;
   }
-  .progetto-dati > div {
+  .halston-progetto-dati > div {
     display: grid;
     grid-template-columns: 9rem minmax(0, 1fr);
     gap: 1rem;
@@ -590,10 +590,10 @@
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--regolo-line);
   }
-  [data-theme='c'] .progetto-dati dt {
+  [data-theme='c'] .halston-progetto-dati dt {
     color: var(--regolo-muted);
   }
-  .progetto-dati dd {
+  .halston-progetto-dati dd {
     margin: 0;
     font-family: var(--regolo-font-display);
     font-weight: 500;
@@ -653,7 +653,7 @@
     gap: 0.625rem;
     align-content: start;
   }
-  .persona-nome {
+  .halston-persona-nome {
     margin: 0.5rem 0 0;
     font-family: var(--regolo-font-display);
     font-weight: 500;

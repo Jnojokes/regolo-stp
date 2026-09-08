@@ -293,6 +293,17 @@ E tre voci nuove, che questa passata ha aggiunto perché le ha viste succedere:
   rimetterlo in pagina alla prossima lettura, e vale anche per un **collaudo**: `colata.mjs` e
   `volume.mjs` interrogavano gesti cancellati, cioè passavano a vuoto, e un «ok» che non guarda
   niente è peggio di uno script che non c'è (n. 47);
+- **una classe di blocco con un nome generico** (n. 54). I fogli condivisi
+  (`sezioni.css`, `pagine.css`, `globals.css`) stilano nomi **non qualificati per tema**, quindi
+  un nome generico non è un nome libero: è un nome **già preso**. La galleria di B si chiamava
+  `.galleria`, che in `pagine.css` è la griglia a tre colonne della scheda progetto: le quattro
+  colonne sfalsate finivano in 435 px invece di 1.400 e la riga di licenza sbordava sopra la
+  fotografia accanto. Ogni classe di blocco porta il prefisso del suo tema, e
+  `scripts/collaudo/collisioni.mjs` lo controlla su tutto il markup reso;
+- **`cursor: none` senza la garanzia che il sostituto sia vivo** (n. 53). Nascondere il
+  puntatore di sistema è la cosa più facile da rompere di tutto il sito: se il mirino non
+  compare, il visitatore ha una pagina che non sa usare. La regola è appesa a un attributo che
+  mette il JavaScript **dopo** aver creato il mirino, quindi senza JavaScript non si applica;
 - **un valore esatto messo nel token che tutti ereditano, con un commento che dice quando si
   può usare** (n. 49). Il commento non è un vincolo: `--regolo-ink` di B portava il valore della
   reference a 3,49:1 con scritto «solo ≥ 24 px», e nove testi piccoli l'hanno ereditato. Il
@@ -476,7 +487,7 @@ componente su tutte e tre — stesse domande, cinque passi — vestito da tre ap
 | | Da dove viene | Come si riconosce in tre secondi |
 |---|---|---|
 | **A** «lo studio» — `/` | il progetto, fase 3 bis | carta bianca, payoff a 132 px, la fotografia accanto al testo |
-| **B** «il foglio» — `/opzione-b` | **ecoLINEAR Studio**, misurato | carta grigia e testo **in terracotta**, griglia di costruzione **tratteggiata**, disegni a filo negli angoli, un blocco d'ambra dentro il logotipo |
+| **B** «il foglio» — `/opzione-b` | **ecoLINEAR Studio**, misurato | carta grigia e testo **in terracotta**, griglia di costruzione **tratteggiata**, disegni a filo negli angoli, un blocco d'ambra dentro il logotipo — e al posto del puntatore il **mirino di un CAD**, con la lettura di coordinate in millimetri |
 | **C** «le bande» — `/opzione-c` | **Halston** (template Webflow), misurato | nessun contenitore, tutto in **maiuscolo**, e **bande a piena larghezza** che cambiano superficie: carta, granata, mauve, antracite |
 
 I nomi dicono il **meccanismo e non la reference**, e la ragione è di vendita (n. 52): in cima
@@ -509,7 +520,8 @@ quanto si può scendere senza duplicare il form.
 | Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Montserrat sola** `wght 300:700` (33,4 KB) — misurato: 60 nodi di testo su 60, e usa tutti e cinque i pesi | **General Sans** `wght 400:600` (24,3 KB) + **JetBrains Mono 400** (8,5 KB): misurato 298 nodi contro 34, e dove c'è un dato c'è la mono |
 | Apparato | la quota: filetto + terminatore obliquo a 45° ISO 129-1 | i **segni di registro**: squadrette d'ambra agli angoli, e il **righello** con una tacca per fase. Le quote hanno terminatori **verticali**, non obliqui | la **targa**: pastiglia in mono maiuscolo, 1 px di bordo, 3 px di raggio, un punto pieno davanti. E la testa di sezione a **tre punti su un filetto** |
 | Testata | lockup + menu-frase con le virgole, barra **sticky** | marchio a sinistra, menu a destra in maiuscolo su una **pastiglia che compare scorrendo** (opacità di uno `::before`, `animation-timeline: scroll(root)`) | marchio, **pastiglia granata `MENU`**, menu **centrato sulla finestra**. A 390 la pastiglia passa a destra |
-| Movimento | nessuno | **due gesti, tutti in CSS**: le fasi pinnate e la pastiglia della testata | **nessuno**, e non per risparmio: quella pagina non ha un gesto di scorrimento, il suo effetto è il cambio di superficie |
+| Movimento | nessuno | **due gesti allo scorrimento, tutti in CSS** (le fasi pinnate e la pastiglia della testata) più **uno al puntatore**: il mirino CAD, che è l'unico JavaScript di movimento del progetto — misurato, **zero KB** di crescita del bundle | **nessuno**, e non per risparmio: quella pagina non ha un gesto di scorrimento, il suo effetto è il cambio di superficie |
+| Puntatore | quello di sistema | **sostituito**: `cursor: none` e il mirino di un programma di disegno — quattro tratti con 7 px di vuoto al centro, la finestra di selezione da 8 px, la lettura di coordinate in mm, e un anello da 52 px sopra gli elementi interattivi (n. 53). Si spegne su `prefers-reduced-motion`, su puntatore grosso, senza JavaScript e **sui campi del form** | quello di sistema |
 | Copy (corpo, misurato) | 6.612 caratteri | **4.158** | **4.189** |
 | Altezza a 1440 | 8.677 px | 10.184 | 8.331 |
 | Ordine | hero foto → smistamento → progetti → servizi → come lavoriamo → **esploso SVG** → persone → territorio → brief → footer | copertina-foglio → quote → **invito** → galleria a colonne sfalsate → **fasi pinnate** → opere → persone → brief → footer | copertina → **due bande due-up** → citazione a due toni → servizi su banda scura → numeri → progetti → metodo → persone → brief → footer |

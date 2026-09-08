@@ -5,6 +5,7 @@ import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
 import { site } from '@/lib/site'
 import { Misurazione } from '@/components/Misurazione'
+import { Cursore } from '@/components/ecolinear/Cursore'
 
 /**
  * Root layout dell'opzione B — **ecoLINEAR**, dal sito che il committente ha
@@ -50,6 +51,13 @@ export default function LayoutB({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Misurazione />
+        {/* Il mirino CAD al posto del puntatore: è il gesto che la reference ha
+            su tutta la pagina, quindi sta nel layout e non in un blocco. Si
+            installa da sé **solo** su puntatore fine e senza
+            `prefers-reduced-motion`, e senza JavaScript non rende niente —
+            perché il `cursor: none` che lo accompagna è appeso a un attributo
+            che mette lui. */}
+        <Cursore />
         <SiteFooter conTerritorio variante="destra" />
       </body>
     </html>

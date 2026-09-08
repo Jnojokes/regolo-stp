@@ -334,13 +334,13 @@ export function Progetti() {
             className="progetto-media"
           />
           <div className="progetto-testo">
-            <h3 className="progetto-nome">
+            <h3 className="halston-progetto-nome">
               <Segnaposto
                 chiede={`nome del progetto ${String(i + 1).padStart(2, '0')}`}
                 parole={3}
               />
             </h3>
-            <dl className="progetto-dati">
+            <dl className="halston-progetto-dati">
               {p.dati.map((d) => (
                 <div key={d.etichetta}>
                   <dt>{d.etichetta}</dt>
@@ -436,7 +436,7 @@ export function Persone() {
               ratio="4 / 5"
               className="persona-media"
             />
-            <p className="persona-nome">
+            <p className="halston-persona-nome">
               <DaCliente>{p.nome}</DaCliente>
             </p>
             <p className="persona-targa">

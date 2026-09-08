@@ -251,7 +251,7 @@
   /* Il guscio dei blocchi: **nessun passo dichiarato**, solo la banda della
      reference. La differenza da A è che A ha tre passi (48 · 96 · 200) e qui
      c'è un valore solo, perché la composizione la tiene la griglia. */
-  [data-theme='b'] .galleria,
+  [data-theme='b'] .ecolinear-galleria,
   [data-theme='b'] .fasi-pinnate,
   [data-theme='b'] .numeri-quota,
   [data-theme='b'] .invito,
@@ -265,6 +265,22 @@
 
   /* ==========================================================================
      LA GALLERIA — quattro colonne sfalsate, rapporti misti
+     --------------------------------------------------------------------------
+     **Il nome della sezione è `ecolinear-galleria` e non `galleria`, e il
+     motivo è un bug che il committente ha visto.** `.galleria` esiste già in
+     `app/css/pagine.css`: è la griglia di fotografie a **tre colonne** della
+     scheda progetto, e la sua regola non è qualificata per tema. Chiamando la
+     sezione `galleria` questo blocco diventava quella griglia — l'etichetta, il
+     titolo e il contenitore delle colonne finivano ognuno in una cella su tre,
+     quindi le quattro colonne stavano in **435 px** invece di 1.400 e i campi
+     media uscivano larghi **88 px**, con la riga di licenza (64 px di largo,
+     140 di alto) che sbordava sopra la fotografia accanto.
+
+     La regola generale, e vale per tutte e tre le proposte: **una classe di
+     blocco porta il prefisso del suo tema.** I fogli condivisi
+     (`sezioni.css`, `pagine.css`, `globals.css`) stilano nomi non qualificati,
+     quindi un nome generico non è un nome libero — è un nome già preso.
+     `scripts/collaudo/collisioni.mjs` lo controlla su tutto il markup.
      ======================================================================== */
 
   .galleria-colonne {
@@ -431,7 +447,7 @@
     color: var(--regolo-tono); /* 12 % di opacità, misurata: decorazione */
     margin-bottom: -0.18em;
   }
-  .fase-titolo {
+  .ecolinear-fase-titolo {
     margin: 0 0 1rem;
     font-family: var(--regolo-font-display);
     font-weight: 600;
@@ -440,7 +456,7 @@
     letter-spacing: var(--regolo-display-tracking);
     color: var(--regolo-ink-display); /* ≥ 28 px */
   }
-  .fase-testo {
+  .ecolinear-fase-testo {
     margin: 0;
     max-width: var(--regolo-misura); /* 609 px, misurata */
     font-family: var(--regolo-font-body);
@@ -1214,5 +1230,149 @@
   [data-theme='b'] .brief-azioni .btn:not(.btn-ghost) {
     /* L'alone d'ambra, misurato sulla reference (`0 0 12px rgba(217,142,54,.55)`). */
     box-shadow: 0 0 12px rgba(217, 142, 54, 0.55);
+  }
+}
+
+/* ============================================================================
+   IL MIRINO CAD — il puntatore di sistema si nasconde solo se il suo sostituto
+   è vivo
+   ----------------------------------------------------------------------------
+   Il committente: *«non mi sembra che la versione B abbia il cursore come
+   quello della reference»*. Su `ecolinearstudio.com` il puntatore non c'è —
+   `cursor: none` su 1.082 elementi — e al suo posto sta il mirino di un
+   programma di disegno. Le misure e le quattro condizioni stanno in testa a
+   `components/ecolinear/Cursore.tsx`; qui c'è solo la forma.
+
+   **La riga che conta è la prima**: `cursor: none` è appeso a
+   `[data-cursore='cad']`, e quell'attributo lo mette il JavaScript **dopo** che
+   il mirino esiste. Senza JavaScript, su un puntatore grosso, o con
+   `prefers-reduced-motion: reduce` l'attributo non c'è: il puntatore di sistema
+   resta, e non c'è niente da riparare. Una pagina senza puntatore non è un
+   difetto grafico, è una pagina che non si sa usare.
+   ========================================================================== */
+
+@layer components {
+  /* Il puntatore di sistema via — ma **non** sui campi del form. La reference
+     lo nasconde anche lì; qui no, e la deviazione è dichiarata: la barra di
+     testo che dice «qui si scrive» è un'affordance, e l'azione primaria di
+     questo sito è il brief inviato. Le regole d'autore battono quelle del
+     browser per origine, quindi questa spegne anche il `pointer` che l'UA mette
+     sui link: non serve elencare gli elementi uno per uno, come fa la
+     reference su 1.082 nodi. */
+  html[data-theme='b'][data-cursore='cad'] body,
+  html[data-theme='b'][data-cursore='cad']
+    body
+    *:not(input):not(textarea):not(select):not([contenteditable='true']) {
+    cursor: none;
+  }
+
+  .cursore-cad {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 90; /* sopra tutto: la testata sta a 40, lo skip-link a 60 */
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s; /* la durata misurata sulla reference */
+    /* `will-change` no: un elemento di 0 × 0 che scrive solo `transform` non ha
+       bisogno di un livello dedicato, e chiederne uno costa memoria su ogni
+       pagina. */
+  }
+  .cursore-cad[data-visibile] {
+    opacity: 1;
+  }
+  /* Sopra un campo di testo il mirino si spegne del tutto: lì comanda il
+     puntatore di sistema, che è tornato. */
+  .cursore-cad[data-stato='campo'] {
+    opacity: 0;
+  }
+
+  /* I quattro tratti, con il vuoto di 7 px al centro. */
+  .cursore-riga {
+    position: absolute;
+    background-color: rgba(217, 142, 54, 0.4); /* misurato */
+  }
+  .cursore-riga[data-verso='sx'],
+  .cursore-riga[data-verso='dx'] {
+    top: 0;
+    width: 4rem; /* 64 px, misurato */
+    height: 1px;
+  }
+  .cursore-riga[data-verso='sx'] {
+    right: 7px;
+  }
+  .cursore-riga[data-verso='dx'] {
+    left: 7px;
+  }
+  .cursore-riga[data-verso='su'],
+  .cursore-riga[data-verso='giu'] {
+    left: 0;
+    width: 1px;
+    height: 4rem;
+  }
+  .cursore-riga[data-verso='su'] {
+    bottom: 7px;
+  }
+  .cursore-riga[data-verso='giu'] {
+    top: 7px;
+  }
+
+  /* La finestra di selezione: 8 × 8, spigolo vivo, ed è **l'unico spigolo vivo
+     della proposta** — tutto il resto ha 2 px di raggio. Resta 8 × 8 in ogni
+     stato: verificato sul sito vero su carta, su un link e su una fotografia. */
+  .cursore-mira {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    box-sizing: border-box;
+    border: 1px solid rgba(217, 142, 54, 0.75); /* misurato */
+  }
+
+  /* L'anello: invisibile a riposo, 52 px sopra un elemento interattivo. Cresce
+     con `scale` e non con `width`/`height` — la reference transisce le
+     dimensioni, che fanno layout, e § Regole, 7 dice transform e opacity. */
+  .cursore-anello {
+    position: absolute;
+    top: -1.625rem;
+    left: -1.625rem;
+    width: 3.25rem; /* 52 px, misurato */
+    height: 3.25rem;
+    box-sizing: border-box;
+    border: 1px solid var(--regolo-ambra);
+    border-radius: 50%;
+    background-color: rgba(217, 142, 54, 0.08); /* misurato */
+    opacity: 0;
+    transform: scale(0.2);
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+  }
+  .cursore-cad[data-stato='attivo'] .cursore-anello {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* La lettura di coordinate. Sopra un elemento interattivo si spegne: nella
+     reference i due stati non convivono, c'è la lettura **o** l'anello. */
+  .cursore-lettura {
+    position: absolute;
+    top: 0.625rem;
+    left: 0.875rem;
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: 0.625rem; /* 10 px, misurato */
+    line-height: 1.3;
+    letter-spacing: 0.05em; /* +0,8 px su 10 = 0,08 em; 0,05 tiene la riga corta */
+    white-space: nowrap;
+    color: rgba(157, 116, 96, 0.55); /* misurato: è decorazione, vedi il .tsx */
+    font-variant-numeric: tabular-nums;
+    transition: opacity 0.2s;
+  }
+  .cursore-cad[data-stato='attivo'] .cursore-lettura {
+    opacity: 0;
   }
 }

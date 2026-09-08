@@ -127,7 +127,7 @@ ripresa aspetta `networkidle`, poi `document.fonts.ready`, poi **scorre tutta la
 in cima**, perché quel template rivela il testo allo scorrimento: senza il giro metà dei nodi
 resta a `opacity: 0`. È la stessa lezione della passata precedente, in una forma nuova.
 
-### Le sei richieste, e dove sono finite
+### Le otto richieste, e dove sono finite
 
 | | Chiesto | Fatto |
 |---|---|---|
@@ -136,7 +136,9 @@ resta a `opacity: 0`. È la stessa lezione della passata precedente, in una form
 | 3 | rinominare le lettere in **B** e **C** | rotte `/opzione-b` e `/opzione-c`, temi `[data-theme='b']` e `'c'`, tutti gli script del collaudo, la barra della proposta |
 | 4 | il passo 1 del brief «diverso su questa opzione rispetto ad A» | **stesso componente, tre apparati** (n. 51): in B la scheda è il pannello con le squadrette d'ambra, l'avanzamento è il righello con la tacca verticale e il numero del passo è il numerone al 12 %; in C l'occhiello è la targa in mono, i filetti non hanno terminatori e le sei risposte sono sei righe. **Zero righe di markup cambiate** |
 | 5 | «cancella quello che non è più necessario» | due cartelle di componenti, due fogli di stile, `lib/volume.ts`, due script di collaudo, cinque file di carattere. `lib/esploso.ts` tornato alla versione pre-refactor, con il `<main>` di A verificato identico |
-| 6 | niente push | nessun push |
+| 6 | «non mi sembra che la versione B abbia il cursore come quello della reference» | vero, e mancava il gesto che spiega tutti gli altri: su ecoLINEAR il puntatore **non c'è** (`cursor: none` su 1.082 elementi) e al suo posto sta il **mirino di un CAD**. Rifatto misurando: quattro tratti da 64 px con 7 px di vuoto al centro, la finestra di selezione da 8 px a spigolo vivo, la lettura di coordinate, l'anello da 52 px sopra gli elementi interattivi. **Il bundle non cresce** (n. 53) |
+| 7 | lo screenshot del bug della galleria | non era una misura sbagliata, era **un nome**: `.galleria` esiste già in `pagine.css` come griglia a tre colonne della scheda progetto. Rinominate le sei classi che si scontravano, e nasce un collaudo che controlla i nomi (n. 54) |
+| 8 | niente push | nessun push |
 
 ### Difetti trovati misurando, che nessuno aveva chiesto di cercare
 
@@ -165,7 +167,13 @@ resta a `opacity: 0`. È la stessa lezione della passata precedente, in una form
    è **solo** il timestamp più il checksum: zero glifi, zero avanzamenti, `cmap` identica. Il
    file in repo è stato ripristinato, e la nota sta in testa a `scripts/genera-font.sh`: il modo
    di sapere se un font è cambiato davvero non è l'hash.
-6. **Il bersaglio del marchio nella testata era 27 px (B) e 33 (C).** Passa WCAG 2.5.8, che
+6. **Un difetto che ha visto il committente e non il collaudo, e vale più degli altri cinque.**
+   La galleria di B si chiamava `.galleria`, che in `pagine.css` è la griglia a tre colonne
+   della scheda progetto: le quattro colonne finivano in **435 px** invece di 1.400. Nessuno
+   degli otto script l'ha preso perché non è contrasto, non è interlinea, non è overflow del
+   documento (`scrollW` restava 1440) e non è peso: **è un nome**, e i nomi non si guardano.
+   Adesso c'è `collisioni.mjs`, ed è stato provato rimettendo il difetto.
+7. **Il bersaglio del marchio nella testata era 27 px (B) e 33 (C).** Passa WCAG 2.5.8, che
    chiede 24, ma in A lo stesso link arriva a 44 e la differenza non era una scelta. Portato a 44
    in tutte e due, e il padding non sposta il testo di un pixel.
 
@@ -178,8 +186,10 @@ resta a `opacity: 0`. È la stessa lezione della passata precedente, in una form
 | `interlinee.mjs` | **1.020 testi che vanno a capo, zero sotto la soglia d'inchiostro** in B e C. I quattro difetti dichiarati di A restano dichiarati e vengono stampati a parte |
 | `sweep.mjs` | `sfora: []` a 1440 su tutte e tre; `scrollW == clientW` a 390 su tutte e tre |
 | `nojs-rotte.mjs` | testo reso, `passiVisibili: 5`, `passo 1 di 5` e form inviabile su tutte e tre; `overflow: false` su sei rotte |
-| `peso.mjs` | A 326 KB / 18 richieste · B 321 / 19 · C 303 / 17 · `/servizi/strutture` 218 / 12. Il video della hero solo in `dopo` |
+| `peso.mjs` | A 292 KB / 17 richieste · B 322 / 19 · C 304 / 17 · `/servizi/strutture` 218 / 12. Il mirino CAD **non fa crescere il bundle**: B resta a 149 KB di JavaScript, come C che non lo ha. Il video della hero solo in `dopo` |
 | «A non si tocca» | `<main>` di `/` **byte-identico** a `HEAD`: 57.492 byte, `sha256 537dd84a…` |
+| `cursore.mjs` *(nuovo)* | **21 prove su 21**: quattro stati del mirino e cinque degradi. La prova che conta è che **dove il mirino non c'è, il puntatore di sistema è tornato** |
+| `collisioni.mjs` *(nuovo)* | nessuna classe di B o C stilata da un foglio condiviso fuori dai sette prefissi dichiarati. Provato rimettendo il difetto: esce con codice 1 e lo nomina |
 | `soglie.py` | rigenerato per i quattro font nuovi; `interlinee.mjs` verifica le impronte e si ferma se non corrispondono |
 
 ### Cosa resta aperto

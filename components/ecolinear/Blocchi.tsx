@@ -134,7 +134,7 @@ export function Galleria() {
   }))
 
   return (
-    <section className="galleria" id="progetti" aria-labelledby="galleria-titolo">
+    <section className="ecolinear-galleria" id="progetti" aria-labelledby="galleria-titolo">
       <p className="registro-etichetta">
         <span>progetti</span>
       </p>
@@ -242,8 +242,8 @@ export function Fasi() {
             <span className="fase-numerone" aria-hidden="true" data-decorativo="">
               0{i + 1}
             </span>
-            <h3 className="fase-titolo">{f.titolo}</h3>
-            <p className="fase-testo">{f.testoLungo}</p>
+            <h3 className="ecolinear-fase-titolo">{f.titolo}</h3>
+            <p className="ecolinear-fase-testo">{f.testoLungo}</p>
           </article>
         ))}
       </div>

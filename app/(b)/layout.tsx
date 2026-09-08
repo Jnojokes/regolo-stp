@@ -7,12 +7,16 @@ import { site } from '@/lib/site'
 import { Misurazione } from '@/components/Misurazione'
 
 /**
- * Root layout dell'opzione B — «La fonderia», dal sistema di **Studio
- * Foundry** (`kit/reference/studio-foundry/`), chiesto per nome dal
- * committente.
+ * Root layout dell'opzione B — **ecoLINEAR**, dal sito che il committente ha
+ * indicato per nome: *«l'opzione 2 la voglio identica a questo sito»*,
+ * `https://ecolinearstudio.com/`.
  *
- * Rotta di proposta, non indicizzabile: sparisce alla fase 5 con le altre non
- * scelte (`DECISIONI.md` n. 1, n. 35 e n. 37).
+ * Le prove stanno in `kit/reference/ecolinear/`, catturate e **misurate nel
+ * browser**; i valori sono nel blocco `[data-theme='b']` di `app/globals.css` e
+ * il perché di ognuno in `app/css/ecolinear.css`.
+ *
+ * Rotta di proposta, non indicizzabile: alla decisione n. 1 sopravvive una sola
+ * delle tre home e le altre due si cancellano (fase 5).
  */
 export const metadata: Metadata = {
   title: {
@@ -20,29 +24,33 @@ export const metadata: Metadata = {
     template: `%s — ${site.nome} (opzione B)`,
   },
   description:
-    'Proposta di homepage per REGOLO, variante «La fonderia». Rotta di lavoro, non indicizzata.',
+    'Proposta di homepage per REGOLO, variante «ecoLINEAR». Rotta di lavoro, non indicizzata.',
   robots: { index: false, follow: false },
 }
 
 export const viewport: Viewport = {
-  // La carta del tema, come in A, B e D: `--regolo-paper` di `[data-theme='b']`.
-  // Era rimasto il carbone della direzione precedente («La parete»).
-  themeColor: '#f3f0ec',
+  /* La carta del tema, cioè `--regolo-paper` di `[data-theme='b']`, che è il
+     valore misurato sul sito vero. Va tenuto allineato a mano: è già stato due
+     volte il residuo di una direzione precedente. */
+  themeColor: '#ececec',
 }
 
-export default function LayoutC({ children }: { children: React.ReactNode }) {
+export default function LayoutB({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it" data-theme="b" className={fontsThemeB}>
       <body className="con-barra-mobile flex min-h-dvh flex-col">
         <a href="#contenuto" className="skip-link">
           Salta al contenuto
         </a>
-        <SiteHeader variante="centrato" conPastiglia />
+        {/* `destra`: marchio a sinistra, menu a destra in maiuscolo. È la
+            composizione misurata, e la variante non porta il nome della
+            proposta — dice che forma ha la testata. */}
+        <SiteHeader variante="destra" />
         <main id="contenuto" tabIndex={-1} className="flex-1">
           {children}
         </main>
         <Misurazione />
-        <SiteFooter conTerritorio variante="centrato" />
+        <SiteFooter conTerritorio variante="destra" />
       </body>
     </html>
   )

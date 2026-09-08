@@ -35,43 +35,18 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  * - `lockup` (A) — il marchio e la sede in colonna, il menu che è **una frase**
  *   con le virgole (Kononenko misurato: `Index, Work, About, Contact`), la
  *   barra **sticky** che segue la lettura. È un sito: il chrome resta.
- * - `centrato` (C) — il menu **al centro** sopra la fotografia, il marchio
- *   piccolo a sinistra, la pastiglia «contatti» a destra: è la composizione
- *   misurata su `kit/reference/studio-foundry/1440-hero.jpeg`. Sostituisce la
- *   variante `puntini`, che riduceva ogni voce a un punto di 8 px con il nome in
- *   uno `sr-only` — veniva dalla direzione «la parete», scartata dal committente,
- *   e il risultato in pagina era **un menu che a 1440 non si vedeva**.
- * - `pastiglia` (D) — la stessa griglia a tre celle, ma il menu resta piccolo e
- *   quieto sopra la fotografia, come in `kit/reference/storey/1440-hero.jpeg`.
+ * - `destra` (B, ecoLINEAR) — il marchio a sinistra e il menu **a destra**, in
+ *   maiuscolo, su un fondo carta che si stacca dal foglio quando la pagina
+ *   scorre. Misurato su `kit/reference/ecolinear/1440-hero.jpeg` e `-meta-18`.
+ * - `pastiglia` (C, Halston) — il marchio a sinistra, una **pastiglia granata**
+ *   con l'hamburger accanto, il menu **al centro** e `altro` a destra.
+ *   Misurato su `kit/reference/halston/1440-hero.jpeg`.
  */
 export function SiteHeader({
   variante = 'lockup',
-  conPastiglia = false,
 }: {
-  variante?: 'lockup' | 'centrato' | 'pastiglia'
-  /**
-   * La pastiglia «contatti» all'estremo destro della testata.
-   *
-   * In A **non c'è, e non deve tornarci**: sopra la piega la CTA è una sola,
-   * quella della hero (`CLAUDE.md` § Homepage, blocco 1), e la nota qui sopra
-   * spiega perché è stata togliata. Le due reference misurate ce l'hanno tutte
-   * e due — `CONTACT` in Studio Foundry, `Contact` in Storey, sempre a destra e
-   * sempre sopra la fotografia — e nelle proposte che aprono con una fotografia
-   * è **l'unica** CTA sopra la piega, perché lì la hero non ne ha: quindi il
-   * conto di `CLAUDE.md` resta uno.
-   *
-   * Arriva dal layout, non da un `if` sul tema nel markup.
-   */
-  conPastiglia?: boolean
+  variante?: 'lockup' | 'destra' | 'pastiglia'
 }) {
-  /* Con la pastiglia, «contatti» **esce dal menu**: è la composizione delle due
-     reference misurate — Storey ha `Projects Studio Journal` più la pastiglia
-     `Contact`, Studio Foundry ha `Works Studio Approach` più `CONTACT` — e
-     senza questo filtro la voce compare due volte nella stessa riga, che è il
-     difetto che si vedeva in pagina. La pastiglia non è una CTA in più: è
-     **quella** voce, in un'altra forma. */
-  const voci = conPastiglia ? menu.filter((v) => v.href !== '/contatti') : menu
-
   return (
     <header className={`site-header site-header-${variante}`}>
       {/* `lockup` è A e basta; C e D usano lo stesso contenitore a tre celle —
@@ -116,7 +91,7 @@ export function SiteHeader({
           className={`site-nav nav:block hidden ${variante === 'lockup' ? '' : `site-nav-${variante}`}`}
         >
           <ul>
-            {voci.map((v) => (
+            {menu.map((v) => (
               <li key={v.href}>
                 {/* La voce è **sempre testo visibile**, in ogni variante. La
                     variante `puntini` la riduceva a un punto di 8 px con il nome
@@ -135,18 +110,6 @@ export function SiteHeader({
             ))}
           </ul>
         </nav>
-
-        {/* La pastiglia all'estremo destro: è l'azione, ed è il solo oggetto
-            con un raggio in tutto il tema (`--regolo-radius` vale 0 su ogni
-            rettangolo). Punta a `/contatti` e non al brief, perché la reference
-            dice «Contact» e perché il brief ha già la sua CTA in fondo alla
-            pagina: due bottoni che portano allo stesso posto sopra la piega
-            erano il difetto corretto ad aprile su A. */}
-        {conPastiglia && (
-          <Link href="/contatti" className="testata-pastiglia nav:inline-flex hidden">
-            contatti
-          </Link>
-        )}
 
         {/* Mobile: disclosure nativa, nessun JS. Qui la CTA c'è, perché il menu
             è chiuso e la hero è più lontana. */}

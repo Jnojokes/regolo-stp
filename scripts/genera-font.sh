@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-# Genera i due font del sito in public/fonts, dalla sorgente OFL su fontsource.
+# Genera i font del sito in public/fonts. Uno per proposta, piu' la mono di C.
+#
+#   A  Archivo        (OFL, fontsource)   — il progetto
+#   B  Montserrat     (OFL, fontsource)   — ecoLINEAR Studio, misurato: una sola famiglia
+#   C  General Sans   (ITF, Fontshare)    — Halston, 298 nodi di testo su 332
+#      JetBrains Mono (OFL, fontsource)   — Halston, i valori e le micro-etichette
 #
 # Perché uno script e non due file scaricati a mano: il file di fontsource con
 # l'asse di larghezza pesa 90 KB, e a noi servono due assi ristretti e il solo
@@ -41,6 +46,16 @@ echo "· venv usa-e-getta"
 python3 -m venv "$TMP/venv" >/dev/null
 "$TMP/venv/bin/pip" install --quiet fonttools brotli
 
+# Nota per chi rilancia questo script: `varLib.instancer` riscrive
+# `head.modified` con l'ora corrente, e `pyftsubset` non la ricalcola (il suo
+# default e' `--no-recalc-timestamp`). Quindi **ogni** rigenerazione fa comparire
+# i quattro file come modificati in git anche quando i contorni sono identici:
+# il delta e' un timestamp piu' il checksum che ne dipende. Succede anche ad
+# Archivo, che e' il font dell'opzione A, e A non si tocca. Il modo di sapere se
+# un font e' cambiato davvero non e' l'hash: e' confrontare glifi, avanzamenti,
+# `cmap`, assi e `hhea`/`OS/2` con fontTools. Se il confronto dice «zero
+# avanzamenti diversi», il file rigenerato si butta e si tiene quello in repo.
+
 fai() { # nome  url  assi  uscita
   local nome="$1" url="$2" assi="$3" out="$4"
   echo "· $nome"
@@ -66,98 +81,71 @@ fai archivo \
   "wght=400:600 wdth=62:100" \
   "archivo-regolo-latin-var.woff2"
 
-# --- D: il masthead allargato ------------------------------------------------
-# Anybody istanziato a `wdth 150 / wght 900`: un solo taglio, statico.
+# ============================================================================
+# OPZIONE B «ecoLINEAR» — https://ecolinearstudio.com/
+# ============================================================================
+# **Montserrat, e nient'altro.** Misurato sul sito vero con Playwright:
+# `famiglie: [['Montserrat', 60]]`, cioe' **una sola famiglia su 60 nodi di
+# testo**, con i pesi 300 · 400 · 500 · 600 · 700. Non e' un sostituto ne'
+# un'interpretazione: e' il carattere di quella pagina, e il committente ha
+# chiesto quella pagina.
 #
-# Perche' Anybody, e perche' questa e' UNA decisione e non due. Il committente
-# ha chiesto due cose separate — «font piu' display e allargato» e «le interlinee
-# che si sovrappongono vanno ampliate» — e misurando i sei file veri di
-# public/fonts si scopre che sono la stessa cosa. La soglia sotto la quale un
-# testo che il browser manda a capo si tocca davvero e' `alto(E-accentata) +
-# basso(g)`, letta dai contorni con fontTools:
+# I pesi non si stringono piu' di 300:700 perche' li usa tutti: 300 sulle
+# annotazioni, 400 sul corpo, 500 sui numeri delle fasi, 600 sui titoli e sulla
+# nav, 700 sul nome dello studio dentro il testo.
+fai montserrat \
+  "https://cdn.jsdelivr.net/fontsource/fonts/montserrat:vf@latest/latin-wght-normal.woff2" \
+  "wght=300:700" \
+  "montserrat-regolo-latin-var.woff2"
+
+# ============================================================================
+# OPZIONE C «Halston» — https://halston-architecture-template.webflow.io/
+# ============================================================================
+# Due famiglie, misurate: `General Sans` su **298 nodi** e `JetBrains Mono` su
+# **34**. La mono non e' decorazione: porta i valori (`48+ HOUSES`,
+# `AVG. 14 MONTHS`) e le micro-etichette maiuscole, che su quella pagina sono
+# 270 occorrenze.
 #
-#   Anybody 1,019 · Archivo 1,050 · Elsie 1,094 · Caveat 1,101
-#   Inter   1,158 · Plex Mono 1,161
+# **LICENZA, e va detta.** General Sans non e' OFL: e' ITF (Indian Type
+# Foundry) sotto la loro licenza gratuita, che permette l'uso commerciale e il
+# self-hosting. Tutto il resto del repo viene da fontsource in OFL, quindi
+# questa e' una **deviazione dichiarata**: la ragione e' che il committente ha
+# chiesto quel sito «identico», e General Sans e' il suo carattere. Se un
+# giorno la licenza dovesse dare fastidio, il sostituto piu' vicino in OFL e'
+# Hanken Grotesk o Be Vietnam Pro — ma non sono lo stesso carattere, e la
+# differenza si vede sulle maiuscole strette.
 #
-# Storey — la reference di D, e l'unica del tier A — ha «interlinea 1,0 esatta a
-# ogni corpo display», misurata. Con Inter (1,158) quel valore e' irriproducibile:
-# i titoli di D stavano a 63,4 px con interlinea 63,4 e si toccavano, ed e' il
-# difetto che il committente ha visto. Anybody sta a 1,019, cioe' e' l'unica
-# famiglia del repo che regge l'1,0 su piu' righe. Quindi il masthead allargato e
-# l'interlinea stretta si ottengono con la stessa scelta.
+# **TRAPPOLA della sorgente**: Fontshare serve i file da URL con un hash, che
+# cambia quando ITF ricompila il font. Quindi l'indirizzo qui sotto si ricava
+# dal loro CSS a ogni generazione invece di essere scritto a mano.
+GS_URL="https://$(curl -sS 'https://api.fontshare.com/v2/css?f[]=general-sans@1,2' \
+  | grep -o 'cdn.fontshare.com/wf/[A-Z0-9/]*\.woff2' | head -1)"
+echo "· General Sans: $GS_URL"
+fai general-sans \
+  "$GS_URL" \
+  "wght=400:600" \
+  "generalsans-regolo-latin-var.woff2"
+
+# La mono di Halston. Torna in repo dopo essere uscita alla fase 3 bis
+# («niente monospace per le etichette dati», cluster n. 5, −31 KB): quel
+# divieto difendeva il progetto da un **default**, e qui non e' un default —
+# e' il carattere che quella pagina usa per i suoi valori. Un solo peso: 400.
+fai jetbrains-mono \
+  "https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono:vf@latest/latin-wght-normal.woff2" \
+  "wght=400" \
+  "jetbrainsmono-regolo-latin-400.woff2"
+
+# ============================================================================
+# USCITI DAL REPO, e perche'
+# ============================================================================
+# Elsie 900, Anybody Wide 900, Inter, IBM Plex Mono, Caveat 500 erano il
+# sistema tipografico delle due proposte precedenti — «La fonderia» su Studio
+# Foundry e «La monografia» su Storey. Il committente ha indicato due siti
+# diversi e ha chiesto di cancellare quello che non serve piu'.
 #
-# `wdth 150` e' il massimo dell'asse (50-150) ed e' il senso della riga: e' il
-# masthead *esteso*, non un peso in piu'. `wght 900` e' anch'esso il massimo.
-# Statico e non variabile: D usa un taglio solo, e un file variabile con due assi
-# per un taglio solo e' peso regalato.
-#
-# Questa riga era stata scritta e poi tolta nel commit 2d2be75, quando usciva la
-# direzione «la parete» che la usava. Torna per un motivo misurato, non perche'
-# c'era.
-fai anybody-wide \
-  "https://cdn.jsdelivr.net/fontsource/fonts/anybody:vf@latest/latin-wdth-normal.woff2" \
-  "wght=900 wdth=150" \
-  "anybody-wide-regolo-latin-900.woff2"
-
-# Il mono tecnico dell'opzione B. Non e' un ripensamento sul divieto della
-# fase 3 bis («niente monospace per le etichette dati», cluster n. 5): e' che il
-# brief visivo e' cambiato. Le tre reference scelte dal committente hanno tutte
-# lo stesso gesto centrale — «editorial sans + technical mono» — e la mono ci
-# sta SOLO sotto i 14 px, come annotazione, mai come contenuto.
-fai plexmono \
-  "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.woff2" \
-  "" \
-  "plexmono-regolo-latin-400.woff2"
-
-# --- C e D: la copia di interfaccia -----------------------------------------
-# Inter: il sostituto dichiarato di Neue Haas Unica (C) e di Helvetica Neue (D).
-# Una famiglia sola per tutta la copia di interfaccia, pesi 400 e 700 in C,
-# 400 e 500 in D.
-fai inter \
-  "https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2" \
-  "wght=400:700" \
-  "inter-regolo-latin-var.woff2"
-
-# Anybody Wide (35,9 KB) e Source Serif 4 (32,0 KB) erano il display di «la
-# parete» e il corpo di «il marmo»: le due direzioni scartate dal committente
-# (DECISIONI n. 37). Sono uscite di qui e dal repo — un file generato che
-# nessun @font-face nomina non e' un avanzo innocuo, e' 68 KB che alla prossima
-# lettura qualcuno prova a rimettere in pagina.
-
-# --- opzione C «la fonderia» (Studio Foundry) -------------------------------
-# Elsie 900: e' **il** carattere del display di Studio Foundry, e qui non e' un
-# sostituto ne' un'ispirazione — il committente ha chiesto quella pagina.
-# Serif ad altissimo contrasto, sempre TUTTO MAIUSCOLO e mai sotto i 40 px: a
-# corpo piccolo le grazie sottili spariscono e resta una macchia.
-fai elsie \
-  "https://cdn.jsdelivr.net/fontsource/fonts/elsie@latest/latin-900-normal.woff2" \
-  "" \
-  "elsie-regolo-latin-900.woff2"
-
-# --- opzione D «la casa» (Storey) -------------------------------------------
-# La calligrafica. Storey usa **Biro una volta sola in tutta la pagina** — e' la
-# sua firma, ed e' una firma proprio perche' non si ripete. Caveat e' il
-# sostituto OFL: entra in un punto solo, e se un giorno se ne trova un secondo
-# la regola e' stata violata.
-fai caveat \
-  "https://cdn.jsdelivr.net/fontsource/fonts/caveat:vf@latest/latin-wght-normal.woff2" \
-  "wght=500" \
-  "caveat-regolo-latin-500.woff2"
-
-# --- due istanze STATICHE per l'immagine Open Graph -------------------------
-# `next/og` (satori) non legge i woff2 variabili: vuole un file statico a un
-# peso fisso. Queste due non vengono servite al browser — stanno fuori da
-# `public/` — e le legge solo `app/(a)/opengraph-image.tsx` a build time.
-echo "· istanze statiche per l'Open Graph"
-mkdir -p assets/og
-for peso in 400 500; do
-  "$TMP/venv/bin/fonttools" varLib.instancer "$TMP/archivo.woff2" \
-    "wght=$peso" "wdth=100" -o "$TMP/og-$peso.ttf" >/dev/null
-  "$TMP/venv/bin/pyftsubset" "$TMP/og-$peso.ttf" \
-    --unicodes="$LAT" --layout-features="$FEAT" \
-    --output-file="assets/og/archivo-$peso.ttf"
-  echo "  assets/og/archivo-$peso.ttf  $(wc -c <"assets/og/archivo-$peso.ttf") byte"
-done
+# Un file generato che nessun `@font-face` nomina non e' un avanzo innocuo:
+# alla prossima lettura qualcuno prova a rimetterlo in pagina. Le righe che li
+# scaricavano sono state cancellate insieme ai file.
 
 echo
 echo "Fatto. Controllo degli assi e delle funzioni tipografiche:"
@@ -172,23 +160,29 @@ for f in sorted(glob.glob(os.path.join(sys.argv[1], "*-regolo-*.woff2"))):
         else "statico"
     )
     gsub = sorted({r.FeatureTag for r in t["GSUB"].table.FeatureList.FeatureRecord})
-    # `tnum` serve a rendere tabellari le cifre di una famiglia proporzionale.
-    # Una monospace ha gia' tutte le cifre della stessa larghezza per
-    # definizione, e infatti IBM Plex Mono non espone la funzione: chiederla
-    # anche a lei sarebbe come pretendere una chiave inglese da una chiave fissa.
+    # `tnum` serve a rendere tabellari le cifre di una famiglia proporzionale,
+    # e serve **solo a chi porta una colonna di numeri**. Chiederlo a tutti
+    # sarebbe pretendere una chiave inglese da una chiave fissa.
+    #
+    # Chi ne ha bisogno, e perche':
+    #   Archivo (A)     si': le sue cifre incolonnano i dati duri delle schede
+    #                   progetto, e A non ha una monospace.
+    #   Montserrat (B)  si': in ecoLINEAR i numeri delle fasi (01-04) e le
+    #                   cifre stanno nella stessa famiglia, che e' l'unica.
+    #
+    # Chi non ne ha bisogno:
+    #   una monospace   ce l'ha per costruzione, tutte le cifre sono gia' larghe
+    #                   uguale, e infatti non espone la funzione.
+    #   General Sans (C) **no, e non e' un difetto**: in Halston i valori
+    #                   incolonnati (`48+ HOUSES`, `AVG. 14 MONTHS`) stanno in
+    #                   JetBrains Mono, misurato — 34 nodi su 332. La
+    #                   proporzionale non porta mai un dato in colonna, quindi
+    #                   non le si chiede una funzione che non usa.
     mono = t["post"].isFixedPitch != 0
-    # Le famiglie che non portano mai un dato non hanno bisogno di `tnum`: una
-    # monospace ce l'ha per costruzione (tutte le cifre sono gia' larghe uguale),
-    # e una calligrafica non incolonnera' mai niente — Caveat entra in pagina
-    # una volta sola, per una riga scritta a mano. Chiederlo a loro sarebbe
-    # pretendere una chiave inglese da una chiave fissa.
-    # Le famiglie di solo display: entrano in pagina a corpo grande e non
-    # portano mai una colonna di numeri. Elsie sta sempre TUTTO MAIUSCOLO sopra
-    # i 40 px; Caveat entra una volta sola, per una riga scritta a mano.
-    SOLO_DISPLAY = ("elsie", "caveat")
-    senza_dati = mono or os.path.basename(f).startswith(SOLO_DISPLAY)
+    SENZA_COLONNE = ("generalsans",)
+    senza_dati = mono or os.path.basename(f).startswith(SENZA_COLONNE)
     if not senza_dati:
         assert "tnum" in gsub, f"{f}: manca tnum, le colonne di numeri si disallineano"
-    nota = "monospace" if mono else ("senza dati" if senza_dati else "tnum:sì")
+    nota = "monospace" if mono else ("i numeri li porta la mono" if senza_dati else "tnum:sì")
     print(f"  {os.path.basename(f)}  {assi}  {nota}  glifi:{len(t.getGlyphOrder())}")
 PY

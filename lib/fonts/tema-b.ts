@@ -1,57 +1,51 @@
 import localFont from 'next/font/local'
 
 /**
- * Opzione C «La fonderia» — il sistema di **Studio Foundry**
- * (https://studio-foundry.sujen.co/), chiesto dal committente per nome.
+ * Opzione B «ecoLINEAR» — il sistema di **ecoLINEAR Studio**
+ * (https://ecolinearstudio.com/), che il committente ha chiesto per nome
+ * dicendo *«l'opzione 2 la voglio identica a questo sito»*.
  *
- * Tre caratteri, tre ruoli che non si sovrappongono mai:
+ * ## Una famiglia sola, e non è un'interpretazione
  *
- * - **Elsie 900** per il marchio e i nomi dei progetti. È *il* carattere del
- *   display di Studio Foundry, non un sostituto: la richiesta era «l'opzione B
- *   deve essere come questa». Serif ad altissimo contrasto, **sempre tutto
- *   maiuscolo e mai sotto i 40 px** — a corpo piccolo le grazie sottili
- *   spariscono e resta una macchia. 10,9 KB, un peso solo.
- * - **Inter** per il corpo e il claim: un lineare leggero, che nella reference
- *   sta sopra la fotografia in peso normale e non contende niente al serif.
- * - **IBM Plex Mono** per le micro-etichette maiuscole a 10-14 px — i metadati
- *   ai due estremi della riga (`RESIDENZIALE` a sinistra, `2025` a destra) e le
- *   pastiglie `CONTATTI` e `MENU`.
+ * Misurato sul sito vero con Playwright, contando i nodi di testo:
+ * `famiglie: [['Montserrat', 60]]`. **Sessanta nodi su sessanta.** Non c'è una
+ * seconda famiglia, non c'è una monospace, non c'è un display separato: tutta
+ * la pagina è Montserrat, e la gerarchia la fanno il corpo e il peso.
  *
- * `SCHEDA.md` aveva escluso Geist perché «è il carattere di Studio Foundry:
- * usarlo sarebbe copiare la reference». Qui la reference **è** il brief, e la
- * regola della skill è esplicita: dove il brief fissa una direzione la si segue
- * alla lettera. La nota resta scritta perché la distinzione conti ancora la
- * prossima volta.
+ * I pesi sono cinque e li usa tutti — misurati nella stessa passata:
+ * **300** (4 nodi) sulle annotazioni · **400** (18) sul corpo · **500** (16)
+ * sui numeri delle fasi e sulle etichette · **600** (19) sui titoli e sulla
+ * nav · **700** (3) sul nome dello studio dentro il testo. Per questo l'asse
+ * non si stringe più di `300:700`: ogni gradino è in pagina.
+ *
+ * ## La trappola del peso di default
+ *
+ * `varLib.instancer` con `wght=300:700` lascia il **default a 300**, verificato
+ * (`[('wght', 300.0, 300.0, 700.0)]`). Un elemento senza `font-weight`
+ * esplicito esce **filiforme**, che a corpo 18 su carta chiara è quasi
+ * invisibile. Il `font-weight` esplicito non è pignoleria: è la condizione
+ * perché la pagina si veda. `@layer base` mette un `font-weight: 400` su
+ * `body` e ogni blocco dichiara il suo.
+ *
+ * 33.396 byte per tutta la proposta, contro i 40,7 di Archivo in A.
  */
-const elsie = localFont({
-  variable: '--font-elsie',
-  display: 'swap',
-  fallback: ['Playfair Display', 'Didot', 'Georgia', 'serif'],
-  preload: false,
-  src: [
-    { path: '../../public/fonts/elsie-regolo-latin-900.woff2', weight: '900', style: 'normal' },
-  ],
-})
-
-const inter = localFont({
-  variable: '--font-inter',
+const montserrat = localFont({
+  variable: '--font-montserrat',
   display: 'swap',
   adjustFontFallback: 'Arial',
-  fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
+  fallback: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+  /* `preload: false` su tutte le rotte di proposta: Turbopack fonde i
+     `@font-face` dei temi in un chunk solo, quindi il preload scaricherebbe
+     anche i font delle altre due. Il debito sparisce alla fase 5 con le rotte
+     non scelte (`STATO.md` § Aperto). */
   preload: false,
   src: [
-    { path: '../../public/fonts/inter-regolo-latin-var.woff2', weight: '400 700', style: 'normal' },
+    {
+      path: '../../public/fonts/montserrat-regolo-latin-var.woff2',
+      weight: '300 700',
+      style: 'normal',
+    },
   ],
 })
 
-const plexMono = localFont({
-  variable: '--font-mono',
-  display: 'swap',
-  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
-  preload: false,
-  src: [
-    { path: '../../public/fonts/plexmono-regolo-latin-400.woff2', weight: '400', style: 'normal' },
-  ],
-})
-
-export const fontsThemeB = `${elsie.variable} ${inter.variable} ${plexMono.variable}`
+export const fontsThemeB = montserrat.variable

@@ -18,21 +18,29 @@ import { MEDIA_DEMO } from '@/lib/media-demo'
  */
 const PROPOSTE = {
   a: { nome: 'opzione A — «lo studio»', href: '/' },
-  c: { nome: 'opzione B — «la fonderia»', href: '/opzione-b' },
-  d: { nome: 'opzione C — «la monografia»', href: '/opzione-c' },
+  b: { nome: 'opzione B — «il foglio»', href: '/opzione-b' },
+  c: { nome: 'opzione C — «le bande»', href: '/opzione-c' },
 } as const
 
 type Opzione = keyof typeof PROPOSTE
 
 export function BarraProposta({ opzione }: { opzione: Opzione }) {
-  // I nomi sono quelli di CLAUDE.md § Le quattro opzioni, che sono anche quelli
+  // I nomi sono quelli di CLAUDE.md § Le tre opzioni, che sono anche quelli
   // con cui FT le vende in call. Da qui non si cambiano.
   //
-  // Tre, non quattro: l'opzione B è uscita (`DECISIONI.md` n. 39). Non era una
-  // variante di troppo in un catalogo — era la proposta da cui C e D erano nate
-  // per ricolorazione, e finché stava in mezzo il confronto in call si giocava
-  // su tre schede che si somigliavano. La barra le mette in fila perché
-  // alternarle *è* la dimostrazione.
+  // **Non portano il nome della reference.** B viene da ecoLINEAR e C da
+  // Halston — il committente le ha indicate per nome — ma «opzione B —
+  // ecoLINEAR» in cima alla pagina direbbe al cliente di REGOLO il nome di un
+  // altro studio di architettura, che è l'ultima cosa che deve leggere in una
+  // call di vendita. I nomi dicono il **meccanismo**, che è anche quello che si
+  // confronta: «il foglio» è la tavola da disegno con le linee di costruzione e
+  // le fasi pinnate, «le bande» è il ritmo fatto dal colore. Da dove vengono
+  // sta in `CLAUDE.md`, in `DECISIONI.md` e nei commenti dei due fogli di
+  // stile, cioè dove lo leggiamo noi.
+  //
+  // Tre, non quattro: l'opzione B del kick-off è uscita
+  // (`DECISIONI.md` n. 39) e le due alternative sono state rifatte da zero.
+  // La barra le mette in fila perché alternarle *è* la dimostrazione.
   const questa = PROPOSTE[opzione].nome
   const altre = (Object.keys(PROPOSTE) as Opzione[]).filter((k) => k !== opzione)
 

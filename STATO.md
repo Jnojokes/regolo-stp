@@ -4,8 +4,8 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | **fase 3 quinquies — tre opzioni, ricomposte per meccanismo** (08/09/2026) |
-| Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / C / D), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
+| Ultima fase chiusa | **fase 3 quinquies (2/2) — le due alternative rifatte «identiche» alle reference indicate** (08/09/2026) |
+| Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / B / C), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
@@ -64,9 +64,144 @@
 | 07/09/2026 | 4 | `/contatti` vera: dati confermati, i mancanti come segnaposto, mappa statica **senza iframe**, e il brief | la precompilazione da `?intervento=` continua a funzionare senza JavaScript, che era il requisito da non rompere |
 | 07/09/2026 | 4 | `JsonLd` toglie da sé i campi vuoti e i `[[DA CLIENTE]]`, **a ogni livello di annidamento**, e non emette gusci vuoti | «un campo mancante si omette» (`kit/REGOLO_SEO-GEO-LEGAL.md`): un segnaposto in `vatID` non è un buco visibile, è una partita IVA falsa dichiarata a una macchina |
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
+| 08/09/2026 | **3 quinquies (2/2)** | **le due alternative rifatte «identiche» ai due indirizzi indicati dal committente**: B = ecoLINEAR, C = Halston, con le lettere rinominate da C/D a B/C | catturate e misurate nel browser; classi condivise con A da 65/54 % a **46 %**; il `<main>` di A byte-identico. Il dettaglio qui sotto |
 
 
-## Fase 3 quinquies — tre opzioni, e la differenza è di meccanismo (08/09/2026)
+## Fase 3 quinquies (2/2) — le due alternative rifatte «identiche» alle reference indicate (08/09/2026)
+
+Questa è la seconda metà della stessa giornata, e **sostituisce** buona parte della prima: le due
+proposte alternative descritte nella sezione seguente non esistono più. Il committente ha dato
+prima una diagnosi e poi due indirizzi.
+
+> *«Le altre due opzioni rispetto la A sono ancora troppo simili in struttura alla A oltre la
+> hero section. Devono essere proprio siti diversi.»*
+> *«L'opzione 2 la voglio identica a questo sito: https://ecolinearstudio.com/»*
+> *«L'opzione 3 la voglio identica a questo sito: https://halston-architecture-template.webflow.io/»*
+> *«Fai tutto il necessario fino alla fine per rendere le due opzioni alternative come le
+> references. Io vado a dormire.»*
+> *«Cancella quello che non è più necessario per mantenere l'opzione A come adesso, l'opzione B
+> come ecolinear e l'opzione C come halston.»*
+
+**La diagnosi era giusta e il mio criterio guardava altrove.** Avevo appena portato la
+somiglianza fra le due alternative da 94/91 % a 73/61 %, e il bersaglio era sbagliato: quello che
+il committente guardava era la somiglianza **con A**, che stava a **65 %** e **54 %**. E la cosa
+che si vedeva non era una percentuale — erano tre pagine che, sotto la hero, sono la stessa cosa:
+una colonna di blocchi titolo-più-contenuto che scorre.
+
+### Il numero, adesso
+
+| | 3 quater | **3 quinquies (2/2)** |
+|---|---|---|
+| B dentro A | 65 % | **46 %** (48 classi su 105) |
+| C dentro A | 54 % | **46 %** (48 su 105) |
+| B ↔ C | 73 % / 61 % | **49 %** (51 su 105) |
+
+Il pavimento è il chrome che *deve* restare condiviso — brief, footer, segnaposto, `wrap` —
+quindi 46 % è vicino a quanto si può scendere senza duplicare il form.
+
+### Le tre proposte, adesso
+
+- **A** «lo studio» — un foglio stampato: non si muove, dichiara. **Non toccata**, e verificato
+  con un'impronta e non con una promessa: il `<main>` reso di `/` è **byte-identico**, 57.492
+  byte, `sha256 537dd84a…`, confrontato col build di `HEAD`.
+- **B** «il foglio» — **ecoLINEAR**, misurato: una tavola da disegno. Griglia di costruzione
+  tratteggiata, disegni a filo negli angoli (l'arco di una porta, un pilastro con l'asse, una
+  linea di sezione), testo in **terracotta** e l'**ambra come superficie**, galleria a quattro
+  colonne sfalsate, **fasi pinnate** — il pannello resta fermo, le fasi gli passano accanto e
+  ognuna accende il suo disegno — e l'invito **prima** della galleria.
+- **C** «le bande» — **Halston**, misurato: nessun contenitore, tutto in maiuscolo, due famiglie
+  con la mono sui soli dati, e il ritmo fatto dal **cambio di superficie** — carta, granata,
+  mauve, antracite. **Non si muove niente**, e non per risparmio: quella pagina non ha un gesto
+  di scorrimento.
+
+### Come sono state prese le misure
+
+Nove catture per reference a 1440 e 390 (`kit/reference/ecolinear/`, `kit/reference/halston/`) e
+gli stili **letti nel browser** contando i nodi di testo veri: famiglie, pesi, corpi, interlinee,
+tracciature, colori, raggi, ombre. Le tabelle stanno in `kit/reference/SCHEDA.md` e i valori
+sono quelli scritti nei token: non c'è una voce «interpretata».
+
+**Un difetto di metodo trovato e corretto**: la `390-hero.jpeg` di Halston era stata catturata
+**a metà caricamento** — solo le fotografie, zero testo — e una cattura così non è una prova. La
+ripresa aspetta `networkidle`, poi `document.fonts.ready`, poi **scorre tutta la pagina e torna
+in cima**, perché quel template rivela il testo allo scorrimento: senza il giro metà dei nodi
+resta a `opacity: 0`. È la stessa lezione della passata precedente, in una forma nuova.
+
+### Le sei richieste, e dove sono finite
+
+| | Chiesto | Fatto |
+|---|---|---|
+| 1 | le due alternative «identiche» alle reference | catturate, misurate, e riscritte da zero: quattro font nuovi (106,8 KB in tutto), due blocchi di token, due fogli di stile (`ecolinear.css` 1.216 righe, `halston.css` 1.066), tre file di componenti nuovi |
+| 2 | «devono essere proprio siti diversi» | **46 % con A** contro 65/54, e la differenza è strutturale: A separa col vuoto, B con una griglia di costruzione, C con il colore |
+| 3 | rinominare le lettere in **B** e **C** | rotte `/opzione-b` e `/opzione-c`, temi `[data-theme='b']` e `'c'`, tutti gli script del collaudo, la barra della proposta |
+| 4 | il passo 1 del brief «diverso su questa opzione rispetto ad A» | **stesso componente, tre apparati** (n. 51): in B la scheda è il pannello con le squadrette d'ambra, l'avanzamento è il righello con la tacca verticale e il numero del passo è il numerone al 12 %; in C l'occhiello è la targa in mono, i filetti non hanno terminatori e le sei risposte sono sei righe. **Zero righe di markup cambiate** |
+| 5 | «cancella quello che non è più necessario» | due cartelle di componenti, due fogli di stile, `lib/volume.ts`, due script di collaudo, cinque file di carattere. `lib/esploso.ts` tornato alla versione pre-refactor, con il `<main>` di A verificato identico |
+| 6 | niente push | nessun push |
+
+### Difetti trovati misurando, che nessuno aveva chiesto di cercare
+
+1. **Il verso di un token conta più del commento che lo accompagna.** `--regolo-ink` di B portava
+   il valore *esatto* della reference (3,49:1) con scritto «solo ≥ 24 px». `contrasto-dom.mjs` ha
+   trovato **nove** testi sotto soglia: il marchio della testata a 18 px, il nome di un'opera a
+   20, la barra della proposta, l'annotazione della quota — tutti ereditavano l'inchiostro senza
+   sapere di essere piccoli. Adesso il default è il valore che passa sempre e la tinta esatta è
+   **opt-in** (`--regolo-ink-display`, quattro selettori, tutti ≥ 28 px).
+2. **Il piano scuro, la terza volta.** Su C metà pagina è banda scura e il blocco che ridichiara
+   i token non c'era: **16 testi sotto soglia**, fra cui `passo 1 di 5` a **1,3:1**. La trappola
+   è sempre la stessa — `@theme inline` risolve `var(--regolo-ink)` su `:root` una volta sola —
+   e questa volta ha una coda nuova: vale anche per i **token derivati**
+   (`--regolo-quota-colore`), e vale **al contrario** dove il fondo torna carta dentro una banda
+   colorata (la targhetta del segnaposto, a 1,31:1 sulla propria carta).
+3. **Il mauve della seconda banda stava a 4,13:1, non a 4,52.** Il commento che avevo scritto
+   diceva 4,52 e lo aveva calcolato a mano. `contrasto-dom.mjs` misura in pagina, ed è per questo
+   che esiste. Il bianco sopra quel mauve starebbe a 3,84 — peggio — quindi la banda non si può
+   rovesciare: si schiarisce, `#8A7474` → `#937D7D`, 4,67:1.
+4. **Un contatore CSS non conta gli elementi che non si disegnano.** Il numerone del passo in B
+   doveva contare i `<fieldset>`, ma un passo chiuso ha `hidden`, cioè `display: none`: il numero
+   restava 1 per tutto il form. Si contano le **tacche fatte**, che sono tutte e cinque in
+   pagina, e il valore si legge in `::after`, che nell'ordine del documento viene dopo i figli.
+5. **Rigenerare i font sporca anche il file di A.** `varLib.instancer` riscrive `head.modified`,
+   quindi Archivo risultava modificato di 124 byte. Il confronto con fontTools dice che il delta
+   è **solo** il timestamp più il checksum: zero glifi, zero avanzamenti, `cmap` identica. Il
+   file in repo è stato ripristinato, e la nota sta in testa a `scripts/genera-font.sh`: il modo
+   di sapere se un font è cambiato davvero non è l'hash.
+6. **Il bersaglio del marchio nella testata era 27 px (B) e 33 (C).** Passa WCAG 2.5.8, che
+   chiede 24, ma in A lo stesso link arriva a 44 e la differenza non era una scelta. Portato a 44
+   in tutte e due, e il padding non sposta il testo di un pixel.
+
+### Verifiche a fine passata
+
+| Prova | Esito |
+|---|---|
+| `npm run build` · `tsc --noEmit` · `eslint` | puliti |
+| `contrasto-dom.mjs` | **123 coppie distinte su 8 rotte, zero sotto soglia** |
+| `interlinee.mjs` | **1.020 testi che vanno a capo, zero sotto la soglia d'inchiostro** in B e C. I quattro difetti dichiarati di A restano dichiarati e vengono stampati a parte |
+| `sweep.mjs` | `sfora: []` a 1440 su tutte e tre; `scrollW == clientW` a 390 su tutte e tre |
+| `nojs-rotte.mjs` | testo reso, `passiVisibili: 5`, `passo 1 di 5` e form inviabile su tutte e tre; `overflow: false` su sei rotte |
+| `peso.mjs` | A 326 KB / 18 richieste · B 321 / 19 · C 303 / 17 · `/servizi/strutture` 218 / 12. Il video della hero solo in `dopo` |
+| «A non si tocca» | `<main>` di `/` **byte-identico** a `HEAD`: 57.492 byte, `sha256 537dd84a…` |
+| `soglie.py` | rigenerato per i quattro font nuovi; `interlinee.mjs` verifica le impronte e si ferma se non corrispondono |
+
+### Cosa resta aperto
+
+- **La decisione n. 1**, che è bloccante: quale delle tre home. Le altre due si cancellano.
+- **La licenza di General Sans** (n. 48): non è OFL come il resto del repo. Da confermare al
+  cliente prima del go-live.
+- **Il debito del preload**: `/opzione-b` e `/opzione-c` scaricano i 40 KB di Archivo che non
+  usano, perché Turbopack fonde i `@font-face` dei tre temi in un chunk solo. Sparisce alla
+  fase 5 con le rotte non scelte.
+- I quattro difetti d'interlinea **dichiarati** di A: la correzione è di due righe
+  (`--regolo-lh-h1` da 0,86 a 0,92 più un `line-height: 0.86` esplicito sulla hero) e non si fa
+  qui perché non è una passata su A.
+- Le schermate di confronto in `kit/reference/_dopo/` sono state rifatte con le tre opzioni
+  nuove.
+
+## Fase 3 quinquies (1/2) — tre opzioni, e la differenza è di meccanismo (08/09/2026)
+
+> **Superata dalla 2/2**, che sta qui sopra: le due proposte alternative descritte in questa
+> sezione — «la fonderia» e «la monografia» — non esistono più. Resta perché il metodo e i
+> difetti trovati valgono ancora, e perché la decisione n. 46 si legge solo sapendo da dove
+> viene.
 
 Il committente ha detto due cose che chiudono due passate: *«scendi a 3 opzioni»* e *«per adesso
 solo l'opzione A la reputo valida»*. E ne ha dette altre nove, che sono il resto della passata.
@@ -185,7 +320,7 @@ Sono la parte che vale la pena rileggere, perché non erano nell'elenco:
 - **Lighthouse e il peso non sono stati rimisurati** su C e D dopo la ricomposizione. `peso.mjs`
   gira, ma il numero di riferimento è quello di A: va rifatto prima della fase 8. Il volume in
   WebGL aggiunge ~5 KB gz di JavaScript su `/opzione-c` e va verificato sul filo.
-- **Il debito del preload** resta: `/opzione-c` e `/opzione-d` scaricano l'Archivo di A che non
+- **Il debito del preload** resta: le due rotte di proposta scaricano l'Archivo di A che non
   usano, perché Turbopack fonde i `@font-face` dei temi in un chunk solo. Sparisce alla fase 5
   con le rotte non scelte.
 - **La barra della proposta** è ancora in flusso sopra la hero, e il suo ingombro cambia con la
@@ -758,7 +893,7 @@ Se hai dieci minuti, il terzo posto è **`/progetti/esempio-scheda`**: è la sch
 
 | # | Cosa | Perché non l'ho presa io |
 |---|---|---|
-| **1** | A / B / mix | è del cliente, e blocca la fase 5 |
+| **1** | A / B / C | è del cliente, e blocca la fase 5 |
 | **15** | senza JavaScript un rifiuto del server costa ancora le cinque risposte del brief, nel caso residuo | chiuderlo bene vuol dire riscrivere il route handler come Server Action e ri-collaudare la fase 2: è un costo M, e la decisione è tua |
 | **16** | «Comfort, energia, acustica» non ha una risposta nel passo 1 del brief | tre opzioni, una delle quali sposta un capitolato. Oggi la CTA di quel servizio manda al brief senza precompilare, e non finge il contrario |
 

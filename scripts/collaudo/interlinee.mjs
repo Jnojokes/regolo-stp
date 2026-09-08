@@ -54,17 +54,15 @@ const SOGLIE = JSON.parse(readFileSync(new URL('./soglie.json', import.meta.url)
 /** Quale voce di `soglie.json` veste un `font-family` risolto dal browser. */
 const FILE = {
   archivo: 'archivo-regolo-latin-var.woff2',
-  anybody_wide: 'anybody-wide-regolo-latin-900.woff2',
-  elsie: 'elsie-regolo-latin-900.woff2',
-  inter: 'inter-regolo-latin-var.woff2',
-  plexmono: 'plexmono-regolo-latin-400.woff2',
-  caveat: 'caveat-regolo-latin-500.woff2',
+  montserrat: 'montserrat-regolo-latin-var.woff2',
+  generalsans: 'generalsans-regolo-latin-var.woff2',
+  jetbrainsmono: 'jetbrainsmono-regolo-latin-400.woff2',
 }
 
 const ROTTE = [
   ['A', '/'],
-  ['C', '/opzione-b'],
-  ['D', '/opzione-c'],
+  ['B', '/opzione-b'],
+  ['C', '/opzione-c'],
   ['studio', '/studio'],
   ['servizio', '/servizi/strutture'],
   ['progetti', '/progetti'],
@@ -156,9 +154,11 @@ for (const [nome, rotta] of ROTTE) {
         const soloInline = (el) => [...el.children].every((c) => INLINE.includes(c.tagName))
 
         const quale = (cs) => {
+          /* `next/font/local` compone il nome della famiglia dal nome della
+             variabile JS — `__generalSans_<hash>` —, quindi la chiave di
+             `soglie.json` si trova per sottostringa sul nome minuscolo. */
           const f = cs.fontFamily.toLowerCase()
-          if (f.includes('anybody')) return 'anybody_wide'
-          for (const k of ['elsie', 'inter', 'plexmono', 'archivo', 'caveat'])
+          for (const k of ['archivo', 'montserrat', 'generalsans', 'jetbrainsmono'])
             if (f.includes(k)) return k
           return null
         }

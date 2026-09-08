@@ -1,81 +1,74 @@
 import localFont from 'next/font/local'
 
 /**
- * Opzione D «La casa» — il sistema di **Storey Architecture**
- * (https://www.storeyarchitecture.co.uk/), chiesto dal committente per nome.
- * È l'unica delle reference che era già nel tier A di `SCHEDA.md`, quindi i
- * suoi valori qui sotto sono **misurati nel browser**, non descritti.
+ * Opzione C «Halston» — il sistema del template **Halston**
+ * (https://halston-architecture-template.webflow.io/), che il committente ha
+ * chiesto per nome dicendo *«l'opzione 3 la voglio identica a questo sito»*.
  *
- * Tre caratteri, e il terzo è la firma:
+ * ## Due famiglie, e la divisione del lavoro è misurata
  *
- * - **Anybody Wide** istanziato a `wdth 150 / wght 900`, statico, 11.620 byte:
- *   il **masthead allargato** del frontespizio, chiesto dal committente («font
- *   più display e allargato»). La famiglia non è scelta per genere ma su una
- *   metrica: la soglia d'inchiostro in maiuscolo è **0,876**, la più bassa fra i
- *   caratteri display del repo, e Storey — la reference di D — ha «interlinea
- *   1,0 esatta a ogni corpo display». Con Inter (soglia 1,158) quel valore è
- *   irriproducibile: è il difetto che il committente ha visto nei titoli a 63,4
- *   px con interlinea 63,4. Il masthead allargato e l'interlinea stretta sono la
- *   **stessa** decisione. Costa 7,8 KB **meno** del file variabile di Anybody
- *   uscito con l'opzione B.
- * - **Inter** (400/500) come New Grotesk: il corpo, i titoli e il claim.
- * - **IBM Plex Mono** come New Grotesk Mono: numerazione `01)` — con la
- *   parentesi chiusa, non `01 —` — e micro-etichette. Spaziatura **−10 %**,
- *   che è il valore misurato e l'opposto del `+0,14em` di default.
- * - **Caveat**, e **una volta sola in tutta la pagina**. Storey usa una
- *   calligrafica (Biro) esattamente una volta, ed è una firma proprio perché
- *   non si ripete: se in pagina se ne trovano due, la regola è stata violata.
- *   Istanziata a un peso solo, 27,4 KB.
+ * Contati i nodi di testo sul sito vero con Playwright:
+ * **General Sans su 298 nodi, JetBrains Mono su 34.** La mono non è
+ * decorazione e non è un vezzo da «technical look»: porta **i valori**
+ * (`48+ HOUSES`, `62+ INTERIORS`, `AVG. 14 MONTHS`) e le micro-etichette
+ * maiuscole, che su quella pagina sono **270 occorrenze** di `text-transform:
+ * uppercase`. Dove c'è un dato o un'etichetta c'è la mono; tutto il resto è
+ * la proporzionale.
  *
- * I numeri che governano questo tema, misurati su `kit/reference/storey/`:
- * interlinea **1,0 esatta a ogni corpo display** (115,2/115,2 · 100,8/100,8 ·
- * 31,7/31,7), spaziatura **−3 %** sul display, contrasto di scala **7,3×**,
- * **nessun `max-width`** (il contenuto sta al 100 %), gutter **20 px**,
- * `border-radius` **zero occorrenze** e `box-shadow` **zero**.
+ * ## La licenza, e va detta
+ *
+ * **General Sans non è OFL.** È di Indian Type Foundry, distribuito su
+ * Fontshare sotto la loro licenza gratuita, che permette l'uso commerciale e
+ * il self-hosting. Tutto il resto del repo viene da fontsource in OFL, quindi
+ * questa è una **deviazione dichiarata**: la ragione è che il committente ha
+ * chiesto quel sito «identico» e General Sans è il suo carattere. Il sostituto
+ * OFL più vicino sarebbe Hanken Grotesk o Be Vietnam Pro, ma non sono lo
+ * stesso carattere e la differenza si vede sulle maiuscole strette, che qui
+ * sono ovunque.
+ *
+ * **Trappola della sorgente**: Fontshare serve i file da URL con un hash che
+ * cambia quando ITF ricompila. Per questo `scripts/genera-font.sh` ricava
+ * l'indirizzo dal loro CSS a ogni generazione invece di tenerlo scritto.
+ *
+ * ## Perché la monospace torna in repo
+ *
+ * Era uscita alla fase 3 bis con una motivazione scritta — «niente monospace
+ * per le etichette dati», il cluster n. 5 della lista di calibrazione, −31 KB.
+ * Quel divieto difendeva il progetto da un **default**: la mono che compare
+ * perché «fa tecnico». Qui non è un default, è il carattere che quella pagina
+ * usa per i suoi valori, e il committente ha chiesto quella pagina. Un peso
+ * solo, 400, e **8.516 byte**: un quarto di quello che pesava JetBrains Mono
+ * intera la prima volta.
+ *
+ * 24.332 + 8.516 = **32,8 KB** per tutta la proposta.
  */
-const anybodyWide = localFont({
-  variable: '--font-anybody-wide',
-  display: 'swap',
-  fallback: ['Arial Black', 'Helvetica Neue', 'Impact', 'sans-serif'],
-  preload: false,
-  src: [
-    {
-      path: '../../public/fonts/anybody-wide-regolo-latin-900.woff2',
-      weight: '900',
-      style: 'normal',
-    },
-  ],
-})
-
-const inter = localFont({
-  variable: '--font-inter',
+const generalSans = localFont({
+  variable: '--font-general-sans',
   display: 'swap',
   adjustFontFallback: 'Arial',
   fallback: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
   preload: false,
   src: [
-    { path: '../../public/fonts/inter-regolo-latin-var.woff2', weight: '400 700', style: 'normal' },
+    {
+      path: '../../public/fonts/generalsans-regolo-latin-var.woff2',
+      weight: '400 600',
+      style: 'normal',
+    },
   ],
 })
 
-const plexMono = localFont({
+const jetbrainsMono = localFont({
   variable: '--font-mono',
   display: 'swap',
   fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
   preload: false,
   src: [
-    { path: '../../public/fonts/plexmono-regolo-latin-400.woff2', weight: '400', style: 'normal' },
+    {
+      path: '../../public/fonts/jetbrainsmono-regolo-latin-400.woff2',
+      weight: '400',
+      style: 'normal',
+    },
   ],
 })
 
-const caveat = localFont({
-  variable: '--font-mano',
-  display: 'swap',
-  fallback: ['Bradley Hand', 'cursive'],
-  preload: false,
-  src: [
-    { path: '../../public/fonts/caveat-regolo-latin-500.woff2', weight: '500', style: 'normal' },
-  ],
-})
-
-export const fontsThemeC = `${anybodyWide.variable} ${inter.variable} ${plexMono.variable} ${caveat.variable}`
+export const fontsThemeC = `${generalSans.variable} ${jetbrainsMono.variable}`

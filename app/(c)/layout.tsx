@@ -7,12 +7,16 @@ import { site } from '@/lib/site'
 import { Misurazione } from '@/components/Misurazione'
 
 /**
- * Root layout dell'opzione C — «La casa», dal sistema di **Storey
- * Architecture** (`kit/reference/storey/`), chiesto per nome dal committente e
- * unica delle quattro reference già misurata nel tier A di `SCHEDA.md`.
+ * Root layout dell'opzione C — **Halston**, dal sito che il committente ha
+ * indicato per nome: *«l'opzione 3 la voglio identica a questo sito»*,
+ * `https://halston-architecture-template.webflow.io/`.
  *
- * Rotta di proposta, non indicizzabile: sparisce alla fase 5 con le altre non
- * scelte (`DECISIONI.md` n. 1, n. 35 e n. 37).
+ * Le prove stanno in `kit/reference/halston/`, catturate e **misurate nel
+ * browser**; i valori sono nel blocco `[data-theme='c']` di `app/globals.css` e
+ * il perché di ognuno in `app/css/halston.css`.
+ *
+ * Rotta di proposta, non indicizzabile: alla decisione n. 1 sopravvive una sola
+ * delle tre home e le altre due si cancellano (fase 5).
  */
 export const metadata: Metadata = {
   title: {
@@ -20,22 +24,27 @@ export const metadata: Metadata = {
     template: `%s — ${site.nome} (opzione C)`,
   },
   description:
-    'Proposta di homepage per REGOLO, variante «La casa». Rotta di lavoro, non indicizzata.',
+    'Proposta di homepage per REGOLO, variante «Halston». Rotta di lavoro, non indicizzata.',
   robots: { index: false, follow: false },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
+  /* `--regolo-paper` di `[data-theme='c']`, misurato sul sito vero
+     (`srgb 0.86 0.8586 0.8463`). */
+  themeColor: '#dbdbd8',
 }
 
-export default function LayoutD({ children }: { children: React.ReactNode }) {
+export default function LayoutC({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it" data-theme="c" className={fontsThemeC}>
       <body className="con-barra-mobile flex min-h-dvh flex-col">
         <a href="#contenuto" className="skip-link">
           Salta al contenuto
         </a>
-        <SiteHeader variante="pastiglia" conPastiglia />
+        {/* `pastiglia`: marchio a sinistra, la pastiglia granata con
+            l'hamburger, il menu al centro e `altro` a destra. È la
+            composizione misurata su `1440-hero.jpeg`. */}
+        <SiteHeader variante="pastiglia" />
         <main id="contenuto" tabIndex={-1} className="flex-1">
           {children}
         </main>

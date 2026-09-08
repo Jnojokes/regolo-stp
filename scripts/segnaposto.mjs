@@ -4,7 +4,7 @@
  * ## Perché esiste
  *
  * Il committente ha chiesto *«invece di mettere "DA CLIENTE" metti lorem ipsum
- * come placeholder»* per le proposte C e D, che sono una demo di vendita. La
+ * come placeholder»* per le proposte B e C, che sono una demo di vendita. La
  * richiesta è giusta, ma i `[[DA CLIENTE: …]]` facevano **due** lavori e solo
  * uno era «farsi vedere»:
  *
@@ -30,7 +30,7 @@
  *
  * Raccoglie tutte e due le forme, perché il sito ne ha due per una ragione:
  *
- * - `data-chiede="…"` — C e D, dove in pagina si legge lorem ipsum;
+ * - `data-chiede="…"` — B e C, dove in pagina si legge lorem ipsum;
  * - `[[DA CLIENTE: …]]` — A e le pagine interne, dove il segnaposto **si deve
  *   vedere** perché A è la proposta candidata alla produzione, e la regola 1 di
  *   `CLAUDE.md` vale lì.
@@ -80,7 +80,7 @@ for (const [file, percorso] of pagine) {
   const html = readFileSync(percorso, 'utf8')
   const rotta = nomeRotta(file)
 
-  /* Forma 1: l'attributo delle proposte C e D. */
+  /* Forma 1: l'attributo delle proposte B e C. */
   for (const m of html.matchAll(/data-chiede="([^"]+)"/g)) aggiungi(m[1], rotta, 'lorem ipsum')
 
   /* Forma 2: il segnaposto visibile di A e delle pagine interne. Le entità
@@ -123,7 +123,7 @@ const soloLorem = voci.filter(([, v]) => v.forme.has('lorem ipsum') && !v.forme.
 const soloVisibile = voci.filter(([, v]) => v.forme.has('visibile') && !v.forme.has('lorem ipsum'))
 const doppie = voci.filter(([, v]) => v.forme.size > 1)
 console.log(
-  `\n  ${soloLorem.length} solo come lorem ipsum (C e D) · ${soloVisibile.length} solo visibili (A e pagine interne) · ${doppie.length} in tutte e due le forme`,
+  `\n  ${soloLorem.length} solo come lorem ipsum (B e C) · ${soloVisibile.length} solo visibili (A e pagine interne) · ${doppie.length} in tutte e due le forme`,
 )
 
 /* Una richiesta che compare **solo** in C o D e da nessuna parte in forma
@@ -150,7 +150,7 @@ const blocco = [
   '> **Generato**, non scritto a mano: `npm run build && node scripts/segnaposto.mjs --scrivi`.',
   `> ${voci.length} richieste distinte, raccolte dall'HTML reso di ${pagine.length} pagine.`,
   '> Le due forme sono volute: in A il segnaposto **si vede** (è la proposta candidata alla',
-  '> produzione), in C e D si legge lorem ipsum e la richiesta resta in `data-chiede`.',
+  '> produzione), in B e C si legge lorem ipsum e la richiesta resta in `data-chiede`.',
   '',
   tabella,
   '',

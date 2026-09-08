@@ -7,8 +7,8 @@ const b = await chromium.launch()
    di JS al primo carico**, limite 250. */
 for (const [n, u] of [
   ['A', 'http://localhost:3001/'],
-  ['C', 'http://localhost:3001/opzione-b'],
-  ['D', 'http://localhost:3001/opzione-c'],
+  ['B', 'http://localhost:3001/opzione-b'],
+  ['C', 'http://localhost:3001/opzione-c'],
   ['S', 'http://localhost:3001/servizi/strutture'],
 ]) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 } })

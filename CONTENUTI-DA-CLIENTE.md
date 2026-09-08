@@ -67,72 +67,69 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 <!-- SEGNAPOSTO:inizio -->
 
 > **Generato**, non scritto a mano: `npm run build && node scripts/segnaposto.mjs --scrivi`.
-> 61 richieste distinte, raccolte dall'HTML reso di 17 pagine.
+> 58 richieste distinte, raccolte dall'HTML reso di 17 pagine.
 > Le due forme sono volute: in A il segnaposto **si vede** (è la proposta candidata alla
-> produzione), in C e D si legge lorem ipsum e la richiesta resta in `data-chiede`.
+> produzione), in B e C si legge lorem ipsum e la richiesta resta in `data-chiede`.
 
 | Cosa serve | Dove (rotte) | Come si vede in pagina |
 |---|---|---|
 | albo o collegio, e numero | / · /studio | visibile |
 | anno | /progetti/esempio-scheda | visibile |
-| anno del progetto 1 | /opzione-c · /opzione-d | lorem ipsum |
-| anno del progetto 2 | /opzione-c · /opzione-d | lorem ipsum |
-| anno del progetto 3 | /opzione-c · /opzione-d | lorem ipsum |
+| anno del progetto 1 | /opzione-b · /opzione-c | lorem ipsum |
+| anno del progetto 2 | /opzione-b · /opzione-c | lorem ipsum |
+| anno del progetto 3 | /opzione-b · /opzione-c | lorem ipsum |
 | com’era l’immobile e qual era il problema da risolvere. Due o tre capoversi, scritti come si racconterebbero a voce a un committente nuovo: cosa c’era, cosa non funzionava, quali vincoli — urbanistici, strutturali, di budget o di famiglia — hanno dato la forma all’intervento. | /progetti/esempio-scheda | visibile |
 | com'era l'immobile e qual era il problema da risolvere. Due o tre\\ncapoversi, scritti come si racconterebbero a voce a un committente nuovo: cosa\\nc'era, cosa non funzionava, quali vincoli — urbanistici, strutturali, di budget\\no di famiglia — hanno dato la forma all'intervento. | /progetti/esempio-scheda | visibile |
-| committente del progetto 1 | /opzione-d | lorem ipsum |
-| committente del progetto 2 | /opzione-d | lorem ipsum |
-| committente del progetto 3 | /opzione-d | lorem ipsum |
+| committente del progetto 1 | /opzione-c | lorem ipsum |
+| committente del progetto 2 | /opzione-c | lorem ipsum |
+| committente del progetto 3 | /opzione-c | lorem ipsum |
 | committente, solo se autorizzato a citarlo | /progetti/esempio-scheda | visibile |
 | comune | / · /progetti/esempio-scheda | visibile |
 | cosa serve da te per comfort, energia e acustica | /servizi/energia-acustica | visibile |
-| da che anno lavora lo studio (o il predecessore, se la continuità si dichiara) | /opzione-c | lorem ipsum |
-| didascalia del prima/dopo: che intervento è, dove, in che anno | /opzione-d | lorem ipsum |
-| didascalia della fotografia del progetto 1: cosa si vede e da dove | /opzione-d | lorem ipsum |
-| didascalia della fotografia del progetto 2: cosa si vede e da dove | /opzione-d | lorem ipsum |
-| didascalia della fotografia del progetto 3: cosa si vede e da dove | /opzione-d | lorem ipsum |
+| da che anno lavora lo studio (o il predecessore, se la continuità si dichiara) | /opzione-b · /opzione-c | lorem ipsum |
 | elenco dei comuni in cui avete lavorato | / | visibile |
-| email pubblica | / · /cookie · /note-legali · /opzione-c · /opzione-d · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
-| foto dello stato attuale | /opzione-d | visibile |
-| foto dopo, stesso punto di ripresa | /opzione-d | visibile |
+| email pubblica | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
 | impresa esecutrice, se citabile | /progetti/esempio-scheda | visibile |
+| la frase del titolare sul modo di lavorare dello studio, da confermare parola per parola | /opzione-c | lorem ipsum |
 | le scelte di progetto e il perché. Non l’elenco delle lavorazioni: le due o tre decisioni che hanno fatto la differenza, e cosa sarebbe andato storto scegliendo diversamente. È la parte che un altro committente legge per capire se ragionate come serve a lui. | /progetti/esempio-scheda | visibile |
 | le scelte di progetto e il perché. Non l'elenco delle lavorazioni:\\nle due o tre decisioni che hanno fatto la differenza, e cosa sarebbe andato\\nstorto scegliendo diversamente. È la parte che un altro committente legge per\\ncapire se ragionate come serve a lui. | /progetti/esempio-scheda | visibile |
-| luogo del progetto 1 | /opzione-d | lorem ipsum |
-| luogo del progetto 2 | /opzione-d | lorem ipsum |
-| luogo del progetto 3 | /opzione-d | lorem ipsum |
-| mestiere di chi segue pratiche e cantiere | / · /opzione-c · /opzione-d · /studio | visibile |
+| luogo del progetto 1 | /opzione-b · /opzione-c | lorem ipsum |
+| luogo del progetto 2 | /opzione-b · /opzione-c | lorem ipsum |
+| luogo del progetto 3 | /opzione-b · /opzione-c | lorem ipsum |
+| mestiere di chi segue pratiche e cantiere | / · /opzione-b · /opzione-c · /studio | visibile |
 | nome del progetto | /progetti/esempio-scheda | visibile |
-| nome del progetto 01 | / · /opzione-c · /opzione-d | lorem ipsum + visibile |
-| nome del progetto 02 | / · /opzione-c · /opzione-d | lorem ipsum + visibile |
-| nome del progetto 03 | / · /opzione-c · /opzione-d | lorem ipsum + visibile |
-| nome e cognome | / · /opzione-c · /opzione-d · /studio | visibile |
+| nome del progetto 01 | / · /opzione-b · /opzione-c | lorem ipsum + visibile |
+| nome del progetto 02 | / · /opzione-b · /opzione-c | lorem ipsum + visibile |
+| nome del progetto 03 | / · /opzione-b · /opzione-c | lorem ipsum + visibile |
+| nome e cognome | / · /opzione-b · /opzione-c · /studio | visibile |
+| nome e luogo della tavola 1 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 2 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 3 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 4 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 5 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 6 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 7 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della tavola 8 della galleria | /opzione-b | lorem ipsum |
 | opzionale, ma è quello che nessuno scrive e tutti vorrebbero leggere. Un imprevisto e come si è risolto vale dieci righe di metodo. | /progetti/esempio-scheda | visibile |
 | opzionale, ma è quello che nessuno scrive e tutti vorrebbero\\nleggere. Un imprevisto e come si è risolto vale dieci righe di metodo. | /progetti/esempio-scheda | visibile |
-| orari di apertura | / · /cookie · /note-legali · /opzione-c · /opzione-d · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
+| orari di apertura | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
 | ordine e abilitazione CSP/CSE | / · /studio | visibile |
 | ordine, sezione e numero | / · /studio | visibile |
-| P.IVA | / · /cookie · /note-legali · /opzione-c · /opzione-d · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
-| PEC | / · /cookie · /note-legali · /opzione-c · /opzione-d · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
-| quanti comuni, e quali (serve anche al blocco Territorio e alla decisione n. 13) | /opzione-c | lorem ipsum |
-| quanti incarichi chiusi, anche un ordine di grandezza difendibile | /opzione-c | lorem ipsum |
-| ragione sociale esatta | / · /cookie · /note-legali · /opzione-c · /opzione-d · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
-| ruolo dello studio del progetto 1 | /opzione-d | lorem ipsum |
-| ruolo dello studio del progetto 2 | /opzione-d | lorem ipsum |
-| ruolo dello studio del progetto 3 | /opzione-d | lorem ipsum |
-| ruolo dello studio nel progetto 1: progetto architettonico / strutturale / direzione lavori / coordinamento sicurezza / collaudo | /opzione-c | lorem ipsum |
-| ruolo dello studio nel progetto 2: progetto architettonico / strutturale / direzione lavori / coordinamento sicurezza / collaudo | /opzione-c | lorem ipsum |
-| ruolo dello studio nel progetto 3: progetto architettonico / strutturale / direzione lavori / coordinamento sicurezza / collaudo | /opzione-c | lorem ipsum |
+| P.IVA | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
+| PEC | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
+| quanti comuni, e quali (serve anche al blocco Territorio e alla decisione n. 13) | /opzione-b · /opzione-c | lorem ipsum |
+| quanti incarichi chiusi, anche un ordine di grandezza difendibile | /opzione-b · /opzione-c | lorem ipsum |
+| ragione sociale esatta | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
+| ruolo dello studio del progetto 1 | /opzione-b · /opzione-c | lorem ipsum |
+| ruolo dello studio del progetto 2 | /opzione-b · /opzione-c | lorem ipsum |
+| ruolo dello studio del progetto 3 | /opzione-b · /opzione-c | lorem ipsum |
 | ruolo: progetto / DL / sicurezza / collaudo | / | visibile |
-| superficie complessiva progettata: è il dato che il committente italiano legge per primo | /opzione-c | lorem ipsum |
-| superficie del progetto 1 | /opzione-d | lorem ipsum |
-| superficie del progetto 2 | /opzione-d | lorem ipsum |
-| superficie del progetto 3 | /opzione-d | lorem ipsum |
+| superficie complessiva progettata: è il dato che il committente italiano legge per primo | /opzione-b · /opzione-c | lorem ipsum |
+| superficie del progetto 1 | /opzione-b · /opzione-c | lorem ipsum |
+| superficie del progetto 2 | /opzione-b · /opzione-c | lorem ipsum |
+| superficie del progetto 3 | /opzione-b · /opzione-c | lorem ipsum |
 | superficie in mq | /progetti/esempio-scheda | visibile |
-| tipo del progetto 1 (residenziale, pubblico…) | /opzione-c | lorem ipsum |
-| tipo del progetto 2 (residenziale, pubblico…) | /opzione-c | lorem ipsum |
-| tipo del progetto 3 (residenziale, pubblico…) | /opzione-c | lorem ipsum |
 | una riga che dica cosa è questo intervento | /progetti/esempio-scheda | visibile |
-| WhatsApp | /opzione-c · /opzione-d | visibile |
+| WhatsApp | /opzione-b · /opzione-c | visibile |
 
 <!-- SEGNAPOSTO:fine -->

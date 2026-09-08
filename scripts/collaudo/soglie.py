@@ -85,13 +85,15 @@ def tabella(font, upm):
     return fuori
 
 
+# Un file per tema, e la chiave è quella che `interlinee.mjs` ricava dalla
+# `font-family` calcolata in pagina. La tabella si rigenera **quando cambiano i
+# font**: le impronte stampate qui sotto sono l'unico modo di accorgersi che
+# `soglie.json` descrive dei caratteri che non sono più in `public/fonts`.
 CHIAVI = {
     'archivo-regolo-latin-var.woff2': 'archivo',
-    'anybody-wide-regolo-latin-900.woff2': 'anybody_wide',
-    'elsie-regolo-latin-900.woff2': 'elsie',
-    'inter-regolo-latin-var.woff2': 'inter',
-    'plexmono-regolo-latin-400.woff2': 'plexmono',
-    'caveat-regolo-latin-500.woff2': 'caveat',
+    'montserrat-regolo-latin-var.woff2': 'montserrat',
+    'generalsans-regolo-latin-var.woff2': 'generalsans',
+    'jetbrainsmono-regolo-latin-400.woff2': 'jetbrainsmono',
 }
 
 fuori = {}

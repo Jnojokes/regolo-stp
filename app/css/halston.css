@@ -1,0 +1,1066 @@
+/* ============================================================================
+   OPZIONE C «Halston» — https://halston-architecture-template.webflow.io/
+   ----------------------------------------------------------------------------
+   Il committente: *«l'opzione 3 la voglio identica a questo sito»*. Tutti i
+   valori di questo foglio sono **letti dal sito vero** con Playwright: catture
+   in `kit/reference/halston/`, tabella in `kit/reference/SCHEDA.md`.
+
+   Quello che quella pagina è, in una frase: **bande a piena larghezza che
+   cambiano superficie.** Non c'è un contenitore centrato e non c'è spazio
+   bianco fra i blocchi — una banda finisce dove comincia il colore della
+   prossima.
+
+   ## Le sei misure che governano tutto
+
+   - **due famiglie, e la divisione del lavoro è misurata**: General Sans su
+     298 nodi di testo, JetBrains Mono su 34. Dove c'è un dato o un'etichetta
+     c'è la mono;
+   - **270 occorrenze** di `text-transform: uppercase`. Il maiuscolo non è un
+     accento: è la voce normale delle etichette e dei nomi di servizio;
+   - la scala: 216 · 129,6 · **115,2** · 57,6 · 43,2 · 31 · 26,8 · 19,4 · 17,4 ·
+     16 · 14,7 · **13,7** · 12. Il titolo della copertina è 57,6; il 13,7 è la
+     mono, e la usa 80 volte;
+   - le interlinee: **1,0 esatta** sul display (115,2 / 115,2), **0,8** sul
+     numerone (129,6 / 103,68), 1,2 sul titolo di banda (37,2 / 31), e **1,0**
+     sulla mono (13,7 / 13,7);
+   - la tracciatura: **−0,05 em** sul display (−7,2 px su 144) e −0,4 px sul
+     corpo;
+   - **zero ombre** e raggio **3 px** (42 occorrenze). È l'opposto di B, che ha
+     due ombre misurate.
+
+   ## L'unica correzione di contrasto, dichiarata
+
+   Il suo rosa muto `#AB9C9C` sta a **5,22:1 sulla banda scura** — e lì resta
+   esatto — ma a **1,90:1 sulla carta**, dove lo usa per i metadati. Su carta
+   entra `#6D5C5C`: stessa tinta (0°), stessa saturazione (8 %), **4,54:1**.
+   Tutto il resto passa con i valori veri: inchiostro 12,93:1, granata su carta
+   7,32:1, carta su banda scura 9,92:1, bianco su granata 10,15:1.
+
+   ## Tre voci di casa disapplicate, e ognuna con il suo perché
+
+   `CLAUDE.md` § Cosa non deve esserci vieta il filetto fra le righe di un
+   elenco, il maiuscoletto spaziato e le sezioni centrate. Quelle regole
+   **difendono A** da un default. Qui:
+
+   - il **filetto fra le righe** è il modo in cui la banda dei servizi si legge,
+     ed è misurato;
+   - il **maiuscolo spaziato** è la voce normale di 270 nodi, non un occhiello;
+   - la **testa di sezione centrata** non esiste: la testa è a *tre punti* —
+     etichetta a sinistra, targa al centro, etichetta a destra — che è un'altra
+     cosa da un titolo centrato.
+   ========================================================================== */
+
+@layer components {
+  [data-theme='c'] .barra-proposta > .wrap {
+    font-family: var(--regolo-font-body);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ==========================================================================
+     IL PIANO SCURO — un posto solo, e ridichiara **entrambi** i prefissi
+     --------------------------------------------------------------------------
+     In questa proposta il ritmo lo fa il colore, quindi metà pagina sta su un
+     fondo scuro: la banda dei servizi, la banda dei numeri, la banda granata,
+     il brief (`--regolo-brief-bg: var(--regolo-banda)`) e il footer. Un
+     elemento non sa su quale piano si trova — è il **piano** a ridichiarare i
+     token, che è la stessa regola con cui funzionava l'inversione dell'opzione
+     B del kick-off.
+
+     **La trappola, e il collaudo l'ha ripresa a distanza di una fase.**
+     `@theme inline` emette `--color-ink: var(--regolo-ink)` su `:root`: il
+     `var()` si risolve **una volta sola**, lì. Un discendente che ridichiara
+     `--regolo-ink` non muove `--color-ink` di un pixel, perché quel valore è
+     già stato calcolato e viene solo ereditato. Quindi si ridichiarano **tutti
+     e due** i prefissi, e il gemello `--color-*` va scritto con il valore
+     letterale — non con un `var()` su un token che sta cambiando nella stessa
+     regola.
+
+     Cosa aveva trovato `contrasto-dom.mjs` prima di questo blocco: `passo 1
+     di 5` a **1,3:1** (inchiostro sull'antracite), `Che tipo di intervento?` a
+     1,3, l'annotazione della quota a 1,3, la targa `Servizi` a 2,19. Tutti
+     elementi condivisi con A, tutti corretti, tutti su un fondo che il loro
+     CSS non sapeva di avere.
+     ======================================================================== */
+
+  [data-theme='c'] .halston-servizi,
+  [data-theme='c'] .halston-numeri,
+  [data-theme='c'] .brief,
+  [data-theme='c'] .site-footer {
+    --regolo-ink: #dbdbd8; /* la carta sull'antracite: 9,92:1 */
+    --color-ink: #dbdbd8;
+    --regolo-muted: #ab9c9c; /* il rosa muto, valore esatto: 5,22:1 */
+    --color-muted: #ab9c9c;
+    --regolo-line: #4a4845;
+    --color-line: #4a4845;
+    --regolo-btn-fg: #dbdbd8;
+    --regolo-btn-border: #dbdbd8;
+    --regolo-btn-bg-hover: rgba(219, 219, 216, 0.12);
+    --regolo-focus: #dbdbd8;
+    /* Un token derivato da un altro token ha la stessa trappola un piano più
+       sotto: `--regolo-quota-colore: var(--regolo-muted)` si risolve su `:root`
+       come tutti gli altri, quindi ridichiararlo non basta a monte — va scritto
+       anche qui, col valore. Trovato da `contrasto-dom.mjs` su «Fermo» nella
+       quota del footer, a 2,19:1. */
+    --regolo-quota-colore: #ab9c9c;
+  }
+
+  /* Il granata è più scuro dell'antracite, e il rosa muto non ci passa (3,85:1):
+     lì la seconda voce è un rosa più chiaro, `#C9BEBE`, 5,60:1. */
+  [data-theme='c'] .banda-granata {
+    --regolo-ink: #ffffff; /* 10,15:1 */
+    --color-ink: #ffffff;
+    --regolo-muted: #c9bebe; /*  5,60:1 */
+    --color-muted: #c9bebe;
+    --regolo-line: rgba(255, 255, 255, 0.32);
+    --color-line: rgba(255, 255, 255, 0.32);
+    --regolo-btn-fg: #ffffff;
+    --regolo-btn-border: #ffffff;
+    --regolo-btn-bg-hover: rgba(255, 255, 255, 0.12);
+    --regolo-focus: #ffffff;
+    --regolo-quota-colore: #c9bebe;
+  }
+
+  /* ...e dove il fondo torna carta **dentro** una banda colorata, il piano
+     torna con lui. La targhetta del segnaposto è dipinta di carta (è la
+     dichiarazione della decisione n. 27 b, e deve restare leggibile sopra
+     qualunque cosa): dentro la banda granata ereditava il rosa chiaro del
+     piano scuro e finiva a 1,31:1 sulla propria carta. */
+  [data-theme='c'] .placeholder-etichetta,
+  [data-theme='c'] .placeholder-fonte {
+    --regolo-ink: #171716; /* 12,93:1 sulla carta */
+    --color-ink: #171716;
+    --regolo-muted: #6d5c5c; /*  4,54:1 sulla carta */
+    --color-muted: #6d5c5c;
+    --regolo-line: rgba(23, 23, 22, 0.22);
+    --color-line: rgba(23, 23, 22, 0.22);
+    color: #171716;
+  }
+
+  /* ==========================================================================
+     I MICRO-ELEMENTI: la mono, la targa, il bottone contornato
+     ======================================================================== */
+
+  /* La mono a 13,7 px con interlinea 1,0 e il maiuscolo: è la voce dei dati e
+     delle etichette, misurata su 80 nodi. */
+  [data-theme='c'] .halston-micro,
+  [data-theme='c'] .targa,
+  [data-theme='c'] .testa-banda-capo,
+  [data-theme='c'] .servizi-valore,
+  [data-theme='c'] .metodo-numero,
+  [data-theme='c'] .progetto-dati dt,
+  [data-theme='c'] .numeri-celle dt,
+  [data-theme='c'] .citazione-ruolo {
+    font-family: var(--regolo-font-mono);
+    font-size: 0.85625rem; /* 13,7 px, misurato */
+    line-height: 1; /* 13,7 / 13,7, misurata */
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* La targa: il micro-elemento firma. 1 px di bordo, 3 px di raggio, un punto
+     davanti. Misurata su `1440-meta-35.jpeg` e `-70.jpeg`. */
+  .targa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    padding: 0.3125rem 0.5625rem;
+    border: 1px solid currentColor;
+    border-radius: var(--regolo-radius);
+    color: var(--regolo-muted);
+  }
+  .targa-punto {
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex: 0 0 auto;
+  }
+
+  /* Il bottone è **contornato**, non pieno, e ha un `+` all'estremo destro.
+     Misurato: 1 px, raggio 3 px, maiuscolo. È l'opposto della pastiglia piena
+     di B, che è ambra con l'inchiostro sopra. */
+  .halston-bottone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 2.875rem;
+    padding: 0 1rem;
+    border: 1px solid currentColor;
+    border-radius: var(--regolo-radius);
+    background-color: transparent;
+    color: inherit;
+    font-family: var(--regolo-font-mono);
+    font-size: 0.85625rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .halston-bottone:hover {
+    background-color: rgba(23, 23, 22, 0.06);
+  }
+
+  /* La testa di sezione a tre punti su un filetto. */
+  .testa-banda {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--regolo-line);
+    color: var(--regolo-muted);
+  }
+  .testa-banda-capo:first-of-type {
+    justify-self: start;
+  }
+  .testa-banda-capo:last-of-type {
+    justify-self: end;
+  }
+  .testa-banda .targa {
+    justify-self: center;
+  }
+
+  /* ==========================================================================
+     LA COPERTINA — la barra di contenuto e il media a piena finestra
+     ======================================================================== */
+
+  .halston-copertina {
+    display: grid;
+  }
+  .copertina-barra {
+    padding: clamp(1.5rem, 3vw, 2.5rem) var(--regolo-margine) clamp(1rem, 2vw, 1.5rem);
+  }
+  /* Il titolo: 57,6 px, interlinea **1,0 esatta**, tracciatura −0,05 em, e le
+     due righe sono **spezzate a mano**. A interlinea 1,0 la composizione va
+     fissata: è la stessa eccezione dichiarata della hero di A, e vale per lo
+     stesso motivo — il browser non deve poter scegliere dove andare a capo. */
+  .copertina-titolo {
+    margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+    font-family: var(--regolo-font-display);
+    font-weight: var(--regolo-display-weight);
+    font-size: var(--regolo-text-h1);
+    line-height: var(--regolo-lh-h1);
+    letter-spacing: var(--regolo-display-tracking);
+    text-transform: uppercase;
+    color: var(--regolo-ink); /* 12,93:1 */
+    text-wrap: nowrap;
+  }
+  /* Il filetto **spezzato in due**, con un vuoto in mezzo: misurato sulla hero,
+     il taglio cade a x≈710 su 1440, cioè al 49 %. Non è un filetto continuo, e
+     la differenza si vede. */
+  .copertina-filetto {
+    display: grid;
+    grid-template-columns: 49% 1fr;
+    gap: 1.25rem;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .copertina-filetto span {
+    height: 1px;
+    background-color: var(--regolo-line);
+  }
+  .copertina-riga {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: start;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  /* Le discipline in **granata**: 7,32:1 sulla carta, valore esatto della
+     reference. */
+  .copertina-discipline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.25rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--regolo-granata);
+  }
+  .copertina-riconoscimento {
+    display: grid;
+    gap: 0.5rem;
+  }
+  [data-theme='c'] .copertina-riconoscimento .halston-micro {
+    margin: 0;
+    color: var(--regolo-muted);
+  }
+  .copertina-valore {
+    margin: 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 1.0875rem; /* 17,4 px, misurato */
+    line-height: 1.3;
+    color: var(--regolo-ink);
+  }
+  .halston-copertina .copertina-media {
+    aspect-ratio: 24 / 11;
+    width: 100%;
+  }
+  .halston-copertina .copertina-media img,
+  .halston-copertina .copertina-media video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* ==========================================================================
+     LE BANDE DUE-UP ALTERNATE — il gesto strutturale
+     --------------------------------------------------------------------------
+     Metà e metà, a piena larghezza, **senza margine fra i due lati e senza
+     spazio fra le bande**. Il fondo cambia a ogni banda: è il colore a fare il
+     ritmo, dove A usa lo spazio bianco e B una griglia di costruzione.
+     ======================================================================== */
+
+  .banda {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+  .banda-granata {
+    background-color: var(--regolo-granata);
+    color: #ffffff; /* 10,15:1 sul granata */
+  }
+  /* Il mauve: è il granata schiarito della seconda banda. Misurato sulla
+     reference come `srgb 0.5416 0.4565 0.4565`, cioè `#8A7474`.
+     **Correzione dichiarata, ed è la seconda di questo tema.** Su quel valore
+     l'inchiostro `#171716` sta a **4,13:1** — misurato in pagina da
+     `contrasto-dom.mjs`, non calcolato a mano: la prima stesura di questo
+     commento scriveva 4,52 e sbagliava. Il bianco sopra starebbe a 3,84, cioè
+     peggio, quindi la banda non si può rovesciare: va **schiarita**. `#937D7D`
+     è la stessa tinta 0°, la stessa saturazione a un decimo di punto, e la
+     luminosità sale di 3,5 punti: **4,67:1**.
+     Il mauve **non ha una seconda voce**: qualunque grigio-rosa più chiaro
+     dell'inchiostro cade sotto 2:1 su questo fondo, quindi qui `--regolo-muted`
+     *è* l'inchiostro. Una gerarchia che non si può leggere non è una
+     gerarchia. */
+  .banda-mauve {
+    background-color: #937d7d;
+    color: var(--regolo-ink); /* 4,67:1 sul mauve */
+  }
+  [data-theme='c'] .banda-mauve {
+    --regolo-muted: var(--regolo-ink);
+    --color-muted: #171716;
+    --regolo-line: rgba(23, 23, 22, 0.35);
+    --color-line: rgba(23, 23, 22, 0.35);
+  }
+  .banda-testo {
+    display: grid;
+    align-content: end;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 4vw, 3.5rem);
+  }
+  .banda-titolo {
+    margin: 0;
+    max-width: 30ch;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: var(--regolo-text-h2); /* 31 px, misurato */
+    line-height: var(--regolo-lh-h2); /* 1,2 — 37,2 / 31, misurata */
+    letter-spacing: -0.013em; /* −0,4 px su 31, misurata */
+    color: inherit;
+  }
+  .banda .banda-media {
+    aspect-ratio: 7 / 5;
+    height: 100%;
+    width: 100%;
+  }
+  .banda .banda-media img,
+  .banda .banda-media video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .banda-rovescia .banda-media {
+    order: -1;
+  }
+
+  /* ==========================================================================
+     LA CITAZIONE A DUE TONI
+     ======================================================================== */
+
+  .citazione {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 3fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+    padding: clamp(3rem, 7vw, 6.5rem) var(--regolo-margine);
+  }
+  .citazione .citazione-ritratto {
+    width: min(100%, 11rem);
+  }
+  .citazione-testa {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--regolo-line);
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .citazione-segno {
+    font-family: var(--regolo-font-display);
+    font-weight: 600;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 0.6;
+    color: var(--regolo-ink);
+  }
+  /* Il testo a **due toni**: la prima frase in inchiostro pieno, il resto nel
+     grigio medio. Misurato — è il gesto che fa leggere la citazione come una
+     citazione e non come un paragrafo grande. */
+  .citazione-testo {
+    margin: clamp(1rem, 2vw, 1.75rem) 0 0;
+    max-width: 46ch;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(1.375rem, 2.6vw, 2.7rem); /* 43,2 px a 1440, misurato */
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--regolo-muted); /* 4,54:1 — il resto della citazione */
+  }
+  .citazione-testo p {
+    margin: 0;
+  }
+  .citazione-testo strong {
+    font-weight: 500; /* non più grassa: cambia il **tono**, non il peso */
+    color: var(--regolo-ink); /* 12,93:1 — la prima frase */
+  }
+  .citazione-firma {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+  }
+  .citazione-nome {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--regolo-ink);
+  }
+  [data-theme='c'] .citazione-ruolo {
+    color: var(--regolo-muted);
+  }
+
+  /* ==========================================================================
+     LE RIGHE SU BANDA SCURA — i servizi
+     --------------------------------------------------------------------------
+     Il **filetto fra le righe** è ammesso qui, ed è una deviazione dichiarata
+     dalla voce di casa «il filetto non separa mai»: quella regola difende A. Su
+     questa reference il filetto fra le righe è il modo in cui la banda si
+     legge, e le righe sono alte ~150 px, misurate.
+     ======================================================================== */
+
+  .halston-servizi,
+  .halston-numeri {
+    background-color: var(--regolo-banda);
+    color: var(--regolo-paper); /* 9,92:1 */
+    padding-inline: var(--regolo-margine);
+  }
+  [data-theme='c'] .halston-servizi .testa-banda,
+  [data-theme='c'] .halston-numeri .testa-banda {
+    border-color: var(--regolo-scuro-linea);
+    color: var(--regolo-muted-invert); /* 5,22:1 sulla banda, valore esatto */
+  }
+  .servizi-righe {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .servizi-riga {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 9.375rem; /* 150 px, misurato */
+    border-top: 1px solid var(--regolo-scuro-linea);
+    text-decoration: none;
+  }
+  .servizi-righe li:last-child .servizi-riga {
+    border-bottom: 1px solid var(--regolo-scuro-linea);
+  }
+  .servizi-nome {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--regolo-muted-invert); /* 5,22:1 */
+  }
+  [data-theme='c'] .servizi-valore {
+    text-align: right;
+    color: var(--regolo-muted-invert);
+    /* L'interlinea misurata sulla mono è **1,0 esatta** — e nella reference lo
+       è perché quei valori sono `48+ HOUSES` e `AVG. 14 MONTHS`: una riga, mai
+       due. Qui il valore è la seconda riga di un servizio italiano, e a 390 va
+       a capo: `interlinee.mjs` l'ha misurato a 1,11 di soglia sulla stringa
+       vera («…AGIBILITÀ», dove l'accento della `À` incontra la virgola della
+       riga sopra). A una riga il valore non si vede — cambia solo l'altezza
+       della scatola, dentro una riga alta 150 px — quindi si alza qui e la
+       misura della reference resta vera dove è stata presa. */
+    line-height: 1.15;
+  }
+  .servizi-riga:hover .servizi-nome {
+    color: var(--regolo-paper);
+  }
+
+  /* I numeri: quattro celle sulla stessa banda, con il filetto fra loro. */
+  .numeri-celle {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--regolo-scuro-linea);
+  }
+  .numeri-celle > div {
+    padding: clamp(2rem, 4vw, 3.5rem) 1rem clamp(2rem, 4vw, 3.5rem) 0;
+    border-right: 1px solid var(--regolo-scuro-linea);
+  }
+  .numeri-celle > div:last-child {
+    border-right: 0;
+  }
+  .numeri-celle dd {
+    margin: 0 0 0.75rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(2.5rem, 5.4vw, 4.8375rem); /* 77,4 px */
+    /* **0,8** di interlinea, che è il valore misurato sul numerone
+       (129,6 / 103,68). Tutto maiuscolo e senza discendenti: la soglia
+       d'inchiostro lo consente, e su una riga sola non c'è niente da toccare. */
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--regolo-paper);
+  }
+  [data-theme='c'] .numeri-celle dt {
+    color: var(--regolo-muted-invert);
+  }
+
+  /* ==========================================================================
+     I PROGETTI E IL METODO
+     ======================================================================== */
+
+  .halston-progetti,
+  .halston-metodo,
+  .halston-persone {
+    padding-inline: var(--regolo-margine);
+  }
+  .progetto-banda {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: end;
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+    border-top: 1px solid var(--regolo-line);
+  }
+  .halston-progetti .progetto-media {
+    aspect-ratio: 3 / 2;
+  }
+  .halston-progetti .progetto-media img,
+  .halston-progetti .progetto-media video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .progetto-nome {
+    margin: 0 0 1.25rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 2.6vw, 2.375rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--regolo-ink);
+  }
+  .progetto-dati {
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .progetto-dati > div {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--regolo-line);
+  }
+  [data-theme='c'] .progetto-dati dt {
+    color: var(--regolo-muted);
+  }
+  .progetto-dati dd {
+    margin: 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: var(--regolo-ink);
+  }
+
+  .metodo-righe {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .metodo-righe li {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: clamp(1rem, 2.4vw, 2.5rem);
+    align-items: baseline;
+    padding-block: clamp(1.25rem, 2.6vw, 2rem);
+    border-top: 1px solid var(--regolo-line);
+  }
+  [data-theme='c'] .metodo-numero {
+    color: var(--regolo-muted);
+  }
+  .metodo-righe .metodo-nome {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+    line-height: 1.3;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--regolo-ink);
+  }
+  .metodo-righe .metodo-testo {
+    font-family: var(--regolo-font-display);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--regolo-muted);
+  }
+
+  /* ==========================================================================
+     LE PERSONE
+     ======================================================================== */
+
+  .persone-celle {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: clamp(1.25rem, 2.6vw, 2rem);
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+  }
+  .persone-celle li {
+    display: grid;
+    gap: 0.625rem;
+    align-content: start;
+  }
+  .persona-nome {
+    margin: 0.5rem 0 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--regolo-ink);
+  }
+  .persona-targa {
+    margin: 0;
+  }
+
+  /* Il segnaposto di testo non si veste da segnaposto (`DECISIONI.md` n. 41). */
+  [data-theme='c'] .segnaposto {
+    color: inherit;
+  }
+
+  /* ==========================================================================
+     A 390: le bande diventano una colonna, ma il colore resta il ritmo
+     --------------------------------------------------------------------------
+     Le bande due-up **non collassano a un blocco**: diventano testo sopra e
+     fotografia sotto **dentro la stessa banda**, così il cambio di superficie —
+     che è il gesto — resta. Se ogni banda diventasse una colonna sola su fondo
+     carta, la proposta perderebbe la sua unica differenza strutturale.
+     ======================================================================== */
+
+  @media (max-width: 55.999rem) {
+    .copertina-titolo {
+      text-wrap: balance;
+      white-space: normal;
+    }
+    .copertina-filetto {
+      grid-template-columns: 1fr;
+    }
+    .copertina-filetto span:last-child {
+      display: none;
+    }
+    .copertina-riga {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .banda,
+    .banda-rovescia {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    /* L'ordine si normalizza: su una colonna «rovescia» non vuol dire niente,
+       e la fotografia sotto il testo si legge meglio in tutte e due. */
+    .banda-rovescia .banda-media {
+      order: 0;
+    }
+    .citazione {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(1.5rem, 5vw, 2.5rem);
+    }
+    .citazione .citazione-ritratto {
+      width: 8rem;
+    }
+    .numeri-celle {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .numeri-celle > div:nth-child(2n) {
+      border-right: 0;
+    }
+    .numeri-celle > div:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--regolo-scuro-linea);
+    }
+    .progetto-banda,
+    .metodo-righe li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .servizi-riga {
+      min-height: 6rem;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+      align-content: center;
+      padding-block: 1.25rem;
+    }
+    [data-theme='c'] .servizi-valore {
+      text-align: left;
+    }
+    /* La testata a 390, misurata su `390-hero.jpeg` (ricatturata: la prima
+       cattura era a metà caricamento e il testo non c'era): il marchio a
+       sinistra e la pastiglia `MENU` all'**estremo destro**, non appiccicata al
+       marchio come a 1440. */
+    [data-theme='c'] .testata {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+    [data-theme='c'] .menu-mobile {
+      justify-self: end;
+    }
+    /* Le discipline: a 1440 sono tre righe incolonnate, a 390 diventano **una
+       riga** con un `+` fra le voci — misurato, e sono due composizioni
+       diverse della stessa lista. Il `+` lo mette il CSS: non entra nel testo
+       né in quello che legge uno screen reader. */
+    .copertina-discipline {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 0.5rem;
+      row-gap: 0.25rem;
+    }
+    /* Il `+` sta dopo **tutte** le voci, compresa l'ultima: misurato su
+       `390-hero.jpeg`, dove la riga finisce con `RENOVATION +`. */
+    .copertina-discipline li::after {
+      content: '+';
+      margin-left: 0.5rem;
+    }
+    .testa-banda {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+    .testa-banda-capo:last-of-type {
+      display: none;
+    }
+  }
+}
+
+/* ============================================================================
+   LA TESTATA DI C — marchio, pastiglia granata, menu al centro, «altro»
+   ----------------------------------------------------------------------------
+   `1440-hero.jpeg`, misurato: `HALSTON` a sinistra a 22 px, subito accanto una
+   **pastiglia granata** con l'hamburger e la parola `MENU`, poi il menu
+   **centrato** in maiuscolo, e all'estremo destro `MORE ⌄`.
+
+   La pastiglia granata **è** la `<details>` del menu a scomparsa, non un
+   secondo controllo: nella reference è un menu vero che si apre. Qui è la
+   stessa `<details>` nativa che il progetto usa da sempre — funziona senza
+   JavaScript e da tastiera (`CLAUDE.md` § Regole, 4) — vestita da pastiglia e
+   visibile a **ogni** larghezza, come nella reference. Il markup non cambia:
+   `SiteHeader` è condiviso con A, e A non si tocca.
+
+   Il granata sta a 10,15:1 col bianco sopra: valore esatto, nessuna
+   correzione. Il maiuscolo del `MENU` lo mette il CSS, non il testo, così il
+   nome accessibile resta la parola che si legge.
+   ========================================================================== */
+
+@layer components {
+  [data-theme='c'] header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background-color: var(--regolo-paper);
+    border-bottom: 0;
+    color: var(--regolo-ink);
+  }
+  [data-theme='c'] .testata {
+    /* La reference non ha contenitore: il margine è 20 px e basta. */
+    max-width: none;
+    position: relative;
+    padding-inline: var(--regolo-margine);
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--regolo-header-h);
+  }
+  [data-theme='c'] .testata-nome {
+    /* Il bersaglio: il marchio è il link alla home, e `sweep.mjs` lo
+       misurava alto 27 px (B) e 33 (C). Passa WCAG 2.5.8, che chiede 24,
+       ma in A lo stesso link arriva a 44 e la differenza non è una scelta
+       di stile: è un bersaglio più piccolo nella stessa posizione. Il
+       padding non sposta il testo, perché la cella della griglia è già
+       più alta. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-family: var(--regolo-font-display);
+    font-weight: var(--regolo-logo-weight);
+    font-size: var(--regolo-logo-size); /* 22 px, misurato */
+    letter-spacing: var(--regolo-logo-tracking);
+    text-transform: uppercase;
+    color: var(--regolo-ink); /* 12,93:1 */
+    text-decoration: none;
+  }
+
+  /* Il menu **centrato sulla finestra**, che è dove sta nella reference —
+     non al centro dello spazio che avanza dopo il marchio e la pastiglia, che
+     è quello che dà una griglia a tre celle e si vede subito perché il menu
+     risulta spostato a destra. Il centro esatto lo dà il posizionamento, e non
+     richiede di raggruppare marchio e pastiglia in un contenitore: il markup
+     di `SiteHeader` è condiviso con A. Sotto i 56 rem il menu non c'è
+     (l'utility `nav:block hidden`), quindi non può sovrapporsi a niente. */
+  [data-theme='c'] .testata > .site-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+  }
+  [data-theme='c'] .site-header .site-nav ul {
+    display: flex;
+    gap: 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  [data-theme='c'] .site-header .site-nav a {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 0.85625rem; /* 13,7 px, misurato */
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--regolo-ink);
+    text-decoration: none;
+  }
+  [data-theme='c'] .site-header .site-nav li:not(:last-child)::after {
+    content: none;
+  }
+
+  /* La pastiglia granata. */
+  [data-theme='c'] .menu-mobile > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem; /* il bersaglio resta 44: è l'unico accesso al menu */
+    padding: 0 0.875rem;
+    margin-right: 0;
+    background-color: var(--regolo-granata);
+    color: #ffffff; /* 10,15:1 sul granata */
+    border-radius: var(--regolo-radius); /* 3 px, misurato */
+    font-family: var(--regolo-font-mono);
+    font-size: 0.85625rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  /* Le tre stanghette dell'hamburger: uno `::before` con due ombre invece di
+     tre `<span>`, perché il markup della `<details>` è condiviso con A. */
+  [data-theme='c'] .menu-mobile > summary::before {
+    content: '';
+    width: 0.875rem;
+    height: 1px;
+    background-color: currentColor;
+    box-shadow:
+      0 4px 0 currentColor,
+      0 -4px 0 currentColor;
+    flex: 0 0 auto;
+  }
+  [data-theme='c'] .menu-mobile-pannello {
+    background-color: var(--regolo-surface);
+    border-block: 1px solid var(--regolo-line);
+  }
+}
+
+/* Fuori da `@layer`, e il motivo è di specificità e non di stile: nel markup
+   condiviso la `<details>` porta l'utility `nav:hidden`, che sta in
+   `@layer utilities` — cioè **dopo** `components` — e a 1440 la spegnerebbe.
+   Qui la pastiglia deve esserci a ogni larghezza, perché nella reference è lei
+   il menu. Una regola non incapsulata batte qualunque layer, e non richiede di
+   toccare `SiteHeader`, che è di A. */
+[data-theme='c'] .menu-mobile {
+  display: block;
+  grid-column: 2;
+}
+
+/* ============================================================================
+   IL BRIEF, IN C — righe su banda, e la targa al posto dell'occhiello
+   ----------------------------------------------------------------------------
+   Il committente, sullo screenshot del passo 1: *«questo lo voglio diverso su
+   questa opzione rispetto a quella A»*. Il componente è lo stesso su tutte e
+   tre le rotte — stesso markup, stesse parole, cinque passi — e deve restarlo:
+   è la condizione perché in call si confronti la lingua visiva e non tre form.
+   Quello che cambia è **come il tema lo veste**, e qui era vestito da A.
+
+   Cosa se ne va, e da dove veniva:
+
+   - l'occhiello fra **quadre** (`.eyebrow::before { content: '[' }`) è la
+     scheda tecnica di AS Associates, cioè un gesto di A. Qui diventa la
+     **targa**: il micro-elemento firma di questa reference — mono, maiuscolo,
+     1 px di bordo, 3 px di raggio, un punto davanti;
+   - il **terminatore obliquo a 45°** dell'avanzamento è la quota ISO 129-1 di
+     A. Questa reference **non ha terminatori**: ha filetti da 1 px e basta, e
+     il valore lo scrive in mono all'estremo destro della riga;
+   - le **sei scatole** delle risposte diventano **sei righe** su un filetto,
+     che è come si leggono i servizi in questa pagina (`.servizi-riga`,
+     misurata). Non è una scelta di gusto: due colonne di scatole con l'angolo
+     tondo sono l'unica cosa che questa reference non ha da nessuna parte.
+
+   Tutto sotto `[data-theme='c']`: il markup non cambia e A non si tocca.
+   ========================================================================== */
+
+@layer components {
+  /* Le quadre sono di A. */
+  [data-theme='c'] .eyebrow::after {
+    content: none;
+  }
+
+  /* L'occhiello **è** la targa. Il punto lo fa `::before`, che prima portava la
+     quadra aperta: un pseudo-elemento in meno e nessuno `<span>` in più. */
+  [data-theme='c'] .brief-occhiello {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    padding: 0.3125rem 0.5625rem;
+    border: 1px solid currentColor;
+    border-radius: var(--regolo-radius);
+    font-family: var(--regolo-font-mono);
+    font-size: 0.85625rem; /* 13,7 px */
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--regolo-muted); /* 5,22:1 sulla banda */
+  }
+  [data-theme='c'] .brief-occhiello::before {
+    content: '';
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex: 0 0 auto;
+  }
+
+  /* Il titolo: maiuscolo, come i 270 nodi della reference. */
+  [data-theme='c'] .brief h2 {
+    text-transform: uppercase;
+    letter-spacing: var(--regolo-display-tracking);
+  }
+
+  /* La domanda e le etichette dei campi: maiuscole come tutto il resto. Con la
+     domanda in minuscolo dentro sei righe maiuscole l'unica cosa in minuscolo
+     della schermata era la domanda, cioè la riga più importante. */
+  [data-theme='c'] .brief-domanda-testo {
+    text-transform: uppercase;
+  }
+  [data-theme='c'] .brief-etichetta,
+  [data-theme='c'] .brief-consenso {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---- l'avanzamento: filetti da 1 px, nessun terminatore --------------- */
+  [data-theme='c'] .brief-avanzamento {
+    align-items: center;
+    gap: 1.5rem;
+  }
+  [data-theme='c'] .brief-tacche li {
+    height: 1px;
+    border-top: 1px solid var(--regolo-muted);
+  }
+  [data-theme='c'] .brief-tacche li::before {
+    content: none;
+  }
+  [data-theme='c'] .brief-tacche li[data-fatto] {
+    border-top-color: var(--regolo-ink); /* la carta sulla banda: 9,92:1 */
+    border-top-width: 1px;
+  }
+  [data-theme='c'] .brief-avanzamento-conta {
+    font-family: var(--regolo-font-mono);
+    font-size: 0.85625rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--regolo-muted);
+  }
+
+  /* ---- le risposte sono righe su un filetto ----------------------------- */
+  [data-theme='c'] .brief-opzioni {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 1.75rem;
+    border-bottom: 1px solid var(--regolo-line);
+  }
+  [data-theme='c'] .brief-opzione {
+    min-height: 3.5rem;
+    padding: 0.5rem 0;
+    background-color: transparent;
+    border: 0;
+    border-top: 1px solid var(--regolo-line);
+    border-radius: 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--regolo-muted);
+    gap: 0.875rem;
+  }
+  [data-theme='c'] .brief-opzione input[type='radio'] {
+    accent-color: var(--regolo-ink);
+  }
+  /* Il nome che si accende: è il gesto misurato delle righe dei servizi
+     (`.servizi-riga:hover .servizi-nome`), portato sulla riga che si scegli. */
+  [data-theme='c'] .brief-opzione:hover,
+  [data-theme='c'] .brief-opzione:has(input:checked) {
+    color: var(--regolo-ink);
+    border-color: var(--regolo-ink);
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* ---- il bottone è contornato, e porta il `+` -------------------------- */
+  /* `CLAUDE.md` § Cosa non deve esserci vieta il segno in coda a un bottone, e
+     quella voce difende A da un default: la freccina «→» che ogni generatore
+     mette in fondo a ogni CTA. Qui il segno è un `+`, non una freccia, ed è
+     misurato su ogni bottone della reference. Deviazione dichiarata. */
+  [data-theme='c'] .brief-azioni .btn {
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 2.875rem;
+    padding-inline: 1rem;
+    font-family: var(--regolo-font-mono);
+    font-weight: 400;
+    font-size: 0.85625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  [data-theme='c'] .brief-azioni .btn::after {
+    content: '+';
+    font-family: var(--regolo-font-mono);
+  }
+}

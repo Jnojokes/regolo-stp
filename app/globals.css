@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import './css/sezioni.css';
-@import './css/fonderia.css';
-@import './css/monografia.css';
+@import './css/ecolinear.css';
+@import './css/halston.css';
 @import './css/pagine.css';
 
 /* ============================================================================
@@ -296,73 +296,113 @@
 }
 
 /* ============================================================================
-   Tema C — «La fonderia» · il sistema di Studio Foundry
+   Tema B — «ecoLINEAR» · https://ecolinearstudio.com/
    ----------------------------------------------------------------------------
-   Chiesto per nome dal committente. Le prove stanno in
-   `kit/reference/studio-foundry/`, guardate: la hero è **una fotografia a piena
-   finestra** con tutto sovrapposto, il marchio in serif altissimo contrasto
-   TUTTO MAIUSCOLO che attraversa l'intera larghezza sopra la foto, il menu
-   centrato piccolo, la pastiglia scura in alto a destra; più giù i nomi dei
-   progetti allo stesso corpo enorme, i metadati **ai due estremi della riga**
-   con il vuoto in mezzo, e le fotografie **ritagliate in poligoni angolari**
-   invece che in rettangoli.
+   Il committente: *«l'opzione 2 la voglio identica a questo sito»*. I valori
+   qui sotto sono **letti dal sito vero** con Playwright, contando i nodi, non
+   descritti: `kit/reference/ecolinear/` ha le catture e `SCHEDA.md` la tabella.
 
-   `SCHEDA.md` aveva escluso Studio Foundry dal tier A perché era la reference
-   che i primi prototipi avevano già parafrasato e perché i suoi token misurati
-   sono i cluster 1 e 5. Quella nota resta vera **come difesa da un default** —
-   qui la reference *è* il brief, e la skill dice di seguirlo alla lettera.
+   Quello che il sito è, in una frase: **un foglio da disegno tecnico.** Fondo
+   grigio carta, linee di costruzione tratteggiate che attraversano la pagina,
+   disegni a filo negli angoli, e il testo in **terracotta** — non in nero.
+
+   ## Le tre correzioni di contrasto, e sono dichiarate
+
+   «Identico» non scavalca l'AA (`CLAUDE.md` § Definizione di «fatto»). Misurato
+   sui suoi valori veri:
+
+   | suo | su | rapporto | |
+   |---|---|---|---|
+   | `#9D7460` terracotta | `#ECECEC` | **3,49:1** | passa solo per il testo ≥ 24 px |
+   | `#D98E36` ambra | `#ECECEC` | **2,26:1** | non passa nemmeno per il testo grande |
+
+   La correzione **tiene la tinta e la saturazione e muove solo la luminosità**,
+   perché è la tinta a fare il carattere di quella pagina. Esce una rampa di tre
+   valori sulla **stessa tinta 20° e la stessa saturazione 24 %**, e cambia solo
+   la luminosità — 34,7 % · 42,5 % · 49,6 %:
+
+   - `#6F5142` è l'**inchiostro**, 6,06:1 sulla carta e 6,53:1 sul pannello. È
+     lui `--regolo-ink`, cioè il valore che eredita chiunque non chieda altro;
+   - `#876352` è la **voce secondaria**, 4,52:1;
+   - `#9D7460` è la tinta **esatta** della reference e sta in un token a parte,
+     `--regolo-ink-display`, che **solo il testo ≥ 24 px può chiedere** — i
+     titoli, il marchio del foglio, i numeri delle quote. Lì 3,49:1 è sopra il
+     3:1 richiesto.
+
+   **Il verso conta, e la prima stesura lo aveva al contrario**: `--regolo-ink`
+   era il valore esatto e il commento diceva «solo ≥ 24 px». Un commento non è
+   un vincolo: `contrasto-dom.mjs` ha trovato **nove** testi sotto soglia in
+   pagina — il marchio della testata a 18 px, il nome di un'opera a 20, la
+   barra della proposta, l'annotazione della quota — perché tutti ereditavano
+   l'inchiostro senza sapere di essere piccoli. Adesso il valore che si eredita
+   è quello che passa sempre, e la tinta esatta è **opt-in** dove è legale. È la
+   stessa regola dell'`initial-value` delle proprietà registrate: il default
+   deve essere lo stato che va bene anche quando nessuno ci pensa;
+   - l'**ambra resta `#D98E36` esatta ma solo come superficie** — i riempimenti,
+     i segni di registro, il blocco dentro il marchio, il fondo del bottone —
+     ed è quello che fa anche la reference. Dove deve essere testo su carta
+     entra `#965E1C`, stessa tinta 32°, stessa saturazione 68 %, **4,54:1**.
+
+   Le linee di costruzione (`rgba(157,116,96,.38)`) e il numerone al 12 % sono
+   **sotto soglia di proposito**: sono decorazione, e portano `data-decorativo`,
+   che è il contratto della decisione n. 38 — un elemento che porta informazione
+   non può avere quell'attributo.
    ========================================================================== */
 
 [data-theme='b'] {
-  --regolo-paper: #f3f0ec; /* la carta calda misurata sulla reference */
-  --regolo-surface: #ffffff;
-  --regolo-ink: #1b1b19; /* 15,18:1 sulla carta */
-  --regolo-muted: #6a665f; /*  5,03:1 */
-  --regolo-muted-invert: #f3f0ec;
-  --regolo-line: #b9b3a8; /*  1,90:1 — filetto decorativo, MAI informazione né testo */
-  --regolo-linea-forte: #6a665f; /*  5,03:1 — il filetto quando porta informazione */
-  --regolo-ph: #e7e2da;
-  --regolo-ph-ink: #6a665f;
-  --regolo-bordo-campo: #6a665f;
-  --regolo-errore: #8e1b10; /*  8,15:1 sulla carta */
+  --regolo-paper: #ececec; /* misurato sul sito */
+  --regolo-surface: #f3f5f1; /* il pannello dei servizi, misurato */
+  --regolo-ink: #6f5142; /*  6,06:1 su carta, 6,53:1 sul pannello — l'inchiostro */
+  --regolo-muted: #876352; /*  4,52:1 — la voce secondaria. Tinta 20°, sat 24 % */
+  /* La tinta esatta della reference. La chiede **solo** chi è ≥ 24 px, e sono
+     quattro selettori in `app/css/ecolinear.css`: `.foglio-marchio`,
+     `.ecolinear-titolo`, `.fase-titolo`, `.quota-numero dd`. */
+  --regolo-ink-display: #9d7460; /*  3,49:1 — sopra il 3:1 del testo grande */
+  --regolo-muted-invert: #f3f5f1;
+  --regolo-line: rgba(157, 116, 96, 0.38); /* la linea di costruzione: decorazione */
+  --regolo-linea-forte: #876352; /*  4,52:1 — il filetto quando porta informazione */
+  --regolo-ph: #e3e3e1;
+  --regolo-ph-ink: #876352;
+  --regolo-bordo-campo: #876352;
+  --regolo-errore: #8e1b10; /*  8,05:1 sulla carta */
 
-  /* Il tono su tono: **solo decorazione**, e sempre `aria-hidden`. Sta a
-     1,53:1, quindi non può portare informazione — nella reference è
-     l'atmosfera dietro il nome, non il nome. */
-  --regolo-tono: #c9c4bb;
+  /* L'ambra: **superficie**, non testo. Il valore esatto della reference. */
+  --regolo-ambra: #d98e36;
+  --regolo-ambra-testo: #965e1c; /*  4,54:1 — dove l'ambra deve essere testo */
+  --regolo-ambra-velo: rgba(217, 142, 54, 0.4);
+  /* Il tono su tono del numerone di fase: 12 % di opacità, misurato. */
+  --regolo-tono: rgba(157, 116, 96, 0.12);
 
-  --regolo-timbro: #123c7a; /*  8,86:1 sulla carta */
+  --regolo-timbro: #123c7a; /*  9,29:1 sulla carta */
   --regolo-timbro-soft: #e2e6f1;
   --regolo-timbro-chiaro: #a9c4e8;
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  --regolo-font-display: var(--font-elsie), 'Playfair Display', Didot, Georgia, serif;
-  --regolo-font-body: var(--font-inter), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-mono: var(--font-mono), ui-monospace, Menlo, monospace;
-  --regolo-display-weight: 900;
-  --regolo-display-tracking: -0.01em;
+  /* Una famiglia sola: misurato, 60 nodi di testo su 60. Vedi `tema-b.ts`. */
+  --regolo-font-display: var(--font-montserrat), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-body: var(--font-montserrat), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-mono: var(--font-montserrat), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-display-weight: 600;
+  --regolo-display-tracking: -0.02em; /* −0,9216 px su 46,1 = −0,02 em, misurato */
   --regolo-display-wdth: 100;
 
-  /* Il display **è il marchio**, e attraversa tutta la larghezza: il corpo è
-     una funzione della finestra, non un gradino di scala. Sotto, la scala vera
-     del sistema — 96 · 40 · 24 · 17 · 12. */
-  --regolo-text-h1: clamp(2.75rem, 9.4vw, 6rem);
-  /* Elsie tutto maiuscolo: soglia 0,972. Era 0,92, cioè sotto — e un h1 che il
-     browser manda a capo non è spezzato a mano, quindi non ha l'eccezione. */
-  --regolo-lh-h1: 1;
-  --regolo-text-h2: clamp(1.75rem, 3vw, 2.5rem);
-  /* I titoli di C sono Elsie **tutto maiuscolo**: soglia 0,972. */
-  --regolo-lh-h2: 1;
-  --regolo-text-h3: 1.5rem;
-  --regolo-lh-h3: 1.2;
+  /* La scala misurata: 158,4 (il numerone) · 46,1 · 40 · 34,6 · 20 · 18 · 16 ·
+     14 · 12 · 10. Il marchio della hero non è un gradino: è una funzione della
+     finestra, come nella reference. */
+  --regolo-text-h1: clamp(2.5rem, 6.4vw, 5rem);
+  --regolo-lh-h1: 1.12; /* 51,61 / 46,1 = 1,12, misurato */
+  --regolo-text-h2: clamp(1.75rem, 3.2vw, 2.8813rem); /* 46,1 px a 1440 */
+  --regolo-lh-h2: 1.12;
+  --regolo-text-h3: 1.25rem; /* 20 px */
+  --regolo-lh-h3: 1.4;
 
   --regolo-wrap: 1440px;
   --regolo-margine: clamp(1.25rem, 3.4vw, 3rem);
   --regolo-gutter: 1.5rem;
   --regolo-colonne: 12;
-  --regolo-radius: 0px; /* angoli vivi ovunque; il raggio vive solo sulle pastiglie */
-  --regolo-misura: 34rem;
+  --regolo-radius: 2px; /* misurato: 20 occorrenze di 2px, 3 di 50 % */
+  --regolo-misura: 38rem; /* 609 px di misura di testo, misurati */
   --regolo-appeso: 12px;
   --regolo-banda-y: clamp(4rem, 9vw, 8rem);
   --regolo-silenzio: clamp(6rem, 13.9vw, 12.5rem);
@@ -371,238 +411,232 @@
   --regolo-ph-pattern: none;
   --regolo-ph-size: auto;
   --regolo-ph-border: none;
-  --regolo-font-eyebrow: var(--regolo-font-mono);
-  --regolo-eyebrow-tracking: 0.06em; /* la mono maiuscola si apre, non si stringe */
-  --regolo-eyebrow-transform: uppercase;
+  --regolo-font-eyebrow: var(--regolo-font-body);
+  --regolo-eyebrow-tracking: 0.05em; /* +0,9 px su 18 = +0,05 em, misurato */
+  --regolo-eyebrow-transform: none; /* le etichette della reference sono minuscole */
 
-  /* La pastiglia scura: è il solo oggetto con un raggio, ed è l'azione. */
-  --regolo-btn-bg: #1b1b19;
-  --regolo-btn-fg: #f3f0ec;
-  --regolo-btn-border: #1b1b19;
-  --regolo-btn-bg-hover: #333330;
+  /* Il bottone: ambra piena con l'inchiostro sopra. 5,14:1, misurato. */
+  --regolo-btn-bg: #d98e36;
+  --regolo-btn-fg: #3a2a20;
+  --regolo-btn-border: #d98e36;
+  --regolo-btn-bg-hover: #c47f2c;
 
-  --regolo-header-h: 64px;
-  --regolo-logo-size: 1rem;
-  --regolo-logo-weight: 400;
-  --regolo-logo-tracking: 0;
-  --regolo-logo-family: var(--regolo-font-body);
+  --regolo-header-h: 72px;
+  --regolo-logo-size: 1.125rem;
+  --regolo-logo-weight: 600;
+  --regolo-logo-tracking: 0.02em;
+  --regolo-logo-family: var(--regolo-font-display);
   --regolo-logo-direction: row;
-  --regolo-focus: var(--regolo-ink);
+  --regolo-focus: #876352;
 
   --regolo-brief-bg: var(--regolo-paper);
-  --regolo-brief-fg: var(--regolo-ink);
+  --regolo-brief-fg: var(--regolo-muted);
   --regolo-brief-occhiello: var(--regolo-muted);
   --regolo-brief-lead: var(--regolo-muted);
   --regolo-brief-bordo-sezione: none;
   --regolo-brief-card: var(--regolo-surface);
-  --regolo-brief-controllo-bg: #ffffff;
-  --regolo-brief-controllo-bordo: #6a665f;
-  --regolo-brief-scelta-bg: #ffffff;
-  --regolo-brief-scelta-bordo: #b9b3a8;
+  --regolo-brief-controllo-bg: #f3f5f1;
+  --regolo-brief-controllo-bordo: #876352;
+  --regolo-brief-scelta-bg: #f3f5f1;
+  --regolo-brief-scelta-bordo: rgba(157, 116, 96, 0.38);
   --regolo-brief-errore: var(--regolo-errore);
-  --regolo-brief-fuoco: var(--regolo-ink);
+  --regolo-brief-fuoco: #876352;
 
   --regolo-quota-riga: block;
   --regolo-quota-colore: var(--regolo-muted);
   --regolo-asse: none;
   --regolo-asse-frazione: 0;
-  --regolo-sezione-alt: var(--regolo-paper);
+  --regolo-sezione-alt: var(--regolo-surface);
   --regolo-sezione-alt-filo: none;
 
-  --regolo-pannello-bg: transparent;
-  --regolo-pannello-fg: var(--regolo-ink);
+  --regolo-pannello-bg: var(--regolo-surface);
+  --regolo-pannello-fg: var(--regolo-muted);
   --regolo-pannello-chiave: var(--regolo-muted);
   --regolo-pannello-voce: var(--regolo-ink);
-  --regolo-scuro-bg: #1b1b19;
-  --regolo-scuro-fg: #f3f0ec;
-  --regolo-scuro-muted: #a8a49c;
-  --regolo-scuro-linea: #46443f;
+  --regolo-scuro-bg: #3a2a20;
+  --regolo-scuro-fg: #f3f5f1;
+  --regolo-scuro-muted: #cbbcb2;
+  --regolo-scuro-linea: #6b5344;
 
-  --regolo-esploso-faccia-alta: #e7e2da;
-  --regolo-esploso-faccia-sx: #c9c4bb;
-  --regolo-esploso-faccia-dx: #a8a49c;
-  --regolo-esploso-contorno: #1b1b19;
+  --regolo-esploso-faccia-alta: #e3e3e1;
+  --regolo-esploso-faccia-sx: #cfc9c2;
+  --regolo-esploso-faccia-dx: #b3a79d;
+  --regolo-esploso-contorno: #876352;
   --regolo-esploso-fondazioni: #d8d3ca;
-  --regolo-esploso-struttura: #c9c4bb;
-  --regolo-esploso-involucro: #b9b3a8;
-  --regolo-esploso-impianti: #a8a49c;
-  --regolo-esploso-finiture: #e7e2da;
-  --regolo-esploso-apertura: #f3f0ec;
-  --regolo-esploso-calore: #e7e2da;
-  --regolo-esploso-acqua: #e7e2da;
-  --regolo-esploso-aria: #e7e2da;
+  --regolo-esploso-struttura: #cfc9c2;
+  --regolo-esploso-involucro: #b3a79d;
+  --regolo-esploso-impianti: #a08d80;
+  --regolo-esploso-finiture: #e3e3e1;
+  --regolo-esploso-apertura: #f3f5f1;
+  --regolo-esploso-calore: #d98e36;
+  --regolo-esploso-acqua: #876352;
+  --regolo-esploso-aria: #b3a79d;
 
-  --regolo-mappa-linea: var(--regolo-ink);
+  --regolo-mappa-linea: var(--regolo-muted);
   --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-ink);
+  --regolo-mappa-sede: var(--regolo-ambra-testo);
 
-  --regolo-footer-bg: #1b1b19;
-  --regolo-footer-fg: #f3f0ec; /* 15,18:1 */
-  --regolo-footer-muted: #a8a49c; /*  7,45:1 */
-  --regolo-footer-filo: none;
+  --regolo-footer-bg: var(--regolo-paper);
+  --regolo-footer-fg: var(--regolo-muted); /*  4,52:1 */
+  --regolo-footer-muted: var(--regolo-muted);
+  --regolo-footer-filo: 1px solid var(--regolo-line);
 }
 
 /* ============================================================================
-   Tema D — «La casa» · il sistema di Storey Architecture
+   Tema C — «Halston» · https://halston-architecture-template.webflow.io/
    ----------------------------------------------------------------------------
-   Chiesto per nome dal committente, ed è l'unica delle reference che era già
-   nel **tier A** di `SCHEDA.md`: i valori qui sotto sono **misurati nel
-   browser**, non descritti.
+   Il committente: *«l'opzione 3 la voglio identica a questo sito»*. Valori
+   letti dal sito vero con Playwright; catture in `kit/reference/halston/`.
 
-   | Voce | Misurato |
-   |---|---|
-   | interlinea | **1,0 esatta a ogni corpo display** (115,2/115,2 · 100,8/100,8 · 31,7/31,7) |
-   | spaziatura | display **−3 %**, mono **−10 %** — negativa anche sul maiuscolo |
-   | contrasto di scala | 115,2 / 15,8 = **7,3×** |
-   | contenitore | **nessun `max-width`** (100 %), gutter **20 px** |
-   | angoli / ombre | `border-radius` **zero occorrenze**, `box-shadow` **zero** |
-   | numerazione | `01)` — con la parentesi chiusa, in mono |
+   Quello che il sito è, in una frase: **bande a piena larghezza che cambiano
+   superficie**, tutto in maiuscolo, con una monospace che porta i valori. Non
+   c'è un contenitore centrato e non c'è spazio bianco fra i blocchi: un blocco
+   finisce dove comincia il colore del prossimo.
 
-   E le tre cose che fa lui e gli altri no: il **vuoto verticale disuguale**
-   dentro uno stesso blocco, il **numerone tono su tono** come contatore di
-   sezione, e una **calligrafica usata una volta sola** in tutta la pagina.
+   Misurato: **270 occorrenze** di `text-transform: uppercase`, **zero ombre**,
+   raggio **3 px** (42 occorrenze), e una scala che arriva a **216 px** con
+   interlinea **0,8** (129,6 / 103,68) e tracciatura **−0,05 em** (−7,2 px su
+   144).
+
+   ## L'unica correzione di contrasto, dichiarata
+
+   Il suo rosa muto `#AB9C9C` sta a **5,22:1 sulla banda scura** — e lì resta
+   esatto — ma a **1,90:1 sulla carta chiara**, dove lo usa per i metadati. Su
+   carta entra `#6D5C5C`: stessa tinta (0°) e stessa saturazione (8 %), a
+   **4,54:1**. Tutto il resto passa con i suoi valori veri: inchiostro 12,93:1,
+   granata su carta 7,32:1, carta su banda scura 9,92:1, bianco su granata
+   10,15:1.
    ========================================================================== */
 
 [data-theme='c'] {
-  --regolo-paper: #ffffff;
-  --regolo-surface: #ffffff;
-  --regolo-ink: #000000; /* 21,00:1 */
-  --regolo-muted: #5e5e5e; /*  6,48:1 */
-  --regolo-muted-invert: #ffffff;
-  --regolo-line: #d4d4d4; /*  1,48:1 — filetto decorativo, MAI informazione */
-  --regolo-linea-forte: #767676; /*  4,54:1 — quando il filetto porta informazione */
-  --regolo-ph: #ececec;
-  --regolo-ph-ink: #5e5e5e;
-  --regolo-bordo-campo: #767676;
-  --regolo-errore: #8e1b10; /*  9,07:1 */
+  --regolo-paper: #dbdbd8; /* srgb 0.86 0.8586 0.8463, misurato */
+  --regolo-surface: #e6e5e3; /* srgb 0.9 0.899 0.8902 */
+  --regolo-ink: #171716; /* 12,93:1 — srgb 0.09 0.0894 0.0841 */
+  --regolo-muted: #6d5c5c; /*  4,54:1 — il rosa muto portato in soglia su carta */
+  --regolo-muted-invert: #ab9c9c; /*  5,22:1 sulla banda scura, valore esatto */
+  --regolo-line: rgba(23, 23, 22, 0.22);
+  --regolo-linea-forte: #6d5c5c;
+  --regolo-ph: #b8b7b0; /* srgb 0.72 0.7173 0.6925, misurato */
+  --regolo-ph-ink: #3f3f3b;
+  --regolo-bordo-campo: #6d5c5c;
+  --regolo-errore: #8e1b10; /*  6,72:1 sulla carta */
 
-  /* Il numerone di sezione: 1,48:1, quindi **decorazione e basta**, sempre
-     `aria-hidden`. È il gesto misurato di Storey — un `3` grigio su grigio —
-     e vale solo finché non porta informazione che non stia anche altrove. */
-  --regolo-tono: #d4d4d4;
+  /* Il granata: la pastiglia del menu, le etichette delle discipline, una
+     banda intera. 7,32:1 su carta e 10,15:1 col bianco sopra. Valore esatto. */
+  --regolo-granata: #593939;
+  /* La banda scura dei servizi. 9,92:1 con la carta sopra. Valore esatto. */
+  --regolo-banda: #2e2d2b;
+  --regolo-mid: #b8b7b0;
 
-  --regolo-timbro: #123c7a; /* 10,75:1 */
-  --regolo-timbro-soft: #e7ecf6;
-  --regolo-timbro-chiaro: #93b7de;
+  --regolo-timbro: #123c7a; /*  8,49:1 sulla carta */
+  --regolo-timbro-soft: #e2e6f1;
+  --regolo-timbro-chiaro: #a9c4e8;
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  /* Il masthead allargato: Anybody istanziato a `wdth 150 / wght 900`, statico,
-     11.620 byte — **7,8 KB in meno** del file variabile di Anybody che è uscito
-     con l'opzione B. Il perché della famiglia sta in `scripts/genera-font.sh`:
-     è l'unica del repo la cui soglia d'inchiostro in maiuscolo (0,876) lascia
-     riprodurre davvero l'interlinea 1,0 misurata su Storey. */
-  --regolo-font-display: var(--font-anybody-wide), 'Arial Black', 'Helvetica Neue', sans-serif;
-  --regolo-font-body: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --regolo-font-display: var(--font-general-sans), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-body: var(--font-general-sans), 'Helvetica Neue', Arial, sans-serif;
   --regolo-font-mono: var(--font-mono), ui-monospace, Menlo, monospace;
-  --regolo-font-mano: var(--font-mano), 'Bradley Hand', cursive;
-  --regolo-display-weight: 900;
-  --regolo-display-tracking: -0.03em; /* −3 %, misurato */
+  --regolo-display-weight: 500; /* misurato: 212 nodi su 500, è il peso di casa */
+  --regolo-display-tracking: -0.05em; /* −7,2 px su 144, misurato */
   --regolo-display-wdth: 100;
 
-  /* La scala misurata: 115,2 · 100,8 · 31,7 · 23 · 15,8 · 14,4 · 11,5.
-     E **l'interlinea è 1,0 esatta** su tutti e tre i corpi display. */
-  --regolo-text-h1: clamp(3.5rem, 8vw, 7.2rem); /* 56 · 115,2 */
-  /* Il masthead è Anybody Wide **tutto maiuscolo**: soglia 0,876, e l'1,0 di
-     Storey ci sta dentro con margine. È l'unico posto del progetto dove
-     l'interlinea 1,0 misurata sulla reference è riproducibile davvero. */
-  --regolo-lh-h1: 1;
-  --regolo-text-h2: clamp(2.25rem, 4.4vw, 6.3rem); /* 36 · 100,8 */
-  /* I titoli sono Inter, testo misto: soglia **1,158**. Erano a 1,0 — 63,4 px
-     con interlinea 63,4 — ed è il difetto che il committente ha visto: su tre
-     titoli su cinque il testo va a capo, e «È» sotto una «g» si tocca. */
-  --regolo-lh-h2: 1.16;
-  --regolo-text-h3: clamp(1.5rem, 2.2vw, 1.98rem); /* 24 · 31,7 */
-  --regolo-lh-h3: 1;
+  /* La scala misurata: 216 · 129,6 · 115,2 · 57,6 · 43,2 · 31 · 26,8 · 19,4 ·
+     17,4 · 16 · 14,7 · 13,7 · 12. Il display della hero è 57,6; i 115-216
+     stanno nei numeri e nei titoli di banda. */
+  --regolo-text-h1: clamp(2rem, 4vw, 3.6rem); /* 57,6 px a 1440 */
+  --regolo-lh-h1: 1; /* 115,2 / 115,2 = 1,0 esatta, misurata */
+  --regolo-text-h2: clamp(1.5rem, 2.15vw, 1.9375rem); /* 31 px */
+  --regolo-lh-h2: 1.2; /* 37,2 / 31 = 1,2, misurata */
+  --regolo-text-h3: 1.0875rem; /* 17,4 px */
+  --regolo-lh-h3: 1.3;
 
-  /* **Nessun contenitore**: il contenuto sta al 100 % e si allinea al bordo.
-     Gutter 20 px, che è il valore misurato e il più stretto delle nove
-     reference. */
-  --regolo-wrap: 100%;
-  --regolo-margine: 20px;
-  --regolo-gutter: 20px;
+  /* **Nessun contenitore**: la reference non ha un `max-width`, le bande vanno
+     da bordo a bordo e sono i margini a tenere il contenuto. */
+  --regolo-wrap: none;
+  --regolo-margine: clamp(1rem, 1.4vw, 1.25rem); /* 20 px a 1440, misurato */
+  --regolo-gutter: 1.25rem;
   --regolo-colonne: 12;
-  --regolo-radius: 0px; /* zero occorrenze in tutta la pagina della reference */
-  --regolo-misura: 30rem;
+  --regolo-radius: 3px; /* misurato: 42 occorrenze */
+  --regolo-misura: 34rem;
   --regolo-appeso: 12px;
-  --regolo-banda-y: clamp(3rem, 6vw, 5.5rem);
-  --regolo-silenzio: clamp(6rem, 13.9vw, 12.5rem);
-  --regolo-attenua: 0.6;
+  --regolo-banda-y: clamp(3.5rem, 7vw, 6.5rem);
+  --regolo-silenzio: clamp(5rem, 11vw, 10rem);
+  --regolo-attenua: 0.55;
 
   --regolo-ph-pattern: none;
   --regolo-ph-size: auto;
   --regolo-ph-border: none;
-  /* La mono con spaziatura **negativa**, −10 %: è il valore misurato, ed è
-     l'opposto del `+0,14em` che è il default generato. */
   --regolo-font-eyebrow: var(--regolo-font-mono);
-  --regolo-eyebrow-tracking: -0.1em;
-  --regolo-eyebrow-transform: none;
+  --regolo-eyebrow-tracking: 0.1em;
+  --regolo-eyebrow-transform: uppercase;
 
-  --regolo-btn-bg: #ffffff;
-  --regolo-btn-fg: #000000;
-  --regolo-btn-border: #ffffff;
-  --regolo-btn-bg-hover: #ececec;
+  /* Il bottone è **contornato**, non pieno: misurato, 1 px di bordo e 3 px di
+     raggio, il testo in maiuscolo con un `+` all'estremo destro. */
+  --regolo-btn-bg: transparent;
+  --regolo-btn-fg: #171716;
+  --regolo-btn-border: #171716;
+  --regolo-btn-bg-hover: rgba(23, 23, 22, 0.06);
 
   --regolo-header-h: 64px;
-  --regolo-logo-size: 1.5rem;
-  --regolo-logo-weight: 500;
-  --regolo-logo-tracking: -0.02em;
+  --regolo-logo-size: 1.375rem;
+  --regolo-logo-weight: 600;
+  --regolo-logo-tracking: -0.01em;
   --regolo-logo-family: var(--regolo-font-display);
   --regolo-logo-direction: row;
-  --regolo-focus: var(--regolo-ink);
+  --regolo-focus: #171716;
 
-  /* La banda nera con il vuoto disuguale: è il blocco firmato di Storey. */
-  --regolo-brief-bg: #000000;
-  --regolo-brief-fg: #ffffff;
-  --regolo-brief-occhiello: #a8a8a8;
-  --regolo-brief-lead: #a8a8a8;
+  --regolo-brief-bg: var(--regolo-banda);
+  --regolo-brief-fg: var(--regolo-paper);
+  --regolo-brief-occhiello: var(--regolo-muted-invert);
+  --regolo-brief-lead: var(--regolo-muted-invert);
   --regolo-brief-bordo-sezione: none;
-  --regolo-brief-card: #ffffff;
-  --regolo-brief-controllo-bg: #ffffff;
-  --regolo-brief-controllo-bordo: #767676;
-  --regolo-brief-scelta-bg: #ffffff;
-  --regolo-brief-scelta-bordo: #d4d4d4;
-  --regolo-brief-errore: var(--regolo-errore);
-  --regolo-brief-fuoco: #ffffff;
+  --regolo-brief-card: transparent;
+  --regolo-brief-controllo-bg: transparent;
+  --regolo-brief-controllo-bordo: var(--regolo-muted-invert);
+  --regolo-brief-scelta-bg: transparent;
+  --regolo-brief-scelta-bordo: rgba(171, 156, 156, 0.5);
+  --regolo-brief-errore: #f08c7a;
+  --regolo-brief-fuoco: var(--regolo-paper);
 
   --regolo-quota-riga: block;
   --regolo-quota-colore: var(--regolo-muted);
   --regolo-asse: none;
   --regolo-asse-frazione: 0;
-  --regolo-sezione-alt: var(--regolo-paper);
+  --regolo-sezione-alt: var(--regolo-surface);
   --regolo-sezione-alt-filo: none;
 
-  --regolo-pannello-bg: transparent;
+  --regolo-pannello-bg: var(--regolo-surface);
   --regolo-pannello-fg: var(--regolo-ink);
   --regolo-pannello-chiave: var(--regolo-muted);
   --regolo-pannello-voce: var(--regolo-ink);
-  --regolo-scuro-bg: #000000;
-  --regolo-scuro-fg: #ffffff;
-  --regolo-scuro-muted: #a8a8a8;
-  --regolo-scuro-linea: #4a4a4a;
+  --regolo-scuro-bg: var(--regolo-banda);
+  --regolo-scuro-fg: var(--regolo-paper);
+  --regolo-scuro-muted: var(--regolo-muted-invert);
+  --regolo-scuro-linea: #4a4845;
 
-  --regolo-esploso-faccia-alta: #ededed;
-  --regolo-esploso-faccia-sx: #c4c4c4;
-  --regolo-esploso-faccia-dx: #8f8f8f;
-  --regolo-esploso-contorno: #000000;
-  --regolo-esploso-fondazioni: #d8d8d8;
-  --regolo-esploso-struttura: #c4c4c4;
-  --regolo-esploso-involucro: #a8a8a8;
-  --regolo-esploso-impianti: #8f8f8f;
-  --regolo-esploso-finiture: #ededed;
-  --regolo-esploso-apertura: #ffffff;
-  --regolo-esploso-calore: #f2f2f2;
-  --regolo-esploso-acqua: #f2f2f2;
-  --regolo-esploso-aria: #f2f2f2;
+  --regolo-esploso-faccia-alta: #b8b7b0;
+  --regolo-esploso-faccia-sx: #9c9b94;
+  --regolo-esploso-faccia-dx: #7d7c76;
+  --regolo-esploso-contorno: #171716;
+  --regolo-esploso-fondazioni: #b8b7b0;
+  --regolo-esploso-struttura: #9c9b94;
+  --regolo-esploso-involucro: #7d7c76;
+  --regolo-esploso-impianti: #5f5e59;
+  --regolo-esploso-finiture: #b8b7b0;
+  --regolo-esploso-apertura: #dbdbd8;
+  --regolo-esploso-calore: #593939;
+  --regolo-esploso-acqua: #6d5c5c;
+  --regolo-esploso-aria: #9c9b94;
 
   --regolo-mappa-linea: var(--regolo-ink);
   --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-ink);
+  --regolo-mappa-sede: var(--regolo-granata);
 
-  --regolo-footer-bg: #ffffff;
-  --regolo-footer-fg: #000000;
-  --regolo-footer-muted: #5e5e5e;
-  --regolo-footer-filo: 1px solid var(--regolo-line);
+  --regolo-footer-bg: var(--regolo-banda);
+  --regolo-footer-fg: var(--regolo-paper); /*  9,92:1 */
+  --regolo-footer-muted: var(--regolo-muted-invert); /*  5,22:1 */
+  --regolo-footer-filo: 1px solid var(--regolo-scuro-linea);
 }
 
 @theme inline {

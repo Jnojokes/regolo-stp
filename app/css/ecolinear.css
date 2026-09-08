@@ -1,0 +1,1218 @@
+/* ============================================================================
+   OPZIONE B «ecoLINEAR» — https://ecolinearstudio.com/
+   ----------------------------------------------------------------------------
+   Il committente: *«l'opzione 2 la voglio identica a questo sito»*. Tutti i
+   valori di questo foglio sono **letti dal sito vero** con Playwright, non
+   descritti: le catture stanno in `kit/reference/ecolinear/` e la tabella in
+   `kit/reference/SCHEDA.md`.
+
+   Quello che quella pagina è, in una frase: **un foglio da disegno tecnico.**
+   Fondo grigio carta, linee di costruzione tratteggiate che l'attraversano da
+   bordo a bordo, disegni a filo negli angoli, e il testo in **terracotta**
+   invece che in nero.
+
+   ## Le cinque misure che governano tutto
+
+   - **una famiglia sola**: Montserrat su 60 nodi di testo su 60;
+   - la scala: **158,4** (il numerone di fase, al 12 % di opacità) · 46,1 (i
+     titoli) · 40 · 34,6 · 20 · 18 (il corpo) · 16 · 14 · 12 · 10;
+   - le interlinee: **1,12** sul titolo (51,61 / 46,1) e **1,83** sul corpo
+     (33 / 18). Il corpo respira molto più che in A, dove sta a 1,5;
+   - la tracciatura: **−0,02 em** sul titolo (−0,9216 px su 46,1) e **+0,05 em**
+     sulle etichette (+0,9 px su 18). È l'unico posto del progetto dove una
+     tracciatura positiva è giusta, e lo è perché è misurata;
+   - raggio **2 px** (20 occorrenze) e **le ombre ci sono**: `0 30px 60px -35px
+     rgba(0,0,0,.35)` più un alone d'ambra `0 0 12px rgba(217,142,54,.55)`.
+     Sono le prime ombre del progetto, e ci sono perché quella pagina le ha.
+
+   ## Le tre correzioni di contrasto, dichiarate
+
+   «Identico» non scavalca l'AA. Il suo terracotta `#9D7460` sta a **3,49:1**
+   sulla carta (passa solo ≥ 24 px) e la sua ambra a **2,26:1**. La correzione
+   tiene **la tinta e la saturazione** e muove solo la luminosità: il terracotta
+   resta esatto sui titoli, il corpo passa a `#876352` (4,52:1), l'ambra resta
+   esatta **come superficie** e diventa `#965E1C` (4,54:1) dove deve essere
+   testo. I numeri stanno nel blocco dei token in `app/globals.css`.
+   ========================================================================== */
+
+@layer components {
+  /* La barra della proposta è impalcatura di vendita e non si veste da tema. */
+  [data-theme='b'] .barra-proposta > .wrap {
+    font-family: var(--regolo-font-body);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ==========================================================================
+     I SEGNI: i disegni a filo e la griglia di costruzione
+     ======================================================================== */
+
+  /* Tutti i segni sono **decorazione dichiarata**: stanno a 1,9:1 di proposito
+     e portano `data-decorativo`, che è il contratto verso il collaudo del
+     contrasto (decisione n. 38). */
+  [data-theme='b'] .segno {
+    position: absolute;
+    color: var(--regolo-line);
+    pointer-events: none;
+  }
+  [data-theme='b'] .segno-porta {
+    top: 0;
+    left: 0;
+    width: clamp(9rem, 17vw, 15rem);
+  }
+  [data-theme='b'] .segno-pilastro {
+    top: 46%;
+    left: calc(var(--regolo-margine) * 0.4);
+    width: clamp(4rem, 8vw, 7.5rem);
+  }
+  [data-theme='b'] .segno-sezione {
+    right: 0;
+    bottom: 8%;
+    width: clamp(11rem, 22vw, 20rem);
+  }
+  [data-theme='b'] .griglia-costruzione {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--regolo-line);
+    pointer-events: none;
+  }
+
+  /* ==========================================================================
+     LA COPERTINA — il foglio
+     ======================================================================== */
+
+  .foglio {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    overflow: clip;
+    /* Nessun `padding-block`: la composizione la tiene la griglia di
+       costruzione, non un passo verticale. È la prima differenza strutturale
+       da A, che ha tre passi dichiarati. */
+    padding-inline: var(--regolo-margine);
+  }
+  .foglio-centro {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  /* Il marchio: il corpo è una **funzione della finestra e delle dieci
+     lettere**, non un gradino di scala, così tocca i due margini a qualunque
+     larghezza. `REGOLO STP` in Montserrat 300 avanza **6,567 em** (letto da
+     `hmtx` con fontTools sull'istanza di default, che è appunto 300), meno
+     **0,20 em** di tracciatura (10 caratteri × −0,02) = **6,37**. Il divisore è
+     quello, non un moltiplicatore scelto a occhio: è lo stesso metodo con cui
+     A calcola la quota dai ruoli. */
+  .foglio-marchio {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    font-family: var(--regolo-font-display);
+    /* 300: è il peso del logotipo della reference, il più leggero dei cinque.
+       Il `font-weight` esplicito non è pignoleria — il default del file
+       istanziato **è** 300 e senza dichiararlo un altro elemento eredita
+       filiforme (vedi `lib/fonts/tema-b.ts`). */
+    font-weight: 300;
+    font-size: calc((100vw - 2 * var(--regolo-margine)) / 6.37);
+    line-height: 1.12;
+    letter-spacing: var(--regolo-display-tracking);
+    color: var(--regolo-ink-display); /* la tinta esatta: 158 px, 3,49:1 basta */
+    white-space: nowrap;
+  }
+  /* La lettera con il blocco d'ambra: nella reference il blocco copre la barra
+     della `E`. Qui sta sulla `O`, che è l'unica lettera a contorno chiuso di
+     `REGOLO` — su una lettera aperta un blocco pieno legge come un errore di
+     stampa e non come un intervento. */
+  .foglio-lettera {
+    position: relative;
+    display: inline-block;
+  }
+  .foglio-blocco {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 26%;
+    height: 0.14em;
+    background-color: var(--regolo-ambra);
+  }
+  .foglio-filetto {
+    width: min(28rem, 60%);
+    height: 1px;
+    margin: 0;
+    background-color: #3a2a20;
+  }
+  .foglio-sotto {
+    margin: 0;
+    max-width: 38rem;
+    text-align: center;
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: 1.125rem; /* 18 px, misurato */
+    line-height: 1.83; /* 33 / 18, misurata */
+    color: var(--regolo-muted); /* 4,52:1 */
+  }
+
+  /* ==========================================================================
+     I SEGNI DI REGISTRO — al posto dell'occhiello
+     --------------------------------------------------------------------------
+     Il gesto che `SCHEDA.md` dice di prendere da qui: quattro squadrette
+     d'angolo in ambra attorno alla parola, invece di un occhiello in
+     maiuscoletto spaziato. Le squadrette sono `::before`/`::after` con due
+     bordi ciascuna: quattro angoli con due pseudo-elementi.
+     ======================================================================== */
+
+  .registro-etichetta {
+    position: relative;
+    display: inline-block;
+    margin: 0 0 clamp(1.25rem, 2.4vw, 2rem);
+    padding: 0.5rem 0.875rem;
+    font-family: var(--regolo-font-body);
+    font-weight: 500;
+    font-size: 1.125rem; /* 18 px: nella reference l'etichetta è a corpo pieno */
+    line-height: 1.4;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--regolo-muted);
+  }
+  .registro-etichetta::before,
+  .registro-etichetta::after {
+    content: '';
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1px solid var(--regolo-ambra);
+    pointer-events: none;
+  }
+  .registro-etichetta::before {
+    top: 0;
+    left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .registro-etichetta::after {
+    right: 0;
+    bottom: 0;
+    border-top: 0;
+    border-left: 0;
+  }
+  /* Gli altri due angoli: uno `<span>` interno non serve, bastano due gradienti
+     conici… no. Due angoli sono già il gesto, e la reference ne mostra quattro
+     solo attorno ai pannelli grandi. Sull'etichetta ne ha due, misurato su
+     `1440-meta-88.jpeg`: alto-sinistra e basso-destra. */
+
+  .registro-azione {
+    position: relative;
+    display: inline-block;
+    margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+    padding: 0.625rem;
+  }
+  .registro-azione::before,
+  .registro-azione::after {
+    content: '';
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1px solid var(--regolo-ambra);
+    pointer-events: none;
+  }
+  .registro-azione::before {
+    top: 0;
+    left: 0;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .registro-azione::after {
+    right: 0;
+    bottom: 0;
+    border-top: 0;
+    border-left: 0;
+  }
+
+  /* ==========================================================================
+     IL TITOLO DI BLOCCO — 46,1 px, interlinea 1,12, tracciatura −0,02 em
+     ======================================================================== */
+
+  .ecolinear-titolo {
+    margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 34ch;
+    font-family: var(--regolo-font-display);
+    font-weight: 600; /* misurato: 19 nodi su 60, è il peso dei titoli */
+    font-size: var(--regolo-text-h2);
+    line-height: var(--regolo-lh-h2);
+    letter-spacing: var(--regolo-display-tracking);
+    color: var(--regolo-ink-display); /* la tinta esatta: ≥ 28 px a ogni larghezza */
+  }
+
+  /* Il guscio dei blocchi: **nessun passo dichiarato**, solo la banda della
+     reference. La differenza da A è che A ha tre passi (48 · 96 · 200) e qui
+     c'è un valore solo, perché la composizione la tiene la griglia. */
+  [data-theme='b'] .galleria,
+  [data-theme='b'] .fasi-pinnate,
+  [data-theme='b'] .numeri-quota,
+  [data-theme='b'] .invito,
+  [data-theme='b'] .opere,
+  [data-theme='b'] .ecolinear-persone {
+    padding-block: var(--regolo-banda-y);
+    padding-inline: var(--regolo-margine);
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+  }
+
+  /* ==========================================================================
+     LA GALLERIA — quattro colonne sfalsate, rapporti misti
+     ======================================================================== */
+
+  .galleria-colonne {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+    align-items: start;
+  }
+  /* Lo scarto per colonna: quattro valori dichiarati, non una libreria di
+     masonry. Misurato sulla reference — le colonne non partono alla stessa
+     quota, ed è quello che la fa leggere come una parete di tavole invece che
+     come una griglia di riquadri. */
+  .galleria-colonna[data-colonna='0'] {
+    margin-top: 0;
+  }
+  .galleria-colonna[data-colonna='1'] {
+    margin-top: clamp(2rem, 5vw, 4.5rem);
+  }
+  .galleria-colonna[data-colonna='2'] {
+    margin-top: clamp(1rem, 2.5vw, 2rem);
+  }
+  .galleria-colonna[data-colonna='3'] {
+    margin-top: clamp(3rem, 7vw, 6.5rem);
+  }
+  .galleria-tavola {
+    margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .galleria-media {
+    border-radius: var(--regolo-radius);
+    /* Le ombre della reference, misurate. Sono le prime del progetto e ci sono
+       perché quella pagina le ha: `CLAUDE.md` § Cosa non deve esserci vieta le
+       «ombre morbide» come **default**, e qui non è un default. */
+    box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.35);
+  }
+  .galleria-media img,
+  .galleria-media video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--regolo-radius);
+  }
+  .galleria-didascalia {
+    margin-top: 0.625rem;
+    font-family: var(--regolo-font-body);
+    font-weight: 300;
+    font-size: 0.875rem; /* 14 px, misurato */
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    color: var(--regolo-muted);
+  }
+
+  /* ==========================================================================
+     LE FASI PINNATE — il blocco per cui questa proposta esiste
+     --------------------------------------------------------------------------
+     A sinistra la tavola resta ferma, a destra le fasi passano, all'estremo
+     destro il righello. È `position: sticky`, cioè **una posizione e non
+     un'animazione**: funziona senza JavaScript e non c'è niente da spegnere
+     con `prefers-reduced-motion`.
+     ======================================================================== */
+
+  .fasi-pinnate {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 3rem;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .fasi-tavola {
+    position: sticky;
+    top: clamp(4rem, 12vh, 8rem);
+  }
+  /* Il pannello: quadrato, `#F3F5F1`, con **quattro** squadrette d'angolo in
+     ambra. Qui sono quattro e non due, perché sulla reference il pannello
+     grande le ha tutte e quattro (`1440-meta-52.jpeg`). */
+  .fasi-pannello {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background-color: var(--regolo-surface);
+    border-radius: var(--regolo-radius);
+  }
+  .fasi-pannello::before,
+  .fasi-pannello::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    pointer-events: none;
+  }
+  /* I quattro angoli con due pseudo-elementi: uno disegna alto-sinistra e
+     basso-destra, l'altro alto-destra e basso-sinistra, ognuno con un
+     `clip-path` che tiene solo i due angoli. Un `border-image` con un
+     `conic-gradient` farebbe la stessa cosa in meno righe e sarebbe
+     illeggibile fra sei mesi. */
+  .fasi-pannello::before {
+    border: 1px solid var(--regolo-ambra);
+    clip-path: polygon(
+      0 0,
+      18% 0,
+      18% 1px,
+      1px 1px,
+      1px 18%,
+      0 18%,
+      0 0,
+      82% 100%,
+      100% 100%,
+      100% 82%
+    );
+  }
+  .fasi-pannello::after {
+    border: 1px solid var(--regolo-ambra);
+    clip-path: polygon(82% 0, 100% 0, 100% 18%, 0 82%, 0 100%, 18% 100%);
+  }
+  .fasi-disegno {
+    position: absolute;
+    inset: 8%;
+    opacity: 0;
+  }
+  /* Fuori dal supporto di `animation-timeline` resta acceso **il primo**, che è
+     uno stato finito e coerente: la tavola del primo incontro accanto al
+     metodo. È lo stesso principio degli `initial-value` di casa. */
+  .fasi-disegno[data-fase='0'] {
+    opacity: 1;
+  }
+  .fasi-disegno .segno {
+    position: static;
+    width: 100%;
+    height: 100%;
+    /* Il disegno della fase è **in ambra**, non nel filo grigio: nella
+       reference è l'unico segno colorato della pagina, e lo è perché è il solo
+       che porta un contenuto (a che punto del cantiere si è). */
+    color: var(--regolo-ambra);
+  }
+  /* La didascalia è dentro il disegno, quindi si misura su di lui: il disegno
+     è a `inset: 8%` dentro il pannello, e la didascalia torna sul filo interno
+     del pannello con un margine negativo di pari misura. */
+  .fasi-fig {
+    position: absolute;
+    left: 0;
+    bottom: -1.75rem;
+    margin: 0;
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+    color: var(--regolo-muted);
+  }
+
+  .fasi-corpo {
+    display: grid;
+  }
+  .fase {
+    /* Ogni fase occupa **una schermata**: è quello che rende il pinnaggio
+       leggibile — la tavola resta ferma per il tempo di leggere una fase. */
+    min-height: 82svh;
+    display: grid;
+    align-content: center;
+    position: relative;
+  }
+  .fase-numerone {
+    display: block;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(5rem, 11vw, 9.9rem); /* 158,4 px a 1440, misurato */
+    line-height: 1; /* 158,4 / 158,4 = 1,0, misurata */
+    letter-spacing: -0.02em; /* −3,168 px su 158,4, misurata */
+    color: var(--regolo-tono); /* 12 % di opacità, misurata: decorazione */
+    margin-bottom: -0.18em;
+  }
+  .fase-titolo {
+    margin: 0 0 1rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 600;
+    font-size: var(--regolo-text-h2); /* 46,1 px */
+    line-height: var(--regolo-lh-h2); /* 1,12 */
+    letter-spacing: var(--regolo-display-tracking);
+    color: var(--regolo-ink-display); /* ≥ 28 px */
+  }
+  .fase-testo {
+    margin: 0;
+    max-width: var(--regolo-misura); /* 609 px, misurata */
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.83; /* 33 / 18, misurata */
+    color: var(--regolo-muted);
+  }
+
+  /* Il righello: l'asta e una tacca per fase. Porta un numero che il repo
+     conta, quindi è **informazione** e ha un nome accessibile. */
+  .fasi-righello {
+    position: sticky;
+    top: clamp(4rem, 12vh, 8rem);
+    height: 60svh;
+    display: grid;
+    justify-items: end;
+  }
+  .fasi-righello-asta {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    background-color: var(--regolo-line);
+  }
+  .fasi-tacca {
+    position: absolute;
+    right: 0;
+    width: 0.75rem;
+    height: 1px;
+    background-color: var(--regolo-ambra);
+    top: calc(var(--i) * 24%);
+  }
+
+  /* ==========================================================================
+     I NUMERI COME QUOTE VERE
+     --------------------------------------------------------------------------
+     La lezione di `SCHEDA.md`: *«una quota in pagina dichiara una quantità che
+     esiste o non si disegna»*. Nella reference la quota porta `14.34 M — ESC
+     1:50`. Qui porta i quattro numeri dello studio, che sono valori veri in
+     attesa: quindi non è ornamento, ed è la ragione per cui la linea si disegna.
+     ======================================================================== */
+
+  .quote-numeri {
+    margin: 0;
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+  .quota-numero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+  .quota-numero dt {
+    font-family: var(--regolo-font-body);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--regolo-muted);
+  }
+  .quota-numero dd {
+    margin: 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 600;
+    font-size: clamp(2rem, 4.4vw, 3.9rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--regolo-ink-display); /* ≥ 32 px */
+  }
+  /* La linea di quota con i due terminatori: due `::before`/`::after` sui capi.
+     Non è il terminatore obliquo a 45° di A — quello è la firma di A, e le due
+     proposte non ne condividono nessuna. Qui i capi sono **verticali**, come
+     nel disegno di ecoLINEAR. */
+  .quota-linea {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--regolo-line);
+  }
+  .quota-linea::before,
+  .quota-linea::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    width: 1px;
+    height: 9px;
+    background-color: var(--regolo-ambra);
+  }
+  .quota-linea::before {
+    left: 0;
+  }
+  .quota-linea::after {
+    right: 0;
+  }
+
+  /* ==========================================================================
+     L'INVITO — la CTA prima della galleria
+     ======================================================================== */
+
+  .invito-testo {
+    margin: 0;
+    max-width: var(--regolo-misura);
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.83;
+    color: var(--regolo-muted);
+  }
+  /* Il nome dello studio in ambra e in grassetto dentro il testo: è il gesto
+     misurato (`At **ecoLINEAR Studio**, we guide…`). Qui l'ambra è **testo**,
+     quindi non è `#D98E36` (2,26:1) ma `--regolo-ambra-testo` (4,54:1), stessa
+     tinta e stessa saturazione. */
+  .invito-testo strong {
+    font-weight: 700; /* misurato: il peso 700 esiste in pagina solo qui */
+    color: var(--regolo-ambra-testo);
+  }
+  .invito-pastiglia {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
+    background-color: var(--regolo-btn-bg);
+    color: var(--regolo-btn-fg); /* 5,14:1 sull'ambra piena */
+    border-radius: var(--regolo-radius);
+    font-family: var(--regolo-font-body);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    /* L'alone d'ambra, misurato sulla reference. */
+    box-shadow: 0 0 12px rgba(217, 142, 54, 0.55);
+  }
+  .invito-pastiglia:hover {
+    background-color: var(--regolo-btn-bg-hover);
+  }
+  /* La freccia nel cerchietto: il 50 % di raggio è l'unico del tema oltre ai
+     2 px, e nella reference ci sono 3 occorrenze. */
+  .invito-freccia {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: var(--regolo-btn-fg);
+    color: var(--regolo-btn-bg);
+    font-size: 0.75rem;
+  }
+
+  /* ==========================================================================
+     LE OPERE E LE PERSONE
+     ======================================================================== */
+
+  .opere-tre,
+  .ecolinear-firme {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .opere-tre {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+  .ecolinear-firme {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .opera-media,
+  .ecolinear-ritratto {
+    border-radius: var(--regolo-radius);
+    box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.35);
+  }
+  .opera-media img,
+  .opera-media video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--regolo-radius);
+  }
+  .opera-nome {
+    margin: 1rem 0 0.75rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 600;
+    font-size: 1.25rem; /* 20 px, misurato */
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--regolo-ink);
+  }
+  .opera-dati {
+    margin: 0;
+    display: grid;
+    gap: 0.375rem;
+  }
+  .opera-dati > div {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    font-family: var(--regolo-font-body);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .opera-dati dt {
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--regolo-muted);
+  }
+  .opera-dati dd {
+    margin: 0;
+    font-weight: 400;
+    color: var(--regolo-muted);
+  }
+  .ecolinear-nome {
+    margin: 0.75rem 0 0.125rem;
+    font-family: var(--regolo-font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--regolo-ink);
+  }
+  .ecolinear-ruolo {
+    margin: 0;
+    font-family: var(--regolo-font-body);
+    font-weight: 300;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    color: var(--regolo-muted);
+  }
+
+  /* Il segnaposto di testo non si veste da segnaposto: il committente ha
+     chiesto il lorem ipsum perché una demo di vendita non mostra i buchi
+     (`DECISIONI.md` n. 41). La dichiarazione la fa la barra della proposta, e
+     `data-chiede` tiene la lista della spesa. */
+  [data-theme='b'] .segnaposto {
+    color: inherit;
+  }
+
+  /* ==========================================================================
+     A 390: le quattro colonne diventano due, e gli scarti si dimezzano
+     --------------------------------------------------------------------------
+     Nella reference la griglia progetti su mobile è a **due colonne sfalsate**
+     — misurato, non dedotto — quindi non collassa a una colonna: lo sfalsamento
+     è il gesto, e a una colonna sparirebbe.
+     ======================================================================== */
+
+  @media (max-width: 55.999rem) {
+    .fasi-pinnate {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    /* La tavola non è più pinnata: su un telefono un pannello incollato mangia
+       mezza schermata per tutta la lettura del metodo. Resta in cima al blocco,
+       una volta. */
+    .fasi-tavola {
+      position: static;
+      max-width: 22rem;
+    }
+    .fasi-righello {
+      display: none;
+    }
+    .fase {
+      min-height: 0;
+      padding-block: clamp(2rem, 8vw, 3.5rem);
+    }
+    .galleria-colonne {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .galleria-colonna[data-colonna='1'],
+    .galleria-colonna[data-colonna='3'] {
+      margin-top: clamp(1.5rem, 6vw, 2.5rem);
+    }
+    .galleria-colonna[data-colonna='2'] {
+      margin-top: 0;
+    }
+    .foglio-marchio {
+      /* Su due righe: la più lunga è `REGOLO`, **4,423 em** misurati meno
+         0,12 di tracciatura (6 × −0,02) = **4,31**. */
+      font-size: calc((100vw - 2 * var(--regolo-margine)) / 4.31);
+      display: block;
+      text-align: center;
+      white-space: normal;
+    }
+  }
+}
+
+/* ============================================================================
+   QUALE DISEGNO È ACCESO NEL PANNELLO
+   ----------------------------------------------------------------------------
+   L'unica cosa animata di tutta la proposta, e non è una rivelazione allo
+   scorrimento: è **quale delle cinque tavole è visibile** dentro un pannello
+   che sta fermo. Il movimento non porta il contenuto in pagina — il contenuto
+   c'è già — dice a che punto del metodo si è.
+
+   Le cautele sono le quattro di casa: `@supports`, `prefers-reduced-motion`
+   esplicito (la regola globale mette `animation-duration: 0.01ms !important`,
+   che su una timeline progressiva è **ignorata**), nessun `animation-fill-mode`,
+   e lo stato di riposo è **finito** — fuori dal supporto resta acceso il primo
+   disegno, che è coerente col primo paragrafo.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @layer components {
+      /* Ogni fase accende il proprio disegno mentre attraversa la finestra. La
+         `view-timeline` sta sulla fase e il disegno la legge per nome: sono in
+         due sottoalberi diversi, quindi serve `timeline-scope` sul contenitore
+         che li comprende entrambi. */
+      .fasi-pinnate {
+        timeline-scope: --f0, --f1, --f2, --f3, --f4;
+      }
+      .fase[data-fase='0'] {
+        view-timeline-name: --f0;
+      }
+      .fase[data-fase='1'] {
+        view-timeline-name: --f1;
+      }
+      .fase[data-fase='2'] {
+        view-timeline-name: --f2;
+      }
+      .fase[data-fase='3'] {
+        view-timeline-name: --f3;
+      }
+      .fase[data-fase='4'] {
+        view-timeline-name: --f4;
+      }
+      .fasi-disegno {
+        animation: fase-accesa linear;
+        animation-range: cover 18% cover 82%;
+      }
+      .fasi-disegno[data-fase='0'] {
+        animation-timeline: --f0;
+      }
+      .fasi-disegno[data-fase='1'] {
+        animation-timeline: --f1;
+      }
+      .fasi-disegno[data-fase='2'] {
+        animation-timeline: --f2;
+      }
+      .fasi-disegno[data-fase='3'] {
+        animation-timeline: --f3;
+      }
+      .fasi-disegno[data-fase='4'] {
+        animation-timeline: --f4;
+      }
+    }
+    @keyframes fase-accesa {
+      0%,
+      100% {
+        opacity: 0;
+      }
+      18%,
+      82% {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* ============================================================================
+   LA TESTATA DI B — marchio a sinistra, menu a destra, e la pastiglia che si
+   stacca dal foglio quando la pagina scorre
+   ----------------------------------------------------------------------------
+   `1440-hero.jpeg`: il logotipo in alto a sinistra e `ABOUT · PROJECTS ·
+   CONTACT` in alto a destra, in maiuscolo, **sul foglio nudo** — nessun fondo.
+   `1440-meta-18.jpeg` e `-52.jpeg`: scorrendo, il menu **si stacca** e diventa
+   una pastiglia su fondo `#F3F5F1` con la sua ombra, mentre il logotipo resta
+   sul foglio. È l'unico gesto di chrome della proposta, e serve a una cosa
+   pratica: sopra la galleria a colonne sfalsate un menu senza fondo diventa
+   illeggibile.
+
+   Si fa con `position: sticky` e **l'opacità di uno `::before`** guidata da
+   `animation-timeline: scroll(root)`: niente JavaScript, niente misura scritta
+   a mano dell'altezza di un altro blocco — che è il difetto che questa testata
+   ha già avuto una volta — e si animano solo `opacity` e `transform`
+   (`CLAUDE.md` § Regole, 7). Il fondo dipinto direttamente sarebbe stata
+   un'animazione di `background-color`, cioè la regola violata.
+
+   **La pastiglia è lo stato finito**, dichiarato fuori dall'`@supports`: su
+   Firefox, senza `animation-timeline`, e con `prefers-reduced-motion: reduce`
+   il menu ha il suo fondo dal primo pixel. Il gesto è quello che si perde, non
+   la leggibilità.
+   ========================================================================== */
+
+@layer components {
+  [data-theme='b'] header.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background-color: transparent;
+    border-bottom: 0;
+    color: var(--regolo-muted);
+  }
+  [data-theme='b'] .testata {
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+    padding-inline: var(--regolo-margine);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--regolo-header-h);
+  }
+  [data-theme='b'] .testata-nome {
+    /* Il bersaglio: il marchio è il link alla home, e `sweep.mjs` lo
+       misurava alto 27 px (B) e 33 (C). Passa WCAG 2.5.8, che chiede 24,
+       ma in A lo stesso link arriva a 44 e la differenza non è una scelta
+       di stile: è un bersaglio più piccolo nella stessa posizione. Il
+       padding non sposta il testo, perché la cella della griglia è già
+       più alta. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-family: var(--regolo-font-display);
+    /* Il logotipo della reference è il peso più leggero della famiglia. Il
+       valore è esplicito perché `varLib.instancer` lascia il default a 300 e un
+       elemento senza `font-weight` uscirebbe filiforme per caso, non per
+       scelta (`lib/fonts/tema-b.ts`). */
+    font-weight: 300;
+    font-size: var(--regolo-logo-size);
+    letter-spacing: var(--regolo-logo-tracking);
+    color: var(--regolo-ink); /* 6,06:1 — a 18 px la tinta esatta non passa */
+    text-decoration: none;
+  }
+
+  /* Il menu. Il fondo non sta sull'elemento: sta su uno `::before` dietro, così
+     l'unica cosa che si muove è la sua opacità. */
+  [data-theme='b'] .testata > .site-nav {
+    position: relative;
+    isolation: isolate;
+    justify-self: end;
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+  }
+  [data-theme='b'] .testata > .site-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--regolo-surface); /* `#F3F5F1`, misurato */
+    border-radius: var(--regolo-radius); /* 2 px, misurato */
+    box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.35); /* l'ombra misurata */
+    opacity: 1; /* lo stato finito: la pastiglia c'è */
+  }
+  [data-theme='b'] .site-header .site-nav ul {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem; /* 14 px, misurato */
+  }
+  [data-theme='b'] .site-header .site-nav a {
+    font-family: var(--regolo-font-body);
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--regolo-muted); /* 4,52:1 sul pannello e sulla carta */
+    text-decoration: none;
+  }
+  /* Niente virgole fra le voci: il menu-frase è il gesto di A, e viene da una
+     reference diversa (Kononenko). Qui le voci sono tre parole staccate. */
+  [data-theme='b'] .site-header .site-nav li:not(:last-child)::after {
+    content: none;
+  }
+
+  /* Il menu a scomparsa sotto i 56 rem: la stessa `<details>` nativa di A,
+     rivestita. Senza sottolineatura, perché qui il menu non è una frase. */
+  [data-theme='b'] .menu-mobile > summary {
+    font-family: var(--regolo-font-body);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--regolo-muted);
+    text-decoration: none;
+  }
+  [data-theme='b'] .menu-mobile-pannello {
+    background-color: var(--regolo-surface);
+    border-block: 1px solid var(--regolo-line);
+  }
+
+  @media (max-width: 55.999rem) {
+    [data-theme='b'] .testata > .site-nav {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+}
+
+/* Il gesto. Fuori da `@layer` non serve — la regola vive dentro il layer come
+   le altre — ma serve **dentro** `prefers-reduced-motion: no-preference`: la
+   regola globale di riduzione azzera la *durata*, e una timeline di progresso
+   la durata non la guarda. È la trappola già verificata una volta in questa
+   fase, e vale per ogni scorrimento del progetto. */
+@supports (animation-timeline: scroll(root)) {
+  @media (prefers-reduced-motion: no-preference) {
+    @layer components {
+      [data-theme='b'] .testata > .site-nav::before {
+        animation: pastiglia-testata linear both;
+        animation-timeline: scroll(root);
+        /* `scroll(root)` non dipende dalla geometria di nessun elemento: la
+           barra della proposta in flusso, che a 390 va a capo, sposterebbe
+           l'origine di un `view()`. Difetto già pagato. */
+        animation-range: 0 100svh;
+      }
+    }
+  }
+}
+
+@keyframes pastiglia-testata {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   IL BRIEF, IN B — una tavola con la sua fase
+   ----------------------------------------------------------------------------
+   Il committente, indicando lo screenshot del passo 1: *«questo lo voglio
+   diverso su questa opzione rispetto a quella A»*. Era una richiesta esatta:
+   il brief è lo stesso componente su tutte e tre le rotte — stesso markup,
+   stesse parole, stessi cinque passi, che è la condizione perché il cliente
+   giudichi la lingua visiva e non tre form diversi — ma **era vestito da A** su
+   tutte e tre. Tre gesti di A erano finiti qui dentro:
+
+   1. l'occhiello fra **parentesi quadre** (`.eyebrow::before { content: '[' }`);
+   2. la barra di avanzamento con il **terminatore obliquo a 45°**, che è la
+      quota ISO 129-1 di A e nient'altro;
+   3. la scheda come **riquadro neutro** con l'angolo del tema.
+
+   Qui il brief diventa quello che è il resto della pagina: **una tavola**. La
+   scheda è il pannello `#F3F5F1` con le quattro squadrette d'ambra —
+   letteralmente lo stesso pannello del blocco delle fasi —, l'avanzamento è il
+   **righello** con la tacca d'ambra, e il numero del passo compare come il
+   numerone tono su tono che nella reference sta dietro ogni fase.
+
+   Niente cambia nel markup e niente cambia in A: sono tutte regole sotto
+   `[data-theme='b']`, e il componente non sa di essere in B.
+   ========================================================================== */
+
+@layer components {
+  /* Le quadre sono di A: vengono dalla scheda tecnica di AS Associates, e la
+     reference di B non ha né quadre né occhielli. */
+  [data-theme='b'] .eyebrow::before,
+  [data-theme='b'] .eyebrow::after {
+    content: none;
+  }
+
+  /* L'occhiello del brief diventa un'etichetta di registro: due squadrette
+     d'ambra attorno alla parola, come nel blocco dell'invito. */
+  [data-theme='b'] .brief-occhiello {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 0.875rem;
+    margin-left: -0.875rem; /* il testo resta sull'asse, la squadretta sborda */
+    font-family: var(--regolo-font-body);
+    font-weight: 500;
+    font-size: 1.125rem; /* 18 px: nella reference l'etichetta è a corpo pieno */
+    line-height: 1.4;
+    color: var(--regolo-muted);
+  }
+  [data-theme='b'] .brief-occhiello::before,
+  [data-theme='b'] .brief-occhiello::after {
+    content: '';
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1px solid var(--regolo-ambra);
+    pointer-events: none;
+  }
+  [data-theme='b'] .brief-occhiello::before {
+    top: 0;
+    left: 0;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  [data-theme='b'] .brief-occhiello::after {
+    right: 0;
+    bottom: 0;
+    border-top: 0;
+    border-left: 0;
+  }
+
+  /* ---- la scheda è il pannello della tavola ------------------------------ */
+  [data-theme='b'] .brief-scheda {
+    position: relative;
+    border-radius: var(--regolo-radius); /* 2 px */
+  }
+  /* Le quattro squadrette, con la stessa tecnica del pannello delle fasi: due
+     pseudo-elementi e un `clip-path` per ciascuno, uno tiene alto-sinistra e
+     basso-destra, l'altro gli altri due. */
+  [data-theme='b'] .brief-scheda::before,
+  [data-theme='b'] .brief-scheda::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    pointer-events: none;
+    border: 1px solid var(--regolo-ambra);
+  }
+  [data-theme='b'] .brief-scheda::before {
+    clip-path: polygon(
+      0 0,
+      1.25rem 0,
+      1.25rem 1px,
+      1px 1px,
+      1px 1.25rem,
+      0 1.25rem,
+      0 100%,
+      100% 100%,
+      100% calc(100% - 1.25rem),
+      calc(100% - 1px) calc(100% - 1.25rem),
+      calc(100% - 1px) calc(100% - 1px),
+      calc(100% - 1.25rem) calc(100% - 1px),
+      calc(100% - 1.25rem) 100%,
+      0 100%
+    );
+  }
+  [data-theme='b'] .brief-scheda::after {
+    clip-path: polygon(
+      100% 0,
+      calc(100% - 1.25rem) 0,
+      calc(100% - 1.25rem) 1px,
+      calc(100% - 1px) 1px,
+      calc(100% - 1px) 1.25rem,
+      100% 1.25rem,
+      100% 100%,
+      0 100%,
+      0 calc(100% - 1.25rem),
+      1px calc(100% - 1.25rem),
+      1px calc(100% - 1px),
+      1.25rem calc(100% - 1px),
+      1.25rem 100%,
+      100% 100%
+    );
+  }
+
+  /* ---- l'avanzamento è il righello -------------------------------------- */
+  /* Il contatore conta le tacche **fatte**, non i passi: i `<fieldset>` chiusi
+     hanno l'attributo `hidden`, cioè `display: none`, e un elemento che non si
+     disegna non incrementa un contatore CSS — il numerone sarebbe rimasto a 1
+     per tutto il form. Le tacche invece sono tutte e cinque in pagina e una
+     sola porta `data-fatto` per ogni passo raggiunto: contarle dà il passo
+     corrente. Il valore si legge in `::after`, che nell'ordine del documento
+     viene **dopo** i figli — in `::before` il contatore sarebbe ancora zero. */
+  [data-theme='b'] .brief-avanzamento {
+    counter-reset: passo 0;
+    /* **Non** `position: relative`: il numerone qui sotto è posizionato e deve
+       misurarsi sulla **scheda**, non su una riga alta 12 px — con il righello
+       come blocco di contenimento un `top` in `em` lo mandava sopra il bordo
+       della scheda, che è il difetto che si vedeva. Il contatore sta comunque
+       qui: lo scope di un contatore CSS non dipende dal posizionamento. */
+    align-items: center;
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  }
+  [data-theme='b'] .brief-tacche li {
+    height: 0.75rem;
+    border-top: 1px solid var(--regolo-line);
+  }
+  /* La tacca è **verticale**, come quelle del righello delle fasi. Il tratto
+     obliquo a 45° resta a A: è la sua quota, e due apparati diversi che si
+     somigliano sono peggio di due apparati diversi. */
+  [data-theme='b'] .brief-tacche li::before {
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 0.75rem;
+    border-left: 0;
+    background-color: var(--regolo-line);
+    transform: none;
+  }
+  [data-theme='b'] .brief-tacche li[data-fatto] {
+    counter-increment: passo;
+    border-top-color: var(--regolo-ambra);
+    border-top-width: 1px;
+  }
+  [data-theme='b'] .brief-tacche li[data-fatto]::before {
+    background-color: var(--regolo-ambra);
+    border-left-color: transparent;
+  }
+  [data-theme='b'] .brief-avanzamento-conta {
+    font-family: var(--regolo-font-body);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--regolo-muted); /* 4,86:1 sul pannello */
+  }
+  /* Il numerone tono su tono: lo stesso gesto misurato del blocco delle fasi —
+     158,4 px al 12 % di opacità. È **decorazione** e dice una cosa che in
+     pagina è già scritta a parole («passo 1 di 5», che resta il canale vero e
+     resta leggibile): un `::after` non può portare `data-decorativo`, quindi la
+     dichiarazione sta qui. Il collaudo del contrasto guarda gli elementi e non
+     gli pseudo-elementi, e il suo antenato è già `aria-hidden`. */
+  [data-theme='b'] .brief-avanzamento::after {
+    content: counter(passo);
+    position: absolute;
+    /* La composizione della reference, non un angolo: il numerone è **a
+       sinistra**, a corpo pieno, e il titolo della fase gli passa **sopra**
+       coprendone la parte bassa (`1440-meta-52.jpeg`). Messo in un angolo e
+       rimpicciolito, un `1` di Montserrat è un'asta verticale che sembra un
+       filetto fuori posto — provato e misurato in pagina. */
+    /* Misurato sulla scheda, che è l'antenato posizionato: 28 px sotto il
+       righello, sul filo sinistro del **contenuto** — che non è lo zero della
+       scheda: un elemento assoluto si misura sulla scatola di *padding*, e con
+       `left: 0` il numerone finiva mezzo fuori dalla colonna di testo. Il
+       valore è lo stesso `padding` della scheda. La domanda cade a metà del
+       numerone e gli passa sopra. */
+    left: clamp(1.25rem, 3vw, 2.25rem);
+    top: 1.75rem;
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: clamp(4rem, 9vw, 9.9rem); /* 158,4 px a 1440, misurato */
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--regolo-tono); /* 12 %, misurato */
+    pointer-events: none;
+  }
+
+  /* Perché la domanda ha un `z-index`: il numerone è un elemento posizionato,
+     quindi si dipinge **sopra** il contenuto in flusso. Un livello sulla
+     domanda la riporta davanti, e il numerone torna dove dev'essere — dietro.
+     Solo in questo tema: in A e in C non c'è nessun numerone. */
+  [data-theme='b'] .brief-domanda {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- le risposte sono campi sul foglio -------------------------------- */
+  [data-theme='b'] .brief-opzione {
+    background-color: var(--regolo-paper);
+    border-color: var(--regolo-line);
+    border-radius: var(--regolo-radius);
+    padding: 1rem 0.875rem;
+  }
+  [data-theme='b'] .brief-opzione input[type='radio'] {
+    accent-color: var(--regolo-ambra);
+  }
+  [data-theme='b'] .brief-opzione:hover {
+    border-color: var(--regolo-muted);
+  }
+  /* Sulla scelta il campo prende l'ambra: è la stessa ambra del blocco dentro
+     il logotipo, e nella reference è l'unico modo in cui una cosa risulta
+     «attiva». */
+  [data-theme='b'] .brief-opzione:has(input:checked) {
+    background-color: var(--regolo-surface);
+    border-color: var(--regolo-ambra);
+    box-shadow: inset 0 0 0 1px var(--regolo-ambra);
+  }
+
+  /* ---- il bottone è la pastiglia dell'invito ---------------------------- */
+  [data-theme='b'] .brief-azioni .btn {
+    min-height: 3rem;
+    padding-inline: 1.25rem;
+    font-family: var(--regolo-font-body);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: var(--regolo-radius);
+  }
+  [data-theme='b'] .brief-azioni .btn:not(.btn-ghost) {
+    /* L'alone d'ambra, misurato sulla reference (`0 0 12px rgba(217,142,54,.55)`). */
+    box-shadow: 0 0 12px rgba(217, 142, 54, 0.55);
+  }
+}

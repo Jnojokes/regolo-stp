@@ -20,10 +20,34 @@ Tetto della skill: max **3 tier A** (estetica), **2 tier B** (impianto), **1 tie
 | **A** | **AS Associates — https://as-associates.jp/** | **dentro (entra, vedi sotto)** |
 | — | Studio Foundry — https://studio-foundry.sujen.co/ | **guardato, fuori dal tier A** |
 | narrativa | Eladio Dieste — https://www.eladiodieste.com/ | dentro, fuori tetto: non dà token |
-| **B** | ecoLINEAR Studio — https://ecolinearstudio.com/ | dentro |
+| **B** | ecoLINEAR Studio — https://ecolinearstudio.com/ | dentro, e alla fase 3 quinquies **è il sistema dell'opzione B** |
 | **B** | Pelizzari Studio — https://www.pelizzari.com/ | dentro |
 | **C** | schlaich bergermann partner — https://www.sbp.de/ | dentro (è il tier C di `references/studi-tecnici.md`) |
+| **—** | **Halston (template Webflow) — https://halston-architecture-template.webflow.io/** | **entrato per nome dal committente: è il sistema dell'opzione C** |
 | — | Nabil Issa — https://nabilissa.com/ | **guardato, fuori** |
+
+### Le due entrate della fase 3 quinquies, e cosa cambia nella natura di questa scheda
+
+Fino alla 3 ter le reference erano **materiale**: ogni sito dava un gesto o una regola, e le
+proposte si componevano con quei gesti. Alla 3 quinquies il committente ha indicato due
+indirizzi con una frase che non lascia margine — *«l'opzione 2 la voglio identica a questo
+sito»* e *«l'opzione 3 la voglio identica a questo sito»* — e per quei due la scheda cambia
+mestiere: non «cosa prendo da qui», ma **la specifica**. Le due tabelle qui sotto sono i valori
+con cui `app/globals.css`, `app/css/ecolinear.css` e `app/css/halston.css` sono stati scritti,
+e ogni voce ha il suo numero perché ogni voce è stata letta nel browser sui nodi veri.
+
+**Halston non è lo studio di nessuno**: è un template Webflow. Va detto, perché cambia due
+cose. Non c'è un cliente da non copiare — è materiale venduto per essere usato — e non c'è un
+nome da tenere fuori dalla pagina per rispetto; resta fuori solo perché al cliente di REGOLO
+il nome di un template non dice niente (per questo la barra della proposta chiama le tre
+opzioni «lo studio», «il foglio», «le bande» e non con i nomi delle reference).
+
+Le due catture sono state rifatte il **08/09/2026**, e una delle due per un difetto: la
+`390-hero.jpeg` di Halston era stata presa **a metà caricamento** — solo le fotografie, zero
+testo — e una cattura così non è una prova, è una macchia. La ripresa aspetta
+`networkidle`, poi `document.fonts.ready`, poi **scorre tutta la pagina e torna in cima**,
+perché quel template rivela il testo allo scorrimento: senza il giro, metà dei nodi resta a
+`opacity: 0` e la misura direbbe che non esistono.
 
 ### Perché AS entra ed esce Studio Foundry
 
@@ -130,18 +154,54 @@ il contrario della decisione presa qui (analytics senza cookie, nessun banner).
 | Cosa fa lui e gli altri no | **il nome spaccato nei due angoli opposti**, entrambi che sbordano dal bordo («Eladio» in alto a sinistra, «Dieste» in basso a destra), e il **menu che è una linea di quota**: un filetto attraversa tutta la larghezza a metà schermo e cinque parole pendono da sotto, con un pallino sulla corrente. A metà pagina, una **timeline ad asse verticale**: un filetto al centro, gli anni **sopra** l'asse, e le foto a cavallo dell'asse **a scale disuguali** — la dimensione dell'immagine dice l'importanza |
 | **Da qui prendo per REGOLO** | la **linea di quota come struttura di navigazione e di sezione** (è il gesto giusto per uno studio che disegna: un filetto con le cose appese, non un occhiello); l'**asse verticale** per le cinque fasi di «come lavoriamo» e per la timeline; la **luce radente su una superficie** come soggetto dell'immagine generata (§ 3 del prompt di fase); e la regola sull'accento: **viene dal materiale che il cliente costruisce davvero**, non da un catalogo. Non prendo il nero pieno né il crema: sono, insieme, i cluster n. 1 e n. 2 |
 
-### ecoLINEAR Studio · tier B (impianto) · `ecolinear/`
+### ecoLINEAR Studio · **il sistema dell'opzione B** · `ecolinear/`
+
+> Rimisurato l'08/09/2026 su nove catture (`1440-hero`, `1440-meta-18/35/52/70/88`,
+> `1440-intera`, `390-hero`, `390-meta`). Dove i numeri di questa tabella non coincidono con
+> la prima passata, valgono questi: la prima era una lettura di superficie.
 
 | Voce | Misurato |
 |---|---|
-| Famiglie | **Montserrat sola**, pesi 300 → 800 |
-| Colori | fondo `#ECECEC`, testo `#9D7460` (una terra), accento `#D98E36` (ambra) |
-| Scala 1440 | 158,4 (numerone al **12 % di opacità**) · 64 · 62 · 46,1 · 40 · 20 · 18 · 16 · 14 px |
-| Angoli / ombre | raggio 2 px; **ombre presenti** (`0 30px …`) — quattro occorrenze |
+| Famiglie | **Montserrat sola: 60 nodi di testo su 60.** Niente monospace, niente display separato |
+| Pesi, e li usa tutti | **300** (4 nodi, le annotazioni) · **400** (18, il corpo) · **500** (16, i numeri di fase e le etichette) · **600** (19, i titoli e la nav) · **700** (3, il nome dello studio dentro il testo) |
+| Colori | carta `#ECECEC`, pannello `#F3F5F1`, testo `rgb(157,116,96)` (una terra), ambra `rgb(217,142,54)` |
+| Scala 1440 | 158,4 (il numerone di fase, al **12 % di opacità**) · 46,1 · 40 · 34,6 · 20 · 18 · 16 · 14 · 12 · 10 · 8,5 px |
+| Interlinee | **1,12** sul titolo (51,61 / 46,1) · **1,83** sull'annotazione (33 / 18) · **1,0 esatta** sul numerone (158,4 / 158,4) |
+| Tracciature | −0,9216 px sul titolo (= −0,02 em) · **+0,9** e **+0,6** sulle etichette · −3,168 sul numerone · +1,02 sul micro. È l'unica delle reference con **valori positivi** |
+| Angoli / ombre | raggio **2 px** (20 occorrenze) e **50 %** (3: le frecce nei cerchietti); **due ombre**, `0 30px 60px -35px rgba(0,0,0,.35)` e `0 0 12px rgba(217,142,54,.55)` (l'alone d'ambra sotto la pastiglia) |
 | Contenitore | misura di testo 609 px |
+| Altezza | 10.638 px = **11,8 schermate**; 70 `img`, 18 `svg` |
+| La prima schermata | **un foglio da disegno**: griglia di costruzione **tratteggiata**, e negli angoli tre disegni a filo — l'arco di apertura di una porta, un cerchio con l'asse, una linea di sezione tratteggiata. Il logotipo centrato con **un blocco d'ambra** dentro una lettera, e un filetto scuro sottile |
+| La galleria | **quattro colonne sfalsate** di tipi di disegno misti (foto, assonometrie a linea, diagrammi), con scarti verticali diversi per colonna |
+| I servizi | **pinnati**: a sinistra un pannello quadrato `#F3F5F1` con **quattro** squadrette d'ambra agli angoli, un disegno a filo e `fig. 04`; a destra l'etichetta `services` fra squadrette, il numero `01` a 158,4 px al 12 %, il titolo a 46,1 e il paragrafo su 609 px; all'estremo destro un **righello verticale** con una tacca per fase |
+| La CTA | «Do you have a project?» **prima** della galleria, con una pastiglia `CONTACT US →` dove la freccia sta **dentro un cerchietto** |
 | Impianto (quello che conta) | quattro servizi come **fasi del percorso**; il blocco «Do you have a project?» **prima** della galleria; sezioni pinnate con ScrollTrigger |
 | Cosa fa lui e gli altri no | disegna **quote vere**: una linea con le frecce e l'annotazione `14.34 M — ESC 1:50` sopra il titolo, **segni di registro agli angoli** attorno all'etichetta «about us», e una lettura di coordinate `X 1.538 Y 2.410 · PLOT 23%` all'estremo destro. La griglia progetti su mobile è a **due colonne sfalsate** e mescola foto, assonometrie a linea e diagrammi |
 | **Da qui prendo per REGOLO** | come **informazione, non come decorazione**: la quota dell'opzione B esiste già ma oggi è ornamentale (due filetti attorno a un occhiello). Qui la quota **porta un numero vero**. Regola che adotto: una quota in pagina dichiara una quantità che esiste (il numero della sezione su quante sono, i mq, quanti progetti, quanti comuni) o non si disegna. E i **segni di registro** al posto dell'occhiello maiuscolo. Dell'impianto: le fasi al posto dei servizi e la CTA prima della galleria — già in `CLAUDE.md` |
+
+### Halston (template Webflow) · **il sistema dell'opzione C** · `halston/`
+
+| Voce | Misurato |
+|---|---|
+| Famiglie | **due, e la divisione del lavoro è misurata**: **General Sans** su 298 nodi di testo, **JetBrains Mono** su 34. Dove c'è un dato o una micro-etichetta c'è la mono (80 nodi la usano fra i 34 contati e i loro figli) |
+| Licenza | General Sans è di **Indian Type Foundry**, su Fontshare: uso commerciale e self-hosting permessi, ma **non è OFL** come tutto il resto del repo. Deviazione dichiarata (`DECISIONI.md`) |
+| Maiuscolo | **270 occorrenze** di `text-transform: uppercase`. Non è un accento: è la voce normale delle etichette e dei nomi di servizio |
+| Colori | inchiostro `srgb .09 .0894 .0841` · carta `srgb .9 .899 .8902` (e `srgb .86 .8586 .8463` sul fondo pagina) · muto `srgb .672 .611 .611` · **granata** `rgb(88,57,57)` · banda scura `srgb .18 .1788 .1682` · medio `srgb .72 .7173 .6925` |
+| Scala 1440 | 216 · 129,6 · **115,2** · 57,6 · 43,2 · 42,6 · 31 · 26,8 · 19,4 · 17,4 · 16 · 14,7 · **13,7** · 12 px. Il titolo della copertina è 57,6; il 13,7 è la mono |
+| Interlinee | **1,0 esatta** sul display (115,2 / 115,2) · **0,8** sul numerone (129,6 / 103,68) · 1,2 sul titolo di banda (37,2 / 31) · **1,0** sulla mono (13,7 / 13,7) |
+| Tracciature | **−7,2 px** sul display (= −0,05 em) · −0,4 px sul corpo |
+| Angoli / ombre | raggio **3 px** (42 occorrenze) e **zero ombre**. È l'opposto esatto di ecoLINEAR |
+| Contenitore | **nessuno**: non c'è un `max-width` centrato. Margine di pagina 20 px |
+| Altezza | 20.713 px = **23 schermate** a 1440; 13.475 px = **16 schermate** a 390 |
+| La testata | marchio a 22 px a sinistra, subito accanto una **pastiglia granata** con l'hamburger e `MENU`, il menu **centrato sulla finestra** in maiuscolo, `MORE ⌄` all'estremo destro |
+| La copertina | titolo maiuscolo su **due righe**, poi un **filetto spezzato in due** (il taglio cade al 49 % della finestra), poi una riga di metadati in **tre tempi** — tre discipline in granata / `RECOGNITION` + il valore / un bottone **contornato** `CONSULTATION +` — e sotto la fotografia a piena finestra |
+| L'impianto | **bande a piena larghezza che cambiano superficie**, due-up e alternate: granata con il testo bianco, poi mauve con il testo scuro, con il lato del media che si scambia |
+| La citazione | ritratto all'**estremo** sinistro, filetto in testa, un grande segno di citazione, e il testo a **due toni** — la prima frase a inchiostro pieno, il resto in muto —, poi `nome · ruolo` e una targa `• QUOTE` |
+| I servizi | **righe su banda scura**, alte ~150 px, divise da filetti da 1 px: il nome in maiuscolo a sinistra in rosa muto, il **valore in mono** all'estremo destro |
+| Le teste di sezione | **tre punti su un filetto**: etichetta a sinistra, targa `• TAG` al centro, etichetta a destra. Non è un titolo centrato |
+| Il micro-elemento firma | la **targa**: pastiglia in mono maiuscolo, 1 px di bordo, 3 px di raggio, **un punto pieno davanti** |
+| A 390 | la pastiglia `MENU` passa all'**estremo destro**; i due filetti spezzati diventano continui; le tre discipline diventano **una riga** con un `+` dopo **ognuna**, compresa l'ultima |
+| **Da qui prendo per REGOLO** | tutto: è la specifica dell'opzione C. Fuori dall'opzione C resta **una** lezione trasferibile — il ritmo di una pagina si può fare con il **cambio di superficie** invece che con il vuoto, e allora non serve un ritmo verticale dichiarato |
 
 ### Pelizzari Studio · tier B (impianto) · `pelizzari/`
 
@@ -228,7 +288,8 @@ Niente. Nove siti su nove hanno risposto, compresi Storey e Dieste dietro Cloudf
 - **AS** → l'indice come scheda tecnica con il `ruolo` in colonna, il conteggio fra parentesi, le etichette fra parentesi quadre, l'opacità come gerarchia, i quattro corpi.
 - **Studio Foundry** (fuori) → solo due gesti: il marchio che si sovrappone alla foto; i metadati ai due estremi della riga.
 - **Dieste** → la linea di quota come struttura, l'asse verticale delle fasi, la luce radente, e l'accento che viene dal materiale.
-- **ecoLINEAR** → la quota che porta un numero vero, i segni di registro; e dall'impianto le fasi e la CTA prima della galleria.
+- **ecoLINEAR** → alla 3 quinquies non è più «da qui prendo»: **è** l'opzione B, misura per misura. Quello che resta trasferibile: la quota che porta un numero vero, i segni di registro al posto dell'occhiello, le fasi al posto dei servizi, la CTA prima della galleria.
+- **Halston** → **è** l'opzione C. Trasferibile: il ritmo fatto dal cambio di superficie invece che dal vuoto; la testa di sezione a tre punti; e la targa in mono con il punto davanti, che è un'etichetta che non ha bisogno di essere un occhiello maiuscolo spaziato.
 - **Pelizzari** → la riga di metadati in tre tempi con l'azione al bordo, le colonne di altezza disuguale, la conferma del titolo a due famiglie.
 - **sbp** → la classificazione per tipologia strutturale; e la prova, in negativo, che l'arancio è il default del settore.
 - **refero / Structured** → il meccanismo della scala (rapporto fitto + un salto), l'interlinea come funzione del corpo, il passo di sezione 80 px su base 4, il canvas a luminanza media, e la lista che dimostra qual è la mediana.

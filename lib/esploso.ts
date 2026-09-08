@@ -52,35 +52,23 @@ const punti = (p: [number, number][]) =>
 export type Faccia = 'alto' | 'sinistra' | 'destra' | 'apertura'
 
 export type Poligono = { faccia: Faccia; punti: string }
-
-/**
- * Un parallelepipedo in coordinate di **pianta e quota**, prima di qualunque
- * proiezione: `x`/`y` in celle sul piano, `z` in celle in altezza.
- *
- * Esiste perché `lib/volume.ts` deve poter proiettare gli stessi volumi in
- * **prospettiva** invece che in isometria — è il blocco 3D dell'opzione B,
- * decisione n. 44 — e finché la geometria viveva solo dentro le stringhe di
- * punti già proiettate non era riusabile. La lista è **una**: A la disegna
- * piatta come una tavola, C la cola in volume. Stesso dato, due lingue.
- */
-export type Scatola = { x: number; y: number; z: number; w: number; d: number; h: number }
-
-const scatola = (x: number, y: number, z: number, w: number, d: number, h: number): Scatola => ({
-  x,
-  y,
-  z,
-  w,
-  d,
-  h,
-})
 export type Polilinea = { punti: string; traccia: 'calore' | 'acqua' | 'aria' }
 
 /**
  * Le tre facce visibili di un parallelepipedo appoggiato in (x, y) a quota z.
  * In isometria le altre tre non si vedono mai: disegnarle è peso inutile.
  */
-function prisma(s: Scatola): Poligono[] {
-  const { x, y, z, w, d, h } = s
+function prisma(
+  x: number,
+  y: number,
+  z: number,
+  larghezza: number,
+  profondita: number,
+  altezza: number,
+): Poligono[] {
+  const w = larghezza
+  const d = profondita
+  const h = altezza
   return [
     {
       faccia: 'sinistra',
@@ -169,119 +157,40 @@ export type Livello = {
 /** Spessore di ciascun livello, in celle: serve a impilarli senza compenetrarli. */
 const SPESSORI = [0.7, 3.35, 3.35, 0.25, 0.3]
 
-/**
- * Lo stesso edificio in **volume**, non proiettato: è quello che
- * `components/fonderia/Volume.tsx` cola in prospettiva (decisione n. 44).
- * `dz` è lo stacco del livello dal pacchetto chiuso, in celle, verso l'alto.
- */
-export type LivelloVolume = {
-  chiave: Livello['chiave']
-  nome: string
-  descrizione: string
-  scatole: readonly Scatola[]
-  dz: number
-}
-
-/* Gli otto pilastri, ordinati per profondità (x + y crescente): in isometria si
-   disegna da dietro in avanti, altrimenti un pilastro dietro copre quello
-   davanti. Il prototipo non li ordinava e con volumi così sottili non si
-   vedeva; con la geometria a colori pieni si vede. */
-const GRIGLIA: [number, number][] = (
-  [
-    [0, 0],
-    [5, 0],
-    [0, 5],
-    [5, 5],
-    [2.5, 0],
-    [2.5, 5],
-    [0, 2.5],
-    [5, 2.5],
-  ] as [number, number][]
-).sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
-
-/* Le scatole di ogni livello, dichiarate **una volta**: `poligoni` le
-     proietta in isometria per l'SVG di A, `volumi` le esporta grezze per il
-     volume in prospettiva di C. Prima la geometria viveva solo dentro le
-     stringhe di punti già proiettate, quindi non era riusabile e il 3D avrebbe
-     voluto una seconda descrizione dello stesso edificio — cioè due verità che
-     divergono alla prima modifica. */
-const SCATOLE: Record<Livello['chiave'], Scatola[]> = {
-  fondazioni: [scatola(-0.4, -0.4, 0, 6.8, 6.8, 0.7)],
-  struttura: [...GRIGLIA.map(([x, y]) => scatola(x, y, 0, 1, 1, 3)), scatola(0, 0, 3, 6, 6, 0.35)],
-  involucro: [scatola(0, 0, 0, 6, 6, 3.35)],
-  impianti: [scatola(0, 0, 0, 6, 6, 0.25)],
-  finiture: [scatola(-0.2, -0.2, 0, 6.4, 6.4, 0.3)],
-}
-
-/* Nome e descrizione di ogni livello: li leggono sia l'SVG di A sia il volume
-   di C, e stanno fuori da `costruisci()` per la ragione scritta accanto a
-   `volumi`. */
-const ANAGRAFE: readonly { chiave: Livello['chiave']; nome: string; descrizione: string }[] = [
-  {
-    chiave: 'fondazioni',
-    nome: 'Fondazioni',
-    descrizione: 'dove tutto comincia: portanza del terreno e geometria dei plinti',
-  },
-  {
-    chiave: 'struttura',
-    nome: 'Struttura',
-    descrizione: 'travi, pilastri, solai: è qui che si decide la sicurezza sismica',
-  },
-  {
-    chiave: 'involucro',
-    nome: 'Involucro',
-    descrizione: 'pareti e copertura: energia che non se ne va e acqua che non entra',
-  },
-  {
-    chiave: 'impianti',
-    nome: 'Impianti',
-    descrizione: 'termico, elettrico, acustico: il comfort si progetta, non si aggiunge',
-  },
-  {
-    chiave: 'finiture',
-    nome: 'Finiture',
-    descrizione: 'quello che si vede: superfici, serramenti, dettagli',
-  },
-]
-
-/**
- * I cinque livelli **in volume**, senza proiezione: è quello che
- * `components/fonderia/Volume.tsx` cola in prospettiva e che
- * `components/fonderia/VolumeVivo.tsx` manda in WebGL.
- *
- * **Si costruisce da sé e non come effetto collaterale di `costruisci()`**, e
- * il perché è un difetto pagato: la prima versione lo riempiva con una `push`
- * dentro quel `map`, e nel bundle **client** `livelli` non è usato — A rende
- * l'SVG sul server — quindi la funzione veniva eliminata dal tree-shaking,
- * `volumi` restava **un array vuoto**, e il canvas WebGL disegnava zero
- * vertici. Il blocco sembrava funzionare (il canvas si accendeva) e non c'era
- * niente, perché accendendosi nascondeva l'SVG buono. Un dato che esiste solo
- * se qualcun altro è stato importato non è un dato: è una coincidenza di
- * bundling.
- */
-export const volumi: readonly LivelloVolume[] = (() => {
-  let quota = 0
-  return ANAGRAFE.map((a, i) => {
-    const dz = arrotonda(quota + i * SEPARAZIONE)
-    quota += SPESSORI[i]
-    return { ...a, scatole: SCATOLE[a.chiave], dz }
-  })
-})()
-
 function costruisci(): Livello[] {
+  /* Gli otto pilastri, ordinati per profondità (x + y crescente): in
+     isometria si disegna da dietro in avanti, altrimenti un pilastro dietro
+     copre quello davanti. Il prototipo non li ordinava e con volumi così
+     sottili non si vedeva; con la geometria a colori pieni si vede. */
+  const griglia: [number, number][] = (
+    [
+      [0, 0],
+      [5, 0],
+      [0, 5],
+      [5, 5],
+      [2.5, 0],
+      [2.5, 5],
+      [0, 2.5],
+      [5, 2.5],
+    ] as [number, number][]
+  ).sort((a, b) => a[0] + a[1] - (b[0] + b[1]))
+
   const definizioni: Omit<Livello, 'indice' | 'dy'>[] = [
     {
       chiave: 'fondazioni',
       nome: 'Fondazioni',
       descrizione: 'dove tutto comincia: portanza del terreno e geometria dei plinti',
-      poligoni: SCATOLE.fondazioni.flatMap(prisma),
+      poligoni: prisma(-0.4, -0.4, 0, 6.8, 6.8, 0.7),
       polilinee: [],
     },
     {
       chiave: 'struttura',
       nome: 'Struttura',
       descrizione: 'travi, pilastri, solai: è qui che si decide la sicurezza sismica',
-      poligoni: [...SCATOLE.struttura.flatMap(prisma)],
+      poligoni: [
+        ...griglia.flatMap(([x, y]) => prisma(x, y, 0, 1, 1, 3)),
+        ...prisma(0, 0, 3, 6, 6, 0.35),
+      ],
       polilinee: [],
     },
     {
@@ -289,7 +198,7 @@ function costruisci(): Livello[] {
       nome: 'Involucro',
       descrizione: 'pareti e copertura: energia che non se ne va e acqua che non entra',
       poligoni: [
-        ...SCATOLE.involucro.flatMap(prisma),
+        ...prisma(0, 0, 0, 6, 6, 3.35),
         ...[
           [1, 0],
           [3, 0],
@@ -303,7 +212,7 @@ function costruisci(): Livello[] {
       chiave: 'impianti',
       nome: 'Impianti',
       descrizione: 'termico, elettrico, acustico: il comfort si progetta, non si aggiunge',
-      poligoni: SCATOLE.impianti.flatMap(prisma),
+      poligoni: prisma(0, 0, 0, 6, 6, 0.25),
       polilinee: [
         polilinea(
           [
@@ -338,7 +247,7 @@ function costruisci(): Livello[] {
       chiave: 'finiture',
       nome: 'Finiture',
       descrizione: 'quello che si vede: superfici, serramenti, dettagli',
-      poligoni: SCATOLE.finiture.flatMap(prisma),
+      poligoni: prisma(-0.2, -0.2, 0, 6.4, 6.4, 0.3),
       polilinee: [],
     },
   ]

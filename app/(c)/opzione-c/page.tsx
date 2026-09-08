@@ -3,82 +3,82 @@ import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import {
-  Banda,
-  Colophon,
-  Frontespizio,
+  Bande,
+  Citazione,
+  Copertina,
   Metodo,
-  PrimaDopo,
-  Ritratti,
-  Sommario,
-  Tavole,
-} from '@/components/monografia/Blocchi'
-import { Copertina } from '@/components/monografia/Copertina'
-import { Fascicolo } from '@/components/monografia/Segnatura'
+  Numeri,
+  Persone,
+  Progetti,
+  Servizi,
+} from '@/components/halston/Blocchi'
 
 export const metadata: Metadata = {
   title: 'Homepage',
   description:
-    'Proposta di homepage per REGOLO, variante «La monografia»: un fascicolo stampato — frontespizio, indice, tavole con i dati duri, colophon.',
+    'Proposta di homepage per REGOLO, variante «Halston»: bande a piena larghezza che cambiano superficie, tutto in maiuscolo, i valori in monospace.',
 }
 
 /**
- * Home — opzione C «La monografia».
+ * Home — opzione C «Halston», dal sito che il committente ha indicato per nome:
+ * *«l'opzione 3 la voglio identica a questo sito»*,
+ * `https://halston-architecture-template.webflow.io/`.
  *
- * ## Perché non si chiama più «La casa»
+ * Catturato e **misurato nel browser** con Playwright:
+ * `kit/reference/halston/` ha sei schermate a 1440 e due a 390, e `SCHEDA.md`
+ * la tabella dei valori contati sui nodi di testo veri.
  *
- * Il committente ha chiesto *«uno più istituzionale editorial artigiano
- * architetto»*, e quel nome descriveva la reference, non la proposta. **Storey
- * resta la reference dei valori misurati** — interlinea stretta, spaziatura
- * negativa anche sul maiuscolo, vuoto disuguale, immagine che sborda da un lato,
- * contatore tono su tono, schedina a righe — ma non del tono: Storey è minimale
- * e quieta. Il tono è la **monografia stampata**, e da lì vengono le cose che
- * nessun'altra proposta ha: il **frontespizio** col masthead allargato, il
- * **folio** al margine esterno, l'occhiello corrente, le figure numerate
- * `fig. 03`, il **colophon** con una riga scritta a mano.
+ * ## L'impianto, e perché non è quello di A né quello di B
  *
- * ## Il meccanismo: **la stampa**
+ * `CLAUDE.md` § Homepage descrive l'ordine dei blocchi di **A**; qui l'ordine è
+ * quello della reference, ed è una **deviazione dichiarata**:
  *
- * In D non si muove niente, ed è la differenza da C, dove lo scorrimento *è* il
- * meccanismo (`DECISIONI.md` n. 40). Una sola eccezione, e **ripara un
- * difetto**: il prima/dopo, che senza JavaScript resterebbe fermo a metà perché
- * il cursore non viene reso. Nessuna rivelazione allo scorrimento: è il pattern
- * di movimento più generato che esista, e chiamarlo diversamente non lo cambia.
+ * | | Halston, misurato | qui |
+ * |---|---|---|
+ * | 1 | la barra di contenuto e il media a piena finestra | `Copertina` |
+ * | 2 | due bande **due-up alternate** che cambiano fondo | `Bande` |
+ * | 3 | la citazione a **due toni** col ritratto all'estremo | `Citazione` |
+ * | 4 | i servizi come **righe su banda scura**, valore in mono | `Servizi` |
+ * | 5 | i numeri in celle sulla banda | `Numeri` |
+ * | 6 | i progetti, una banda per opera | `Progetti` |
+ * | 7 | il metodo, righe su carta | `Metodo` |
+ * | 8 | chi firma | `Persone` |
  *
- * ## Il funnel di D è l'indice, e fa partire il brief da «passo 2 di 5»
+ * **Il ritmo lo fa il colore.** A separa le sezioni col vuoto (tre passi
+ * dichiarati); B tiene la composizione con una griglia di costruzione
+ * tratteggiata; qui i blocchi **si toccano** e cambiano superficie — carta,
+ * granata, mauve, banda scura, carta. Misurato: nessun `max-width`, margine
+ * 20 px, zero ombre, raggio 3 px, e 270 occorrenze di maiuscolo.
  *
- * Le sei voci del sommario sono `radio` con `form="brief-form"`: sono membri del
- * form che sta in fondo alla pagina, quindi la risposta arriva **senza una riga
- * di JavaScript**. È il gesto che A non ha per costruzione, e che C non ha per
- * scelta — C vende con le fotografie e non chiede niente sopra la piega. Tre
- * proposte, tre funnel, e `scripts/collaudo/nojs-rotte.mjs` lo legge come
- * numero.
+ * ## Il funnel
  *
- * ## L'ordine è quello di un libro, non di una home
+ * C **non chiede niente fino in fondo**: nessun registro sopra la piega,
+ * nessuna domanda a metà pagina. Il bottone della copertina porta al brief con
+ * un'ancora e il brief comincia da «passo 1 di 5». È la terza forma delle tre:
+ * A smista con cinque bottoni che precompilano il passo 1, B mette l'invito
+ * prima della galleria, C vende con le bande e chiede alla fine.
  *
- * copertina → frontespizio → indice → tre tavole → metodo → banda →
- * prima/dopo → ritratti → colophon → brief. Deviazione dichiarata da
- * `CLAUDE.md` § Homepage: escono la tabella dei sei servizi, i numeri e il
- * territorio. I numeri stanno a C, dove sono quattro cifre ai due estremi di
- * quattro righe; qui i dati duri sono **nelle tavole**, che è dove un
- * monografico li mette.
+ * ## Il movimento
+ *
+ * **Nessuno.** Non è una scelta di risparmio: quella pagina non ha un gesto di
+ * scorrimento — il suo effetto viene dal cambio di superficie, che non ha
+ * bisogno di muoversi. È anche la differenza da B, dove il pannello delle fasi
+ * resta fermo mentre le fasi passano.
  */
-export default function OpzioneD() {
+export default function OpzioneC() {
   return (
     <>
       <BarraProposta opzione="c" />
       <Copertina />
-      <Fascicolo>
-        <Frontespizio />
-        <Sommario />
-        <Tavole />
-        <Metodo />
-        <Banda />
-        <PrimaDopo />
-        <Ritratti />
-        <Colophon />
-      </Fascicolo>
-      {/* `passo1Esterno`: il passo 1 è l'indice, e il brief comincia dal 2. */}
-      <Brief pagina="/opzione-c" etichetta="il brief" passo1Esterno />
+      <Bande />
+      <Citazione />
+      <Servizi />
+      <Numeri />
+      <Progetti />
+      <Metodo />
+      <Persone />
+      {/* Nessun `passo1Esterno`: in C il brief comincia dall'inizio. */}
+      <Brief pagina="/opzione-c" etichetta="il brief" />
       <BarraMobile />
     </>
   )

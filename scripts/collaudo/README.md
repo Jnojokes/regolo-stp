@@ -1,4 +1,4 @@
-# Collaudo — i sei script che si lanciano a ogni fine passata
+# Collaudo — i cinque script che si lanciano a ogni fine passata
 
 Sono gli script con cui la fase 3 bis è stata verificata. Stavano in uno scratchpad di
 sessione, cioè sparivano insieme alla sessione: qui restano, e la prossima passata non deve
@@ -14,20 +14,41 @@ cd scripts/collaudo && npm i playwright && npx playwright install chromium   # u
 | Script | Cosa misura | Cosa deve dire |
 |---|---|---|
 | `contrasto-dom.mjs` | ogni coppia testo/fondo **calcolata sul DOM vero** di **otto** rotte (le tre home + cinque interne), non sui token | `sotto soglia: 0` |
-| `sweep.mjs` | screenshot a scorrimento di **A, C e D** a 1440 e 390, più overflow orizzontale e bersagli sotto i 40 px | `sfora: []` a 1440 e `scrollW == clientW` a 390 su tutte e tre. `path.[object` sulla mappa è un falso positivo noto (è un figlio SVG misurato sul documento). Gli screenshot li scrive **nella cartella da cui gira** e sono ignorati dal git: quelli che restano si scelgono a mano e vanno in `kit/reference/_dopo/` |
-| `nojs-rotte.mjs` | **sei** rotte senza JS: testo reso, passi del brief, form, segnaposto | **i tre funnel sono diversi, ed è lì che si legge**: su **D** `passiVisibili: 4` e `contaBrief: passo 2 di 5`, perché l'indice del monografico *è* il passo 1 e la scelta arriva al form senza una riga di JavaScript; su **A** e **C** `passiVisibili: 5` e `passo 1 di 5`, perché nessuna delle due chiede niente sopra la piega. `overflow: false` ovunque |
+| `sweep.mjs` | screenshot a scorrimento di **A, B e C** a 1440 e 390, più overflow orizzontale e bersagli sotto i 40 px | `sfora: []` a 1440 e `scrollW == clientW` a 390 su tutte e tre. `path.[object` sulla mappa è un falso positivo noto (è un figlio SVG misurato sul documento). Gli screenshot li scrive **nella cartella da cui gira** e sono ignorati dal git: quelli che restano si scelgono a mano e vanno in `kit/reference/_dopo/` |
+| `nojs-rotte.mjs` | **sei** rotte senza JS: testo reso, passi del brief, form, segnaposto | `passiVisibili: 5` e `contaBrief: passo 1 di 5` su **tutte e tre** le home, `overflow: false` ovunque. **Attenzione a cosa vuol dire adesso**: alla 3 ter una delle proposte partiva da `passo 2 di 5`, perché il suo indice *era* il passo 1 e la scelta arrivava al form senza una riga di JavaScript. Quella proposta non c'è più (`DECISIONI.md` n. 39) e nessuna delle tre chiede niente sopra la piega, quindi tre volte `5` è il valore **giusto** e non un difetto di misura. Se un giorno una proposta ricomincia a precompilare il passo 1, il numero deve scendere a 4 su quella rotta: è la prova che il funnel funziona senza JS |
 | `interlinee.mjs` | ogni testo **che va a capo**, su 8 rotte × 2 larghezze, contro la **soglia d'inchiostro della stringa vera** (`soglie.json`, generato da `soglie.py` con fontTools sui contorni dei file di `public/fonts`) | `nessuno sotto la soglia`. Dice anche **quali due caratteri** si toccherebbero, che è dove il difetto si vede. Un'eccezione dichiarata: `.hero-payoff` di A, quattro righe spezzate a mano. Esce con codice 1 se cade |
-| `colata.mjs` | **il gesto di C**, che una schermata sola non sa collaudare: la scheggia a cinque quote di scorrimento, a 1440 e a 390, più i due degradi | apertura **monotona da 0 a 1** (0 a documento fermo, 1 a una schermata), marchio e targhetta del segnaposto **visibili a ogni quota** — sono i due strati registrati e la decisione n. 27 (b) —, `moto ridotto` sul **fotogramma finito** e non sulla scheggia chiusa, e il gesto che funziona **anche senza JavaScript**, perché è CSS. Esce con codice 1 se una sola di queste cade |
-| `peso.mjs` | byte **sul filo** fino a `load`, e cosa arriva dopo | A: ~283 KB e 17 richieste fino a `load`; il video della hero deve comparire **solo** in `dopo` |
+| `peso.mjs` | byte **sul filo** fino a `load`, e cosa arriva dopo | A ~326 KB / 18 richieste · B ~321 / 19 · C ~303 / 17 · `/servizi/strutture` ~218 / 12. Il video della hero deve comparire **solo** in `dopo`. Le 40 KB di Archivo che scendono anche su B e su C sono il debito dichiarato del preload (Turbopack fonde i `@font-face` dei tre temi in un chunk solo) e spariscono alla fase 5 con le rotte non scelte |
+| `soglie.py` | non è un collaudo: **genera** `soglie.json` leggendo i contorni dei font con fontTools. Si rilancia **quando cambiano i font**, e `interlinee.mjs` si ferma se le impronte non corrispondono più | quattro file, e la riga `impronte tutte corrispondenti` in testa a `interlinee.mjs` |
 
 **Due salti espliciti in `contrasto-dom.mjs`, e sono contratti** (`DECISIONI.md` n. 38):
 `.sr-only` (testo che esiste solo per il lettore di schermo, e non ha un fondo da misurare) e
-`[data-decorativo]` (i contatori tono su tono di D, a 1,48:1 di proposito). Un elemento che porta
+`[data-decorativo]` (le linee di costruzione tratteggiate e il numerone di fase al 12 % di B). Un elemento che porta
 informazione **non può** avere quell'attributo: se lo prende, il collaudo smette di guardarlo.
 La regola gemella vale a monte — *quello che il collaudo non sa misurare va reso misurabile*: lo
 script risale gli antenati cercando un `background-color`, quindi un `linear-gradient` o una
-fotografia lo rendono cieco. Per questo il velo sotto la testata di C e D è un colore vero e il
-gradiente morbido sta su un `::after` decorativo.
+fotografia lo rendono cieco. Per questo ogni fondo di banda è un colore vero.
+
+**Il piano scuro, e perché è la trappola che torna.** `@theme inline` emette
+`--color-ink: var(--regolo-ink)` su `:root`, e quel `var()` si risolve **una volta sola, lì**.
+Un blocco che sta su un fondo scuro e ridichiara solo `--regolo-ink` non muove `--color-ink` di
+un pixel: metà del CSS condiviso continua a leggere il valore della radice. In questa passata
+`contrasto-dom.mjs` l'ha ripresa **due volte** — 16 testi sotto soglia sull'opzione C, fra cui
+`passo 1 di 5` a **1,3:1**, inchiostro su antracite — e la correzione è sempre la stessa:
+ridichiarare **tutti e due** i prefissi sul piano, con il valore letterale. Vale anche per i
+token derivati: `--regolo-quota-colore: var(--regolo-muted)` ha la stessa trappola un piano più
+sotto, e va riscritto anche lui.
+
+**E il verso di un token conta.** Sull'opzione B `--regolo-ink` portava il valore *esatto* della
+reference (3,49:1) con un commento che diceva «solo ≥ 24 px». Un commento non è un vincolo:
+nove testi lo ereditavano senza sapere di essere piccoli. Adesso `--regolo-ink` è il valore che
+passa sempre e la tinta esatta sta in `--regolo-ink-display`, che **solo** il display chiede.
+Il default deve essere lo stato che va bene anche quando nessuno ci pensa — è la stessa regola
+dell'`initial-value` delle proprietà registrate.
+
+**`colata.mjs` e `volume.mjs` sono stati cancellati** insieme ai gesti che misuravano: la
+scheggia allo scorrimento e il volume in WebGL vivevano nelle due proposte precedenti, rifatte
+da zero sulle due reference indicate dal committente. Un collaudo che interroga classi che non
+esistono più passa sempre, e passa a vuoto.
 
 **`nojs.mjs` è stato cancellato.** Confrontava A e B senza JavaScript e interrogava `.quota`,
 `.pannello`, `.riga` e `--regolo-asse`, cioè oggetti di B, C e D. Uscita B (`DECISIONI.md` n. 39)

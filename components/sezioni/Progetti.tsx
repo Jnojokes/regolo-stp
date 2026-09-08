@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { DaCliente, Placeholder } from '@/components/Placeholder'
-import { Campo } from '@/components/campo/Campo'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { notaProgetti, progetti, type Progetto } from '@/lib/progetti'
 import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
@@ -36,55 +35,19 @@ import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
  * Diventano link alla fase 4, quando i progetti esistono. L'unica uscita è
  * «Tutti i progetti» in A, che porta a una pagina che esiste.
  */
-export function Progetti({
-  variante,
-  contatore,
-}: {
-  variante: 'schede' | 'dati'
-  /** Il contatore tono su tono dell'opzione D: decorazione, `aria-hidden`. */
-  contatore?: string
-}) {
-  const conDati = variante === 'dati'
-
-  /* B mostra due schede, non tre: con i dati duri in tabella la colonna è più
-     alta, e due schede piene leggono meglio di tre. */
-  const inEvidenza = conDati ? progetti.slice(0, 2) : progetti
-
+export function Progetti() {
   const schede = (
-    <div className={conDati ? 'progetti-due' : 'progetti-tre'}>
-      {inEvidenza.map((progetto, indice) =>
-        conDati ? (
-          <SchedaDati key={progetto.copertina} progetto={progetto} demo={operaPerIndice(indice)} />
-        ) : (
-          <SchedaFoto
-            key={progetto.copertina}
-            progetto={progetto}
-            ratio={RATIO[indice % RATIO.length]}
-            demo={operaPerIndice(indice)}
-          />
-        ),
-      )}
+    <div className="progetti-tre">
+      {progetti.map((progetto, indice) => (
+        <SchedaFoto
+          key={progetto.copertina}
+          progetto={progetto}
+          ratio={RATIO[indice % RATIO.length]}
+          demo={operaPerIndice(indice)}
+        />
+      ))}
     </div>
   )
-
-  if (conDati) {
-    return (
-      <Campo
-        id="progetti"
-        contatore={contatore}
-        etichetta="progetti in evidenza"
-        titolo="I dati che un committente serio legge."
-        azione={
-          <Link className="uscita" href="/progetti">
-            tutti i progetti
-          </Link>
-        }
-        nota={notaProgetti}
-      >
-        {schede}
-      </Campo>
-    )
-  }
 
   return (
     <Sezione
@@ -157,46 +120,4 @@ const SPECIFICA: Record<string, string> = {
   '16 / 10': '2400 × 1500 px · AVIF · ≤ 250 KB',
   '3 / 4': '1600 × 2133 px · AVIF · ≤ 250 KB',
   '4 / 3': '1600 × 1200 px · AVIF · ≤ 250 KB',
-}
-
-/**
- * B — la targhetta dei dati duri. Il nome è un `h3` come in A: le due varianti
- * sono la stessa pagina con due voci, e l'outline dei titoli non deve cambiare
- * fra l'una e l'altra. La `<caption>` in `sr-only` ripete di che progetto sono
- * i dati: la tabella si deve capire anche letta fuori dal suo contesto visivo.
- * La foto è 16/9 perché entra nella cornice della scheda.
- *
- * **Fase 3 bis**: la cornice della scheda è sparita. Il segnaposto è già una
- * figura con il suo bordo di 1 px, e una cornice attorno a una figura
- * bordata sono due bordi — che è come si arriva al cluster n. 4 senza
- * accorgersene. E i dati **non hanno filetti fra le righe**: AS regge una
- * tabella di 25 righe con sette colonne senza un divisore.
- */
-function SchedaDati({ progetto, demo }: { progetto: Progetto; demo?: ChiaveEsempio }) {
-  return (
-    <article className="progetto-scheda">
-      <Placeholder
-        label={progetto.copertina}
-        specifica="2400 × 1350 px · AVIF · ≤ 250 KB"
-        ratio="16 / 9"
-        demo={demo}
-      />
-      <h3 className="progetto-nome">
-        <DaCliente>{progetto.titolo}</DaCliente>
-      </h3>
-      <table className="progetto-dati">
-        <caption className="sr-only">{`Dati del progetto: ${progetto.titolo}`}</caption>
-        <tbody>
-          {progetto.dati.map((dato) => (
-            <tr key={dato.etichetta}>
-              <th scope="row">{dato.etichetta}</th>
-              <td>
-                <DaCliente>{dato.valore}</DaCliente>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </article>
-  )
 }

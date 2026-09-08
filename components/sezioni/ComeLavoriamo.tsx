@@ -1,4 +1,3 @@
-import { Campo } from '@/components/campo/Campo'
 import { Sezione } from '@/components/sezioni/Sezione'
 import { fasi, introProcesso } from '@/lib/processo'
 
@@ -34,30 +33,15 @@ import { fasi, introProcesso } from '@/lib/processo'
  * tacche sono già piene, perché uno stato iniziale vuoto è indistinguibile da
  * un blocco rotto.
  */
-export function ComeLavoriamo({
-  variante,
-  id = 'processo',
-  banda = 'osso',
-  contatore,
-}: {
-  /** `elenco` = opzione A · `sequenza` = opzione B, una banda del manifesto. */
-  variante: 'elenco' | 'sequenza'
-  id?: string
-  /** Solo per `sequenza`: la superficie della banda. */
-  banda?: 'osso' | 'indaco'
-  /** Il contatore tono su tono dell'opzione D: decorazione, `aria-hidden`. */
-  contatore?: string
-}) {
-  const inCampo = variante === 'sequenza'
-
+export function ComeLavoriamo({ id = 'processo' }: { id?: string }) {
   /* Una `<ol>` e non cinque `<div>`: la sequenza è il contenuto del blocco, e
      deve stare nel markup e non solo nel disegno. Qui la numerazione è
      **legittima** (skill `sito-design` § 5): cinque fasi sono una sequenza
-     vera, con un primo e un ultimo. È l'unico posto di B dove un numero
-     progressivo resta — nel registro della hero e nell'indice dei servizi è
-     stato tolto, perché lì cinque o sei alternative non hanno un ordine. */
+     vera, con un primo e un ultimo. Dove una sequenza non c'è — lo smistamento,
+     l'indice dei servizi — la numerazione è stata tolta, perché cinque o sei
+     alternative mutuamente esclusive non hanno un primo e un ultimo. */
   const elenco = (
-    <ol className={inCampo ? 'fasi fasi-sequenza' : 'fasi fasi-quota'} role="list">
+    <ol className="fasi fasi-quota" role="list">
       {fasi.map((fase, indice) => {
         const vissuta = indice === 0 || indice === fasi.length - 1
         return (
@@ -67,28 +51,13 @@ export function ComeLavoriamo({
             </span>
             <span className="fase-corpo">
               <strong className="fase-titolo">{fase.titolo}</strong>
-              <span className="fase-testo">{inCampo ? fase.testoBreve : fase.testoLungo}</span>
+              <span className="fase-testo">{fase.testoLungo}</span>
             </span>
           </li>
         )
       })}
     </ol>
   )
-
-  if (inCampo) {
-    return (
-      <Campo
-        id={id}
-        banda={banda}
-        contatore={contatore}
-        etichetta="come lavoriamo"
-        titolo="E poi cosa succede?"
-        intro={introProcesso}
-      >
-        {elenco}
-      </Campo>
-    )
-  }
 
   return (
     <Sezione

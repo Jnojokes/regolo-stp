@@ -4,8 +4,8 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | **fase 3 bis — ridisegno** (07/09/2026), parti 1/2 e 2/2 |
-| Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / B / mix), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
+| Ultima fase chiusa | **fase 3 quinquies — tre opzioni, ricomposte per meccanismo** (08/09/2026) |
+| Prossima fase | `/fase-5-movimento` — **ma è bloccata**: comincia leggendo la decisione n. 1 (A / C / D), che la prende il cliente in call con FT. Non si tocca finché non è chiusa |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
@@ -65,6 +65,132 @@
 | 07/09/2026 | 4 | `JsonLd` toglie da sé i campi vuoti e i `[[DA CLIENTE]]`, **a ogni livello di annidamento**, e non emette gusci vuoti | «un campo mancante si omette» (`kit/REGOLO_SEO-GEO-LEGAL.md`): un segnaposto in `vatID` non è un buco visibile, è una partita IVA falsa dichiarata a una macchina |
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 
+
+## Fase 3 quinquies — tre opzioni, e la differenza è di meccanismo (08/09/2026)
+
+Il committente ha detto due cose che chiudono due passate: *«scendi a 3 opzioni»* e *«per adesso
+solo l'opzione A la reputo valida»*. E ne ha dette altre nove, che sono il resto della passata.
+
+### Il numero che conta ha cambiato bersaglio
+
+Per tre passate il criterio è stato **classi CSS condivise, misurate sul build**, e per tre
+passate la correzione ha toccato un *valore* dove serviva un *meccanismo*:
+
+| | prima | dopo | correzione tentata |
+|---|---|---|---|
+| C e D vs B, prima passata | — | 97 % | (erano B ricolorata due volte) |
+| C e D vs B, fase 3 quater | 97 % | C 94 % · D 90 % | palette e carattere |
+| **C↔D, questa passata** | **C 94 % · D 91 %** | **C 73 % · D 61 %** | **tre gusci, tre fogli, tre funnel** |
+
+Con B fuori, il 90-94 % con B non è più un difetto: è un file cancellato. Il numero che conta da
+adesso è **C↔D**, e la parte scesa è quella strutturale. Sotto la piega il markup di C e D
+differiva di **12 righe su 522**; adesso non condividono nemmeno un blocco.
+
+Il pavimento è ~60 %, ed è il chrome che *deve* restare condiviso: brief, footer, segnaposto,
+bottoni. `D dentro C 61 %` è praticamente il pavimento.
+
+### Le tre proposte, in una frase ciascuna
+
+- **A** «Lo studio» — un foglio stampato: non si muove, dichiara. **Non toccata.**
+- **C** «La fonderia» — **lo scorrimento è il meccanismo**: la fotografia è una scheggia che si
+  apre, una lastra per finestra, il vuoto in mezzo, il volume che si separa.
+- **D** «La monografia» — un **fascicolo rilegato**: frontespizio, folio, `fig. n`, colophon.
+  Non si muove niente.
+
+### L'errore mio più grosso della passata, e come si è visto
+
+Il committente ha mandato tre schermate di `studio-foundry.sujen.co` prese **durante lo
+scorrimento**. Io avevo guardato `1440-hero.jpeg`, che è **il fotogramma finale**, e costruito
+quello: la fotografia partiva già a piena finestra dal primo frame. Copiato il risultato, buttato
+il gesto.
+
+Le prove erano **già nel repo** e non le avevo lette come sequenza: `1440-meta-30.jpeg` (carta
+quasi vuota, le fotografie ridotte a schegge di 99-303 px), `1440-meta-55.jpeg` (una scheggia che
+entra dal basso crescendo), `1440-intera.jpeg` (17.503 px di altezza, di cui **l'84 % vuoto**).
+La lezione è metodologica e vale oltre questa passata: **una cattura a pagina intera di un sito
+con gesti allo scorrimento è inservibile come inventario** — prende gli elementi a opacità 0 e a
+maschera chiusa. Chi ne ha bisogno ricattura a passi di una schermata.
+
+### Le undici richieste, e dove sono finite
+
+| | Chiesto | Fatto |
+|---|---|---|
+| 1 | «scendi a 3 opzioni», B esce | rotta, tema (246 righe), `tema-b.ts`, il woff2 di Anybody, `campi.css` (45 KB), `temi-cd.css` (22 KB), `<Parola>`, `HeroDomanda`, `Numeri`, i quattro rami di variante, `nojs.mjs`. CSS non minificato: **130 KB → 89** |
+| 2 | «l'opzione A non si tocca» | verificato con un'impronta, non con una promessa: il `<main>` reso di `/`, `/studio` e `/servizi/strutture`. Cambia di **53 byte**, ed è **una riga** — il link «B» nella barra della proposta. Diff, non deduzione |
+| 3 | il funnel può divergere | **tre funnel**: A smistamento + «passo 1 di 5» · C niente sopra la piega + «passo 1 di 5» · D **l'indice che è il passo 1** + «passo 2 di 5», zero JavaScript |
+| 4 | «molto meno copy e più media» | corpo misurato: **C 7.139 → 2.029** (−72 %) · **D 7.323 → 3.450** (−53 %). A resta 6.593 |
+| 5 | «font più display e allargato» | **Anybody Wide** `wdth 150 / wght 900` per il masthead di D, 11,6 KB — **7,8 KB meno** del file che è uscito. E i due display si calcolano sull'**avanzamento misurato** del carattere, non su un moltiplicatore |
+| 6 | «le interlinee che si sovrappongono» | la soglia è **l'inchiostro, per stringa**, non la scatola di riga né una categoria. `soglie.py` + `interlinee.mjs`: **zero difetti in C e D** su 902 testi che vanno a capo |
+| 7 | lorem ipsum al posto di `[[DA CLIENTE]]` | in C e D, **con la lista della spesa dall'altro lato**: `data-chiede` + `scripts/segnaposto.mjs`. 61 richieste su 17 rotte, di cui **29 solo dentro un attributo** |
+| 8 | la scheggia che si apre allo scroll | fatta e collaudata (`colata.mjs`). Zero byte di JavaScript, e funziona **anche a JS spento** |
+| 9 | «più istituzionale editorial artigiano» | D da «La casa» a «La monografia»: frontespizio, folio, occhiello corrente, `fig. n`, colophon con una riga scritta a mano |
+| 10 | «non ha senso la regola niente 3D» | il volume di C in **WebGL grezzo, ~5 KB** invece dei ~130 di `three.js`. Degrada su tre livelli |
+| 11 | niente push | nessun push |
+
+### Difetti trovati misurando, che nessuno aveva visto
+
+Sono la parte che vale la pena rileggere, perché non erano nell'elenco:
+
+1. **C e D restavano senza apparato grafico.** Il terminatore obliquo a 45° di A sta in una
+   regola **non isolata per tema** (`sezioni.css`, `.quota > *::before`) e l'unico override viveva
+   in `.quota-registro`, morto con B: C e D avrebbero portato la firma di A. Ognuna ha adesso il
+   suo — la riga di metadati ai due estremi, la didascalia numerata.
+2. **La testata di C era posizionata su una misura di un altro blocco** (`top: 44px`, la barra
+   della proposta a 1440). A 390 la barra manda a capo e diventa 150 px: la testata **non si
+   vedeva**.
+3. **Il claim delle due hero era tagliato a documento fermo.** Il palco comincia 120 px sotto il
+   bordo a 1440 e **226 a 390**: gli ultimi 226 px di una `100svh` stanno sotto la piega. Non era
+   nuovo — si vede in `_dopo/CD-390.jpeg`.
+4. **`clip-path` taglia i discendenti a qualunque posizione**, quindi clippare il segnaposto
+   intero faceva **sparire** la targhetta della specifica e la riga di licenza: contro la
+   decisione n. 27 (b). Il ritaglio sta sul media, la dichiarazione sotto la scheggia.
+5. **La `contain` di una view-timeline non comincia a scroll 0** se sopra c'è qualcosa in flusso:
+   fuori range le property tornano all'`initial-value`, che è lo stato finito — cioè si vedeva
+   esattamente il difetto da riparare. Ora `scroll(root)` con una range in unità assolute.
+6. **Il footer scuro di C:** spacchettando i fogli ho perso il blocco che ridichiara i token sul
+   piano scuro, e il collaudo l'ha ritrovato in due righe — `3,02:1` su una voce e **`1:1`
+   sull'annotazione**, nero su nero. È la trappola di `@theme inline` che risolve i `var()` sulla
+   radice una volta sola.
+7. **La media query della testata era rimasta puntata al nome vecchio** della classe: a 390 la
+   `<details>` finiva in una colonna implicita e sfondava di 8 px.
+8. **`reduced-motion` globale non spegne una timeline di scorrimento**: la regola mette
+   `animation-duration: 0.01ms !important`, e su una timeline progressiva la durata è ignorata.
+   Una regola che sembra spegnere tutto e non spegne questo è peggio di nessuna regola.
+
+### Misure a fine passata
+
+| Cosa | Esito |
+|---|---|
+| `next build` · `tsc --noEmit` · `eslint` | puliti |
+| Contrasto sul DOM vero, 8 rotte | **102 coppie distinte, zero sotto soglia** |
+| Interlinee, 8 rotte × 2 larghezze, soglia per stringa | **zero in C e D** su 902 testi che vanno a capo |
+| Sfondamento orizzontale a 320 · 390 · 768 · 1440 | **nessuno** su nessuna rotta (il vecchio `table.scheda` a 320 è uscito con la tabella) |
+| Senza JavaScript | A e C «passo 1 di 5», **D «passo 2 di 5»** — l'indice propaga la scelta senza una riga di JS |
+| La colata | apertura monotona 0 → 1 a 1440 e 390, marchio e targhetta visibili a **ogni** quota, `reduced-motion` sul fotogramma finito |
+| Copy (corpo) | A 6.593 · **C 2.029** (≤ 2.500) · **D 3.450** (≤ 3.500) |
+| Classi condivise | **C dentro D 73 % · D dentro C 61 %** (erano 94 % e 91 %) |
+| L'opzione A | **non toccata**: impronta del `<main>` verificata. Tre delta in tutto, tutti rimozioni di avanzi di B, tutti senza effetto visivo — il link «B» nella barra, l'attributo `data-piano="foglio"` e la classe `brief-tacche-misura`, che non hanno **nessuna regola CSS** in tutto il repo. L'esploso SVG è **byte-identico** (11.540 B), che è la prova che il refactor della geometria non l'ha sfiorato |
+| Peso sul filo a 390 (build di produzione) | A 324 KB · **C 289** · **D 348** · servizio 214. Richieste 18 · 16 · 20 · 12, contro un limite di 40 |
+| **Il volume in WebGL, quanto costa** | **+2 KB di JavaScript misurati** su `/opzione-c` (152 contro i 150 di A), contro un budget di 180 KB e i ~130 che avrebbe voluto `three.js`. La stima dichiarata nella decisione n. 44 era ~5 KB: il numero vero è più basso |
+| Font per rotta | A 40 KB · C 91 · D 120. Lo scarto è il **debito del preload**, non un peso nuovo: ogni rotta di proposta scarica anche l'Archivo di A, che non usa. Sparisce alla fase 5 |
+
+### Cosa resta aperto
+
+- **Quattro difetti d'interlinea in A**, misurati e **fuori perimetro** («A non si tocca»): gli
+  `h1` di `/studio`, `/contatti` e della scheda progetto vanno a capo a interlinea 0,86 contro
+  una soglia di 0,90-0,92. La correzione è **di due righe** — `--regolo-lh-h1` da 0,86 a 0,92,
+  più un `line-height: 0.86` esplicito su `.hero-payoff`, che è composto a mano e approvato — e
+  la decide chi decide su A. Sono elencati in `ATTESI_IN_A` dentro `interlinee.mjs`, che avvisa
+  se un giorno sparissero da soli.
+- **Lighthouse e il peso non sono stati rimisurati** su C e D dopo la ricomposizione. `peso.mjs`
+  gira, ma il numero di riferimento è quello di A: va rifatto prima della fase 8. Il volume in
+  WebGL aggiunge ~5 KB gz di JavaScript su `/opzione-c` e va verificato sul filo.
+- **Il debito del preload** resta: `/opzione-c` e `/opzione-d` scaricano l'Archivo di A che non
+  usano, perché Turbopack fonde i `@font-face` dei temi in un chunk solo. Sparisce alla fase 5
+  con le rotte non scelte.
+- **La barra della proposta** è ancora in flusso sopra la hero, e il suo ingombro cambia con la
+  larghezza (44 px a 1440, 150 a 390): tre valori nel CSS di C e D ne tengono conto. Sparisce
+  alla fase 5 e quei tre valori diventano semplicemente aria.
 
 ## Fase 3 quater — C e D rifatte sulle due reference indicate (08/09/2026)
 
@@ -152,6 +278,12 @@ piega no**: C e D riusano ancora `Numeri`, `Servizi`, `ComeLavoriamo`, `Progetti
   via del chunk unico di Turbopack): spariscono alla fase 5 con le tre rotte non scelte.
 
 ## Fase 3 ter — l'opzione B rifatta per meccanismo (08/09/2026)
+
+> **Storia.** L'opzione B è uscita dal repo alla fase 3 quinquies (`DECISIONI.md` n. 39). Questa
+> sezione si tiene perché il **metodo** che descrive è quello che ha funzionato tre volte — la
+> diagnosi in cifre prese sul build, non in impressioni — e perché due dei suoi meccanismi sono
+> sopravvissuti a lei: il registro che *è* il passo 1 del brief (oggi l'indice di D) e il
+> prima/dopo che si apre da sé senza JavaScript.
 
 FT ha guardato B e ha detto che non gli piaceva. Aveva ragione, e la ragione era **misurabile**:
 non era una questione di gusto, era che B non era una direzione diversa da A — era **A con il

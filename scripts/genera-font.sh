@@ -66,17 +66,38 @@ fai archivo \
   "wght=400:600 wdth=62:100" \
   "archivo-regolo-latin-var.woff2"
 
-# Anybody, e l'asse di larghezza si blocca a 100 **dentro il file**.
-# Non e' un dettaglio di pipeline: e' la ragione della scelta. «A comprime,
-# B no» era una regola di CSS che qualcuno poteva disapplicare; cosi' il file
-# di B non contiene l'asse e `font-stretch` in B non ha su cosa agire.
-# Misurato dopo questa riga: fvar = [wght 400-600] e basta, 19.476 byte,
-# `usWeightClass` 400 (la sorgente e' 100: la trappola del peso di default
-# sparisce qui, ma il `font-weight` esplicito resta comunque), `tnum` presente.
-fai anybody \
+# --- D: il masthead allargato ------------------------------------------------
+# Anybody istanziato a `wdth 150 / wght 900`: un solo taglio, statico.
+#
+# Perche' Anybody, e perche' questa e' UNA decisione e non due. Il committente
+# ha chiesto due cose separate — «font piu' display e allargato» e «le interlinee
+# che si sovrappongono vanno ampliate» — e misurando i sei file veri di
+# public/fonts si scopre che sono la stessa cosa. La soglia sotto la quale un
+# testo che il browser manda a capo si tocca davvero e' `alto(E-accentata) +
+# basso(g)`, letta dai contorni con fontTools:
+#
+#   Anybody 1,019 · Archivo 1,050 · Elsie 1,094 · Caveat 1,101
+#   Inter   1,158 · Plex Mono 1,161
+#
+# Storey — la reference di D, e l'unica del tier A — ha «interlinea 1,0 esatta a
+# ogni corpo display», misurata. Con Inter (1,158) quel valore e' irriproducibile:
+# i titoli di D stavano a 63,4 px con interlinea 63,4 e si toccavano, ed e' il
+# difetto che il committente ha visto. Anybody sta a 1,019, cioe' e' l'unica
+# famiglia del repo che regge l'1,0 su piu' righe. Quindi il masthead allargato e
+# l'interlinea stretta si ottengono con la stessa scelta.
+#
+# `wdth 150` e' il massimo dell'asse (50-150) ed e' il senso della riga: e' il
+# masthead *esteso*, non un peso in piu'. `wght 900` e' anch'esso il massimo.
+# Statico e non variabile: D usa un taglio solo, e un file variabile con due assi
+# per un taglio solo e' peso regalato.
+#
+# Questa riga era stata scritta e poi tolta nel commit 2d2be75, quando usciva la
+# direzione «la parete» che la usava. Torna per un motivo misurato, non perche'
+# c'era.
+fai anybody-wide \
   "https://cdn.jsdelivr.net/fontsource/fonts/anybody:vf@latest/latin-wdth-normal.woff2" \
-  "wght=400:600 wdth=100" \
-  "anybody-regolo-latin-var.woff2"
+  "wght=900 wdth=150" \
+  "anybody-wide-regolo-latin-900.woff2"
 
 # Il mono tecnico dell'opzione B. Non e' un ripensamento sul divieto della
 # fase 3 bis («niente monospace per le etichette dati», cluster n. 5): e' che il

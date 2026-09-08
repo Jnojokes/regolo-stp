@@ -20,7 +20,6 @@ export function Brief({
   interventoIniziale = null,
   etichetta = 'il brief',
   passo1Esterno = false,
-  quotaForma = 'misura',
 }: {
   /** La pagina che ospita il blocco: finisce nella registrazione del consenso. */
   pagina: string
@@ -39,8 +38,6 @@ export function Brief({
    * Vedi `components/brief/BriefForm.tsx`.
    */
   passo1Esterno?: boolean
-  /** La forma della quota di avanzamento: `misura` in A, `registro` in B. */
-  quotaForma?: 'misura' | 'registro'
 }) {
   return (
     <section id="brief" className="brief">
@@ -71,7 +68,6 @@ export function Brief({
             interventoIniziale={interventoIniziale}
             idComuni={ID_COMUNI}
             passo1Esterno={passo1Esterno}
-            quotaForma={quotaForma}
           />
         </div>
       </div>

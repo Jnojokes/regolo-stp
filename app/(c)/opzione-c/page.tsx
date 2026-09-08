@@ -2,87 +2,73 @@ import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
-import { Campo, Documento } from '@/components/campo/Campo'
-import { Registro } from '@/components/campo/Registro'
-import { Lastra } from '@/components/campo/Rottura'
-import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
+import { Cifre, Dichiarazione, Firme, Metodo, Opere } from '@/components/fonderia/Blocchi'
+import { Getto } from '@/components/fonderia/Colata'
+import { Volume } from '@/components/fonderia/Volume'
 import { HeroFonderia } from '@/components/sezioni/HeroFonderia'
-import { Numeri } from '@/components/sezioni/Numeri'
-import { Persone } from '@/components/sezioni/Persone'
-import { PrimaDopo } from '@/components/sezioni/PrimaDopo'
-import { Progetti } from '@/components/sezioni/Progetti'
-import { Servizi } from '@/components/sezioni/Servizi'
 
 export const metadata: Metadata = {
   title: 'Homepage',
   description:
-    'Proposta di homepage per REGOLO, variante «La fonderia»: fotografia a piena finestra e il marchio in serif che le passa sopra da bordo a bordo.',
+    'Proposta di homepage per REGOLO, variante «La fonderia»: la fotografia è una scheggia che si apre scorrendo, e il vuoto è la struttura.',
 }
 
 /**
- * Home — opzione C «La fonderia», dal sistema di **Studio Foundry**, che il
- * committente ha chiesto per nome indicando l'indirizzo
- * (`DECISIONI.md` n. 37). Guardata, non descritta:
- * `kit/reference/studio-foundry/`.
+ * Home — opzione C «La fonderia», dal sistema di **Studio Foundry**
+ * (`kit/reference/studio-foundry/`, guardato).
  *
- * La direzione precedente di questa rotta («La parete», da Iad-lab) è stata
- * scartata dal committente con una frase sola — *«non hanno senso le opzioni C
- * e D»* — e la diagnosi è un numero, non un'impressione: C e D condividevano il
- * **97 % delle classi con B**. Erano B ricolorata due volte.
+ * ## Il meccanismo: **lo scorrimento**
  *
- * Quello che cambia adesso non è una tinta, è **che cos'è la prima schermata**:
- * qui la home apre con una **fotografia a piena finestra** e ci mette sopra il
- * marchio in serif, da bordo a bordo. In A la fotografia sta accanto al testo;
- * in B non c'è nemmeno, perché B apre con una domanda su fondo nero.
+ * Ogni proposta ha il suo, e sono tre cose diverse (`DECISIONI.md` n. 40):
  *
- * Il meccanismo di B non si tocca: il registro — le sei righe che *sono* il
- * passo 1 del brief — arriva **sotto la piega**, sulla carta calda, e la scelta
- * si propaga fino al form senza una riga di JavaScript. Sopra c'è il manifesto,
- * sotto comincia il lavoro: è la stessa scelta della reference, che sopra la
- * piega non chiede niente.
+ * - **A** è un foglio stampato: non si muove, dichiara;
+ * - **C** cola: la fotografia è una scheggia che si apre, una lastra per
+ *   finestra, il volume che si separa, il testo del metodo che entra. Il
+ *   movimento **porta contenuto**, non lo decora;
+ * - **D** è un fascicolo rilegato: non si muove niente.
  *
- * **Onestà sul residuo**: sotto la piega C riusa ancora i blocchi di B
- * (`Numeri`, `Servizi`, `ComeLavoriamo`, `Progetti`, `PrimaDopo`, `Persone`),
- * vestiti dal tema ma non ricomposti. Le classi condivise con B sono passate dal
- * 97 % al **94 %**: la hero e il sistema tipografico sono tre siti diversi, i
- * corpi non ancora.
+ * ## Il funnel di C è diverso, e non per caso
+ *
+ * *«L'impianto del funnel tra le diverse opzioni può essere diverso comunque.»*
+ * Il registro delle sei righe — il meccanismo nato per B, che precompilava il
+ * passo 1 del brief senza una riga di JavaScript — **esce da C**. C vende con
+ * le fotografie e non chiede niente sopra la piega, che è quello che fa la
+ * reference: `1440-hero.jpeg` non ha CTA, non ha occhiello, non ha numeri.
+ * Il brief parte da «passo 1 di 5».
+ *
+ * Il registro resta a **D**, dove diventa l'indice del monografico. Così i tre
+ * funnel sono tre, e `scripts/collaudo/nojs-rotte.mjs` lo legge come numero: A
+ * e C «passo 1 di 5», D «passo 2 di 5».
+ *
+ * ## L'ordine, e il perché di ognuno
+ *
+ * copertina → dichiarazione → cifre → tre opere → metodo → volume → firme →
+ * brief. Non è l'ordine di `CLAUDE.md` § Homepage e la deviazione è dichiarata:
+ * escono la tabella dei sei servizi, il prima/dopo (va a D) e il territorio,
+ * perché portavano 2.400 caratteri per dire cose che una proposta con «molto
+ * meno copy e più media» non deve dire in home.
+ *
+ * **Due blocchi wow, non adiacenti** (`CLAUDE.md` § Regole, 3): la colata in
+ * copertina e il volume a metà pagina. Fra loro ci sono quattro colate.
  */
 export default function OpzioneC() {
   return (
     <>
       <BarraProposta opzione="c" />
       {/* La pagina apre su **carta**, con una scheggia di fotografia in mezzo
-          che si apre mentre si scorre: è il gesto di Studio Foundry preso dalle
-          schermate *durante* lo scorrimento e non dal fotogramma finale. Il
-          perché sta in `components/sezioni/HeroFonderia.tsx`. */}
+          che si apre mentre si scorre. Il perché — e l'errore che ripara — sta
+          in `components/sezioni/HeroFonderia.tsx`. */}
       <HeroFonderia />
-      <Documento>
-        {/* Il registro è uscito dalla hero e per adesso sta qui: alla parte 2/3
-            di questa passata esce da C del tutto — il funnel di C parte dal
-            brief, quello di D dall'indice. Fino a lì la pagina non cambia
-            niente sotto la piega, così la fermata si giudica sulla sola prima
-            schermata. */}
-        <Campo primo id="percorsi" etichetta="il punto di partenza">
-          <h2 className="fonderia-domanda">Che intervento hai in mente?</h2>
-          <p className="hero-lead">
-            Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da
-            parte tua. Ingegneria civile e architettura, a Fermo.
-          </p>
-          <Registro />
-        </Campo>
-        <Numeri />
-        <Servizi variante="tabella" />
-        <ComeLavoriamo variante="sequenza" />
-        <Progetti variante="dati" />
-        <Lastra
-          label="Fotografia di un’opera realizzata — dallo studio, non un render"
-          demo="opera-02"
-          nota="RESIDENZIALE · [[DA CLIENTE: anno]]"
-        />
-        <PrimaDopo />
-        <Persone variante="registro" />
-      </Documento>
-      <Brief pagina="/opzione-c" etichetta="il brief" passo1Esterno quotaForma="registro" />
+      <Getto>
+        <Dichiarazione />
+        <Cifre />
+        <Opere />
+        <Metodo />
+        <Volume />
+        <Firme />
+      </Getto>
+      {/* Nessun `passo1Esterno`: in C il brief comincia dall'inizio. */}
+      <Brief pagina="/opzione-c" etichetta="il brief" />
       <BarraMobile />
     </>
   )

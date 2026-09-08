@@ -62,7 +62,6 @@ const snapshotServer = () => false
 export function BriefForm({
   interventoIniziale,
   passo1Esterno = false,
-  quotaForma = 'misura',
   pagina,
   idComuni,
 }: {
@@ -85,13 +84,6 @@ export function BriefForm({
    * consenso e `<datalist>`: **zero modifiche**.
    */
   passo1Esterno?: boolean
-  /**
-   * La forma della quota di avanzamento, come in `components/Quota.tsx`:
-   * `misura` è la linea di quota con i terminatori obliqui a 45° (A),
-   * `registro` è la riga di documento senza terminatori (B). È l'ultima
-   * occorrenza del motivo di A che restava dentro l'opzione B.
-   */
-  quotaForma?: 'misura' | 'registro'
   /** Da che pagina parte il brief: finisce nella registrazione del consenso. */
   pagina: string
   /** L'id del `<datalist>` dei comuni, che il server disegna fuori dal form. */
@@ -278,11 +270,6 @@ export function BriefForm({
       onFocusCapture={primoContatto}
       onChangeCapture={campoCambiato}
       className="brief-scheda"
-      // Il foglio si DICHIARA (`app/globals.css`, blocco «B: i token sono legati
-      // al PIANO»): prima era una lista di otto classi agganciata al tema, e ogni
-      // blocco nuovo andava ricordato lì a mano o usciva bianco su bianco.
-      // In A l'attributo non fa niente: la regola è dentro `[data-theme='b']`.
-      data-piano="foglio"
     >
       {/* Trappola per i bot: fuori dall'albero di accessibilità e fuori dal
           percorso di tabulazione, quindi invisibile a chi compila davvero.
@@ -311,7 +298,7 @@ export function BriefForm({
           tutti visibili e «passo 1 di 5» è vero a pagina ferma. Per questo sta
           **fuori** dai fieldset e si rende una volta sola. */}
       <div className="brief-avanzamento">
-        <ol className={`brief-tacche brief-tacche-${quotaForma}`} aria-hidden="true">
+        <ol className={'brief-tacche'} aria-hidden="true">
           {passi.map((p, i) => (
             /* Senza JavaScript nessuna tacca prendeva `data-fatto`: il disegno
                diceva zero su cinque mentre l'annotazione accanto diceva

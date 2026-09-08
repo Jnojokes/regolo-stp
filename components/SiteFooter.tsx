@@ -43,12 +43,12 @@ export function SiteFooter({
 }: {
   conTerritorio?: boolean
   /**
-   * `lockup` (A) chiude un sito; `cartiglio` (B) chiude un **documento**, e
+   * `lockup` (A) chiude un sito; le altre due chiudono una **proposta**, e
    * cade sulla stessa griglia a due colonne di tutti i campi. La variante
    * arriva dal layout, che è dove il tema si sceglie: composizione, non un
    * `if` sul tema nel markup.
    */
-  variante?: 'lockup' | 'cartiglio' | 'centrato' | 'pastiglia'
+  variante?: 'lockup' | 'centrato' | 'pastiglia'
 }) {
   return (
     <footer className={`site-footer site-footer-${variante}`}>
@@ -121,7 +121,6 @@ export function SiteFooter({
             dettaglio={province.map((p) => `${p.sigla} ${contaComuni(p.sigla)}`).join(', ')}
             /* In B anche l'ultima quota della pagina è una riga di documento:
                niente terminatori obliqui, che sono la firma di A. */
-            forma={variante === 'cartiglio' ? 'registro' : 'misura'}
           />
         </div>
       )}

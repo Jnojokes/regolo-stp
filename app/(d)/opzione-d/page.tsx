@@ -2,74 +2,83 @@ import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
-import { Documento } from '@/components/campo/Campo'
-import { Lastra } from '@/components/campo/Rottura'
-import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
-import { HeroCasa } from '@/components/sezioni/HeroCasa'
-import { Numeri } from '@/components/sezioni/Numeri'
-import { Persone } from '@/components/sezioni/Persone'
-import { PrimaDopo } from '@/components/sezioni/PrimaDopo'
-import { Progetti } from '@/components/sezioni/Progetti'
-import { Servizi } from '@/components/sezioni/Servizi'
+import {
+  Banda,
+  Colophon,
+  Frontespizio,
+  Metodo,
+  PrimaDopo,
+  Ritratti,
+  Sommario,
+  Tavole,
+} from '@/components/monografia/Blocchi'
+import { Copertina } from '@/components/monografia/Copertina'
+import { Fascicolo } from '@/components/monografia/Segnatura'
 
 export const metadata: Metadata = {
   title: 'Homepage',
   description:
-    'Proposta di homepage per REGOLO, variante «La casa»: fotografia a piena finestra, tipo piccolo, vuoto disuguale e numeri tono su tono.',
+    'Proposta di homepage per REGOLO, variante «La monografia»: un fascicolo stampato — frontespizio, indice, tavole con i dati duri, colophon.',
 }
 
 /**
- * Home — opzione D «La casa», dal sistema di **Storey Architecture**, chiesto
- * per nome dal committente (`DECISIONI.md` n. 37) e **unica delle quattro
- * reference già misurata nel tier A** di `SCHEDA.md`: i suoi valori non sono
- * descritti, sono letti dal browser.
+ * Home — opzione D «La monografia».
  *
- * C e D aprono tutte e due con una fotografia a piena finestra, e sopra ci
- * mettono l'opposto. C ci scrive il nome dello studio alto quanto lo schermo;
- * **D non ci mette quasi niente**: marchio piccolo, menu piccolo, cinque
- * segmenti, un paragrafo in lineare leggero, una pastiglia bianca. Il contrasto
- * di scala fra le due prime schermate è la differenza, e si vede in una
- * miniatura al 25 %.
+ * ## Perché non si chiama più «La casa»
  *
- * I tre gesti misurati di Storey che qui diventano regole:
- * **interlinea 1,0** anche sul display, **spaziatura negativa anche sulle
- * maiuscole** (−0,03em sul titolo, −0,1em sulla mono), e il **vuoto disuguale**
- * — dopo una lastra il campo successivo respira 2,2 volte tanto, e `#persone`
- * 2,8. Non è padding: è composizione.
+ * Il committente ha chiesto *«uno più istituzionale editorial artigiano
+ * architetto»*, e quel nome descriveva la reference, non la proposta. **Storey
+ * resta la reference dei valori misurati** — interlinea stretta, spaziatura
+ * negativa anche sul maiuscolo, vuoto disuguale, immagine che sborda da un lato,
+ * contatore tono su tono, schedina a righe — ma non del tono: Storey è minimale
+ * e quieta. Il tono è la **monografia stampata**, e da lì vengono le cose che
+ * nessun'altra proposta ha: il **frontespizio** col masthead allargato, il
+ * **folio** al margine esterno, l'occhiello corrente, le figure numerate
+ * `fig. 03`, il **colophon** con una riga scritta a mano.
  *
- * I numeri di campo (`contatore`) sono tono su tono, a 1,48:1: sono
- * **decorazione dichiarata** (`data-decorativo`), nessuna informazione ci passa,
- * e il collaudo del contrasto li salta apposta.
+ * ## Il meccanismo: **la stampa**
  *
- * **Onestà sul residuo**: come in C, sotto la piega i blocchi sono ancora quelli
- * di B, vestiti dal tema ma non ricomposti. Le classi condivise con B sono
- * passate dal 97 % al **90 %**.
+ * In D non si muove niente, ed è la differenza da C, dove lo scorrimento *è* il
+ * meccanismo (`DECISIONI.md` n. 40). Una sola eccezione, e **ripara un
+ * difetto**: il prima/dopo, che senza JavaScript resterebbe fermo a metà perché
+ * il cursore non viene reso. Nessuna rivelazione allo scorrimento: è il pattern
+ * di movimento più generato che esista, e chiamarlo diversamente non lo cambia.
+ *
+ * ## Il funnel di D è l'indice, e fa partire il brief da «passo 2 di 5»
+ *
+ * Le sei voci del sommario sono `radio` con `form="brief-form"`: sono membri del
+ * form che sta in fondo alla pagina, quindi la risposta arriva **senza una riga
+ * di JavaScript**. È il gesto che A non ha per costruzione, e che C non ha per
+ * scelta — C vende con le fotografie e non chiede niente sopra la piega. Tre
+ * proposte, tre funnel, e `scripts/collaudo/nojs-rotte.mjs` lo legge come
+ * numero.
+ *
+ * ## L'ordine è quello di un libro, non di una home
+ *
+ * copertina → frontespizio → indice → tre tavole → metodo → banda →
+ * prima/dopo → ritratti → colophon → brief. Deviazione dichiarata da
+ * `CLAUDE.md` § Homepage: escono la tabella dei sei servizi, i numeri e il
+ * territorio. I numeri stanno a C, dove sono quattro cifre ai due estremi di
+ * quattro righe; qui i dati duri sono **nelle tavole**, che è dove un
+ * monografico li mette.
  */
 export default function OpzioneD() {
   return (
     <>
       <BarraProposta opzione="d" />
-      {/* Come Storey: **fotografia a piena finestra**, e sopra ci va il meno
-          possibile — marchio piccolo, cinque segmenti, un paragrafo, una
-          pastiglia bianca. Il contrario di C, che sopra la stessa fotografia ci
-          mette un marchio alto quanto lo schermo. */}
-      <HeroCasa />
-      <Documento>
-        <Numeri contatore="02" />
-        <Servizi variante="tabella" contatore="03" />
-        <ComeLavoriamo variante="sequenza" contatore="04" />
-        <Progetti variante="dati" contatore="05" />
-        {/* La banda nera con il claim bianco sopra la fotografia: è il blocco a
-            metà pagina di Storey, 115 px e interlinea 1,0. */}
-        <Lastra
-          label="Fotografia di un’opera realizzata — dallo studio, non un render"
-          demo="opera-02"
-          nota="02) l’opera, non il render"
-        />
+      <Copertina />
+      <Fascicolo>
+        <Frontespizio />
+        <Sommario />
+        <Tavole />
+        <Metodo />
+        <Banda />
         <PrimaDopo />
-        <Persone variante="registro" contatore="07" />
-      </Documento>
-      <Brief pagina="/opzione-d" etichetta="il brief" passo1Esterno quotaForma="registro" />
+        <Ritratti />
+        <Colophon />
+      </Fascicolo>
+      {/* `passo1Esterno`: il passo 1 è l'indice, e il brief comincia dal 2. */}
+      <Brief pagina="/opzione-d" etichetta="il brief" passo1Esterno />
       <BarraMobile />
     </>
   )

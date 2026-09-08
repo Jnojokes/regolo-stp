@@ -1080,18 +1080,6 @@
     background-color: var(--regolo-scuro-bg);
     color: var(--regolo-scuro-fg);
   }
-  /* In B le due metà cadono sui **due piani**, ed è la lettura giusta del
-     blocco: lo stato attuale è la tavola grezza, il progetto è il foglio
-     disegnato. Serve una regola esplicita perché in B `--regolo-scuro-bg` *è*
-     il foglio (là la banda scura è la figura chiara), quindi senza questa
-     riga le due metà uscivano tutte e due bianche e il cursore non rivelava
-     niente — lo stesso difetto che il blocco aveva prima della fase 3 bis,
-     per la ragione opposta. Il rapporto fra le due resta 21:1. */
-  [data-theme='b'] .confronto,
-  [data-theme='b'] .confronto-prima {
-    background-color: var(--regolo-paper);
-    color: var(--regolo-ink);
-  }
   /* `> .confronto-dopo` e la specificità: la metà «dopo» è ritagliata dal
      cursore e deve vincere sulla metà «prima», che occupa lo stesso spazio. */
   .confronto > .confronto-dopo {
@@ -1386,17 +1374,74 @@
     background-color: var(--color-ink);
     color: var(--color-paper);
   }
-  /* Le fughe da 1 px fra le celle sono il `background` del contenitore. In B
-     le celle sono fogli e l'inchiostro è bianco: la fuga sarebbe bianca su
-     bianco, cioè niente. Qui la fuga è la **tavola** che si vede fra i tre
-     fogli, che è anche il modo in cui la barra si stacca dalla pagina. */
-  [data-theme='b'] .barra-mobile {
-    background-color: var(--regolo-paper);
-    border-top-color: var(--regolo-line);
-  }
   /* La voce senza dato non è un link: è una casella dichiarata vuota. */
   .barra-mobile > .barra-mobile-manca {
     color: var(--color-muted);
     font-weight: 500;
+  }
+}
+
+/* ============================================================================
+   IL PRIMA/DOPO CHE SI APRE DA SÉ QUANDO NON C'È UN CURSORE
+   ----------------------------------------------------------------------------
+   Il commento che stava qui diceva «l'unica animazione allo scorrimento di
+   tutta l'opzione B». Era vero quando l'ha scritto e ha smesso di esserlo due
+   volte: `data-guidato` è reso anche da `/progetti/esempio-scheda`, che è tema
+   A, e da D; e l'opzione B non esiste più (`DECISIONI.md` n. 39). Il blocco è
+   arrivato qui da `app/css/campi.css`, che è stato cancellato con lei.
+
+   A cosa serve, che non è cambiato: **ripara un difetto**. Senza JavaScript il
+   cursore del prima/dopo non viene reso — sarebbe un controllo morto — e il
+   blocco resta fermo al 50 %, cioè una fotografia divisa a metà che non
+   dimostra niente. Con `view()` il taglio fa quello che il controllo farebbe se
+   ci fosse.
+
+   Le quattro cautele, tutte necessarie:
+
+   1. `@property` su `--x`: una custom property non registrata **non si anima**,
+      interpola a scatti fra due valori discreti;
+   2. tutto dentro `@supports (animation-timeline: view())`. Supporto verificato
+      l'08/09/2026: Chrome ed Edge 115+, Safari e Safari iOS 26+, **Firefox no**.
+      Dove manca, il blocco resta com'è;
+   3. **niente `animation-fill-mode: both`**: è la trappola con cui questa
+      tecnica lascia il contenuto bloccato sul primo fotogramma dove la
+      dichiarazione cade a metà;
+   4. `[data-guidato]`: al primo `input` l'attributo sparisce e l'animazione con
+      lui, perché **una dichiarazione di animazione batte lo stile inline** e
+      senza questo il cursore smetterebbe di controllare il taglio mentre lo si
+      trascina.
+
+   Nota per chi legge dopo: in C il movimento allo scorrimento **non è
+   un'eccezione, è il meccanismo** (`app/css/fonderia.css`, la colata). In D non
+   ce n'è nessuno tranne questo, e la differenza fra le due proposte è
+   esattamente lì.
+   ========================================================================== */
+
+@property --x {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+@layer components {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .confronto[data-guidato] {
+        animation: confronto-si-rivela linear;
+        animation-timeline: view();
+        /* Il taglio si muove mentre il blocco attraversa la finestra, e si
+           ferma quando è al centro: da lì in poi è fermo al 50 %, dove sta il
+           controllo. Non è un effetto continuo che segue lo scorrimento. */
+        animation-range: entry 20% cover 50%;
+      }
+      @keyframes confronto-si-rivela {
+        from {
+          --x: 8%;
+        }
+        to {
+          --x: 50%;
+        }
+      }
+    }
   }
 }

@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { MEDIA_DEMO } from '@/lib/media-demo'
 
 /**
- * Barra della proposta: dice quale delle due home si sta guardando e permette
- * di passare all'altra con un click.
+ * Barra della proposta: dice quale delle tre home si sta guardando e permette
+ * di passare alle altre con un click.
  *
  * Serve a FT, non al cliente: da una sola anteprima si mostrano entrambe le
  * proposte senza dettare due indirizzi al telefono. È la barra `.proposal` dei
@@ -12,13 +12,12 @@ import { MEDIA_DEMO } from '@/lib/media-demo'
  * legge i segnaposto come una proposta di testo, o i quattro rettangoli delle
  * persone come un organigramma.
  *
- * **Sparisce alla fase 5**, insieme alla rotta non scelta (DECISIONI.md n. 1):
- * in produzione non restano due home, e su una home sola questa barra è solo
+ * **Sparisce alla fase 5**, insieme alle rotte non scelte (DECISIONI.md n. 1):
+ * in produzione non restano tre home, e su una home sola questa barra è solo
  * una riga di rumore sopra la hero.
  */
 const PROPOSTE = {
   a: { nome: 'opzione A — «lo studio»', href: '/' },
-  b: { nome: 'opzione B — «il manifesto»', href: '/opzione-b' },
   c: { nome: 'opzione C — «la fonderia»', href: '/opzione-c' },
   d: { nome: 'opzione D — «la monografia»', href: '/opzione-d' },
 } as const
@@ -29,10 +28,11 @@ export function BarraProposta({ opzione }: { opzione: Opzione }) {
   // I nomi sono quelli di CLAUDE.md § Le quattro opzioni, che sono anche quelli
   // con cui FT le vende in call. Da qui non si cambiano.
   //
-  // Da due proposte a quattro (`DECISIONI.md` n. 35): non è un catalogo, è che
-  // il committente ha portato **tre sistemi misurati** e ognuno è una direzione
-  // intera, non una variante. La barra le mette tutte in fila perché in call si
-  // alternano le schede, e passare da una all'altra è la dimostrazione.
+  // Tre, non quattro: l'opzione B è uscita (`DECISIONI.md` n. 39). Non era una
+  // variante di troppo in un catalogo — era la proposta da cui C e D erano nate
+  // per ricolorazione, e finché stava in mezzo il confronto in call si giocava
+  // su tre schede che si somigliavano. La barra le mette in fila perché
+  // alternarle *è* la dimostrazione.
   const questa = PROPOSTE[opzione].nome
   const altre = (Object.keys(PROPOSTE) as Opzione[]).filter((k) => k !== opzione)
 

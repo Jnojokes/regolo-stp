@@ -108,7 +108,7 @@ export function Confronto({
           <span className="confronto-specifica">{specifica}</span>
         </div>
 
-        <div className="confronto-meta confronto-dopo" data-piano="foglio">
+        <div className="confronto-meta confronto-dopo">
           {eDopo ? <MediaEsempio dato={eDopo} priorita={false} /> : null}
           <span className="confronto-stato">progetto</span>
           <span className="confronto-specifica">{dopo}</span>

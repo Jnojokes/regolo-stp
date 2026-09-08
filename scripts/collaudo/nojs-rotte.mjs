@@ -5,7 +5,6 @@ const p = await ctx.newPage()
 const out = []
 for (const [nome, url] of [
   ['A', 'http://localhost:3001/'],
-  ['B', 'http://localhost:3001/opzione-b'],
   ['C', 'http://localhost:3001/opzione-c'],
   ['D', 'http://localhost:3001/opzione-d'],
   ['servizio', 'http://localhost:3001/servizi/strutture'],

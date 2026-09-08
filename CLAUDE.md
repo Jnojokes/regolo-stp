@@ -74,98 +74,119 @@ esattamente ciò che questa fase esiste per non avere. `#123C7A` sta a **216°**
 entrambi i fondi, e in Italia il tampone del timbro professionale è blu. Non entra mai in header, bottoni, stati, anello di fuoco, filetti,
 esploso, mappa.
 
-**Le due opzioni sono lo stesso inchiostro con i ruoli scambiati** (decisione n. 26, che emenda
-la n. 21). A è il **tavolo da disegno**: carta bianca, con due tagli netti verso il nero. B è la
-**tavola**: nera dall'header al footer, con il contenuto denso su **fogli bianchi** appuntati
-sopra. Il fondo medio che B aveva prima era difendibile sui numeri e non si vedeva.
-
-**Ma il colore non è la differenza fra le due proposte, e crederlo è stato l'errore di due
-passate** (decisione n. 29, che chiude la questione). Alla fase 3 bis il nero portava il **100 %**
-della differenza — misurato: 123 classi CSS uguali su 165, `SiteHeader` byte-identico, 42 token su
-98 con lo stesso identico valore, l'intero sistema di impaginazione compreso. Adesso ne porta
-**zero**, e il valore resta `#000000` non perché sia il migliore ma perché è già stato cambiato
-due volte e la terza correzione di un valore è l'errore da non fare. Al nero resta un compito
-solo, e nessun altro colore lo farebbe: **è ciò che rende il foglio un oggetto** — su carta bianca
-non puoi avere «un foglio», hai una pagina. La differenza vera sta in § Due opzioni, ed è di
-meccanismo. Il rovescio di figura e fondo si riconosce comunque in una miniatura al 25 %
-(`kit/reference/_dopo/PROVA-MINIATURA-25.jpeg`).
+**Le tre proposte, e le tre carte** (le decisioni n. 26 e n. 29 riguardavano l'inversione di B e
+sono **storia**: B è uscita con la n. 39). Nessuna delle tre è l'inversione di un'altra, e non
+per caso — l'inversione di figura e fondo era il modo in cui due passate avevano provato a
+distinguere due proposte **cambiando un valore**, e non ha funzionato nessuna delle due volte.
 
 ```
-A «L'elevato» — la carta              B «Lo strumento» — la tavola
---paper   #FFFFFF  carta              --paper   #000000  la tavola
---surface #FFFFFF  = carta            --surface #FFFFFF  il foglio: la FIGURA, 21,00:1 dal fondo
---ink     #000000  21,00:1            --ink     #FFFFFF  21,00:1 — in B l'inchiostro è chiaro
---muted   #5E5E5E   6,48:1            --muted   #9A9A9A   7,46:1 sulla tavola
---line    #757575   4,61:1            --line    #5C5C5C   3,14:1 — filetto, MAI testo (1.4.11)
---ph      #ECECE9  superficie         --ph      #000000  campo sulla tavola, quindi bordato
---muted-invert #9A9A9A 7,46:1 su ink  --muted-invert #454A47  9,04:1 sul foglio
---timbro  #123C7A  10,75:1 su carta   --timbro  #93B7DE  10,07:1 sulla tavola
---timbro-soft #E7ECF6                 --timbro-soft transparent (sulla tavola il canale è il filetto)
---errore  #8E1B10   9,07:1 su carta   --errore  #F08C7A   8,74:1 sulla tavola
---btn: inchiostro su carta (A)        --btn: il foglio sulla tavola (B) — verso invertito
+A «Lo studio» — carta bianca      C «La fonderia» — carta calda    D «La monografia» — bianco
+--paper   #FFFFFF                 --paper   #F3F0EC                --paper   #FFFFFF
+--surface #FFFFFF                 --surface #FFFFFF                --surface #FFFFFF
+--ink     #000000  21,00:1        --ink     #1B1B19  15,18:1       --ink     #000000  21,00:1
+--muted   #5E5E5E   6,48:1        --muted   #6A665F   5,03:1       --muted   #4A4A4A
+--line    #757575   4,61:1        --line    #B9B3A8   1,90:1 filo  --line    #5C5C5C  filo
+--ph      #ECECE9                 --ph      #E7E2DA                --ph      grigio di campo
+--timbro  #123C7A  10,75:1        --timbro  #123C7A   8,86:1       --timbro  #123C7A
+--errore  #8E1B10   9,07:1        --errore  #8E1B10   8,15:1       --errore  #8E1B10
 ```
 
-**In B i token sono legati al PIANO, non alla pagina.** È la regola che fa funzionare
-l'inversione, e senza di lei l'opzione B è illeggibile: un elemento non sa su quale piano si
-trova, quindi è il piano a ridichiarare i token. Chi *è* un foglio sta in un elenco solo, in
-`app/globals.css` (blocco «B: i token sono legati al PIANO»), con due trappole già pagate: non
-si ridichiara `--regolo-surface` — il foglio si dipinge con quello — e non entra in lista chi usa
-`--color-ink` come **fondo** (la barra della proposta è chrome invertito, non un foglio). Il
-foglio ridichiara i `--regolo-*` **e** i gemelli `--color-*`, perché `@theme inline` risolve i
-`var()` sulla radice una volta sola: misurato sul pannello, `--regolo-ink: #000` e
-`--color-ink: #fff` insieme, cioè testo bianco su foglio bianco.
+Il **nero** non porta più nessuna differenza fra le proposte — era il difetto della 3 bis, dove
+ne portava il 100 % — e gli resta un compito solo: in D è la **banda a metà pagina**, il momento
+grande dell'unica proposta che non si muove. È pieno, `#000000`: `#0B0B0B` e `#111` sono la tell
+n. 5, e tre delle quattro reference misurate usano `rgb(0,0,0)`.
 
-Il nero è **pieno**: `#0B0B0B` e `#111` sono la tell n. 5, e tre delle quattro reference
-misurate usano `rgb(0,0,0)`. Il fuoco non è mai colorato — è inchiostro sulla carta e carta
-sull'inchiostro, quindi 21:1 per costruzione. Ogni rapporto qui sopra è verificato con
-`node scripts/contrasto.mjs` (72 coppie distinte su 7 pagine, zero sotto soglia), e il valore
-misurato sta in coda a ogni token in `globals.css`. Il `theme-color` dei due layout è la carta
-del proprio tema — `#FFFFFF` e `#000000` — e va tenuto allineato a mano: era rimasta la palette
-del kick-off su tutte e otto le rotte.
+**La regola dei token legati al piano resta, e ha già ripagato una volta in questa passata.**
+Chi cambia fondo ridichiara i token, e ridichiara **tutti e due i prefissi** — `--regolo-*` e i
+gemelli `--color-*` — perché `@theme inline` risolve i `var()` sulla radice una volta sola.
+Spacchettando i fogli di stile ho perso il blocco che lo faceva sul footer scuro di C, e il
+collaudo l'ha ritrovato in due righe: `3,02:1` su una voce e **`1:1` sull'annotazione**, cioè
+nero su nero. Il blocco è tornato in `app/css/fonderia.css` con il commento che spiega perché
+esiste.
 
-### Tipografia — una famiglia per tema, zero monospace
+Il fuoco non è mai colorato — è inchiostro sulla carta e carta sull'inchiostro, quindi 21:1 per
+costruzione. Ogni rapporto è verificato **sul DOM vero** con
+`node scripts/collaudo/contrasto-dom.mjs`: **102 coppie distinte su 8 rotte, zero sotto soglia**.
+Il `theme-color` di ogni layout è la carta del proprio tema e va tenuto allineato a mano.
 
-- **A: Archivo** (OFL, `wght` 400-600 + **`wdth` 62-100**) · **B: Anybody** (OFL, `wght` 400-600,
-  `wdth` **istanziato via dentro il file**). Si generano con `bash scripts/genera-font.sh`:
-  **40,6 KB e 19,0 KB**, un file per rotta, contro i 60,8 (A) e 138,3 (B) di prima.
-- **Il carattere di B si sceglie su una metrica, non su un genere** (decisione n. 30). Archivo e
-  Chivo — il carattere che B aveva — hanno la **cap-height identica al millesimo, 0,686**: alla
-  stessa dimensione nominale depositano la stessa quantità di nero, ed è per questo che a occhio
-  erano lo stesso carattere. La regola: **Δ x/cap ≥ 5 % da Archivo**, e sotto non si sceglie.
-  Anybody sta a +14,6 %. La mossa ovvia — uno slab, «cambio genere» — è misurata e scartata:
-  Bitter sta a −1,4 %, cioè *più vicino* di Chivo.
-- **L'asse di larghezza è la leva del mobile**, e ha una ragione funzionale: a 390 px il
+### Tipografia — una famiglia display per tema, e le soglie sono misurate
+
+- **A: Archivo** (OFL, `wght` 400-600 + **`wdth` 62-100**, 40,7 KB) · **C: Elsie 900** (11,2 KB)
+  per il display, Inter per il corpo, IBM Plex Mono sotto i 14 px · **D: Anybody Wide**
+  (`wdth 150 / wght 900`, statico, **11,6 KB**) per il masthead, Inter, Plex Mono, e **Caveat una
+  volta sola** in tutta la pagina. Si generano con `bash scripts/genera-font.sh`.
+- **Il masthead allargato di D e l'interlinea 1,0 di Storey sono la stessa decisione** (n. 43).
+  Il committente ha chiesto due cose in due momenti — *«font più display e allargato»* e *«le
+  interlinee che si sovrappongono vanno ampliate»* — e misurando i file veri sono un problema
+  solo: Storey ha «interlinea 1,0 esatta a ogni corpo display», e con Inter quel valore è
+  **irriproducibile** (soglia 1,232 nel caso peggiore). Anybody a `wdth 150` è l'unico candidato
+  che dà insieme il masthead esteso e una soglia bassa, e costa **7,8 KB meno** del file
+  variabile di Anybody uscito con l'opzione B: è la seconda scelta della fase che restituisce
+  budget invece di spenderlo.
+- **Il corpo non è un gradino di scala dove deve toccare i due margini.** Il marchio di C e il
+  masthead di D si calcolano sull'**avanzamento misurato** del carattere:
+  `calc((100vw − 2×margine) / 6.44)` per «REGOLO STP» in Elsie, `/ 6.282` per «REGOLO» in Anybody
+  Wide, letti da `hmtx` con fontTools. Il metodo conta: la prima versione del marchio di C usava
+  un moltiplicatore stimato e si fermava **114 px prima** del margine destro — 162 contro 60 a
+  sinistra, misurato — mentre nella reference lo scarto fra i due margini è 18 px.
+- **L'asse di larghezza è la leva del mobile** in A, e ha una ragione funzionale: a 390 px il
   contrasto di scala estremo si ottiene solo se il display può stringersi, che è il gesto del
   disegnatore quando comprime la scritta per farla stare dentro una quota. Nella hero di A
   «Progettiamo e dirigiamo.» sta a `wdth 100` e «Dal disegno al cantiere.» a `wdth 75`: stessa
-  famiglia, stesso corpo, due larghezze. **A comprime, B no** — ed è una delle differenze fra
-  le due proposte.
-- **Niente monospace.** Archivo e Anybody hanno `tnum` e cifre già di larghezza fissa: le colonne
-  di numeri si incolonnano con `font-variant-numeric: tabular-nums`. Via JetBrains Mono, −31 KB
-  e una tell del cluster 5 in meno.
-- **Nessun asse `ital` nei due file**: «una sola parola del titolo in corsivo» non è vietata, è
-  tecnicamente impossibile.
-- Trappola verificata con fontTools: il peso **di default** è 600 (Archivo). Anybody in sorgente
-  ha `usWeightClass 100` — un corpo senza `font-weight` uscirebbe *filiforme*, che è peggio del
-  semibold — ma dopo `varLib.instancer wght=400:600` diventa 400. Il `font-weight` esplicito resta
-  comunque obbligatorio.
+  famiglia, stesso corpo, due larghezze. **A comprime; C non ha l'asse (Elsie è statico) e D lo
+  ha istanziato al massimo dentro il file**, quindi non c'è niente da disapplicare.
+- **La monospace c'è, e solo sotto i 14 px.** Non è un ripensamento sul divieto della 3 bis
+  («monospace per le etichette dati» è il cluster n. 5): è che le tre reference portate dal
+  committente hanno tutte lo stesso gesto — lineare editoriale più mono tecnica — e la mono sta
+  **solo** come annotazione, mai come contenuto. In A non c'è affatto: le sue cifre si
+  incolonnano con `font-variant-numeric: tabular-nums` su Archivo, che ha `tnum`.
+- **Nessun asse `ital`**: «una sola parola del titolo in corsivo» non è vietata, è tecnicamente
+  impossibile.
+- Trappola verificata con fontTools: il peso **di default** di Archivo è 600. Un corpo senza
+  `font-weight` esplicito esce semibold, quindi `lib/fonts/*.ts` dichiara `weight: '400 600'` e
+  `@layer base` mette un `font-weight: 400` su `body`.
 
 **Scala** — rapporto fitto 1,125 sul testo (il meccanismo misurato in refero), e la differenza
-fra i temi è il **salto**: in A il display è *fuori* dalla scala, in B non c'è nessun salto.
-Il corpo **non scala**: 18 px in A e 17 px in B da 320 a 1440.
+fra i temi è il **salto**: in A il display è *fuori* dalla scala; in C il marchio è una funzione
+della finestra e non appartiene a nessuna scala; in D il masthead è la stessa cosa, e sotto di
+lui la scala è quella misurata su Storey. Il corpo **non scala** da 320 a 1440.
 
-| | A a 1440 | A a 390 | B a 1440 | B a 390 |
+| | A a 1440 | A a 390 | C a 1440 | D a 1440 |
 |---|---|---|---|---|
-| display | **132** (lh 0,86 · ls −0,018em) | 56 (lh 0,94) | **43,6** (lh 1,0) | 30,6 |
-| titolo | 41 (lh 0,96) | 25,6 | 30,6 (lh 1,1) | 24,2 |
-| sezione / sottotitolo | 32,4 · 22,8 | 24,2 · 20,3 | 19,1 · 19,1 | 19,1 · **17,0** |
-| corpo | **18** (lh 1,5) | 18 | **17** | 17 |
-| dato · micro | 14,2 · 12,6 | 14,2 · 12,6 | 13,4 · 12,6 | 13,4 |
-| **contrasto** | **7,3×** (= Storey misurato) | 3,1× | **2,6×** (= AS misurato) | 1,8× |
+| display | **132** (lh 0,86 · ls −0,018em) | 56 (lh 0,94) | **il marchio**: `(100vw−2m)/6,44` ≈ 209 (lh 1,1) | **il masthead**: `(100vw−2m)/6,282` ≈ 214 (lh 0,9) |
+| titolo | 41 (lh 0,96) | 25,6 | 84 le opere (lh 1,1) · 44 le fasi | 44 (lh **1,16**) · 120 la banda (lh 1,0) |
+| corpo | **18** (lh 1,5) | 18 | 17 | 17 |
+| dato · micro | 14,2 · 12,6 | 14,2 · 12,6 | 11 la mono | 11 la mono (ls **−0,1em**) |
+| **contrasto** | **7,3×** (= Storey misurato) | 3,1× | **19×** | **19,5×** |
 
 Le spaziature sono **quattro valori, tutti negativi** (−0,030 / −0,018 / −0,015 / −0,010) più
 lo zero del corpo: **nessun valore positivo, comprese le etichette piccole**. È l'unico punto
 in cui le tre tier A vanno tutte contro il default (`+0,14em`, che è quello che c'era qui).
+
+**L'interlinea è un numero misurato, e la regola non è «alza sempre».** Un testo che **il
+browser manda a capo** non scende sotto la **soglia d'inchiostro** dei caratteri che lo
+compongono: il punto più alto meno il punto più basso, in em, fra i caratteri che quella stringa
+ha davvero. Tre cose la rendono diversa da come la si scrive di solito:
+
+1. **è l'inchiostro, non la scatola di riga.** Quello che si tocca sono i contorni; `hhea`/`OS/2`
+   descrivono la scatola e sbagliano nella direzione costosa — per Inter danno 1,210 dove
+   l'inchiostro chiede 1,232 nel caso peggiore e **0,750** su «REGOLO STP»;
+2. **in italiano l'alto non è la maiuscola: è l'accento sulla maiuscola.** In Inter la `E` sale a
+   0,728 em e la `È` a **0,942**. Misurare la cap-height sbaglia di due decimi di em, che a 63 px
+   sono 13 px, ed è esattamente il difetto che il committente ha visto nei titoli di D (63,36 px
+   con interlinea 63,36);
+3. **dipende dalla stringa, non da una categoria.** «Testo misto» contro «tutto maiuscolo» non
+   regge: in Elsie il maiuscolo con accenti (`Ì` più la coda della `Q`) chiede 1,121, cioè *più*
+   del testo misto, mentre «REGOLO STP» sta comodo a 0,729.
+
+**L'eccezione è una sola**: righe **spezzate a mano** (`<br>` + `text-wrap: nowrap`) e verificate
+una per una. È la hero di A — quattro righe a 132 px, interlinea 0,86, soglia 1,050 — dove la
+composizione è fissa e nessuna discendente cade sopra un accento. Per questo A non è in difetto,
+e per questo se un giorno si cambia una parola di quel payoff va riverificata a mano.
+
+Si rimisura con `node scripts/collaudo/interlinee.mjs`, che legge la tabella per-carattere di
+`soglie.json` — generata da `soglie.py` con fontTools sui contorni dei file veri — guarda **quante
+righe occupa davvero** ogni testo in pagina, e dice **quali due caratteri** si toccherebbero.
 
 ### Impaginazione
 
@@ -207,15 +228,38 @@ nero tinto al posto del nero · sezioni centrate · lo stesso padding fra tutti 
 `border-top`/`border-bottom` fra le righe di un elenco o di una tabella **in A** (il filetto non
 separa mai: misura, o delimita una figura).
 
+E tre voci nuove, che questa passata ha aggiunto perché le ha viste succedere:
+
+- **una variante che porta il nome di una proposta.** `variante="puntini"` era la direzione «la
+  parete», scartata, e il suo effetto in pagina era **un menu che a 1440 non si vedeva**: le voci
+  erano punti di 8 px col nome in uno `sr-only`. Un nome accessibile che nessuno vede non è una
+  scelta di stile, è una voce di menu mancante;
+- **un blocco posizionato su una misura scritta a mano di un altro blocco.** La testata di C
+  stava a `top: 44px`, l'altezza della barra della proposta a 1440; a 390 quella barra manda a
+  capo e diventa 150 px, e la testata sparisce;
+- **un componente senza chiamanti tenuto «di riserva».** Non è una riserva, è un invito a
+  rimetterlo in pagina alla prossima lettura: `<Parola>`, `HeroDomanda` e i quattro rami
+  `tabella`/`sequenza`/`dati`/`registro` sono usciti con B, e con loro il 30 % delle classi
+  condivise fra C e D.
+
 **Quando arriva il logo del cliente, questi valori si rivedono** (decisione n. 5). Lo slot per
 il colore del marchio è **uno**: il segno sulla voce corrente del menu. Non inventare un logo.
 
 ## Regole non negoziabili
 
 1. **Non inventare contenuti del cliente.** Nessun progetto, nome, numero, testimonianza o
-   dato inventato, nemmeno come esempio "realistico". I placeholder si scrivono in modo
-   inequivocabile: `[[DA CLIENTE: nome progetto]]`, e ogni placeholder va elencato in
-   `CONTENUTI-DA-CLIENTE.md`.
+   dato inventato, nemmeno come esempio "realistico". In **A e nelle pagine interne** i
+   placeholder si scrivono in modo inequivocabile e **si vedono**:
+   `[[DA CLIENTE: nome progetto]]`.
+   *Eccezione dichiarata, solo per le proposte C e D* (decisione n. 41): sono una demo di
+   vendita, e lì il segnaposto rende **lorem ipsum**. La regola non si toglie, si **circoscrive**,
+   e con una condizione che è il punto: la richiesta resta nel DOM in `data-chiede`, e
+   `node scripts/segnaposto.mjs --scrivi` la raccoglie dall'HTML buildato di **ogni** rotta e
+   genera la sezione di `CONTENUTI-DA-CLIENTE.md`. È **più robusto** del `grep` che sostituisce —
+   misurato: 29 richieste su 61 esistono solo dentro un `data-chiede`, e cinque `[[DA CLIENTE`
+   stavano fuori dal componente, quindi il vecchio gancio non le vedeva. **Sui nomi delle
+   persone non si usa mai** (n. 27 c): un nome finto sotto la qualifica di un ingegnere è la
+   stessa cosa vietata di una faccia presa altrove.
 2. **Nessuna immagine stock nei blocchi di prova** (progetti, persone, prima/dopo, cantieri).
    In sviluppo si usano rettangoli grigi con la dicitura di cosa andrà lì.
    *Eccezione dichiarata, solo per il prototipo* (decisione n. 27): dietro
@@ -278,7 +322,7 @@ Lighthouse mobile ≥ 90 su tutte e quattro le voci prima di considerare fatto u
 4. **Progetti in evidenza** — 3-4 schede: foto, tipo, anno, luogo.
 5. **Cosa facciamo** — le 6 card dei servizi.
 6. **Come lavoriamo** — 5 fasi con avanzamento allo scroll (sticky + ScrollTrigger; su mobile lista verticale): primo incontro → fattibilità e costi → progetto → autorizzazioni → cantiere e direzione lavori.
-7. **WOW 1 — esploso strutturale** — SVG a livelli (fondazioni → struttura → involucro → impianti → finiture) che si separano allo scroll. **In SVG, non in 3D.** Su mobile: sequenza di step con i livelli che si accendono uno alla volta.
+7. **WOW 1 — esploso strutturale** — SVG a livelli (fondazioni → struttura → involucro → impianti → finiture) che si separano allo scroll. **In A resta SVG**, e per una ragione che non è cambiata: deve funzionare senza JavaScript e ritematizzarsi. Su mobile: sequenza di step con i livelli che si accendono uno alla volta. *Il divieto di 3D «in pagina» invece è caduto* (decisione n. 44): in C lo stesso edificio è **colato in prospettiva vera** in WebGL grezzo (~5 KB, nessuna libreria), dagli stessi volumi di `lib/esploso.ts`, con un SVG in prospettiva come degrado. Stesso dato, due lingue. Resta fuori **Blender**, e per il motivo originale: non ci sono i CAD del cliente, e un edificio modellato a mano sarebbe contenuto inventato.
 8. **Prima / dopo** — slider con due immagini sovrapposte e `clip-path` guidato da un `input[type=range]` accessibile da tastiera. Niente librerie.
 9. **Le persone** — ritratto, nome, ruolo, abilitazioni.
 10. **Testimonianze** — 3, con nome e cognome, ognuna linkata al progetto.
@@ -333,7 +377,11 @@ apertura form · completamento form · click telefono · click WhatsApp. Quattro
 
 ## File di servizio da mantenere nel repo
 
-- `CONTENUTI-DA-CLIENTE.md` — ogni `[[DA CLIENTE: …]]` presente nel codice, con la pagina
+- `CONTENUTI-DA-CLIENTE.md` — ogni richiesta di contenuto, con la rotta. La sezione fra i due
+  marcatori `SEGNAPOSTO:inizio`/`:fine` è **generata**
+  (`npm run build && node scripts/segnaposto.mjs --scrivi`) e raccoglie tutte e due le forme:
+  i `[[DA CLIENTE: …]]` visibili di A e i `data-chiede` di C e D. Il resto del file — bloccanti,
+  note, date di «Chiesto il» e «Ricevuto» — è scritto a mano e il generatore non lo tocca
 - `TODO-MEDIA.md` — ogni immagine/video placeholder da sostituire prima del go-live
 - `REDIRECT.md` — mappa dei redirect da brasili.net
 - `DECISIONI.md` — le scelte prese e il perché
@@ -348,65 +396,76 @@ apertura form · completamento form · click telefono · click WhatsApp. Quattro
 - [ ] Non sfonda il performance budget
 - [ ] Nessun contenuto inventato: solo `[[DA CLIENTE: …]]`
 
-## Le quattro opzioni di homepage (fino alla fase 5)
+## Le tre opzioni di homepage (fino alla fase 5)
 
-FT vende con più toni; il cliente sceglie (`DECISIONI.md` n. 1, n. 36 e n. 37). **Quattro proposte, uno
-stesso contenuto**: stessi blocchi, stesso ordine, stesse parole. È la condizione perché il
-cliente giudichi la *lingua visiva* e non quattro pagine diverse — e perché, in call, passare da
-una scheda all'altra sia la dimostrazione.
+FT vende con più toni; il cliente sceglie (`DECISIONI.md` n. 1). Erano quattro; **l'opzione B è
+uscita** (n. 39), e non per gradimento: era la proposta da cui C e D erano nate per
+ricolorazione, e finché stava in mezzo il confronto in call si giocava su tre schede che si
+somigliavano.
+
+**Cade anche il vincolo «stesso contenuto, stesso ordine, stesse parole»** con cui erano nate C e
+D. Il committente: *«l'impianto del funnel tra le diverse opzioni può essere diverso comunque»*.
+Era quel vincolo a produrre tre pagine che si somigliano — e l'argomento con cui lo si difendeva
+(«contenuto identico è la condizione perché il cliente giudichi la lingua visiva») è giusto in
+astratto e sbagliato qui: tre schede che in miniatura si somigliano non sono tre proposte.
 
 | | Da dove viene | Come si riconosce in tre secondi |
 |---|---|---|
-| **A** «Lo studio» — `/` | il progetto, fase 3 bis | carta bianca, payoff a 132 px, fotografia |
-| **B** «Il manifesto» — `/opzione-b` | Outsource Consultants | carta osso, bande **indaco** a piena larghezza, display 160 |
-| **C** «La fonderia» — `/opzione-c` | Studio Foundry | fotografia a **piena finestra** e `REGOLO STP` in serif che ci passa sopra da bordo a bordo |
-| **D** «La casa» — `/opzione-d` | Storey Architecture | fotografia a **piena finestra** e sopra quasi niente: marchio piccolo, cinque segmenti, una pastiglia |
+| **A** «Lo studio» — `/` | il progetto, fase 3 bis | carta bianca, payoff a 132 px, la fotografia accanto al testo |
+| **C** «La fonderia» — `/opzione-c` | Studio Foundry | carta calda quasi vuota, il marchio in serif da bordo a bordo, **una scheggia di fotografia che si apre scorrendo** |
+| **D** «La monografia» — `/opzione-d` | Storey Architecture (i valori) + la monografia stampata (il tono) | fotografia a piena finestra, tipo piccolo, e poi **un fascicolo**: frontespizio, folio, `fig. n`, colophon |
 
-I prototipi del kick-off stanno nel repo, in `kit/opzioni/REGOLO_Opzione_A.html` e
-`kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo di A e B, non di C e D.
+I prototipi del kick-off stanno in `kit/opzioni/`: sono il brief visivo di A, non di C e D.
 
-> **C e D sono state rifatte due volte** (`DECISIONI.md` n. 36, poi n. 37). Alla prima passata
-> venivano da Iad-lab («La parete») e da IDHEAL («Il marmo») e il committente le ha respinte con
-> una frase sola — *«non hanno senso»*. La diagnosi è un numero: **condividevano il 97 % delle
-> classi con B**, cioè erano B ricolorata due volte. Adesso vengono dai due indirizzi che ha
-> indicato lui, ed erano già tutti e due in `kit/reference/`, catturati e misurati.
->
-> **Il residuo è dichiarato**: la differenza sta nella prima schermata e nel sistema tipografico;
-> sotto la piega C e D riusano ancora i blocchi di B, vestiti dal tema ma non ricomposti. Classi
-> condivise con B, misurate sul build: **C 94 %, D 90 %**. Il lavoro che resta è ricomporre quei
-> blocchi, non ricolorarli.
+**La regola che governa questa tabella, e che tre passate hanno violato: le proposte devono
+differire per come FUNZIONANO, non per come sono colorate.** Il criterio di accettazione è un
+numero misurato sul build — **classi CSS condivise** — e la storia è questa: 97 % → 94 % → 91 %,
+con la correzione che ogni volta toccava un *valore* (la palette, il carattere, il nero) dove
+serviva un *meccanismo*. Alla 3 quinquies la separazione è strutturale — tre gusci, tre fogli di
+stile, tre funnel — e il numero è sceso a **C dentro D 73 %, D dentro C 61 %**, contro un
+pavimento di ~60 % che è il chrome condiviso (brief, footer, segnaposto).
 
-> **L'opzione B è stata rifatta alla fase 3 ter** (08/09/2026, decisioni 28-34). La riga qui sotto
-> è quella corrente. L'ordine dei blocchi non è cambiato; è cambiato **il modo in cui B
-> funziona**, e il perché sta in `STATO.md` § Fase 3 ter.
+| | A «Lo studio» — `/` | C «La fonderia» — `/opzione-c` | D «La monografia» — `/opzione-d` |
+|---|---|---|---|
+| **Meccanismo** | un **foglio stampato**: non si muove, dichiara. L'audacia sta nella scala — 7,3× di contrasto, display 132 | **lo scorrimento.** La fotografia è una scheggia che si apre, il volume si separa, il testo del metodo entra: il movimento **porta contenuto** | un **fascicolo rilegato**: non si muove niente. Una sola eccezione, e ripara un difetto — il prima/dopo che senza JS resterebbe fermo a metà |
+| **Guscio** | `components/sezioni/Sezione.tsx`: sezioni separate dal vuoto, **tre passi** 48 · 96 · 200 | `components/fonderia/Colata.tsx`: **una lastra per finestra** e il vuoto in mezzo. Nessun passo dichiarato: il ritmo è l'altezza della finestra (misurato: l'84 % della reference è carta vuota) | `components/monografia/Segnatura.tsx`: **pagine di fascicolo** — occhiello corrente, folio al margine esterno, misura su due colonne. Il vuoto è **disuguale per dichiarazione** (`--respiro` 1 · 2,2 · 2,8) |
+| **Funnel** | smistamento a cinque bottoni sopra la piega, brief da «passo 1 di 5» | **niente**, sopra la piega: C vende con le fotografie, come la reference, e il brief parte da «passo 1 di 5» | **l'indice**: sei voci che *sono* il passo 1 (`form="brief-form"`), quindi il brief comincia a «passo 2 di 5», **zero byte di JavaScript** |
+| Token | `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575` | la **carta calda**: `paper #F3F0EC · ink #1B1B19 · muted #6A665F` | bianco puro, e il **nero** per la banda a metà pagina |
+| Accento | `timbro #123C7A`, **solo** sui segnaposto di A | idem | idem |
+| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Elsie 900** (11,2 KB) per il display + Inter per il corpo + Plex Mono sotto i 14 px | **Anybody Wide** `wdth 150 / wght 900` (11,6 KB) per il masthead + Inter + Plex Mono + **Caveat una volta sola** |
+| Apparato | la quota: filetto + terminatore obliquo a 45° ISO 129-1 | la **riga di metadati ai due estremi**, con il vuoto in mezzo e la lastra che la taglia | la **didascalia numerata** `fig. 03` più il **folio**. Una quota misura; una didascalia nomina |
+| Testata | lockup + menu-frase con le virgole, barra **sticky** | tre celle sulla carta, menu **centrato**, pastiglia «contatti» — **in flusso**, scorre via, e la sostituisce una pastiglia `MENU` fissa in basso a destra | le stesse tre celle ma **sopra la fotografia**, e ci resta |
+| Copy (corpo, misurato) | 6.593 caratteri | **2.029** | **3.450** |
+| Ordine | hero foto → smistamento → progetti → servizi → come lavoriamo → **esploso SVG** → persone → territorio → brief → footer | copertina-scheggia → dichiarazione → cifre → **tre opere** → metodo → **volume 3D** → firme → brief → footer | copertina → **frontespizio** → indice → **tre tavole** → metodo → banda nera → **prima/dopo** → ritratti → **colophon** → brief → footer |
 
-**La regola che governa questa tabella, e che due passate hanno violato: le due proposte devono
-differire per come FUNZIONANO, non per come sono colorate.** Alla fase 3 bis B era A con il
-negativo, e il difetto era misurabile: 123 classi CSS uguali su 165, `SiteHeader` byte-identico,
-il brief con sei righe di diff su 267 elementi, e **42 token su 98 con lo stesso identico valore**
-— l'intero sistema di impaginazione compreso. Correggere un valore (il grigio, poi il nero) non
-poteva bastare, e non è bastato due volte.
+**I blocchi wow, e sono due per pagina al massimo** (§ Regole, 3): A l'esploso SVG e il
+territorio; C la **colata** e il **volume in WebGL**, non adiacenti; D il **prima/dopo**.
 
-| | A «Lo studio» — route `/` | B «Il manifesto» — route `/opzione-b` |
-|---|---|---|
-| **Meccanismo** | un **foglio stampato**: dichiara, sempre uguale a chiunque. L'audacia sta nella **scala** — 7,3× di contrasto, display 132 | **la pagina risponde.** Le sei righe della hero *sono* il passo 1 del brief (`form="brief-form"`): scegliendo si apre il pannello, la riga della scheda resta a inchiostro pieno e le altre si attenuano, il brief comincia a «passo 2 di 5». **Zero byte di JavaScript**, e A non lo può fare per costruzione |
-| **Guscio** | `components/sezioni/Sezione.tsx`: sezioni separate dal vuoto, **tre passi** 48 · 96 · 200 | `components/campo/Campo.tsx`: **campi contigui** divisi da un filetto. Niente ritmo verticale — `--regolo-appeso` 12 px, e lo spazio fra due campi è quello che il contenuto occupa, quindi gli intervalli escono disuguali *per costruzione*. Un solo silenzio, davanti al brief |
-| Impianto | un piano solo, la carta, con due tagli netti verso il nero | **bande a piena larghezza** che alternano superficie — osso · INDACO · osso · INDACO · osso · fotografia a 100vw · osso · INDACO. È il cambio di superficie a fare il ritmo, dove A usa tre passi di spazio bianco (decisione n. 35) |
-| Token | il **tavolo da disegno**: `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575` | la **carta osso**: `paper #E8E6E0 · ink #000000 · muted #4A4A4A · line #5C5C5C`, più `indaco #1925AA` |
-| Accento | `timbro #123C7A`, **solo** sui segnaposto | l'indaco **non è un accento: è una superficie.** Riempie bande intere, porta il titolo in bianco, e **non entra mai nel fondo di un bottone**. Il `timbro #123C7A` resta sui soli segnaposto |
-| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Anybody** 19,0 KB (scelto sul **Δ x/cap**, +14,6 % da Archivo) + **IBM Plex Mono** 13,5 KB **solo sotto i 14 px**. La gerarchia si fa **con la sola dimensione**: una famiglia da 12 a 160 px, nessun secondo peso |
-| Apparato | la quota è una **linea di misura**: filetto + terminatore obliquo a 45° ISO 129-1 | la quota è una **riga di documento**: etichetta a sinistra, valore incolonnato a destra, **nessun terminatore**. Un documento non disegna quote su se stesso |
-| Testata | lockup + menu-frase con le virgole, barra **sticky** | **cartiglio**: tre celle sulla griglia dei campi, niente virgole, **non sticky** |
-| Movimento | nessuno | **solo come risposta a un'azione.** Una eccezione, e ripara un difetto: il prima/dopo che senza JS resterebbe fermo a 50 % |
-| Ordine | hero foto → smistamento → progetti → servizi → come lavoriamo → **esploso SVG** → persone → territorio → brief → footer | **hero-domanda con i percorsi** → numeri → sei percorsi (**tabella**) → come lavoriamo → progetti con dati duri → **prima/dopo** → persone → brief → footer + barra mobile |
+**Deviazione dichiarata da § Homepage — sequenza dei blocchi**: quell'elenco descrive A. C e D
+hanno blocchi e ordine propri, ed è ciò che la frase del committente sul funnel autorizza.
+Escono da C la tabella dei sei servizi, il prima/dopo e il territorio; da D i sei servizi, i
+numeri e il territorio. Il motivo è misurato: portavano 2.400 caratteri a testa per dire cose che
+una proposta con «molto meno copy e più media» non deve dire in home.
 
-Implementazione: `data-theme="a|b"` sull'`<html>` della route, token nel blocco `@theme inline`
+**Il lorem ipsum, e l'altro lato del lorem ipsum.** In C e D i segnaposto di testo rendono
+riempimento invece di `[[DA CLIENTE: …]]`, perché sono una demo di vendita (n. 41). Ma quelle
+stringhe erano anche **la lista della spesa**: quindi la richiesta resta nel DOM in
+`data-chiede`, e `node scripts/segnaposto.mjs --scrivi` la raccoglie dall'HTML buildato di
+**tutte** le rotte e genera la sezione di `CONTENUTI-DA-CLIENTE.md`. Misurato: **29 richieste su
+61 esistono solo dentro un `data-chiede`** — un `grep` sul codice ne perderebbe metà. In A i
+segnaposto restano **visibili**, e sui **nomi delle persone** non si usa mai (n. 27 c).
+
+Implementazione: `data-theme="a|c|d"` sull'`<html>` della route, token nel blocco `@theme inline`
 di `app/globals.css` (Tailwind v4 non ha più un `tailwind.config`). **Le varianti si passano dal
 layout o dalla pagina** — che è dove il tema si sceglie: è composizione, non un `if` sul tema nel
-markup. E **nessuna variante porta il nome di una proposta**: `'ritratti' | 'registro'`, non
-`'a' | 'b'`. Dopo la decisione, la route non scelta si elimina (fase 5): non restano due home in
-produzione, e con quella sparisce anche il debito del preload (`/opzione-b` scarica 40 KB di
-Archivo che non usa, perché Turbopack fonde i `@font-face` dei due temi in un chunk solo).
+markup. E **nessuna variante porta il nome di una proposta**: `'lockup' | 'centrato' |
+'pastiglia'`, non `'a' | 'c' | 'd'`. **I fogli di stile sono tre e disgiunti** —
+`sezioni.css` (A), `fonderia.css` (C), `monografia.css` (D): qualche regola è duplicata, ed è il
+prezzo dichiarato (n. 45), perché finché C e D scrivevano nello stesso file vestire l'una era
+ricolorare l'altra. Dopo la decisione, le due rotte non scelte si eliminano (fase 5): non
+restano tre home in produzione, e con quelle sparisce anche il debito del preload (`/opzione-c` e
+`/opzione-d` scaricano l'Archivo di A che non usano, perché Turbopack fonde i `@font-face` dei
+temi in un chunk solo).
 
 ## SEO, GEO, legal — il minimo deciso
 

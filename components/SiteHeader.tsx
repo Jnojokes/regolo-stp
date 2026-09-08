@@ -26,16 +26,11 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  * Il menu a scomparsa mobile resta una `<details>`: funziona senza JavaScript e
  * da tastiera (CLAUDE.md § Regole, 4 e 5).
  *
- * ## Le due varianti (fase 3 ter)
+ * ## Le tre varianti
  *
- * Fino a ieri questo componente non accettava **nessuna prop**, e il markup che
- * rendeva nelle due home era byte-identico: 1.343 byte, zero righe di diff.
- * Tutto ciò che distingueva i due header stava in tre token. Su un blocco che
- * è la prima riga di ogni pagina, era metà della diagnosi «B è A con il
- * negativo».
- *
- * La variante arriva dal **layout**, che è il posto dove il tema si sceglie
- * (`app/(b)/layout.tsx`): è composizione, non un `if` sul tema nel markup.
+ * La variante arriva dal **layout**, che è il posto dove il tema si sceglie: è
+ * composizione, non un `if` sul tema nel markup. E nessuna porta il nome di una
+ * proposta — dicono che forma ha la testata, non a chi appartiene.
  *
  * - `lockup` (A) — il marchio e la sede in colonna, il menu che è **una frase**
  *   con le virgole (Kononenko misurato: `Index, Work, About, Contact`), la
@@ -48,20 +43,12 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  *   e il risultato in pagina era **un menu che a 1440 non si vedeva**.
  * - `pastiglia` (D) — la stessa griglia a tre celle, ma il menu resta piccolo e
  *   quieto sopra la fotografia, come in `kit/reference/storey/1440-hero.jpeg`.
- * - `cartiglio` (B) — la testata **del documento**, e cade sulla stessa griglia
- *   a due colonne di tutti i campi (`components/campo/Campo.tsx`): il nome nel
- *   margine di classificazione, la sede e il menu sul foglio, il menu ai due
- *   estremi con il vuoto in mezzo. **Niente virgole** — quel gesto è di A — e
- *   **non è sticky**: la testata di un documento non ti segue mentre lo leggi.
- *   È una differenza di comportamento, non di colore, e libera la prima
- *   schermata al contenuto, che in una pagina densa è quello che conta. Su
- *   telefono B ha comunque la barra fissa con la CTA.
  */
 export function SiteHeader({
   variante = 'lockup',
   conPastiglia = false,
 }: {
-  variante?: 'lockup' | 'cartiglio' | 'centrato' | 'pastiglia'
+  variante?: 'lockup' | 'centrato' | 'pastiglia'
   /**
    * La pastiglia «contatti» all'estremo destro della testata.
    *
@@ -87,26 +74,28 @@ export function SiteHeader({
 
   return (
     <header className={`site-header site-header-${variante}`}>
-      {/* `lockup` è A e basta; tutte le altre tre proposte usano lo stesso
-          contenitore a celle — quello che cambia è come il tema lo veste
-          (`app/css/campi.css` per B, `app/css/temi-cd.css` per C e D). */}
-      <div className={variante === 'lockup' ? 'wrap site-header-riga' : 'cartiglio'}>
+      {/* `lockup` è A e basta; C e D usano lo stesso contenitore a tre celle —
+          marchio, menu, pastiglia — e quello che cambia è come il tema lo veste
+          (`app/css/fonderia.css` e `app/css/monografia.css`).
+          Si chiamava `cartiglio`, che era il nome del gesto **di B**: il
+          riquadro delle iscrizioni di una tavola tecnica. B non c'è più e il
+          nome descriveva una cosa che non è più in pagina, quindi è `testata`,
+          che dice cos'è e non a chi apparteneva. */}
+      <div className={variante === 'lockup' ? 'wrap site-header-riga' : 'testata'}>
         {/* Niente aria-label: sostituirebbe il testo visibile con uno diverso,
             e per chi usa il comando vocale il nome accessibile deve contenere
             quello che si legge. Il testo del link basta da solo. */}
         {variante !== 'lockup' ? (
-          /* Nel cartiglio di un disegno il nome e la sede non sono un lockup:
-             sono **due celle del riquadro delle iscrizioni**, e cadono sulle
-             due colonne del documento — il nome nel margine di
-             classificazione, la sede sul foglio, come ogni altro campo. Non è
-             un lockup impaginato diversamente: è un'altra cosa. */
+          /* Tre celle sulla riga, come nelle due reference misurate: marchio
+             piccolo a sinistra, menu al centro, pastiglia a destra. Il nome non
+             è un lockup con la sede sotto — quello è il gesto di A — è una cella
+             sola, e la sede non c'è: sopra una prima schermata che deve fare
+             effetto, un indirizzo in corpo 12 è rumore. Sta nel footer, dove
+             chi la cerca la trova. */
           <>
-            <Link href="/" className="cartiglio-nome">
+            <Link href="/" className="testata-nome">
               {site.nomeEsteso}
             </Link>
-            <p className="cartiglio-sede">
-              {site.via} — {site.cap} {site.citta} ({site.provincia})
-            </p>
           </>
         ) : (
           <Link href="/" className="logo-lockup">

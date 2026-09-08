@@ -20,7 +20,6 @@ const p = await ctx.newPage()
 const tutti = []
 for (const url of [
   'http://localhost:3001/',
-  'http://localhost:3001/opzione-b',
   // Le due proposte della 3 quater. Erano fuori dall'elenco, cioe' le uniche
   // due rotte del progetto non verificate dallo script che trova i difetti
   // veri — ed e' proprio dove stanno i casi difficili (testo bianco sopra una

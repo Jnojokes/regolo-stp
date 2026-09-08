@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import './css/sezioni.css';
-@import './css/campi.css';
-@import './css/temi-cd.css';
+@import './css/fonderia.css';
+@import './css/monografia.css';
 @import './css/pagine.css';
 
 /* ============================================================================
@@ -60,6 +60,54 @@
    Fondo bianco puro, contrasto di scala estremo con un salto fuori scala,
    apparato orizzontale al bordo destro, due tagli netti verso il nero.
    -------------------------------------------------------------------------- */
+/* ============================================================================
+   L'INTERLINEA È UN NUMERO MISURATO, NON UN GUSTO
+   ----------------------------------------------------------------------------
+   Il committente ha detto: *«le interlinee che si sovrappongono vanno
+   ampliate»*. Ha ragione e il difetto è misurabile, ma la regola ovvia — «alza
+   sempre» — condannerebbe anche la hero di A, che è la proposta che ha
+   dichiarato valida. Serve la regola giusta, e la regola giusta è un numero.
+
+   **LA REGOLA.** Un testo che **il browser manda a capo** non scende sotto la
+   soglia d'inchiostro dei caratteri che lo compongono:
+
+       soglia = (il punto più alto) − (il punto più basso), in em,
+                fra i caratteri che quella stringa ha davvero
+
+   Tre cose la rendono diversa da come la si scrive di solito:
+
+   1. **è l'inchiostro, non la scatola di riga.** Quello che si tocca sono i
+      contorni. `hhea`/`OS/2` descrivono la scatola e sbagliano nella direzione
+      costosa: per Inter danno 1,210 dove l'inchiostro chiede 1,232 nel caso
+      peggiore e **0,750** su «REGOLO STP»;
+   2. **in italiano l'alto non è la maiuscola: è l'accento sulla maiuscola.** In
+      Inter la `E` sale a 0,728 em e la `È` a **0,942**. Misurare la cap-height
+      sbaglia di due decimi di em, che a 63 px sono 13 px — ed è esattamente il
+      difetto visto nei titoli di D, che stavano a 63,36 px con interlinea 63,36;
+   3. **dipende dalla stringa, non da una categoria.** «Testo misto» contro
+      «tutto maiuscolo» sembrava la divisione ragionevole e non regge: in Elsie
+      il maiuscolo con accenti (`Ì` più la coda della `Q`) chiede 1,121, cioè
+      *più* del testo misto, mentre «REGOLO STP» sta comodo a **0,729**. Due
+      stringhe tutte maiuscole possono avere soglie diverse del 40 %.
+
+   Qualche valore, per orientarsi (caso peggiore su tutto il subset · «REGOLO
+   STP»): Archivo 1,136 · 0,710 — Anybody Wide 900 1,287 · 0,690 — Elsie 900
+   1,129 · 0,729 — Inter 1,232 · 0,750 — IBM Plex Mono 1,188 · 0,722 — Caveat
+   1,129 · 0,773. Non si copiano da qui: si leggono per stringa.
+
+   **L'ECCEZIONE, e ce n'è una.** Sotto la soglia si va solo su righe **spezzate
+   a mano** (`<br>` + `text-wrap: nowrap`) e verificate una per una. È la hero di
+   A: quattro righe a 132 px con interlinea 0,86 contro una soglia di 1,050,
+   dove la composizione è fissa e nessuna discendente cade sopra un accento.
+   Per questo A non è in difetto, e per questo il giorno che qualcuno cambia una
+   parola di quel payoff va riverificata a mano.
+
+   **Come si rimisura.** `node scripts/collaudo/interlinee.mjs` legge la tabella
+   per-carattere da `soglie.json` — generata da `soglie.py` con fontTools sui
+   file veri — e guarda **quante righe occupa davvero** ogni testo in pagina.
+   Esce con codice 1 e dice quali due caratteri si toccherebbero.
+   ========================================================================== */
+
 [data-theme='a'] {
   --regolo-paper: #ffffff; /* carta */
   --regolo-surface: #ffffff; /* in A la figura e il fondo sono lo stesso bianco */
@@ -247,251 +295,6 @@
   --regolo-footer-filo: none;
 }
 
-/* ---------- Tema B — «Il manifesto» ---------------------------------------
-   **Un broadsheet architettonico su carta osso, con una banda che detona.**
-
-   Le tre reference le ha scelte il committente (08/09/2026), e dicono la stessa
-   cosa in tre modi: il tipo a scala architettonica **a filo sinistro che sborda
-   dal bordo** · **bande a piena larghezza** invece di una colonna centrata ·
-   zero card, zero ombre, filetti hairline · e la gerarchia fatta dal **cambio di
-   superficie**, non da riquadri. Una di loro descrive REGOLO parola per parola:
-   *«less like a SaaS dashboard and more like a printed monograph for a
-   technical practice»*.
-
-   Tre cose che questo tema fa e A non fa, e nessuna è un colore:
-
-   1. **La gerarchia si costruisce con la sola dimensione.** Una famiglia sola da
-      12 a 160 px — nessun secondo peso, nessun cambio di famiglia per fare
-      «importante». A costruisce la sua con il peso e con l'asse di larghezza.
-   2. **Le sezioni non si impilano: alternano superficie.** Osso, poi una banda
-      indaco a piena larghezza, poi osso. È il cambio di piano a segnare il
-      ritmo, dove A usa tre passi di spazio bianco.
-   3. **Il display sborda.** A 160 px a filo sinistro il payoff tocca il bordo e
-      lo passa: se tutte le lettere stanno dentro, è troppo piccolo.
-
-   ## Che cosa emenda, e perché non è una contraddizione
-
-   Questo tema usa **carta calda**, un **accento saturo** e una **monospace per
-   le micro-etichette**: tre voci che la lista di calibrazione della skill
-   `sito-design` marca come tell del design generato (cluster 1 e 5), e che le
-   decisioni n. 18, 19 e 25 avevano escluse. Non è un ripensamento: quelle
-   decisioni difendevano il progetto da un **default**, cioè da quello che esce
-   quando nessuno ha scelto. Qui ha scelto il committente, su tre sistemi
-   misurati che ha portato lui. La skill lo prevede alla lettera: *«dove il brief
-   fissa una direzione, la si segue alla lettera — anche se chiede uno di questi
-   look. Dove lascia un asse libero, quella libertà non si spende su un
-   default.»*
-
-   L'indaco resta la voce da guardare: `#1925AA` sta a 235° di tonalità, cioè
-   nella zona che `refero-design` marca come impronta del design generato. Quello
-   che lo salva è il **ruolo**, non il valore: qui non è un accento decorativo
-   spruzzato sui link — è una **superficie**, riempie bande intere, e non entra
-   mai nel fondo di un bottone. Se un giorno dovesse dare fastidio, il progetto
-   ha già il suo blu del tampone (`#123C7A`, 216°) e cambia un token.
-   -------------------------------------------------------------------------- */
-
-[data-theme='b'] {
-  /* OSSO: carta calda che legge come stampa e non come schermo. È il fondo su
-     cui l'indaco prende forza — su bianco puro sarebbe solo un colore. */
-  --regolo-paper: #e8e6e0;
-  --regolo-surface: #ffffff; /* la carta bianca: fora l'osso, non lo sostituisce */
-  --regolo-ink: #000000; /* 16,44:1 sull'osso */
-  --regolo-muted: #4a4a4a; /*  8,49:1 sull'osso */
-  --regolo-muted-invert: #c9cbe8; /*  6,99:1 sull'indaco — il secondario DENTRO la banda */
-  --regolo-line: #6b6b6b; /*  4,52:1 sull'osso — filetto hairline, e regge anche come testo */
-  --regolo-ph: #dedbd4; /*  1,10:1 dall'osso: è una SUPERFICIE, il significato lo portano le squadrette */
-  --regolo-ph-ink: #4a4a4a; /*  6,41:1 sul segnaposto */
-  --regolo-bordo-campo: #5c5c5c; /*  5,36:1 sull'osso */
-  --regolo-errore: #8e1b10; /*  7,27:1 sull'osso */
-
-  /* L'INDACO CHE DETONA. Non è un accento: è una **superficie**. Riempie bande
-     intere a piena larghezza, porta il titolo in osso, e **non entra mai nel
-     fondo di un bottone** — un colore che è un piano non può essere anche
-     un'azione. È l'unica tinta satura del tema, e non ce n'è una seconda. */
-  --regolo-indaco: #1925aa; /* osso sopra: 8,92:1 · bianco sopra: 11,13:1 */
-  --regolo-indaco-fondo: #0d1355; /* il violetto quasi-nero del marchio */
-
-  /* Il timbro dei segnaposto resta quello del progetto: qui è ancora l'unica
-     cosa che dice «manca», e sull'osso passa. Sulla banda indaco si schiarisce,
-     perché blu su blu non è un segnale. */
-  --regolo-timbro: #123c7a; /*  8,62:1 sull'osso */
-  --regolo-timbro-soft: #dcdfee; /*  1,07:1 dall'osso: terzo canale, non il primo */
-  --regolo-timbro-chiaro: #c9cbe8; /*  6,99:1 sull'indaco */
-  --regolo-timbro-piano: var(--regolo-timbro);
-  --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
-
-  --regolo-font-display: var(--font-anybody), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-body: var(--font-anybody), 'Helvetica Neue', Arial, sans-serif;
-  /* La mono, **solo sotto i 14 px**: nav, etichette, dati, didascalie. È il
-     gesto tipografico centrale delle tre reference — «editorial sans +
-     technical mono» — e sopra i 14 px non si usa mai. */
-  --regolo-font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  --regolo-display-weight: 600;
-  --regolo-display-tracking: -0.02em;
-  /* Anybody in sorgente ha `wdth 50-150`, cioè lo stesso trucco di Archivo:
-     `genera-font.sh` lo istanzia via, e il file di B contiene `fvar = [wght]`
-     e basta. «A comprime, B no» non è più una regola che si può disapplicare —
-     `font-stretch` in B non ha su cosa agire. Il token resta a 100 per non
-     lasciare un buco nelle regole condivise. */
-  --regolo-display-wdth: 100;
-
-  /* LA GERARCHIA SI FA CON LA SOLA DIMENSIONE, ed è la firma del tema.
-     Una famiglia sola da 12 a 160 px, nessun secondo peso per fare
-     «importante»: 160 · 46 · 30 · 18 · 12. Il rapporto è **13,3×**, e non è la
-     scala di A con un altro numero — A costruisce la sua gerarchia con il peso
-     e con l'asse di larghezza, e sopra i 132 px si ferma perché il payoff deve
-     stare in quattro righe. Qui il display **sborda**: se tutte le lettere
-     stanno dentro il viewport, è troppo piccolo.
-     A 390 px il display resta a 56, che è il massimo che regge una parola
-     intera del payoff senza spezzarla. */
-  --regolo-text-h1: clamp(3.5rem, 11.2vw, 10rem); /* 56 a 390 · 160 a 1440 */
-  --regolo-lh-h1: 0.94;
-  --regolo-text-h2: clamp(1.75rem, 3.2vw, 2.875rem); /* 28 a 390 · 46 a 1440 */
-  --regolo-lh-h2: 1.05;
-  --regolo-text-h3: clamp(1.375rem, 2.1vw, 1.875rem); /* 22 · 30 */
-  --regolo-lh-h3: 1.2;
-
-  --regolo-wrap: 1440px;
-  --regolo-margine: clamp(1rem, 1.7vw, 1.5rem);
-  --regolo-gutter: clamp(1rem, 1.7vw, 1.5rem);
-  --regolo-colonne: 12;
-  --regolo-radius: 0px;
-  --regolo-misura: 30rem; /* 480 px */
-
-  /* ---- IL RITMO VERTICALE NON ESISTE IN B, ed è la differenza -------------
-     I tre passi 48 · 96 · 200 **non sono dichiarati qui**, e non è una svista:
-     erano fra i 42 token che i due temi avevano con lo stesso identico valore,
-     cioè il pezzo che garantiva che le due proposte cadessero sullo stesso
-     respiro qualunque cosa si facesse ai colori. Con loro esce anche il guscio
-     `Sezione.tsx`, che li codifica: in B non ci sono sezioni separate da un
-     vuoto, ci sono **campi contigui** divisi da un filetto (`components/campo/`).
-
-     Al loro posto un valore solo: quanto un campo pende dal proprio filetto.
-     Lo spazio fra due campi **non è un token** — è quello che il contenuto
-     occupa, quindi gli intervalli escono disuguali *per costruzione*. È la
-     lettura letterale del vuoto disuguale misurato su Storey, e nega alla
-     radice l'aggiunta di casa «lo stesso padding fra tutti i blocchi».
-
-     ATTENZIONE se un giorno si rimette una `.sezione` in B: `--passo` diventa
-     un `var()` non definito, la dichiarazione è invalida e il `padding-top`
-     torna a **0 in silenzio**. Per questo i tre passi sono usciti **per
-     ultimi**, quando l'ultima `<Sezione>` ha lasciato `app/(b)`, e non prima:
-     toglierli con una sezione ancora in pagina non fa una pagina densa, fa una
-     pagina rotta. Il collaudo che lo prende è `sweep.mjs`. */
-  --regolo-appeso: 12px;
-  /* Il respiro di una banda. Le reference lo mettono a 80 px e lo chiamano
-     «slow and poster-like: few elements per viewport». Non è un ritmo a tre
-     passi come quello di A: è **un valore solo**, perché in B il ritmo lo fa
-     il cambio di superficie, non lo spazio. */
-  --regolo-banda-y: clamp(3rem, 5.6vw, 5rem);
-  /* L'unico silenzio dichiarato: davanti al brief. */
-  --regolo-silenzio: clamp(6rem, 13.9vw, 12.5rem);
-  /* Il pavimento dell'attenuazione, ed è un pavimento perché sotto si sfonda:
-     l'inchiostro del piano a 0,60 dà 7,37:1 sulla tavola e 5,74:1 sul foglio;
-     a 0,55 sul foglio si scende a 4,74:1, a 0,50 a 3,95:1 — sotto AA.
-     È il canale con cui la pagina dice «questo campo non è quello in cui sei»:
-     l'unica gerarchia oltre al corpo e alla posizione. */
-  --regolo-attenua: 0.6;
-
-  --regolo-ph-pattern: none;
-  --regolo-ph-size: auto;
-  --regolo-ph-border: 1px solid var(--regolo-line);
-
-  --regolo-font-eyebrow: var(--regolo-font-body);
-  --regolo-eyebrow-tracking: -0.01em;
-  --regolo-eyebrow-transform: none;
-
-  /* **L'indaco non è mai il fondo di un bottone**: un colore che è un piano non
-     può essere anche un'azione, e le reference lo scrivono come divieto. Il
-     bottone di B è inchiostro pieno sull'osso, angoli vivi. Sulla banda indaco
-     si rovescia in osso — la regola sta nel blocco della banda. */
-  --regolo-btn-bg: #000000;
-  --regolo-btn-fg: #e8e6e0;
-  --regolo-btn-border: #000000;
-  --regolo-btn-bg-hover: #262626;
-
-  --regolo-header-h: 72px;
-  --regolo-logo-size: 1.375rem;
-  --regolo-logo-weight: 600;
-  --regolo-logo-tracking: -0.02em;
-  --regolo-logo-family: var(--regolo-font-display);
-  --regolo-logo-direction: row;
-
-  --regolo-focus: var(--regolo-ink);
-
-  /* Il brief è **la banda indaco**: l'unica volta in cui la tinta satura porta
-     l'azione primaria, e la porta come *superficie*, non come bottone. È anche
-     il momento in cui la pagina cambia voce — dopo cinquemila pixel di osso. */
-  --regolo-brief-bg: var(--regolo-indaco);
-  --regolo-brief-fg: #ffffff; /* 11,13:1 sull'indaco */
-  --regolo-brief-occhiello: var(--regolo-muted-invert); /*  6,99:1 */
-  --regolo-brief-lead: var(--regolo-muted-invert); /*  6,99:1 */
-  --regolo-brief-bordo-sezione: none;
-  --regolo-brief-card: var(--regolo-surface);
-  --regolo-brief-controllo-bg: #f4f4f4;
-  --regolo-brief-controllo-bordo: #767676; /*  4,54:1 sulla carta */
-  --regolo-brief-scelta-bg: var(--regolo-surface);
-  --regolo-brief-scelta-bordo: #000000;
-  --regolo-brief-errore: #8e1b10; /*  9,07:1 sulla carta */
-  --regolo-brief-fuoco: #ffffff;
-
-  --regolo-quota-riga: block;
-  /* La quota di B sta sull'osso e prende il secondario: 7,10:1. Dentro la banda
-     indaco la ridichiara la banda. */
-  --regolo-quota-colore: var(--regolo-muted);
-
-  /* L'asse non si disegna più: in B il ritmo lo fa il cambio di superficie, e
-     un filetto verticale che attraversa una banda indaco a piena larghezza
-     sarebbe l'unico segno che non serve a niente. */
-  --regolo-asse: none;
-  --regolo-asse-frazione: 0;
-
-  --regolo-sezione-alt: var(--regolo-paper);
-  --regolo-sezione-alt-filo: none;
-
-  /* Il pannello non ha un fondo proprio: sta sull'osso, come tutto il resto.
-     «Do not use cards with backgrounds, padding, or radius — content sits
-     directly on the canvas divided only by hairlines». */
-  --regolo-pannello-bg: transparent;
-  --regolo-pannello-fg: var(--regolo-ink);
-  --regolo-pannello-chiave: var(--regolo-muted);
-  --regolo-pannello-voce: var(--regolo-ink);
-  --regolo-scuro-bg: var(--regolo-indaco);
-  --regolo-scuro-fg: #ffffff;
-  --regolo-scuro-muted: var(--regolo-muted-invert);
-  --regolo-scuro-linea: #6b74c9; /*  3,25:1 sull'indaco — filetto, non testo */
-
-  /* Le tre facce non cambiano fra i due temi: la faccia dice la luce, e la
-     luce non dipende dal piano. Cambiano solo contorno e apertura, che sono
-     il vuoto — e il vuoto è il colore del piano. Questi sono i valori della
-     **tavola**; sul foglio li ridichiara `.piano-foglio`. */
-  --regolo-esploso-faccia-alta: #d8d8d8;
-  --regolo-esploso-faccia-sx: #a8a8a8;
-  --regolo-esploso-faccia-dx: #7a7a7a;
-  --regolo-esploso-contorno: #ffffff;
-  --regolo-esploso-fondazioni: #d8d8d8;
-  --regolo-esploso-struttura: #c4c4c4;
-  --regolo-esploso-involucro: #a8a8a8;
-  --regolo-esploso-impianti: #8f8f8f;
-  --regolo-esploso-finiture: #ededed;
-  --regolo-esploso-apertura: #000000;
-  --regolo-esploso-calore: #1a1a1a;
-  --regolo-esploso-acqua: #1a1a1a;
-  --regolo-esploso-aria: #1a1a1a;
-
-  /* la mappa: il perimetro chiaro sulla tavola */
-  --regolo-mappa-linea: var(--regolo-ink);
-  --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-ink);
-
-  /* Il footer chiude sull'osso, come il documento è cominciato. */
-  --regolo-footer-bg: var(--regolo-paper);
-  --regolo-footer-fg: var(--regolo-ink); /* 16,83:1 */
-  --regolo-footer-muted: var(--regolo-muted); /*  7,10:1 */
-  --regolo-footer-filo: 1px solid var(--regolo-line);
-}
-
 /* ============================================================================
    Tema C — «La fonderia» · il sistema di Studio Foundry
    ----------------------------------------------------------------------------
@@ -545,8 +348,11 @@
      una funzione della finestra, non un gradino di scala. Sotto, la scala vera
      del sistema — 96 · 40 · 24 · 17 · 12. */
   --regolo-text-h1: clamp(2.75rem, 9.4vw, 6rem);
-  --regolo-lh-h1: 0.92;
+  /* Elsie tutto maiuscolo: soglia 0,972. Era 0,92, cioè sotto — e un h1 che il
+     browser manda a capo non è spezzato a mano, quindi non ha l'eccezione. */
+  --regolo-lh-h1: 1;
   --regolo-text-h2: clamp(1.75rem, 3vw, 2.5rem);
+  /* I titoli di C sono Elsie **tutto maiuscolo**: soglia 0,972. */
   --regolo-lh-h2: 1;
   --regolo-text-h3: 1.5rem;
   --regolo-lh-h3: 1.2;
@@ -681,20 +487,31 @@
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  --regolo-font-display: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* Il masthead allargato: Anybody istanziato a `wdth 150 / wght 900`, statico,
+     11.620 byte — **7,8 KB in meno** del file variabile di Anybody che è uscito
+     con l'opzione B. Il perché della famiglia sta in `scripts/genera-font.sh`:
+     è l'unica del repo la cui soglia d'inchiostro in maiuscolo (0,876) lascia
+     riprodurre davvero l'interlinea 1,0 misurata su Storey. */
+  --regolo-font-display: var(--font-anybody-wide), 'Arial Black', 'Helvetica Neue', sans-serif;
   --regolo-font-body: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --regolo-font-mono: var(--font-mono), ui-monospace, Menlo, monospace;
   --regolo-font-mano: var(--font-mano), 'Bradley Hand', cursive;
-  --regolo-display-weight: 500;
+  --regolo-display-weight: 900;
   --regolo-display-tracking: -0.03em; /* −3 %, misurato */
   --regolo-display-wdth: 100;
 
   /* La scala misurata: 115,2 · 100,8 · 31,7 · 23 · 15,8 · 14,4 · 11,5.
      E **l'interlinea è 1,0 esatta** su tutti e tre i corpi display. */
   --regolo-text-h1: clamp(3.5rem, 8vw, 7.2rem); /* 56 · 115,2 */
+  /* Il masthead è Anybody Wide **tutto maiuscolo**: soglia 0,876, e l'1,0 di
+     Storey ci sta dentro con margine. È l'unico posto del progetto dove
+     l'interlinea 1,0 misurata sulla reference è riproducibile davvero. */
   --regolo-lh-h1: 1;
   --regolo-text-h2: clamp(2.25rem, 4.4vw, 6.3rem); /* 36 · 100,8 */
-  --regolo-lh-h2: 1;
+  /* I titoli sono Inter, testo misto: soglia **1,158**. Erano a 1,0 — 63,4 px
+     con interlinea 63,4 — ed è il difetto che il committente ha visto: su tre
+     titoli su cinque il testo va a capo, e «È» sotto una «g» si tocca. */
+  --regolo-lh-h2: 1.16;
   --regolo-text-h3: clamp(1.5rem, 2.2vw, 1.98rem); /* 24 · 31,7 */
   --regolo-lh-h3: 1;
 
@@ -788,107 +605,6 @@
   --regolo-footer-filo: 1px solid var(--regolo-line);
 }
 
-/* ---------- B: i token sono legati alla BANDA, non alla pagina -------------
-   In B la pagina non è una superficie sola: è una **sequenza di bande a piena
-   larghezza** che alternano osso, indaco e fotografia. È il cambio di
-   superficie a fare il ritmo, dove A usa lo spazio bianco — e le reference lo
-   scrivono come regola: *«do not stack multiple bone sections without an indigo
-   interruption»*.
-
-   Un elemento non sa su quale banda si trova, e non deve saperlo: **è la banda
-   a ridichiarare i token**. Qui non si ricolora niente a mano.
-
-   Tre cose da NON fare, tutte già pagate:
-
-   1. si ridichiarano **tutti e due i prefissi** — `--regolo-*` e i gemelli
-      `--color-*`. `@theme inline` genera `--color-ink: var(--regolo-ink)` su
-      `:root`, e un `var()` dentro la dichiarazione di una custom property si
-      risolve **dove è dichiarata**: ridichiarare `--regolo-ink` su un
-      sottoalbero non tocca `--color-ink`, quindi non tocca nessuna utility
-      Tailwind. Misurato una volta: `#000` e `#fff` insieme, cioè testo bianco
-      su fondo bianco;
-   2. **chi dipinge un fondo dichiara anche il `color`.** `color` eredita il
-      valore *calcolato* del genitore, non si ricalcola dai token: senza,
-      l'inchiostro dell'osso resta nero dentro la banda indaco;
-   3. non si ridichiara `--regolo-paper` dentro chi lo consuma per dipingersi.
-   -------------------------------------------------------------------------- */
-
-/* La banda indaco: l'unica superficie satura del tema. */
-[data-theme='b'] [data-banda='indaco'] {
-  background-color: var(--regolo-indaco);
-  color: #ffffff;
-
-  --regolo-paper: #1925aa;
-  --regolo-ink: #ffffff; /* 11,13:1 sull'indaco */
-  --regolo-muted: #c9cbe8; /*  6,99:1 */
-  --regolo-muted-invert: #1925aa;
-  --regolo-line: #6b74c9; /*  3,25:1 — hairline, MAI testo (WCAG 1.4.11) */
-  --regolo-quota-colore: #c9cbe8;
-  --regolo-bordo-campo: #c9cbe8;
-  --regolo-focus: #ffffff;
-  --regolo-ph: #1f2cbb; /*  1,10:1 dall'indaco: superficie, non testo */
-  --regolo-ph-ink: #c9cbe8;
-  --regolo-timbro: #c9cbe8; /* dentro l'indaco il timbro non può essere blu */
-  --regolo-timbro-soft: transparent;
-  --regolo-timbro-piano: #c9cbe8;
-  --regolo-timbro-piano-soft: transparent;
-  /* Il bottone si rovescia: osso pieno, testo indaco. L'indaco resta una
-     superficie e non diventa mai un'azione. */
-  --regolo-btn-bg: #e8e6e0;
-  --regolo-btn-fg: #1925aa; /* 8,92:1 */
-  --regolo-btn-border: #e8e6e0;
-  --regolo-btn-bg-hover: #ffffff;
-
-  --color-paper: #1925aa;
-  --color-ink: #ffffff;
-  --color-muted: #c9cbe8;
-  --color-muted-invert: #1925aa;
-  --color-line: #6b74c9;
-  --color-ph: #1f2cbb;
-  --color-ph-ink: #c9cbe8;
-  --color-timbro: #c9cbe8;
-  --color-timbro-soft: transparent;
-  --color-timbro-chiaro: #c9cbe8;
-  --color-errore: #ffc9c0; /*  7,20:1 sull'indaco */
-}
-
-/* La carta bianca: fora l'osso dove serve una superficie di lettura densa —
-   la scheda del brief, le celle della barra mobile. Non è un secondo fondo di
-   pagina: è un oggetto. */
-[data-theme='b'] [data-piano='foglio'] {
-  --regolo-paper: #ffffff;
-  --regolo-ink: #000000; /* 21,00:1 */
-  --regolo-muted: #4a4a4a; /*  8,49:1 */
-  --regolo-muted-invert: #ffffff;
-  --regolo-line: #767676; /*  4,54:1 */
-  --regolo-quota-colore: #767676;
-  --regolo-bordo-campo: #767676;
-  --regolo-errore: #8e1b10; /*  9,07:1 */
-  --regolo-focus: #000000;
-  --regolo-ph: #ececec;
-  --regolo-ph-ink: #5e5e5e; /*  6,48:1 */
-  --regolo-timbro: #123c7a; /* 10,75:1 */
-  --regolo-timbro-soft: #e7ecf6;
-  --regolo-timbro-piano: #123c7a;
-  --regolo-timbro-piano-soft: #e7ecf6;
-  --regolo-btn-bg: #000000;
-  --regolo-btn-fg: #ffffff;
-  --regolo-btn-border: #000000;
-  --regolo-btn-bg-hover: #333333;
-
-  --color-paper: #ffffff;
-  --color-ink: #000000;
-  --color-muted: #4a4a4a;
-  --color-muted-invert: #ffffff;
-  --color-line: #767676;
-  --color-ph: #ececec;
-  --color-ph-ink: #5e5e5e;
-  --color-timbro: #123c7a;
-  --color-timbro-soft: #e7ecf6;
-  --color-timbro-chiaro: #123c7a;
-  --color-errore: #8e1b10;
-}
-
 @theme inline {
   --color-paper: var(--regolo-paper);
   --color-surface: var(--regolo-surface);
@@ -902,7 +618,6 @@
   --color-timbro-soft: var(--regolo-timbro-soft);
   --color-timbro-chiaro: var(--regolo-timbro-chiaro);
   --color-errore: var(--regolo-errore);
-  --color-indaco: var(--regolo-indaco);
   --color-terracotta: var(--regolo-terracotta);
   --color-oliva: var(--regolo-oliva);
   --color-magenta: var(--regolo-magenta);
@@ -940,15 +655,6 @@
 }
 
 /* In B il corpo è 17 px e il dato 13,4: un gradino sotto, sulla stessa scala. */
-/* In B il corpo è 18 px (le reference lo mettono a 18), il dato 14 e la micro
-   12 — la mono vive lì sotto, e sopra i 14 non entra mai. */
-[data-theme='b'] {
-  --text-body: 1.125rem;
-  --text-small: 0.875rem;
-  --text-eyebrow: 0.75rem;
-  --text-lead: clamp(1.25rem, 2vw, 1.5rem);
-}
-
 /* ---------- Base ----------------------------------------------------------- */
 @layer base {
   html {
@@ -1311,9 +1017,6 @@
     background-color: var(--color-paper);
     border-bottom: var(--regolo-header-filo, 1px solid var(--color-line));
   }
-  [data-theme='b'] .site-header {
-    --regolo-header-filo: none;
-  }
   .site-header-riga {
     display: flex;
     align-items: center;
@@ -1335,9 +1038,6 @@
     min-height: 2.75rem;
     align-content: center;
     flex-wrap: wrap;
-  }
-  [data-theme='b'] .logo-lockup {
-    --regolo-logo-gap: 0.625rem;
   }
   .logo-name {
     font-family: var(--regolo-logo-family);
@@ -1594,29 +1294,7 @@
    ========================================================================== */
 
 @layer components {
-  /* In B il brief sta sull'asse come tutto il resto: la colonna del testo
-     finisce **esattamente** sul filetto, e la scheda comincia dopo. Senza
-     questo la pagina perdeva l'asse proprio sul blocco che deve convertire. */
-  [data-theme='b'] .brief > .wrap {
-    position: relative;
-  }
-  [data-theme='b'] .brief > .wrap::before {
-    content: '';
-    display: var(--regolo-asse);
-    position: absolute;
-    top: calc(-1 * var(--passo, 0px));
-    bottom: calc(-0.6 * var(--passo, 0px));
-    left: calc(
-      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
-    );
-    width: 1px;
-    background-color: var(--color-line);
-    pointer-events: none;
-  }
   @media (max-width: 55.999rem) {
-    [data-theme='b'] .brief > .wrap::before {
-      left: 0.5rem;
-    }
   }
   .brief-scheda {
     position: relative;
@@ -1638,13 +1316,6 @@
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
       gap: clamp(2.5rem, 5vw, 4rem);
       align-items: start;
-    }
-    [data-theme='b'] .brief-griglia {
-      grid-template-columns: calc(var(--regolo-asse-frazione) * 100%) minmax(0, 1fr);
-      gap: 0;
-    }
-    [data-theme='b'] .brief-griglia > .brief-colonna-scheda {
-      margin-left: clamp(1.5rem, 3vw, 2.5rem);
     }
   }
 

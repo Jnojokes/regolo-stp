@@ -31,19 +31,17 @@ import { ctaPrimaria, daCliente, site } from '@/lib/site'
 export function BarraMobile() {
   return (
     <nav aria-label="Azioni rapide" className="barra-mobile">
-      <a href={`tel:${site.telefonoHref}`} data-piano="foglio">
-        chiama
-      </a>
+      <a href={`tel:${site.telefonoHref}`}>chiama</a>
 
       {/* Uno <span>, non un <a> disabilitato: non c'è niente da toccare, e un
           link che non porta da nessuna parte è peggio di una casella vuota.
           Il testo è corto perché in una cella da ~110 px il segnaposto lungo
           manderebbe la barra su tre righe. */}
-      <span className="barra-mobile-manca text-eyebrow" data-piano="foglio">
+      <span className="barra-mobile-manca text-eyebrow">
         <DaCliente>{daCliente('WhatsApp')}</DaCliente>
       </span>
 
-      <Link href={ctaPrimaria.href} className="barra-mobile-brief" data-piano="foglio">
+      <Link href={ctaPrimaria.href} className="barra-mobile-brief">
         raccontaci il progetto
       </Link>
     </nav>

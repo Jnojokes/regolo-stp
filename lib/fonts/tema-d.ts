@@ -8,6 +8,16 @@ import localFont from 'next/font/local'
  *
  * Tre caratteri, e il terzo è la firma:
  *
+ * - **Anybody Wide** istanziato a `wdth 150 / wght 900`, statico, 11.620 byte:
+ *   il **masthead allargato** del frontespizio, chiesto dal committente («font
+ *   più display e allargato»). La famiglia non è scelta per genere ma su una
+ *   metrica: la soglia d'inchiostro in maiuscolo è **0,876**, la più bassa fra i
+ *   caratteri display del repo, e Storey — la reference di D — ha «interlinea
+ *   1,0 esatta a ogni corpo display». Con Inter (soglia 1,158) quel valore è
+ *   irriproducibile: è il difetto che il committente ha visto nei titoli a 63,4
+ *   px con interlinea 63,4. Il masthead allargato e l'interlinea stretta sono la
+ *   **stessa** decisione. Costa 7,8 KB **meno** del file variabile di Anybody
+ *   uscito con l'opzione B.
  * - **Inter** (400/500) come New Grotesk: il corpo, i titoli e il claim.
  * - **IBM Plex Mono** come New Grotesk Mono: numerazione `01)` — con la
  *   parentesi chiusa, non `01 —` — e micro-etichette. Spaziatura **−10 %**,
@@ -23,6 +33,20 @@ import localFont from 'next/font/local'
  * **nessun `max-width`** (il contenuto sta al 100 %), gutter **20 px**,
  * `border-radius` **zero occorrenze** e `box-shadow` **zero**.
  */
+const anybodyWide = localFont({
+  variable: '--font-anybody-wide',
+  display: 'swap',
+  fallback: ['Arial Black', 'Helvetica Neue', 'Impact', 'sans-serif'],
+  preload: false,
+  src: [
+    {
+      path: '../../public/fonts/anybody-wide-regolo-latin-900.woff2',
+      weight: '900',
+      style: 'normal',
+    },
+  ],
+})
+
 const inter = localFont({
   variable: '--font-inter',
   display: 'swap',
@@ -54,4 +78,4 @@ const caveat = localFont({
   ],
 })
 
-export const fontsThemeD = `${inter.variable} ${plexMono.variable} ${caveat.variable}`
+export const fontsThemeD = `${anybodyWide.variable} ${inter.variable} ${plexMono.variable} ${caveat.variable}`

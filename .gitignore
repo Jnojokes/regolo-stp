@@ -49,3 +49,11 @@ next-env.d.ts
 
 # artefatti del MCP Playwright (screenshot e snapshot dei test)
 .playwright-mcp/
+
+# esiti degli script di collaudo: si rigenerano lanciando gli script.
+# CONFRONTO.png e firme.json restano, perché sono la prova che si guarda in call.
+collaudo/*
+!collaudo/opzioni/
+collaudo/opzioni/*
+!collaudo/opzioni/CONFRONTO.png
+!collaudo/opzioni/firme.json

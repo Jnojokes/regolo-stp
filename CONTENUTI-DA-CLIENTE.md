@@ -67,7 +67,7 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 <!-- SEGNAPOSTO:inizio -->
 
 > **Generato**, non scritto a mano: `npm run build && node scripts/segnaposto.mjs --scrivi`.
-> 58 richieste distinte, raccolte dall'HTML reso di 17 pagine.
+> 55 richieste distinte, raccolte dall'HTML reso di 17 pagine.
 > Le due forme sono volute: in A il segnaposto **si vede** (è la proposta candidata alla
 > produzione), in B e C si legge lorem ipsum e la richiesta resta in `data-chiede`.
 
@@ -102,14 +102,11 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 | nome del progetto 02 | / · /opzione-b · /opzione-c | lorem ipsum + visibile |
 | nome del progetto 03 | / · /opzione-b · /opzione-c | lorem ipsum + visibile |
 | nome e cognome | / · /opzione-b · /opzione-c · /studio | visibile |
-| nome e luogo della tavola 1 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 2 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 3 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 4 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 5 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 6 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 7 della galleria | /opzione-b | lorem ipsum |
-| nome e luogo della tavola 8 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della fotografia 1 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della fotografia 2 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della fotografia 3 della galleria | /opzione-b | lorem ipsum |
+| nome e luogo della fotografia 4 della galleria | /opzione-b | lorem ipsum |
+| numero WhatsApp dello studio | /opzione-b · /opzione-c | lorem ipsum |
 | opzionale, ma è quello che nessuno scrive e tutti vorrebbero leggere. Un imprevisto e come si è risolto vale dieci righe di metodo. | /progetti/esempio-scheda | visibile |
 | opzionale, ma è quello che nessuno scrive e tutti vorrebbero\\nleggere. Un imprevisto e come si è risolto vale dieci righe di metodo. | /progetti/esempio-scheda | visibile |
 | orari di apertura | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
@@ -130,6 +127,6 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 | superficie del progetto 3 | /opzione-b · /opzione-c | lorem ipsum |
 | superficie in mq | /progetti/esempio-scheda | visibile |
 | una riga che dica cosa è questo intervento | /progetti/esempio-scheda | visibile |
-| WhatsApp | /opzione-b · /opzione-c | visibile |
+| WhatsApp | / | visibile |
 
 <!-- SEGNAPOSTO:fine -->

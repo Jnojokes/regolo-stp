@@ -157,6 +157,44 @@
     color: var(--regolo-muted); /* 4,52:1 */
   }
 
+  /* L'azione primaria della copertina, **come annotazione di quota**.
+
+     Il fatto misurato: su ecoLINEAR la prima azione sta a `top: 2187`, e sopra
+     la piega non c'è niente da fare. La regola di casa vuole l'azione primaria
+     nel primo viewport a 390 e a 1440, quindi la reference qui non basta e lo
+     si dichiara. La correzione entra nella lingua dell'apparato invece che
+     sopra di esso: il filetto è lo **stesso** `.quota-linea` dei numeri — non
+     una seconda forma che gli somiglia — e il testo gli sta sopra, dove su una
+     tavola sta l'annotazione.
+
+     `justify-self: end`: la copertina è un grid con `justify-items: center`, e
+     questo è l'unico blocco che va all'estremo. In basso a destra del logotipo,
+     che a 1440 vuol dire sul margine destro, perché il logotipo i margini li
+     tocca per costruzione. */
+  .foglio-azione {
+    position: relative;
+    justify-self: end;
+    margin: 0;
+    padding-bottom: 0.75rem;
+  }
+  .foglio-azione-voce {
+    font-family: var(--regolo-font-body);
+    font-weight: 600;
+    font-size: 1.125rem; /* 18 px: il corpo pieno, non una didascalia */
+    line-height: 1.4;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--regolo-ink); /* 6,06:1 — è un'azione, non una nota */
+    text-decoration: none;
+  }
+  .foglio-azione-voce:hover {
+    color: var(--regolo-ambra-testo); /* 4,54:1 */
+  }
+  /* Qui il filetto **delimita un'azione**, quindi non è la linea di costruzione
+     al 38 % ma quella che porta informazione. */
+  .foglio-azione .quota-linea {
+    background-color: var(--regolo-linea-forte);
+  }
+
   /* ==========================================================================
      I SEGNI DI REGISTRO — al posto dell'occhiello
      --------------------------------------------------------------------------
@@ -253,7 +291,7 @@
      c'è un valore solo, perché la composizione la tiene la griglia. */
   [data-theme='b'] .ecolinear-galleria,
   [data-theme='b'] .fasi-pinnate,
-  [data-theme='b'] .numeri-quota,
+  [data-theme='b'] .ecolinear-volume,
   [data-theme='b'] .invito,
   [data-theme='b'] .opere,
   [data-theme='b'] .ecolinear-persone {
@@ -322,6 +360,54 @@
     object-fit: cover;
     border-radius: var(--regolo-radius);
   }
+  /* La tavola a filo: **non** ha l'ombra delle fotografie, ha le squadrette.
+     È la differenza che la reference fa e che vale la pena tenere: una
+     fotografia è una stampa appoggiata sul foglio e fa ombra; un disegno è
+     inciso sul foglio e ha i suoi segni di registro. */
+  .ecolinear-tavola-disegno {
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+    background-color: var(--regolo-surface);
+    border-radius: var(--regolo-radius);
+    color: var(--regolo-ink-display); /* 3,49:1 sul pannello: soglia 3:1 non testuale */
+  }
+  .ecolinear-tavola-disegno::before,
+  .ecolinear-tavola-disegno::after {
+    content: '';
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1px solid var(--regolo-ambra);
+    pointer-events: none;
+  }
+  .ecolinear-tavola-disegno::before {
+    top: 0.375rem;
+    left: 0.375rem;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .ecolinear-tavola-disegno::after {
+    right: 0.375rem;
+    bottom: 0.375rem;
+    border-top: 0;
+    border-left: 0;
+  }
+  .ecolinear-tavola-filo {
+    width: 100%;
+    height: 100%;
+  }
+  .ecolinear-tavola-fig {
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: 0.75rem; /* 12 px, uno dei corpi misurati */
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    color: var(--regolo-muted); /* 4,86:1 sul pannello */
+  }
+
   .galleria-didascalia {
     margin-top: 0.625rem;
     font-family: var(--regolo-font-body);
@@ -351,12 +437,22 @@
     position: sticky;
     top: clamp(4rem, 12vh, 8rem);
   }
-  /* Il pannello: quadrato, `#F3F5F1`, con **quattro** squadrette d'angolo in
-     ambra. Qui sono quattro e non due, perché sulla reference il pannello
-     grande le ha tutte e quattro (`1440-meta-52.jpeg`). */
+  /* Il pannello: `#F3F5F1`, con **quattro** squadrette d'angolo in ambra. Qui
+     sono quattro e non due, perché sulla reference il pannello grande le ha
+     tutte e quattro (`1440-meta-52.jpeg`).
+
+     **Non è quadrato**, ed era il difetto: era `1 / 1` per abitudine, mentre
+     sulla reference misura **403 × 522** — più alto che largo, che è il
+     rapporto di un foglio da disegno in verticale e non quello di una card.
+
+     Il `max-width` è la conseguenza del rapporto: un pannello alto quanto la
+     colonna è larga, pinnato a `12vh` dall'alto, esce dalla finestra su uno
+     schermo da 800 px. Si vincola la larghezza — non l'altezza, che con un
+     `aspect-ratio` romperebbe il rapporto invece di rispettarlo. */
   .fasi-pannello {
     position: relative;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 403 / 522;
+    max-width: calc(66svh * 403 / 522);
     background-color: var(--regolo-surface);
     border-radius: var(--regolo-radius);
   }
@@ -391,9 +487,24 @@
     border: 1px solid var(--regolo-ambra);
     clip-path: polygon(82% 0, 100% 0, 100% 18%, 0 82%, 0 100%, 18% 100%);
   }
+  /* Il riquadro di una tavola. `overflow: clip` non è pulizia: le due tende del
+     plotter escono da qui traslando, e sono dipinte del colore del pannello —
+     senza il ritaglio dipingerebbero un rettangolo `#F3F5F1` sulla carta
+     `#ECECEC`, che si vede.
+
+     La sigla `fig. 0n` sta **dentro** il riquadro e non più sospesa sotto di
+     lui: così la tenda la copre insieme al disegno, ed è quello che risolve la
+     sovrapposizione delle didascalie senza una seconda animazione. In una
+     finestra di scorrimento due fasi sono accese insieme; il disegno della
+     precedente è già coperto dalla sua tenda, e la didascalia adesso lo è con
+     lui. */
   .fasi-disegno {
     position: absolute;
     inset: 8%;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    overflow: clip;
     opacity: 0;
   }
   /* Dove l'animazione non c'è resta acceso **il primo**, che è uno stato finito
@@ -403,12 +514,13 @@
      `animation-timeline` e `prefers-reduced-motion: reduce`, che qui spegne
      l'animazione con un `@media` e non con una durata. E la condizione **non si
      può omettere**: questa regola è stata per una passata senza `@supports`, e
-     siccome l'animazione è dichiarata senza `animation-fill-mode` (scelta di
-     :763), fuori dal proprio range il valore base torna a valere. Risultato
-     misurato a cinque quote: il disegno 0 restava acceso **sotto** tutti gli
-     altri e le due didascalie finivano allo stesso pixel — `fig. 01` sopra
-     `fig. 03`, che a schermo si legge `fig. 0⅓`. Un fallback non condizionato
-     non è un fallback: è uno stato in più. */
+     siccome l'animazione è dichiarata senza `animation-fill-mode` (scelta del
+     blocco «IL PLOTTER» in fondo al foglio), fuori dal proprio range il valore
+     base torna a valere. Risultato misurato a cinque quote: il disegno 0
+     restava acceso **sotto** tutti gli altri e le due didascalie finivano allo
+     stesso pixel — `fig. 01` sopra `fig. 03`, che a schermo si legge
+     `fig. 0⅓`. Un fallback non condizionato non è un fallback: è uno stato in
+     più. */
   @supports not (animation-timeline: view()) {
     .fasi-disegno[data-fase='0'] {
       opacity: 1;
@@ -428,19 +540,76 @@
        che porta un contenuto (a che punto del cantiere si è). */
     color: var(--regolo-ambra);
   }
-  /* La didascalia è dentro il disegno, quindi si misura su di lui: il disegno
-     è a `inset: 8%` dentro il pannello, e la didascalia torna sul filo interno
-     del pannello con un margine negativo di pari misura. */
+  /* La didascalia è la seconda riga della griglia del riquadro: in flusso, non
+     sospesa. Vedi la nota su `overflow: clip` qui sopra. */
   .fasi-fig {
-    position: absolute;
-    left: 0;
-    bottom: -1.75rem;
     margin: 0;
     font-family: var(--regolo-font-body);
     font-weight: 400;
     font-size: 0.875rem;
     letter-spacing: 0.03em;
     color: var(--regolo-muted);
+  }
+
+  /* ---- il plotter: le due tende e il mirino ------------------------------
+     Il gesto di questa proposta, e quello che sostituisce la dissolvenza.
+
+     Una dissolvenza è il movimento più generato che esista e non dice niente
+     di questa pagina; un **tracciamento** è l'unica forma di rivelazione che
+     una tavola da disegno può avere. Il tratto non compare: viene percorso.
+
+     Come, e perché così: la maschera non è un `clip-path: inset()` animato —
+     quello si ricalcola sul thread principale a ogni fotogramma — ma **un
+     elemento opaco che trasla**, cioè la sola cosa che il compositore sa
+     muovere da sola (`CLAUDE.md` § Regole, 7). Il colore è quello del pannello,
+     quindi mentre passa non si vede lei: si vede il disegno che lascia dietro.
+
+     Due tende e non una: `scopre` esce a destra e rivela, `copre` rientra da
+     sinistra quando la fase è passata. Stessa direzione tutte e due, come il
+     foglio che avanza sotto la penna.
+
+     **Lo stato di riposo è il disegno finito**: a riposo sono tutte e due fuori
+     dal riquadro. Senza `animation-timeline`, senza JavaScript e con
+     `prefers-reduced-motion: reduce` non c'è niente da spegnere, perché non
+     c'è niente di acceso. */
+  .ecolinear-tenda {
+    position: absolute;
+    inset: 0;
+    background-color: var(--regolo-surface);
+    pointer-events: none;
+  }
+  .ecolinear-tenda[data-verso='scopre'] {
+    transform: translateX(101%);
+  }
+  .ecolinear-tenda[data-verso='copre'] {
+    transform: translateX(-101%);
+  }
+
+  /* Il mirino, sul bordo d'attacco della tenda che scopre: **è un figlio della
+     tenda**, quindi non ha una sua animazione di posizione — sta dov'è la
+     penna per costruzione e non per una seconda timeline da tenere allineata.
+     La forma è quella del puntatore CAD della stessa pagina
+     (`.cursore-riga` + `.cursore-mira`): non un'altra idea di mirino, la
+     stessa. */
+  .ecolinear-penna {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background-color: rgba(217, 142, 54, 0.55);
+    opacity: 0;
+  }
+  .ecolinear-penna::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -3.5px;
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    box-sizing: border-box;
+    border: 1px solid rgba(217, 142, 54, 0.75); /* i valori misurati del mirino */
   }
 
   .fasi-corpo {
@@ -516,7 +685,51 @@
      esiste o non si disegna»*. Nella reference la quota porta `14.34 M — ESC
      1:50`. Qui porta i quattro numeri dello studio, che sono valori veri in
      attesa: quindi non è ornamento, ed è la ragione per cui la linea si disegna.
+
+     **E adesso quota un oggetto.** Prima i quattro filetti stavano sul foglio
+     nudo: una linea di quota fra due estremi che non appartengono a niente è la
+     forma della quota senza la sua ragione, ed è esattamente la condizione che
+     `CLAUDE.md` § L'apparato chiede («due estremi su un oggetto reale in
+     pagina»). L'oggetto è l'assonometria di `lib/volume.ts` — la stessa
+     geometria dell'esploso di A, cioè un dato del repo e non un edificio
+     inventato — e le cifre gli stanno appese accanto.
      ======================================================================== */
+
+  .ecolinear-volume-corpo {
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  /* Il riquadro della figura. Non ha pannello e non ha squadrette: il volume sta
+     **sulla carta**, come i disegni a filo della copertina, perché è l'oggetto
+     che le quote misurano e non una tavola appesa. */
+  .ecolinear-volume-figura {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    color: var(--regolo-ink-display); /* 3,49:1 — soglia 3:1 per il non testuale */
+  }
+  .ecolinear-volume-filo,
+  .ecolinear-volume-tela {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  /* Il canvas sta **sempre** nel layout, anche quando resta spento, e la
+     ragione è meccanica: `display: none` gli darebbe un riquadro 0 × 0, quindi
+     `getBoundingClientRect()` misurerebbe zero e l'`IntersectionObserver` non
+     scatterebbe mai. Un canvas senza contesto è trasparente, quindi non ha
+     bisogno di essere nascosto — sotto di lui si vede l'SVG. */
+  .ecolinear-volume-tela {
+    pointer-events: none;
+  }
+  /* Quando il canvas c'è, l'SVG **resta nel DOM e resta nell'albero di
+     accessibilità** — porta il nome della figura — e sparisce solo alla vista.
+     `visibility: hidden` lo toglierebbe anche a chi ascolta. */
+  .ecolinear-volume-figura[data-webgl] .ecolinear-volume-filo {
+    opacity: 0;
+  }
 
   .quote-numeri {
     margin: 0;
@@ -620,7 +833,13 @@
     background-color: var(--regolo-btn-bg-hover);
   }
   /* La freccia nel cerchietto: il 50 % di raggio è l'unico del tema oltre ai
-     2 px, e nella reference ci sono 3 occorrenze. */
+     2 px, e nella reference ci sono 3 occorrenze.
+
+     Il segno dentro è **disegnato**, non scritto. Il carattere `→` in coda a un
+     link è la tell n. 5 della lista di calibrazione, e ce n'era una in tutto il
+     sito: proprio qui. Nella reference non c'è nessun carattere in coda — c'è
+     una pastiglia tonda con dentro un segno, cioè un oggetto e non un suffisso
+     tipografico. */
   .invito-freccia {
     display: grid;
     place-items: center;
@@ -629,7 +848,10 @@
     border-radius: 50%;
     background-color: var(--regolo-btn-fg);
     color: var(--regolo-btn-bg);
-    font-size: 0.75rem;
+  }
+  .invito-freccia svg {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 
   /* ==========================================================================
@@ -739,6 +961,29 @@
       position: static;
       max-width: 22rem;
     }
+    /* Senza pinnaggio il vincolo di altezza sulla finestra non serve più: qui
+       il pannello scorre con il testo e non deve stare dentro una schermata. */
+    .fasi-pannello {
+      max-width: none;
+    }
+    /* Il volume sopra le quote, e non accanto: a 390 due colonne farebbero un
+       disegno da 150 px, cioè un francobollo che non si legge. La figura resta
+       la stessa, l'SVG statico — su puntatore grosso il canvas non si accende
+       (`components/ecolinear/Volume.tsx`). */
+    .ecolinear-volume-corpo {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(1.5rem, 6vw, 2.5rem);
+    }
+    .ecolinear-volume-figura {
+      max-width: 16rem;
+      aspect-ratio: 1 / 1;
+    }
+    /* La CTA della copertina torna sull'asse del logotipo, che a 390 è
+       centrato: `justify-self: end` su una colonna stretta la spingerebbe
+       contro il margine da sola, staccata da tutto. */
+    .foglio-azione {
+      justify-self: center;
+    }
     .fasi-righello {
       display: none;
     }
@@ -768,18 +1013,62 @@
 }
 
 /* ============================================================================
-   QUALE DISEGNO È ACCESO NEL PANNELLO
+   IL PLOTTER — la tavola non compare, viene tracciata
    ----------------------------------------------------------------------------
-   L'unica cosa animata di tutta la proposta, e non è una rivelazione allo
-   scorrimento: è **quale delle cinque tavole è visibile** dentro un pannello
-   che sta fermo. Il movimento non porta il contenuto in pagina — il contenuto
-   c'è già — dice a che punto del metodo si è.
+   Il momento orchestrato della proposta, e non è una rivelazione allo
+   scorrimento: è **quale delle cinque tavole è sul pannello**, e soprattutto
+   **come ci arriva**. Il movimento non porta il contenuto in pagina — il
+   contenuto c'è già — dice a che punto del metodo si è.
 
-   Le cautele sono le quattro di casa: `@supports`, `prefers-reduced-motion`
-   esplicito (la regola globale mette `animation-duration: 0.01ms !important`,
-   che su una timeline progressiva è **ignorata**), nessun `animation-fill-mode`,
-   e lo stato di riposo è **finito** — fuori dal supporto resta acceso il primo
-   disegno, che è coerente col primo paragrafo.
+   ## Che cosa è cambiato, e perché
+
+   Prima il disegno entrava in **dissolvenza**. Funzionava e non diceva niente:
+   una dissolvenza è il gesto che ogni pagina generata usa per ogni cosa, ed è
+   l'unico che una tavola da disegno non può avere — un disegno non sbiadisce
+   dentro un foglio, ci viene tracciato sopra.
+
+   Adesso il tratto viene **percorso**, e la penna si vede passare. Tre
+   animazioni sulla stessa `view-timeline` della fase:
+
+   | | che cosa fa | quando, sul range |
+   |---|---|---|
+   | `scopre` | un rettangolo del colore del pannello esce a destra: dietro di lui il disegno resta | 0 → 30 % |
+   | `penna` | il mirino d'ambra, figlio del rettangolo, si spegne quando il tratto è finito | acceso 0 → 26 %, spento a 32 % |
+   | `copre` | un secondo rettangolo rientra da sinistra: la tavola va via nella stessa direzione in cui è arrivata | 50 % → 80 % |
+
+   ## Perché la maschera è un elemento e non un `clip-path`
+
+   Un `clip-path: inset()` animato si ricalcola sul thread principale a ogni
+   fotogramma; un elemento che trasla è la sola forma che il compositore muove
+   da solo. `CLAUDE.md` § Regole, 7 dice `transform` e `opacity`, e qui è
+   `transform` e basta.
+
+   ## Perché l'opacità adesso è un taglio netto
+
+   `fase-accesa` non è più una dissolvenza ma **un valore costante dentro il
+   range**: dentro il proprio intervallo la tavola c'è, fuori non c'è. Il taglio
+   non si vede perché cade **sotto una tenda** — all'inizio del range `scopre` è
+   a `translateX(0)`, cioè copre tutto; alla fine `copre` è già rientrata da un
+   pezzo. È il motivo per cui le due tende sono due e non una.
+
+   ## Il conto delle sovrapposizioni
+
+   Con `.fase { min-height: 82svh }` due fasi consecutive sono accese insieme
+   per un tratto (la geometria di `cover` lo impone: la finestra dura
+   `altezza + viewport` e le fasi distano `altezza`). In quel tratto la tavola
+   precedente è **già coperta dalla sua tenda** — `copre` finisce all'80 % del
+   range, la tenda della successiva è ancora fuori strada — quindi non si
+   vedono mai due disegni insieme. Il vecchio difetto delle due didascalie
+   sovrapposte sparisce con lo stesso meccanismo: la sigla `fig. 0n` adesso sta
+   **dentro** il riquadro ritagliato, quindi la tenda copre anche lei.
+
+   ## Le cautele, che sono le quattro di casa
+
+   `@supports`, `prefers-reduced-motion` esplicito (la regola globale mette
+   `animation-duration: 0.01ms !important`, che su una timeline progressiva è
+   **ignorata**), nessun `animation-fill-mode`, e lo stato di riposo è
+   **finito** — fuori dal supporto resta acceso il primo disegno, intero, con
+   tutte e due le tende parcheggiate fuori dal riquadro.
    ========================================================================== */
 
 @supports (animation-timeline: view()) {
@@ -807,34 +1096,102 @@
       .fase[data-fase='4'] {
         view-timeline-name: --f4;
       }
-      .fasi-disegno {
-        animation: fase-accesa linear;
+      /* Le tre animazioni condividono il range: la penna deve stare **sul
+         bordo** della tenda che scopre, e due range diversi le farebbero
+         scivolare l'una rispetto all'altra. */
+      .fasi-disegno,
+      .ecolinear-tenda,
+      .ecolinear-penna {
+        animation-timing-function: linear;
         animation-range: cover 18% cover 82%;
       }
-      .fasi-disegno[data-fase='0'] {
+      .fasi-disegno {
+        animation-name: fase-accesa;
+      }
+      .ecolinear-tenda[data-verso='scopre'] {
+        animation-name: ecolinear-plotter-scopre;
+      }
+      .ecolinear-tenda[data-verso='copre'] {
+        animation-name: ecolinear-plotter-copre;
+      }
+      .ecolinear-penna {
+        animation-name: ecolinear-plotter-penna;
+      }
+
+      /* La timeline si assegna al riquadro **e a quello che c'è dentro**: le
+         tende e la penna vivono in un sottoalbero, e una `view-timeline` non si
+         eredita. */
+      .fasi-disegno[data-fase='0'],
+      .fasi-disegno[data-fase='0'] .ecolinear-tenda,
+      .fasi-disegno[data-fase='0'] .ecolinear-penna {
         animation-timeline: --f0;
       }
-      .fasi-disegno[data-fase='1'] {
+      .fasi-disegno[data-fase='1'],
+      .fasi-disegno[data-fase='1'] .ecolinear-tenda,
+      .fasi-disegno[data-fase='1'] .ecolinear-penna {
         animation-timeline: --f1;
       }
-      .fasi-disegno[data-fase='2'] {
+      .fasi-disegno[data-fase='2'],
+      .fasi-disegno[data-fase='2'] .ecolinear-tenda,
+      .fasi-disegno[data-fase='2'] .ecolinear-penna {
         animation-timeline: --f2;
       }
-      .fasi-disegno[data-fase='3'] {
+      .fasi-disegno[data-fase='3'],
+      .fasi-disegno[data-fase='3'] .ecolinear-tenda,
+      .fasi-disegno[data-fase='3'] .ecolinear-penna {
         animation-timeline: --f3;
       }
-      .fasi-disegno[data-fase='4'] {
+      .fasi-disegno[data-fase='4'],
+      .fasi-disegno[data-fase='4'] .ecolinear-tenda,
+      .fasi-disegno[data-fase='4'] .ecolinear-penna {
         animation-timeline: --f4;
       }
     }
+    /* Un valore costante e non una rampa: dentro il range la tavola c'è, fuori
+       il valore base (`opacity: 0`) torna a valere. Il taglio cade sotto una
+       tenda, quindi non si vede — vedi la tabella in testa al blocco. */
     @keyframes fase-accesa {
+      from,
+      to {
+        opacity: 1;
+      }
+    }
+    /* Le tre finestre, e sono state strette una volta. Con `scopre` 0-30 % e
+       `copre` 50-80 % la tavola restava **scoperta per il 20 %** del range: per
+       il resto del tempo o si stava tracciando o si stava già cancellando, e
+       misurando a otto quote il pannello risultava quasi vuoto **mentre si
+       leggeva la fase**. Adesso il tracciamento occupa il primo 12 %, la
+       cancellazione l'ultimo 12 %, e in mezzo — **il 76 % del tempo in cui
+       quella fase è quella che si legge** — la tavola è intera e ferma. Un
+       gesto che non lascia mai vedere il suo risultato non è un gesto, e i
+       fotogrammi vuoti fra una tavola e l'altra sono il foglio che si cambia:
+       vanno tenuti corti, non tolti. */
+    @keyframes ecolinear-plotter-scopre {
+      0% {
+        transform: translateX(0);
+      }
+      12%,
+      100% {
+        transform: translateX(101%);
+      }
+    }
+    @keyframes ecolinear-plotter-copre {
       0%,
+      88% {
+        transform: translateX(-101%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+    @keyframes ecolinear-plotter-penna {
+      0%,
+      10% {
+        opacity: 1;
+      }
+      14%,
       100% {
         opacity: 0;
-      }
-      18%,
-      82% {
-        opacity: 1;
       }
     }
   }

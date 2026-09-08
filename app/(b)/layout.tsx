@@ -30,6 +30,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
+  /* Senza `viewport-fit: cover` l'`env(safe-area-inset-bottom)` della barra fissa
+     vale **sempre 0** su iOS, quindi la barra finisce sotto la tacca del gesto.
+     Voce B13 della lista unica, misurata: c'era la `env()` e mancava il flag. */
+  viewportFit: 'cover',
   /* La carta del tema, cioè `--regolo-paper` di `[data-theme='b']`, che è il
      valore misurato sul sito vero. Va tenuto allineato a mano: è già stato due
      volte il residuo di una direzione precedente. */

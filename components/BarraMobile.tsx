@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { DaCliente } from '@/components/Placeholder'
+import { Segnaposto } from '@/components/Segnaposto'
 import { ctaPrimaria, daCliente, site } from '@/lib/site'
 
 /**
@@ -28,7 +29,25 @@ import { ctaPrimaria, daCliente, site } from '@/lib/site'
  * «Brief»: un CTA dice esattamente cosa succede, e mantiene lo stesso nome per
  * tutto il flusso (skill `sito-design` § 8).
  */
-export function BarraMobile() {
+export function BarraMobile({
+  /**
+   * Come si dichiara il buco del WhatsApp, e **non è un dettaglio di stile**.
+   * In A i segnaposto si vedono (`[[DA CLIENTE: …]]`), in B e C rendono
+   * riempimento con la richiesta nel DOM (decisione n. 41). Questa barra è
+   * montata da tutte e tre, e finché il valore era fisso portava il segnaposto
+   * **visibile di A** dentro le due demo di vendita: si vedeva a 390 in tutte e
+   * tre le colonne di `kit/reference/_dopo/TRE-390.jpeg`.
+   */
+  segnaposto = 'visibile',
+  /**
+   * Dove porta la cella del brief. Sulle tre home il brief sta **in fondo alla
+   * stessa pagina**, quindi è un'ancora; sulle pagine interne è la rotta.
+   */
+  href = ctaPrimaria.href,
+}: {
+  segnaposto?: 'visibile' | 'riempimento'
+  href?: string
+}) {
   return (
     <nav aria-label="Azioni rapide" className="barra-mobile">
       <a href={`tel:${site.telefonoHref}`}>chiama</a>
@@ -38,10 +57,14 @@ export function BarraMobile() {
           Il testo è corto perché in una cella da ~110 px il segnaposto lungo
           manderebbe la barra su tre righe. */}
       <span className="barra-mobile-manca text-eyebrow">
-        <DaCliente>{daCliente('WhatsApp')}</DaCliente>
+        {segnaposto === 'visibile' ? (
+          <DaCliente>{daCliente('WhatsApp')}</DaCliente>
+        ) : (
+          <Segnaposto chiede="numero WhatsApp dello studio" parole={1} maiuscola={false} />
+        )}
       </span>
 
-      <Link href={ctaPrimaria.href} className="barra-mobile-brief">
+      <Link href={href} className="barra-mobile-brief">
         raccontaci il progetto
       </Link>
     </nav>

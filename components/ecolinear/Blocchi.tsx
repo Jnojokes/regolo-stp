@@ -8,6 +8,8 @@ import {
   SegnoPorta,
   SegnoSezione,
 } from '@/components/ecolinear/Disegni'
+import { NOMI_VISTA, TavolaVolume, type Vista } from '@/components/ecolinear/Tavole'
+import { VolumeAssonometrico } from '@/components/ecolinear/Volume'
 import { numeri } from '@/lib/numeri'
 import { persone } from '@/lib/persone'
 import { fasi } from '@/lib/processo'
@@ -88,6 +90,27 @@ export function Copertina() {
           Ingegneria civile e architettura a {site.citta}: progetto architettonico e strutturale,
           pratiche, cantiere.
         </p>
+        {/* L'azione primaria **dentro** la copertina, e nella lingua
+            dell'apparato invece che sopra di esso.
+
+            Il fatto misurato: su ecoLINEAR la prima azione sta a `top: 2187`,
+            cioè a metà pagina, e sopra la piega ci sono solo tre voci di menu.
+            La regola di casa vuole l'azione primaria nel primo viewport a 390
+            **e** a 1440, e non è negoziabile: chi arriva qui ha già sentito il
+            nome e sta decidendo, non va mandato a cercare il bottone.
+
+            Quindi la CTA non è un bottone pieno appiccicato in cima — sarebbe
+            l'unico oggetto della pagina che non appartiene al foglio — ma
+            un'**annotazione di quota**: il filetto con i due terminatori
+            verticali (lo stesso `.quota-linea` dei numeri, non una seconda
+            forma che gli somiglia) e sopra il testo, in basso a destra del
+            logotipo, dove su una tavola sta la sigla del disegnatore. */}
+        <p className="foglio-azione">
+          <Link href="#brief" className="foglio-azione-voce">
+            Raccontaci il progetto
+          </Link>
+          <span className="quota-linea" aria-hidden="true" data-decorativo="" />
+        </p>
       </div>
     </section>
   )
@@ -110,28 +133,48 @@ export function Copertina() {
  * I rapporti sono **quattro diversi** e si ripetono in ordine sfalsato, così
  * due media adiacenti non hanno mai la stessa forma — che è la differenza fra
  * una parete di tavole e una griglia di riquadri.
+ *
+ * ## Metà delle colonne porta un disegno vero
+ *
+ * `1440-meta-70.jpeg`: nella parete della reference le fotografie stanno
+ * accanto ad assonometrie a linea e a diagrammi, e i disegni sono la metà del
+ * carattere di quella pagina. Prima qui c'erano otto rettangoli grigi, due dei
+ * quali vuoti «perché lì andrà una tavola»: un campo vuoto che promette un
+ * disegno, quando il disegno il repo lo sa fare, è una promessa non mantenuta
+ * in una pagina che serve a vendere.
+ *
+ * Adesso **le colonne 1 e 3 portano quattro tavole vere** — due assonometrie a
+ * due angoli, un prospetto, una sezione — generate da `lib/volume.ts`, cioè
+ * dalla stessa geometria dell'esploso di A. Le colonne 0 e 2 restano
+ * segnaposto, e restano a ragione: lì andrà una **fotografia** dello studio, e
+ * quella non si disegna.
  */
-const RAPPORTI = ['3 / 4', '4 / 3', '1 / 1', '16 / 10'] as const
-const MEDIA = [
-  'opera-01',
-  'opera-02',
-  'opera-03',
-  'interno-01',
-  'cantiere-01',
-  'dettaglio-01',
-] as const
+type Campo = { colonna: number; ratio: string } & (
+  { demo: 'opera-01' | 'opera-02' | 'interno-01' | 'cantiere-01' } | { vista: Vista }
+)
+
+const CAMPI: readonly Campo[] = [
+  { colonna: 0, ratio: '3 / 4', demo: 'opera-01' },
+  { colonna: 1, ratio: '1 / 1', vista: 'assonometria' },
+  { colonna: 2, ratio: '16 / 10', demo: 'opera-02' },
+  { colonna: 3, ratio: '4 / 3', vista: 'prospetto' },
+  { colonna: 0, ratio: '4 / 3', demo: 'interno-01' },
+  { colonna: 1, ratio: '3 / 4', vista: 'sezione' },
+  { colonna: 2, ratio: '3 / 4', demo: 'cantiere-01' },
+  { colonna: 3, ratio: '1 / 1', vista: 'assonometria-girata' },
+]
 
 export function Galleria() {
-  /* Otto campi su quattro colonne: due per colonna, con i rapporti sfalsati.
-     Sei portano un media di esempio, due restano **campi vuoti** — nella
-     reference le assonometrie a filo sono disegni e non fotografie, e un campo
-     vuoto con le sue squadrette dice «qui va una tavola» meglio di una foto di
-     repertorio. */
-  const campi = Array.from({ length: 8 }, (_, i) => ({
-    ratio: RAPPORTI[(i * 3) % RAPPORTI.length],
-    demo: i % 4 === 3 ? undefined : MEDIA[i % MEDIA.length],
-    colonna: i % 4,
-  }))
+  /* Le due numerazioni sono **progressive sull'ordine dei campi**, non
+     sull'indice di colonna: `fig. 01` è la prima tavola che si incontra
+     scendendo, e i numeri li conta il repo — anche il denominatore, che è
+     quante tavole ci sono in tutto. */
+  const numeroTavola = new Map<Campo, number>()
+  const numeroFoto = new Map<Campo, number>()
+  for (const c of CAMPI) {
+    if ('vista' in c) numeroTavola.set(c, numeroTavola.size + 1)
+    else numeroFoto.set(c, numeroFoto.size + 1)
+  }
 
   return (
     <section className="ecolinear-galleria" id="progetti" aria-labelledby="galleria-titolo">
@@ -144,32 +187,42 @@ export function Galleria() {
       <div className="galleria-colonne">
         {[0, 1, 2, 3].map((c) => (
           <div key={c} className="galleria-colonna" data-colonna={c}>
-            {campi
-              .filter((x) => x.colonna === c)
-              .map((x, i) => (
+            {CAMPI.filter((x) => x.colonna === c).map((x, i) =>
+              'vista' in x ? (
+                <figure key={i} className="galleria-tavola">
+                  <TavolaVolume
+                    vista={x.vista}
+                    fig={numeroTavola.get(x) ?? 1}
+                    su={numeroTavola.size}
+                    ratio={x.ratio}
+                  />
+                  {/* Niente `data-chiede`: qui non manca niente. La didascalia
+                      dice che cos'è il disegno e dice che è uno **schema**, che
+                      è l'unica cosa onesta da scrivere sotto una geometria che
+                      non è un'opera del cliente. */}
+                  <figcaption className="galleria-didascalia">
+                    {NOMI_VISTA[x.vista]}, schema del corpo di fabbrica
+                  </figcaption>
+                </figure>
+              ) : (
                 <figure key={i} className="galleria-tavola">
                   <Placeholder
-                    label={
-                      x.demo
-                        ? 'Fotografia di un’opera realizzata — dallo studio, non un render'
-                        : 'Tavola: assonometria, sezione o pianta — dal progetto dello studio'
-                    }
-                    specifica={
-                      x.demo ? '1600 × 2000 px · AVIF · ≤ 200 KB' : '1600 × 1600 px · SVG o AVIF'
-                    }
+                    label="Fotografia di un’opera realizzata — dallo studio, non un render"
+                    specifica="1600 × 2000 px · AVIF · ≤ 200 KB"
                     ratio={x.ratio}
                     demo={x.demo}
                     className="galleria-media"
                   />
                   <figcaption className="galleria-didascalia">
                     <Segnaposto
-                      chiede={`nome e luogo della tavola ${c * 2 + i + 1} della galleria`}
+                      chiede={`nome e luogo della fotografia ${numeroFoto.get(x)} della galleria`}
                       parole={3}
                       maiuscola={false}
                     />
                   </figcaption>
                 </figure>
-              ))}
+              ),
+            )}
           </div>
         ))}
       </div>
@@ -221,6 +274,22 @@ export function Fasi() {
             <div key={f.titolo} className="fasi-disegno" data-fase={i}>
               <SegnoFase indice={i} />
               <p className="fasi-fig">fig. 0{i + 1}</p>
+              {/* Le due tende del plotter. Sono due rettangoli del colore del
+                  pannello che **traslano**: quella che scopre esce a destra e
+                  il disegno compare dietro di lei tratto per tratto, quella che
+                  copre rientra da sinistra quando la fase è passata. Il
+                  disegno non appare mai in dissolvenza: viene tracciato.
+
+                  A riposo sono tutte e due **fuori dal riquadro** — cioè lo
+                  stato finito è il disegno intero. Il perché e i valori stanno
+                  in `app/css/ecolinear.css`. */}
+              <span className="ecolinear-tenda" data-verso="scopre" aria-hidden="true">
+                {/* Il mirino che precede il tratto: la stessa forma del
+                    puntatore CAD che è già in pagina — hairline più finestra di
+                    selezione da 8 px — perché è lo stesso strumento. */}
+                <span className="ecolinear-penna" data-decorativo="" />
+              </span>
+              <span className="ecolinear-tenda" data-verso="copre" aria-hidden="true" />
             </div>
           ))}
         </div>
@@ -265,35 +334,49 @@ export function Fasi() {
 /* -------------------------------------------------------------------------- */
 
 /**
- * I numeri, come **quote vere**.
+ * I numeri, come **quote su un volume** — il secondo momento della pagina.
  *
  * È la lezione che `SCHEDA.md` dice di prendere da qui: *«una quota in pagina
  * dichiara una quantità che esiste o non si disegna»*. Nella reference la quota
- * porta `14.34 M — ESC 1:50`, cioè un numero vero con la sua scala. Qui i
- * quattro numeri dello studio stanno su una **linea di quota** con i due
- * terminatori e l'annotazione sopra, e ognuno è un valore che il committente
- * darà: quindi non è ornamento.
+ * porta `14.34 M — ESC 1:50`, cioè un numero vero con la sua scala.
+ *
+ * Prima qui c'erano quattro filetti sul foglio nudo, e quotavano il vuoto: una
+ * linea di quota senza un oggetto fra i suoi estremi è la forma della quota
+ * senza la sua ragione. Adesso l'oggetto c'è ed è l'edificio — l'assonometria
+ * di `lib/volume.ts`, la stessa geometria dell'esploso di A — e le quattro
+ * cifre gli stanno appese accanto con il filetto e i due terminatori
+ * **verticali**, che sono l'apparato di B e non il tratto obliquo di A.
+ *
+ * Le cifre restano `SegnapostoCifra`: i numeri dello studio non ci sono ancora
+ * e non si inventano (`CLAUDE.md` § Regole, 1). Quello che è cambiato è che
+ * adesso quotano qualcosa.
+ *
+ * Sta in **posizione 2** e le fasi pinnate in posizione 5: i due wow della
+ * proposta non sono di fila (`CLAUDE.md` § Regole, 3).
  */
 export function Numeri() {
   return (
-    <section className="numeri-quota" id="numeri" aria-labelledby="numeri-titolo">
+    <section className="ecolinear-volume" id="numeri" aria-labelledby="numeri-titolo">
       <p className="registro-etichetta">
         <span>i numeri</span>
       </p>
       <h2 id="numeri-titolo" className="ecolinear-titolo">
         Quanto abbiamo costruito.
       </h2>
-      <dl className="quote-numeri">
-        {numeri.map((n) => (
-          <div key={n.etichetta} className="quota-numero">
-            <dt>{n.etichetta}</dt>
-            <dd>
-              <SegnapostoCifra chiede={n.chiedere} cifre={n.etichetta.includes('mq') ? 5 : 2} />
-            </dd>
-            <span className="quota-linea" aria-hidden="true" data-decorativo="" />
-          </div>
-        ))}
-      </dl>
+      <div className="ecolinear-volume-corpo">
+        <VolumeAssonometrico />
+        <dl className="quote-numeri">
+          {numeri.map((n) => (
+            <div key={n.etichetta} className="quota-numero">
+              <dt>{n.etichetta}</dt>
+              <dd>
+                <SegnapostoCifra chiede={n.chiedere} cifre={n.etichetta.includes('mq') ? 5 : 2} />
+              </dd>
+              <span className="quota-linea" aria-hidden="true" data-decorativo="" />
+            </div>
+          ))}
+        </dl>
+      </div>
     </section>
   )
 }
@@ -363,8 +446,23 @@ export function Invito() {
       <p className="registro-azione">
         <Link href="#brief" className="invito-pastiglia">
           <span>Raccontaci il progetto</span>
+          {/* La freccia **dentro il cerchietto**, e disegnata invece che
+              scritta. Il carattere `→` in coda a un link è la tell n. 5 della
+              lista di calibrazione — la coda tipografica che ogni pagina
+              generata attacca a ogni azione — e ce n'era una sola in tutto il
+              sito, qui. Nella reference (`1440-meta-88.jpeg`) non c'è nessun
+              carattere in coda: c'è una pastiglia tonda con dentro un segno,
+              cioè un oggetto e non un suffisso. Due tratti, non un'icona: l'asta
+              e la punta. */}
           <span className="invito-freccia" aria-hidden="true">
-            →
+            <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+              <path
+                d="M3.5 8h8M8.4 4.9 11.5 8l-3.1 3.1"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.4}
+              />
+            </svg>
           </span>
         </Link>
       </p>

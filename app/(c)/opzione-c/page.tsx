@@ -58,12 +58,33 @@ export const metadata: Metadata = {
  * A smista con cinque bottoni che precompilano il passo 1, B mette l'invito
  * prima della galleria, C vende con le bande e chiede alla fine.
  *
- * ## Il movimento
+ * ## Il movimento — e la riga di scheda che era sbagliata
  *
- * **Nessuno.** Non è una scelta di risparmio: quella pagina non ha un gesto di
- * scorrimento — il suo effetto viene dal cambio di superficie, che non ha
- * bisogno di muoversi. È anche la differenza da B, dove il pannello delle fasi
- * resta fermo mentre le fasi passano.
+ * Fino all'08/09 questo file diceva *«nessuno: quella pagina non ha un gesto di
+ * scorrimento»*. **È falso, ed è stata una lettura mancata, non una scelta.**
+ * Rimisurata: Halston carica **gsap + ScrollTrigger + Lenis** e ha **205
+ * elementi a `opacity: 0`** prima dello scorrimento, che scendono a **78** dopo
+ * aver percorso la pagina — tanto che la prima cattura a 390 uscì vuota proprio
+ * per questo. La rivelazione allo scorrimento **è** il suo sistema.
+ *
+ * Quindi qui ci sono tre cose, tutte in CSS e tutte a zero KB:
+ *
+ * 1. **il momento orchestrato** — la banda granata che *invade* la carta al
+ *    passaggio della piega (`Bande`, blocchi 3-4): una superficie che sale in
+ *    solo `transform`, guidata dalla `view-timeline` della banda;
+ * 2. **il secondo wow** — il filetto spezzato della copertina (blocco 2) che si
+ *    ricompone: i due tronconi si chiudono e diventano una riga sola, che è la
+ *    sua versione a 390. I due non sono di fila;
+ * 3. **la rivelazione, che è sistema e non wow** — teste di banda e righe dei
+ *    servizi entrano con `opacity` e 16 px di `translateY`, dove la reference
+ *    ce l'ha. **Al contrario della reference**, però: lo stato di riposo è il
+ *    contenuto *già visibile*, perché su Halston senza JavaScript metà pagina
+ *    resta a `opacity: 0` e la regola 4 di casa lo vieta.
+ *
+ * Tutto sta in `app/css/halston.css`, dentro un `@supports` e un
+ * `@media (prefers-reduced-motion: no-preference)` **esplicito**: la regola
+ * globale azzera `animation-duration`, e su una timeline di scorrimento la
+ * durata è ignorata.
  */
 export default function OpzioneC() {
   return (
@@ -79,7 +100,7 @@ export default function OpzioneC() {
       <Persone />
       {/* Nessun `passo1Esterno`: in C il brief comincia dall'inizio. */}
       <Brief pagina="/opzione-c" etichetta="il brief" />
-      <BarraMobile />
+      <BarraMobile segnaposto="riempimento" href="#brief" />
     </>
   )
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
@@ -26,13 +27,16 @@ export const metadata: Metadata = {
  * (e poi cosa succede?) → esploso (il mestiere che nelle foto non si vede) →
  * persone (chi firma) → territorio (qui, non «in tutta Italia») → brief.
  *
- * Le sezioni sono gli stessi componenti dell'opzione B: cambiano l'ordine, il
- * tema e la variante, non il codice. Alla decisione n. 1 una delle due rotte
- * si elimina e i componenti restano dove sono.
+ * I **due** blocchi wow, e non sono di fila (CLAUDE.md § Regole, 3): la
+ * hero-oggetto in posizione 1 — l'assonometria bianca su bianca al posto della
+ * fotografia, gesto di AIR misurato — e l'esploso in posizione 6, che alla
+ * ripassata di design si separa allo scorrimento in CSS puro. Fra i due ci sono
+ * quattro sezioni ferme.
  *
- * Un solo blocco «wow» in questa pagina — l'esploso — e non è di fila a un
- * altro (CLAUDE.md § Regole, 7). In questa fase è fermo: il movimento arriva
- * alla fase 5.
+ * Le otto sezioni si dividono in **quattro famiglie di impaginazione** e non
+ * due, e nessuna è due volte di fila: la tabella sta in `app/css/sezioni.css`
+ * (§ Le famiglie di impaginazione). Prima erano quattro `.testa-sezione`
+ * consecutive.
  *
  * L'unico `h1` della pagina sta nella hero.
  */
@@ -65,6 +69,16 @@ export default function Home() {
       <Persone />
       <Territorio />
       <Brief pagina="/" />
+      {/* `CLAUDE.md` § Homepage la chiede («+ Barra CTA mobile fissa sotto
+          768 px») e nessuna decisione la toglie: era montata solo da B e da C.
+          `href="#brief"` perché il brief sta in fondo a questa pagina, e il
+          segnaposto resta **visibile** — l'eccezione del riempimento vale per
+          le due demo di vendita, non per A (decisione n. 41).
+          Lo spazio in fondo alla pagina lo fa `body:has(.barra-mobile)` in
+          `app/css/sezioni.css`: la classe `con-barra-mobile` di B e C sta sul
+          `<body>` del loro layout, e il layout di `app/(a)` serve otto rotte
+          mentre la barra la monta la sola home. */}
+      <BarraMobile href="#brief" />
     </>
   )
 }

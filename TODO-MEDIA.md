@@ -31,7 +31,7 @@ si può ribaltare senza ricodificarlo.
 
 | File | Dove | Soggetto | Autore | Fonte | Licenza | Peso |
 |---|---|---|---|---|---|---|
-| `cantiere-loop.mp4` + poster | hero A | scheletro in costruzione e gru, in controluce | Mixkit | [Mixkit](https://mixkit.co/free-stock-video/sunset-behind-a-building-under-construction-3971/) | Mixkit Free | **2,09 MB** + 36 KB |
+| `cantiere-loop.mp4` + poster | **copertina di C** *(era la hero di A fino alla ripassata dell'08/09: A adesso apre con un volume disegnato e non ha più un campo fotografia sopra la piega; C invece ha una copertina video, misurata sulla reference — `heroInfo.video: true`)* | scheletro in costruzione e gru, in controluce | Mixkit | [Mixkit](https://mixkit.co/free-stock-video/sunset-behind-a-building-under-construction-3971/) | Mixkit Free | **2,09 MB** + 36 KB |
 | `opera-01.jpg` | progetti 01 | edificio a piani sfalsati dal basso | Chuttersnap | [StockSnap](https://stocksnap.io/photo/building-structure-4KWA8Y07O4) | CC0 1.0 | 41 KB |
 | `opera-02.jpg` | progetti 02 | facciata residenziale con logge | The Building Envelope | [StockSnap](https://stocksnap.io/photo/abstract-modern-I6XJM4PDE1) | CC0 1.0 | 85 KB |
 | `opera-03.jpg` | progetti 04 | spigolo bianco con finestre irregolari | The Building Envelope | [StockSnap](https://stocksnap.io/photo/building-exterior-AJU8JTAEJQ) | CC0 1.0 | 47 KB |

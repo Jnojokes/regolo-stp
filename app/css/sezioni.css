@@ -19,11 +19,29 @@
    Una regola piatta non dà errore: perde in silenzio. È già costato il blocco
    prima/dopo servito vuoto e la targhetta della hero larga come tutta la foto.
 
-   Regola di questa fase: **niente animazioni**. Le transizioni che restano sono
-   solo di stato (hover, checked, focus), durano 0,15 s e toccano soltanto
-   `background-color`, `border-color` e `transform`. Il movimento allo scroll
-   arriva alla fase 5.
+   Il movimento, dopo la ripassata di design: A ha **un solo momento
+   orchestrato**, l'esploso che si separa allo scorrimento (in fondo a questo
+   foglio). Tutto il resto è transizione di stato — hover, checked, focus —
+   0,15 s su `background-color`, `border-color`, `opacity` e `transform`.
    ========================================================================== */
+
+/* ---------- i tre valori dell'oggetto della hero ----------------------------
+   Stanno qui e non in `app/globals.css` perché li usa un blocco solo, e sono
+   una **superficie**, non testo: 1,17:1 · 1,08:1 · 1,03:1 sulla carta bianca.
+   È il punto di AIR misurato — l'oggetto si legge per la propria ombra, cioè
+   per la differenza fra le sue facce, non per uno stacco dal fondo.
+
+   Il filo degli spigoli è l'unica cosa che porta la figura sopra la soglia 3:1
+   di WCAG 1.4.11, e riusa `--regolo-line` (4,61:1) invece di inventarsi un
+   quarto grigio. Fuori dal tema A questi token non esistono: nessun'altra
+   proposta monta questo blocco.
+   -------------------------------------------------------------------------- */
+[data-theme='a'] {
+  --regolo-volume-tono-0: #e2e2e2; /*  1,32:1 su carta — la parete in ombra */
+  --regolo-volume-tono-1: #ededed; /*  1,17:1 — la parete di taglio */
+  --regolo-volume-tono-2: #f8f8f8; /*  1,06:1 — la falda che prende la luce */
+  --regolo-volume-filo: var(--regolo-line); /*  4,61:1 su carta */
+}
 
 @layer components {
   /* ---------- guscio di sezione -------------------------------------------
@@ -171,8 +189,17 @@
   .barra-proposta a {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     /* il bersaglio da 44 px è il link, ed è lui a dare l'altezza alla barra */
     min-height: 2.75rem;
+    /* E la larghezza. I due link fra le proposte sono **una lettera** — «B» e
+       «C» — e misuravano 8 e 9 px: passano l'eccezione di spaziatura di WCAG
+       2.5.8 perché intorno hanno il vuoto, ma un bersaglio da 8 px su un
+       telefono si sbaglia lo stesso. Il minimo qui è il minimo della norma, non
+       44, perché questa barra sparisce alla fase 5 e allargarla di più
+       toglierebbe spazio all'avvertenza sui segnaposto, che è la ragione per cui
+       la barra esiste. */
+    min-width: 1.5rem;
     text-decoration: underline;
     text-underline-offset: 2px;
     font-weight: 500;
@@ -294,13 +321,87 @@
 
   /* ==========================================================================
      Hero A — «L'elevato»
-     Il payoff a 132 px in quattro righe, la quota che attraversa la larghezza,
-     il campo della fotografia che sborda a destra. Nessun occhiello sopra il
-     titolo: l'identità della sezione è la quota.
+     Il payoff a 132 px in **tre righe** ai due margini, la quota che attraversa
+     la larghezza, e in mezzo l'oggetto tridimensionale bianco su bianco. Niente
+     fotografia sopra la piega, niente occhiello sopra il titolo.
+
+     La fotografia è uscita alla ripassata di design, e per due motivi che si
+     sommano: foto d'opera più payoff grande è il default della categoria, e
+     quel campo era **un rettangolo grigio** — una promessa che il repo non
+     mantiene, mostrata in call come prima cosa. Il gesto nuovo è AIR misurato:
+     le due voci del payoff ai due margini e l'oggetto che passa fra loro.
      ======================================================================== */
   .hero-elevato {
     padding-top: clamp(1.5rem, 2.4vw, 2rem);
     padding-bottom: var(--regolo-passo-corto);
+  }
+  /* La scena: due strati, l'oggetto sotto e il testo sopra. L'SVG è in
+     posizione assoluta sull'intera lastra e `preserveAspectRatio` lo centra,
+     quindi **non c'è nessuna misura cablata**: se il payoff cambia altezza
+     l'oggetto lo segue, e non può sbordare sulla barra nera della proposta. */
+  .hero-scena {
+    position: relative;
+    /* `clip` e non `hidden`: taglia senza creare un contenitore di scorrimento,
+       quindi non trasforma la scena in un box che si può scrollare da tastiera.
+       Senza, l'SVG **sfondava di 664 px** nella sezione dopo e copriva le sei
+       voci dello smistamento: un `<svg>` con `inset: 0` e altezza automatica
+       prende l'altezza dal rapporto del `viewBox`, non dal contenitore. */
+    overflow: clip;
+  }
+  /* Il riquadro dell'oggetto, e i quattro numeri sono il gesto.
+     Su `air-1440-meta.png` il nastro **non è centrato e non riempie**: occupa
+     poco meno di metà larghezza, esce dal bordo di sopra e da quello di sotto,
+     e lascia carta a destra dove stanno le tre righe di micro-testo. Qui il
+     payoff è a sinistra, quindi l'oggetto sta a destra e la specularità è la
+     stessa: comincia al 30 % della larghezza, sfora di poco a destra, e in
+     verticale esce dai due lati. Le prime due righe del payoff gli passano
+     **davanti**, la terza gli entra dentro.
+     `inset: 0` da solo non bastava: un `<svg>` con rapporto d'aspetto proprio
+     e altezza automatica prende l'altezza dal `viewBox`, non dal contenitore —
+     misurati 1.259 px dentro una scena da 595. */
+  .hero-volume {
+    position: absolute;
+    inset: -14% -4% -22% 30%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    /* Non intercetta mai il puntatore: sotto di lui ci sono la CTA e il
+       telefono, che sono le due azioni della pagina. */
+    pointer-events: none;
+  }
+  .hero-lastra {
+    position: relative;
+    z-index: 1;
+  }
+  /* Le facce non hanno contorno proprio: il contorno è **un** `path` solo,
+     disegnato sopra tutte, così gli spigoli condivisi non si sdoppiano. */
+  .hero-volume-faccia {
+    stroke: none;
+  }
+  /* I tre valori. Erano 1,17 · 1,08 · 1,03:1 sulla carta e le facce non si
+     distinguevano: a quella distanza l'oggetto non ha un'ombra propria, e senza
+     ombra propria non è un solido — è il contorno di un solido. Adesso 1,32 ·
+     1,17 · 1,06, che restano bianco su bianco (la più scura è `#e2e2e2`) ma
+     danno tre piani leggibili. */
+  .hero-volume-tono-0 {
+    fill: var(--regolo-volume-tono-0);
+  }
+  .hero-volume-tono-1 {
+    fill: var(--regolo-volume-tono-1);
+  }
+  .hero-volume-tono-2 {
+    fill: var(--regolo-volume-tono-2);
+  }
+  .hero-volume-filo {
+    fill: none;
+    stroke: var(--regolo-volume-filo);
+    stroke-width: 1;
+    /* Il filo resta di 1 px reale a qualunque scala: l'SVG si stira dalla
+       lastra, e senza questo lo spessore crescerebbe con la finestra fino a
+       trasformare l'assonometria in un disegno a pennarello. */
+    vector-effect: non-scaling-stroke;
+    stroke-linejoin: round;
+    stroke-linecap: round;
   }
   /* Il corpo del payoff è **132 px e non 152**, e il numero non è arbitrario:
      132 / 18 = 7,3×, cioè esattamente il contrasto di scala misurato su Storey.
@@ -311,9 +412,11 @@
   .hero-payoff {
     font-size: var(--text-h1);
     line-height: var(--regolo-lh-h1);
-    /* Le quattro righe sono decise e spezzate a mano con `<br>`: `balance` o
-       `pretty` le ri-spezzerebbero, e a 132 px un capo a riga in più costa
-       111 px di altezza. */
+    /* Le righe sono decise e spezzate a mano — tre a 1440, quattro sotto i
+       67 rem: `balance` o `pretty` le ri-spezzerebbero, e a 132 px un capo a
+       riga in più costa 113,5 px di altezza. Le larghezze e le soglie
+       d'inchiostro di ogni riga stanno in `components/sezioni/Hero.tsx`, e se
+       si cambia una parola vanno rifatte. */
     text-wrap: nowrap;
   }
   .hero-payoff > span {
@@ -323,8 +426,8 @@
      il tecnicismo della prima — la stessa relazione esito/tecnicismo dei sei
      servizi — e sostituisce la riga in corsivo colorato, che era la tell «una
      sola parola del titolo in corsivo/colore».
-     In B `--regolo-display-wdth` vale 100 e le due metà restano identiche:
-     Chivo non ha l'asse di larghezza, e A comprime mentre B no. */
+     L'asse di larghezza è di A soltanto: né Montserrat (B) né General Sans (C)
+     ce l'hanno, e nessuna delle due monta questo blocco. */
   .hero-payoff-esito {
     font-stretch: calc(var(--regolo-display-wdth) * 1%);
     font-weight: 500;
@@ -332,31 +435,70 @@
   /* La seconda metà **non cambia colore**: cambia larghezza e peso. Tingerla
      di grigio la fa leggere come disattivata, e un titolo con una parte in un
      altro colore è la tell «una sola parola del titolo in corsivo/grassetto/
-     colore» con un vestito nuovo. La differenza è tipografica o non è. */
+     colore» con un vestito nuovo. La differenza è tipografica o non è.
+     E sta al **margine opposto**: è il gesto di AIR — la `A` al margine
+     sinistro, la `R` al destro, e in mezzo l'oggetto. */
   .hero-payoff-tecnico {
     font-stretch: calc(var(--regolo-display-wdth) * 0.75%);
     font-weight: 400;
+    text-align: right;
   }
+  /* Le due metà del tecnico. Sopra i 67 rem stanno su **una riga** — 7,779 em
+     a `wdth 75`, cioè 1.026,8 px a corpo 132 — e l'h1 è di tre righe. Sotto,
+     due righe, e l'h1 torna di quattro come a 390.
+     La soglia non è scelta a occhio: 1.027 px è quanto serve, e
+     `100vw − 2 × margine` ci arriva a **1.064 px** (margine 18,1 a quella
+     larghezza). 67 rem = 1.072 px è il rem successivo.
+     Due `<span>` che passano da `inline` a `block`, e non un `<br>` spento con
+     `display: none`: il testo nel DOM resta uno solo, e a spezzarlo è
+     l'impaginazione, non una copia nascosta. */
+  .hero-payoff-riga {
+    display: block;
+  }
+  @media (min-width: 67rem) {
+    .hero-payoff-riga {
+      display: inline;
+    }
+  }
+  /* La quota passa **sopra** l'oggetto, e questo cambia il suo fondo: il
+     `--regolo-line` (4,61:1 sulla carta) scende a **3,94:1** sulla faccia più
+     in ombra del volume — sotto soglia, su un testo da 12,6 px. Si corregge il
+     testo, non l'oggetto: un grigio un gradino più scuro passa su tutti e due i
+     piani, **5,33:1 sulla carta e 4,55:1 su `--regolo-volume-tono-0`**.
+     Schiarire la faccia invece avrebbe voluto dire portarla a #FEFEFE, cioè
+     spegnere la sola cosa che rende leggibile un oggetto bianco su bianco. */
   .hero-quota {
+    --regolo-quota-colore: #6b6b6b;
     margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
   }
-  /* Il basso della hero: il testo su una colonna corta e il campo della
-     fotografia che sborda **a destra** oltre il margine (Kononenko misurato ha
-     un'immagine a x = −32, Storey un file da 1512 px a x = −36). Mai a
-     sinistra: il margine di pagina è la spina della griglia. */
+  /* Sotto i 40 rem la regola generale incolonna le voci della quota una per
+     riga: sui cinque ruoli fanno sei righe, ~150 px, e la CTA finisce sotto la
+     piega di un telefono. Qui vanno **due per riga** e ognuna tiene il suo
+     terminatore: la quota non si spegne, cambia forma (CLAUDE.md § Regole, 5). */
+  @media (max-width: 40rem) {
+    .hero-quota > .quota-voce {
+      flex: 1 1 45%;
+      padding-right: 1rem;
+    }
+  }
+  /* Il basso della hero: l'azione a sinistra, la riga di lead **al bordo
+     opposto**, e in mezzo il vuoto in cui si vede passare l'oggetto. È il posto
+     in cui su AIR stanno le tre righe di micro-testo, fra la `I` e la `R`.
+     Le due colonne non sono uguali e non sono una frazione della griglia: la
+     prima è larga quanto la CTA, la seconda 26 rem, e lo spazio in mezzo è
+     quello che avanza — il «vuoto disuguale» di Storey. */
   .hero-basso {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(1.75rem, 4vw, 3rem);
+    gap: clamp(1.25rem, 2.4vw, 2rem);
     margin-top: clamp(1.75rem, 2.4vw, 2.125rem);
+    align-items: start;
   }
   @media (min-width: 56rem) {
     .hero-basso {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
-      /* `end` bottom-allineava il testo dentro una riga alta quanto la figura e
-         spingeva la CTA 340 px più in basso di dove serve. Il testo sta in
-         alto; il vuoto, se c'è, sta sotto — che è dove non fa danno. */
-      align-items: start;
+      grid-template-columns: minmax(0, auto) minmax(0, 26rem);
+      justify-content: space-between;
+      column-gap: clamp(2rem, 6vw, 6rem);
     }
   }
   .hero-lead {
@@ -374,7 +516,6 @@
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
-    margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
   }
   @media (min-width: 30rem) {
     .hero-azioni {
@@ -394,15 +535,11 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 4px;
   }
-  .hero-figura {
-    /* sborda di un margine oltre il bordo del contenuto */
-    margin-right: calc(-1 * var(--regolo-margine));
-  }
-  @media (max-width: 55.999rem) {
-    .hero-figura {
-      margin-inline: calc(-1 * var(--regolo-margine));
-    }
-  }
+  /* Qui c'era `.hero-figura`, il campo della fotografia che sbordava a destra.
+     È uscito con la fotografia: A è l'unica delle tre proposte che apre senza
+     un'immagine e senza un colore, e non per povertà — quello che ha da
+     mostrare è una geometria. La regola «la foto sborda da un lato solo» resta
+     valida per i blocchi sotto la piega. */
 
   /* ==========================================================================
      Hero B — «Il registro»
@@ -580,6 +717,117 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 5px;
+  }
+
+  /* ==========================================================================
+     LE FAMIGLIE DI IMPAGINAZIONE, e perché ce ne sono quattro
+     --------------------------------------------------------------------------
+     La tell misurata (`sito-design` § 1): «due sezioni di fila con la stessa
+     famiglia di layout; su 8 sezioni almeno 4 famiglie». Prima della ripassata
+     A ne aveva **due**, e cinque sezioni su otto erano la stessa —
+     `.sezione > .wrap > .testa-sezione`, quattro delle quali **di fila**
+     (smistamento, progetti, servizi, come lavoriamo) più le persone.
+
+     Adesso, in ordine di pagina:
+
+     | # | sezione | famiglia |
+     |---|---|---|
+     | 1 | hero | la scena: due strati, testo ai due margini |
+     | 2 | smistamento | testa a piena larghezza, **i numeri al bordo opposto** |
+     | 3 | progetti | `testa-sezione` (etichetta · titolo · uscita) |
+     | 4 | servizi | griglia: **titolo nel margine vuoto**, tavola a destra |
+     | 5 | come lavoriamo | `testa-sezione` |
+     | 6 | esploso | griglia: figura e apparato in due colonne |
+     | 7 | persone | `testa-sezione` |
+     | 8 | territorio | griglia |
+
+     Quattro famiglie, nessuna due volte di fila. Non ne è stata inventata
+     nessuna: due sezioni hanno **perso** la testa, e con lei quattro delle sette
+     etichette (il tetto del test meccanico è ⌈8 / 3⌉ = 3).
+     ======================================================================== */
+
+  /* --- 2 · smistamento: la testa porta i conteggi -------------------------
+     LPAS misurato: il conteggio è il modo di provare il volume senza scrivere
+     «siamo bravi» — `5 / 5` sulla scheda e i contatori per categoria sotto. Qui
+     i numeri stanno all'**estremo opposto** del titolo, che è la regola di casa
+     (il contenuto su un asse, i numeri dall'altra parte, il vuoto in mezzo). */
+  .smistamento-testa {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: end;
+  }
+  @media (min-width: 56rem) {
+    .smistamento-testa {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+  .smistamento-titolo {
+    max-width: 16ch;
+  }
+  /* Nessun filetto fra le tre celle e nessun «·» a unirle: la gerarchia la fa
+     la coppia corpo/colore, che è AS misurato (etichetta al 40 %, conteggio al
+     20 %, e zero divisori in una tabella di 25 righe). */
+  .smistamento-conti {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, auto));
+    gap: 0.75rem clamp(1.25rem, 3vw, 2.75rem);
+    margin: 0;
+  }
+  @media (max-width: 30rem) {
+    .smistamento-conti {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* `column-reverse`: nel DOM la chiave precede il valore — è una `<dl>`, e una
+     sintesi vocale deve sentire «ruoli firmabili, 5» — in pagina il numero sta
+     sopra. L'ordine di lettura non dipende dall'impaginazione. */
+  .smistamento-conti > div {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+  .smistamento-conti dt {
+    font-size: var(--text-eyebrow);
+    line-height: 1.2;
+    color: var(--color-muted);
+  }
+  .smistamento-conti dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--regolo-display-weight);
+    font-size: var(--text-h3);
+    line-height: 1;
+    letter-spacing: var(--regolo-display-tracking);
+  }
+  /* Senza `testa-sezione` non c'è nessun `.corpo-sezione` a dare il respiro
+     fra la testa e l'indice: lo dichiara il blocco. */
+  .smistamento-indice {
+    margin-top: clamp(1.75rem, 3vw, 2.75rem);
+  }
+
+  /* --- 4 · servizi: il titolo nel margine vuoto ---------------------------
+     Kononenko misurato: l'etichetta «Offices» buttata a sinistra in un margine
+     vuoto e la tabella che comincia a x = 493 su 1440 (34 %). Qui il titolo sta
+     nelle prime tre colonne e la tavola parte dalla quinta, cioè a 472 px. */
+  .servizi-tavola {
+    align-items: start;
+  }
+  /* `grid-12` è un `@utility`, cioè `@layer utilities`, e il suo `gap` batte
+     qualunque `row-gap` scritto qui: è la trappola documentata in
+     `globals.css`, e perde in silenzio. Quando le due colonne si impilano il
+     respiro lo dà un margine, che nessuna utility tocca. */
+  @media (max-width: 55.999rem) {
+    .servizi-tavola > .indice {
+      margin-top: clamp(1.25rem, 3vw, 2rem);
+    }
+  }
+  .servizi-margine {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(1rem, 2vw, 1.5rem);
   }
 
   /* ==========================================================================
@@ -1349,8 +1597,16 @@
        spazio giusto per una riga sola, l'ultimo pixel del footer finiva
        sotto la barra (misurato: footer a 712, barra a 711).
        Quando arriva il numero vero la cella torna di una riga e questo
-       valore può tornare a 4,25rem — riga in TODO-MEDIA/CONTENUTI. */
-    .con-barra-mobile {
+       valore può tornare a 4,25rem — riga in TODO-MEDIA/CONTENUTI.
+
+       Il secondo selettore è per A: là la classe **non può stare sul `<body>`**
+       come in B e in C, perché il layout di `app/(a)` serve otto rotte e la
+       barra la monta la sola home. Chiederlo alla presenza della barra invece
+       che a una classe è anche più difficile da sbagliare: se un giorno la
+       barra si toglie da una pagina, lo spazio se ne va con lei. Sulle altre due
+       rotte le due regole dicono la stessa cosa e non si sommano. */
+    .con-barra-mobile,
+    body:has(.barra-mobile) {
       padding-bottom: 5.5rem;
     }
   }
@@ -1440,6 +1696,112 @@
         }
         to {
           --x: 50%;
+        }
+      }
+    }
+  }
+}
+
+/* ============================================================================
+   WOW 2 — L'ESPLOSO CHE SI SEPARA ALLO SCORRIMENTO
+   ----------------------------------------------------------------------------
+   `CLAUDE.md` § Homepage, blocco 7 lo chiede da prima che la fase 3
+   cominciasse — «SVG a livelli … che si separano allo scroll» — e non era mai
+   stato costruito: nel componente c'era ancora scritto «alla fase 5
+   ScrollTrigger animerà». È **il solo momento orchestrato di A** (`sito-design`
+   § 6: uno vale più di effetti sparsi), e l'altro blocco wow è la hero-oggetto,
+   che sta in posizione 1: non sono di fila.
+
+   Cinque cose lo tengono onesto:
+
+   1. **è in CSS, non in JavaScript.** `view-timeline` sulla sezione e
+      `animation-timeline` sui cinque `<g>`: zero KB, e ScrollTrigger + Lenis
+      restano fuori dal bundle di questa pagina;
+   2. **si anima solo `transform`** (e su telefono `opacity`), che sono le due
+      proprietà consentite. Il `--dy` di ogni livello è già calcolato dal server
+      in `lib/esploso.ts`: qui non si ricalcola niente a runtime;
+   3. **lo stato di riposo è quello finito.** Il fotogramma `to` è identico alla
+      regola base `.esploso-livello { transform: translateY(var(--dy)) }`, e
+      **non c'è `animation-fill-mode`**: senza JavaScript, senza supporto e con
+      `prefers-reduced-motion` il disegno resta quello separato di sempre. Non
+      si perde niente, che è la regola 4 di casa;
+   4. **il `@media (prefers-reduced-motion: no-preference)` è esplicito.** La
+      regola globale di `globals.css` azzera `animation-duration`, e su una
+      `animation-timeline` la durata è **ignorata**: senza questo `@media` chi
+      ha chiesto meno animazioni le avrebbe lo stesso;
+   5. **tutti partono insieme e arrivano scalati.** Le cinque `animation-range`
+      cominciano tutte a `cover 0 %` — se cominciassero dopo, il visitatore
+      vedrebbe il disegno già separato e poi richiudersi di scatto — e finiscono
+      a 42 · 48 · 54 · 60 %. Il livello più alto è quello che viaggia di più e
+      ci mette di più: è un esploso, non cinque blocchi che scivolano uguali.
+
+   Supporto verificato l'08/09/2026: Chrome ed Edge 115+, Safari e Safari iOS
+   26+, Firefox no. Dove manca, il disegno è quello di sempre.
+
+   ## La versione mobile, che `CLAUDE.md` chiede «progettata, non disattivata»
+
+   Il capitolato dice «sequenza di step con i livelli che si accendono uno alla
+   volta», e fino a oggi a 390 c'era lo stesso SVG fermo con una nota che
+   parlava del mouse. Sotto i 60 rem l'animazione è la stessa timeline con un
+   fotogramma in più: i livelli **si accendono** mentre salgono, uno dopo
+   l'altro, perché gli scarti di arrivo sono già scalati. Non è un secondo
+   gesto: è lo stesso, letto su una colonna sola dove la separazione da sola si
+   vedrebbe poco.
+   ========================================================================== */
+
+@layer components {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .esploso {
+        view-timeline-name: --esploso;
+        view-timeline-axis: block;
+      }
+      .esploso-livello {
+        animation: esploso-si-separa linear;
+        animation-timeline: --esploso;
+      }
+      @keyframes esploso-si-separa {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(var(--dy, 0));
+        }
+      }
+
+      /* Le fondazioni hanno `--dy: 0` — nel pacchetto chiuso stanno già dove
+         stanno — e non si spostano: l'intervallo serve lo stesso, perché su
+         telefono il fotogramma porta anche l'opacità, e senza un `range` la
+         `cover` intera le terrebbe smorte fino a metà uscita dalla finestra. */
+      .esploso-livello[data-livello='fondazioni'] {
+        animation-range: cover 0% cover 36%;
+      }
+      .esploso-livello[data-livello='struttura'] {
+        animation-range: cover 0% cover 42%;
+      }
+      .esploso-livello[data-livello='involucro'] {
+        animation-range: cover 0% cover 48%;
+      }
+      .esploso-livello[data-livello='impianti'] {
+        animation-range: cover 0% cover 54%;
+      }
+      .esploso-livello[data-livello='finiture'] {
+        animation-range: cover 0% cover 60%;
+      }
+
+      @media (max-width: 60rem) {
+        .esploso-livello {
+          animation-name: esploso-si-accende;
+        }
+        @keyframes esploso-si-accende {
+          from {
+            transform: translateY(0);
+            opacity: 0.18;
+          }
+          to {
+            transform: translateY(var(--dy, 0));
+            opacity: 1;
+          }
         }
       }
     }

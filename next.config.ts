@@ -45,6 +45,16 @@ function redirectDaMappa() {
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  /* `global-not-found.tsx` è **la** soluzione documentata quando un progetto ha
+     più di un root layout, che è il nostro caso (tre temi, tre `<html>`).
+     Senza, Next non ha un layout in cui comporre il 404 globale e serve la sua
+     pagina di errore predefinita: misurato prima della correzione, ogni URL
+     inesistente rendeva un `<body>` da 51 byte con `<html id="__next_error__">`
+     senza `lang`, zero landmark e zero testo — cioè, a JavaScript spento, una
+     pagina bianca. Regola 4 di `CLAUDE.md`. */
+  experimental: {
+    globalNotFound: true,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
   },

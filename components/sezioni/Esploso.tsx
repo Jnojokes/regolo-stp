@@ -15,16 +15,27 @@ import { DESCRIZIONE, VIEWBOX, livelli } from '@/lib/esploso'
  * arrivano i CAD del cliente, e costa un ordine di grandezza in più di peso e
  * di batteria.
  *
- * ## In questa fase è fermo, e non è un ripiego
+ * ## WOW 2 — i livelli si separano allo scorrimento, e il riposo è la fine
  *
- * I cinque livelli sono **già separati**: la geometria la calcola il server
- * (`lib/esploso.ts`) e finisce nell'HTML. Vuol dire che senza JavaScript il
- * disegno è completo, e che con `prefers-reduced-motion: reduce` resta com'è —
- * il contenuto non vive dentro un'animazione (CLAUDE.md § Regole, 4 e 6).
+ * `CLAUDE.md` § Homepage lo chiede da sempre («che si separano allo scroll») e
+ * fino alla ripassata di design non era mai stato costruito: qui c'era scritto
+ * «alla fase 5 ScrollTrigger animerà». Adesso c'è, ed è **in CSS**:
+ * `view-timeline` su questa sezione, `animation-timeline` sui cinque `<g>`,
+ * zero JavaScript e zero KB (`app/css/sezioni.css`, in fondo).
  *
- * Alla fase 5 ScrollTrigger animerà **solo** la variabile `--dy` dei cinque
- * `<g>`, cioè un `transform`: niente ricalcolo di geometria a runtime, niente
- * layout, niente `width`/`height` animate (CLAUDE.md § Regole, 7).
+ * Quello che non cambia è il punto: i cinque livelli sono **già separati** nel
+ * markup. La geometria la calcola il server (`lib/esploso.ts`) e finisce
+ * nell'HTML; il fotogramma finale dell'animazione è identico allo stato di
+ * riposo, e non c'è `animation-fill-mode`. Senza JavaScript, senza supporto
+ * (Firefox) e con `prefers-reduced-motion: reduce` si vede il disegno separato
+ * di sempre: il contenuto non vive dentro un'animazione (CLAUDE.md § Regole, 4
+ * e 6). Si muove **solo** il `transform` dei cinque gruppi — niente ricalcolo
+ * di geometria a runtime, niente layout (§ Regole, 7).
+ *
+ * Su telefono lo stesso gesto porta anche l'opacità, ed è la «sequenza di step
+ * con i livelli che si accendono uno alla volta» che il capitolato chiede per
+ * il mobile: gli scarti di arrivo sono già scalati, quindi i cinque livelli
+ * arrivano — e si accendono — uno dopo l'altro.
  *
  * ## L'evidenziazione dal mouse
  *
@@ -141,10 +152,10 @@ export function Esploso() {
           </ul>
 
           <p className="nota-cantiere">
-            Col mouse sopra una voce dell’elenco, il livello corrispondente resta acceso e gli altri
-            si attenuano. In questa fase il disegno è fermo: alla fase del movimento i livelli si
-            separeranno scorrendo, e chi ha chiesto meno animazioni al sistema operativo continuerà
-            a vederli così come sono adesso.
+            Scorrendo, i cinque livelli si separano dal basso verso l’alto. Col mouse sopra una voce
+            dell’elenco il livello corrispondente resta acceso e gli altri si attenuano. Chi ha
+            chiesto meno animazioni al sistema operativo — e chi naviga senza JavaScript — vede il
+            disegno già separato, che è lo stato in cui resta alla fine.
           </p>
         </div>
       </div>

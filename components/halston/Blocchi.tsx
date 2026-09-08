@@ -100,13 +100,26 @@ export function TestaBanda({
  * **spezzato in due** con un vuoto in mezzo; poi una riga a tre colonne — le
  * discipline in granata a sinistra, `RECOGNITION` con il suo valore al centro,
  * un bottone **contornato** `CONSULTATION +` a destra; e sotto, a piena
- * larghezza, la fotografia.
+ * finestra, **il video** — `heroInfo.video: true`, hero al 135 % del viewport.
  *
  * Le due righe del titolo sono **spezzate a mano**: a interlinea 1,0 su testo
  * tutto maiuscolo la soglia d'inchiostro lo consente, ma la composizione va
  * fissata perché il browser non spezzi «PROGETTIAMO E / DIRIGIAMO» in un punto
  * qualsiasi. È la stessa eccezione dichiarata della hero di A, e vale per lo
  * stesso motivo.
+ *
+ * ## Il filetto spezzato, che è **il secondo wow** (`kit/OPZIONI.md` § C)
+ *
+ * I due `<span>` non sono una decorazione ripetuta: sono **la cosa che Halston
+ * fa e gli altri no**. Sotto il titolo non c'è una riga, ce ne sono due,
+ * separate da un vuoto che cade al **49 % della finestra** — la pagina si
+ * *divide* invece di allinearsi, ed è la stessa idea delle bande un'ottava
+ * sopra. A 390 tornano una riga sola, misurato, e allo scorrimento (a 1440) i
+ * due tronconi si chiudono l'uno verso l'altro e diventano quella riga: il
+ * gesto della sua stessa versione mobile, eseguito. Sta tutto in
+ * `app/css/halston.css` § IL FILETTO CHE SI RICOMPONE — qui il markup serve
+ * solo a esistere in due pezzi, e resta `aria-hidden`: non porta nessuna
+ * informazione, quindi non c'è niente da degradare.
  */
 export function Copertina() {
   return (
@@ -145,10 +158,25 @@ export function Copertina() {
         </div>
       </div>
 
+      {/* **La copertina è un video, non una fotografia.** Misurato sulla
+          reference: `heroInfo.video: true` (autoplay) e hero al **135 %** del
+          viewport, cioè un campo pensato per essere guardato — che è la
+          ragione per cui qui il video ha senso e in A non ce l'aveva. Il file
+          di esempio esiste già: `cantiere-loop`, 2,1 MB su un budget di 2,5
+          (`CLAUDE.md` § Performance budget), e **non entra nel primo
+          caricamento** — `MediaEsempio` serve il poster da 36 KB e chiama il
+          file quando il browser è libero.
+
+          Con `prefers-reduced-motion: reduce` resta **il solo poster**, e non
+          per una regola CSS: `MediaEsempio` rende un elemento diverso, perché
+          un `<video autoplay>` scarica comunque. Il campo resta un segnaposto
+          dichiarato — squadrette, specifica del formato e riga di fonte e
+          licenza (decisione n. 27 b) — e `NEXT_PUBLIC_MEDIA_DEMO=0` lo
+          riporta al rettangolo. */}
       <Placeholder
-        label="Fotografia di un’opera realizzata — dallo studio, non un render"
-        specifica="2400 × 1350 px · AVIF · ≤ 250 KB"
-        demo="opera-01"
+        label="Video di un’opera realizzata o di un cantiere — dallo studio, non un render"
+        specifica="1920 × 1080 px · MP4 muto in loop, ≤ 10 s · ≤ 2,5 MB"
+        demo="cantiere-loop"
         priorita
         className="copertina-media"
       />
@@ -166,6 +194,19 @@ export function Copertina() {
  * testo a destra. **Metà e metà, a piena larghezza, senza margini fra i due
  * lati e senza spazio fra le bande.** Il fondo cambia a ogni banda: è il colore
  * a fare il ritmo, dove A usa lo spazio bianco.
+ *
+ * ## La banda che invade la carta, ed è **il primo wow** (`kit/OPZIONI.md` § C)
+ *
+ * Se in questa proposta il ritmo lo fa il colore, il colore deve poter
+ * **arrivare**: il granata non comincia dove finisce la carta, la invade al
+ * passaggio della piega. La superficie sale guidata dalla `view-timeline`
+ * della banda, in solo `transform`, zero JavaScript — il codice e i rapporti
+ * di contrasto stanno in `app/css/halston.css` § LA BANDA CHE INVADE.
+ *
+ * Qui non serve markup: il livello che sale è uno `::before` della banda. Lo
+ * **stato di riposo è la banda già piena** — senza `animation-timeline`, senza
+ * JavaScript e con `prefers-reduced-motion: reduce` il granata c'è dal primo
+ * pixel e non si perde una parola.
  */
 export function Bande() {
   return (

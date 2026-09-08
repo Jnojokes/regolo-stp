@@ -32,6 +32,10 @@ export const metadata: Metadata = {
    restava servito su tutte e otto le rotte del gruppo A. È la carta del tema,
    e va tenuto allineato a `--regolo-paper` in `app/globals.css`. */
 export const viewport: Viewport = {
+  /* Senza `viewport-fit: cover` l'`env(safe-area-inset-bottom)` della barra fissa
+     vale **sempre 0** su iOS, quindi la barra finisce sotto la tacca del gesto.
+     Voce B13 della lista unica, misurata: c'era la `env()` e mancava il flag. */
+  viewportFit: 'cover',
   themeColor: '#FFFFFF',
 }
 

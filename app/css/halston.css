@@ -25,8 +25,18 @@
      sulla mono (13,7 / 13,7);
    - la tracciatura: **−0,05 em** sul display (−7,2 px su 144) e −0,4 px sul
      corpo;
-   - **zero ombre** e raggio **3 px** (42 occorrenze). È l'opposto di B, che ha
-     due ombre misurate.
+   - **zero ombre** e raggio **3 px** (42 occorrenze) **e nient'altro**: il
+     `50 %` che avevamo sui punti delle targhe non c'è da nessuna parte lì, ed
+     è stato tolto.
+
+   ## Il movimento c'è, e la riga che diceva il contrario era sbagliata
+
+   Il repo ha scritto per una passata che «C non si muove». Rimisurata, quella
+   pagina carica **gsap + ScrollTrigger + Lenis** e ha **205 elementi a
+   `opacity: 0`** prima dello scorrimento (78 dopo): la rivelazione **è** il suo
+   sistema. La versione onesta — la banda che invade, il filetto che si
+   ricompone, la rivelazione su dieci elementi — sta in fondo a questo foglio,
+   § IL MOVIMENTO DI C, tutta in CSS e a zero KB.
 
    ## L'unica correzione di contrasto, dichiarata
 
@@ -169,10 +179,15 @@
     border-radius: var(--regolo-radius);
     color: var(--regolo-muted);
   }
+  /* **Il punto non è un cerchio.** Sulla reference i raggi in pagina sono due e
+     due soli — 3 px (42 occorrenze) e 0 — e un `50 %` non c'è da nessuna parte:
+     era una nostra abitudine, cioè esattamente il genere di valore che entra
+     senza che nessuno lo scelga. Un quadrato pieno di 4 px è quello che quella
+     targa disegna, e a quel corpo la differenza si vede. */
   .targa-punto {
     width: 0.25rem;
     height: 0.25rem;
-    border-radius: 50%;
+    border-radius: 0;
     background-color: currentColor;
     flex: 0 0 auto;
   }
@@ -228,6 +243,18 @@
 
   .halston-copertina {
     display: grid;
+    /* La barra di contenuto, e sotto **tutto quello che resta** — con un
+       pavimento di 20 rem sulla riga e non sul campo: una riga `1fr` non
+       cresce per il `min-height` del suo contenuto, quindi su una finestra
+       bassa il video sarebbe uscito dalla sezione invece di allungarla. */
+    grid-template-rows: auto minmax(20rem, 1fr);
+    /* La copertina è alta **135 % del viewport**: misurato, 1215 px su 900 a
+       1440 e 1036 su 844 a 390 (`misure.json`, `heroInfo.altezzaViewport`). È
+       il numero che rende sensato un video invece di una fotografia — un campo
+       così è pensato per essere guardato. La testata di C è `sticky`, quindi
+       sta nel flusso e va sottratta, altrimenti la prima schermata sfonda di
+       un'altezza di testata. */
+    min-height: calc(135svh - var(--regolo-header-h));
   }
   .copertina-barra {
     padding: clamp(1.5rem, 3vw, 2.5rem) var(--regolo-margine) clamp(1rem, 2vw, 1.5rem);
@@ -298,8 +325,13 @@
     line-height: 1.3;
     color: var(--regolo-ink);
   }
+  /* **Nessun rapporto d'aspetto**: sulla reference il campo lo taglia la
+     piega, non un rapporto — comincia a `x = 0`, finisce a `x = 1440`, il suo
+     bordo alto è il filo basso della riga di metadati e in basso non finisce
+     (`SCHEDA.md`, «come è ritagliata la fotografia»). L'altezza gliela dà la
+     riga `1fr` della copertina; il minimo serve solo alle finestre basse, dove
+     una riga `1fr` senza contenuto in flusso collasserebbe. */
   .halston-copertina .copertina-media {
-    aspect-ratio: 24 / 11;
     width: 100%;
   }
   .halston-copertina .copertina-media img,
@@ -322,9 +354,50 @@
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
   }
+  /* La banda granata porta **il momento orchestrato della proposta**: il colore
+     non comincia dove finisce la carta, la invade (§ LA BANDA CHE INVADE, in
+     fondo al foglio). Qui stanno solo le due cose che valgono **sempre**, gesto
+     o non gesto:
+
+     - il fondo granata, che è **lo stato di riposo**: senza `animation-timeline`,
+       senza JavaScript e con `prefers-reduced-motion: reduce` la banda è piena
+       dal primo pixel;
+     - `isolation: isolate`, che serve al livello che sale. Quel livello sta a
+       `z-index: -1` per passare **dietro** al testo e alla fotografia; senza un
+       contesto di impilamento sulla banda finirebbe dietro anche al fondo
+       della pagina, cioè sparirebbe. È lo stesso accorgimento della pastiglia
+       di testata di B, per lo stesso motivo. */
   .banda-granata {
+    position: relative;
+    isolation: isolate;
     background-color: var(--regolo-granata);
     color: #ffffff; /* 10,15:1 sul granata */
+  }
+  /* La **serranda**, e il verso è quello che conta.
+     La prima stesura faceva salire il granata **sotto** al testo, e sotto al
+     livello c'era la carta: giusto a occhio, sbagliato alla misura —
+     `contrasto-dom.mjs` ha letto `.banda-titolo` a **1,39:1**, bianco su carta,
+     perché a riposo il fondo della banda *era* la carta. Un contrasto che
+     dipende da quanto hai scorso non è un contrasto.
+     Adesso la banda è granata **sempre**, e quello che si muove è un pannello
+     di **carta sopra di lei** che si ritira verso l'alto. A schermo è lo stesso
+     gesto — il colore arriva dal basso — ma il testo bianco sta su granata a
+     10,15:1 in ogni fotogramma, e sotto la serranda non c'è niente da leggere
+     perché la serranda è opaca.
+     `z-index: 2`, cioè **sopra** il contenuto, e nessuna trasformazione a
+     riposo: senza `animation-timeline` e con `prefers-reduced-motion` la
+     serranda non è mai dichiarata e la banda è già piena. */
+  .banda-granata::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-color: var(--regolo-paper);
+    transform-origin: top;
+    /* A riposo non copre niente: la serranda esiste solo dentro il blocco
+       animato, che la porta da `scaleY(1)` a `scaleY(0)`. */
+    transform: scaleY(0);
   }
   /* Il mauve: è il granata schiarito della seconda banda. Misurato sulla
      reference come `srgb 0.5416 0.4565 0.4565`, cioè `#8A7474`.
@@ -777,9 +850,24 @@
    La pastiglia granata **è** la `<details>` del menu a scomparsa, non un
    secondo controllo: nella reference è un menu vero che si apre. Qui è la
    stessa `<details>` nativa che il progetto usa da sempre — funziona senza
-   JavaScript e da tastiera (`CLAUDE.md` § Regole, 4) — vestita da pastiglia e
-   visibile a **ogni** larghezza, come nella reference. Il markup non cambia:
-   `SiteHeader` è condiviso con A, e A non si tocca.
+   JavaScript e da tastiera (`CLAUDE.md` § Regole, 4) — vestita da pastiglia. Il
+   markup non cambia: `SiteHeader` è condiviso con A, e A non si tocca.
+
+   ## Il punto in cui «identico» cede, ed è il secondo
+
+   Fino all'08/09 questo foglio teneva la pastiglia accesa a **ogni** larghezza,
+   perché la reference fa così: contati sui nodi visibili, Halston a 1440 mostra
+   **7 link di navigazione più un `MENU`**. Ed era fedele — ma un bottone-menu
+   accanto a un menu già aperto resta un difetto, e il difetto era anche
+   nostro: misurato sul build, su `/opzione-c` a 1440 la `<details>` era visibile
+   insieme al menu esteso, mentre su A e su B alla stessa larghezza è nascosta.
+
+   Quindi **sopra i 56 rem la pastiglia sparisce** e resta il menu esteso;
+   sotto resta lei sola, che è l'unico accesso alle voci. Non serve una regola
+   per nasconderla: basta **togliere quella che la mostrava**, e l'utility
+   `nav:hidden` del markup condiviso torna a fare il suo lavoro. È il secondo
+   posto in cui «identico» cede all'accessibilità, dopo l'AA (n. 49) — e come
+   quello sta scritto qui, non nascosto.
 
    Il granata sta a 10,15:1 col bianco sopra: valore esatto, nessuna
    correzione. Il maiuscolo del `MENU` lo mette il CSS, non il testo, così il
@@ -801,7 +889,11 @@
     position: relative;
     padding-inline: var(--regolo-margine);
     display: grid;
-    grid-template-columns: auto auto minmax(0, 1fr);
+    /* Due celle e non tre: sopra i 56 rem in flusso c'è **il solo marchio** —
+       il menu è posizionato in assoluto al centro della finestra e la pastiglia
+       non c'è più (vedi sotto). Tre celle lasciavano due tracce vuote con il
+       loro `gap`, cioè una misura che non descriveva niente. */
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 1rem;
     min-height: var(--regolo-header-h);
@@ -896,15 +988,20 @@
   }
 }
 
-/* Fuori da `@layer`, e il motivo è di specificità e non di stile: nel markup
-   condiviso la `<details>` porta l'utility `nav:hidden`, che sta in
-   `@layer utilities` — cioè **dopo** `components` — e a 1440 la spegnerebbe.
-   Qui la pastiglia deve esserci a ogni larghezza, perché nella reference è lei
-   il menu. Una regola non incapsulata batte qualunque layer, e non richiede di
-   toccare `SiteHeader`, che è di A. */
-[data-theme='c'] .menu-mobile {
-  display: block;
-  grid-column: 2;
+/* Sotto i 56 rem la pastiglia è l'unico accesso al menu, e sta nella seconda
+   cella della testata — subito accanto al marchio a 1440, all'estremo destro a
+   390 (`justify-self: end` nel blocco a 390 qui sopra). Sopra i 56 rem non c'è
+   nessuna regola: la spegne `nav:hidden`, che il markup condiviso porta già.
+
+   La regola sta **fuori da `@layer`** per la stessa ragione di prima — le
+   utility di Tailwind vivono in un layer successivo a `components` e vincono
+   comunque —, ma adesso lavora dentro il proprio `@media`, quindi non ha niente
+   da scavalcare a 1440. */
+@media (max-width: 55.999rem) {
+  [data-theme='c'] .menu-mobile {
+    display: block;
+    grid-column: 2;
+  }
 }
 
 /* ============================================================================
@@ -955,11 +1052,14 @@
     text-transform: uppercase;
     color: var(--regolo-muted); /* 5,22:1 sulla banda */
   }
+  /* Stesso punto quadro della targa, e stessa ragione: il `50 %` qui arrivava
+     dal componente **condiviso** vestito da questo foglio, ed era l'unico raggio
+     della pagina che la reference non misura. */
   [data-theme='c'] .brief-occhiello::before {
     content: '';
     width: 0.25rem;
     height: 0.25rem;
-    border-radius: 50%;
+    border-radius: 0;
     background-color: currentColor;
     flex: 0 0 auto;
   }
@@ -1062,5 +1162,259 @@
   [data-theme='c'] .brief-azioni .btn::after {
     content: '+';
     font-family: var(--regolo-font-mono);
+  }
+}
+
+/* ============================================================================
+   IL MOVIMENTO DI C — e la riga di scheda che era sbagliata
+   ----------------------------------------------------------------------------
+   Fino all'08/09 il repo scriveva: *«C non si muove, e non per risparmio:
+   quella pagina non ha un gesto di scorrimento.»* **È falso, ed è una lettura
+   mancata.** Rimisurata: Halston carica **gsap + ScrollTrigger + Lenis** e ha
+   **205 elementi a `opacity: 0`** prima dello scorrimento, che scendono a **78**
+   dopo aver percorso la pagina — tanto che la prima cattura a 390 uscì vuota
+   proprio per questo. La rivelazione allo scorrimento **è** il suo sistema.
+
+   Qui ce n'è la versione onesta, in tre pezzi e a **zero KB**: nessuna
+   libreria, nessun JavaScript, solo `view-timeline` e `scroll(root)`.
+
+   ## Le quattro cautele di casa, su ognuno dei tre
+
+   1. **`@supports`**, perché su Firefox `animation-timeline` non c'è e una
+      regola non condizionata lascerebbe in pagina lo stato di partenza;
+   2. **`@media (prefers-reduced-motion: no-preference)` esplicito.** La regola
+      globale di `globals.css` mette `animation-duration: .01ms !important`, e
+      su una timeline di **progresso** la durata è ignorata: la riduzione va
+      scritta a mano, ogni volta;
+   3. **si animano solo `transform` e `opacity`** (`CLAUDE.md` § Regole, 7). La
+      superficie che sale è uno `scaleY`, non un `height` né un
+      `background-position`;
+   4. **lo stato di riposo è lo stato finito**: senza supporto, senza
+      JavaScript e con `reduce` la banda è già piena e i testi sono già in
+      pagina. Non si perde una parola, si perde un gesto.
+
+   ## E la cosa che questo blocco fa **al contrario** della reference
+
+   Su Halston, senza JavaScript, metà pagina resta a `opacity: 0`: il contenuto
+   non è nascosto per essere rivelato, è nascosto e basta finché non arriva
+   ScrollTrigger. Da noi la regola 4 lo vieta, quindi la rivelazione è
+   **additiva** — la si toglie e resta una pagina intera.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1 · LA BANDA CHE INVADE  ★ wow 1  (blocchi 3-4)
+   ----------------------------------------------------------------------------
+   Se in questa proposta il ritmo lo fa il colore, allora il colore deve poter
+   **arrivare**. Il granata non comincia dove finisce la carta: la invade al
+   passaggio della piega, con una superficie che sale dal basso mentre la banda
+   attraversa la finestra. È l'identità di C portata di un'ottava, e non è un
+   effetto preso da un catalogo: è la sua unica differenza strutturale, messa in
+   movimento.
+
+   **Il contrasto, fotogramma per fotogramma.** Il testo della banda è bianco
+   (`--regolo-ink: #ffffff` sul granata, **10,15:1**). Sulla carta `#DBDBD8` lo
+   stesso bianco starebbe a **1,28:1**, cioè illeggibile — quindi il testo
+   **entra dopo**: la sua opacità comincia a salire a `entry 66 %`, quando la
+   superficie è piena dal 62 % e sotto di lui c'è granata da un pezzo. Non c'è
+   un fotogramma in cui del testo bianco stia sulla carta. Gli altri due
+   inquilini della banda non hanno il problema: la fotografia è opaca e la
+   targhetta del segnaposto è **dipinta di carta** con l'inchiostro a 12,93:1
+   (decisione n. 27 b, e il piano è già ridichiarato in cima a questo foglio).
+
+   La `view-timeline` sta **sulla banda** e i due animati la leggono per nome:
+   sono suoi discendenti, quindi la trovano risalendo gli antenati e non serve
+   `timeline-scope`. Il nome porta il prefisso del tema come le classi, per la
+   stessa ragione: un nome generico è un nome già preso.
+   -------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @layer components {
+      [data-theme='c'] .banda-granata {
+        /* Il fondo **non** si tocca: resta granata. Quello che cambia è la
+           serranda di carta che gli sta sopra (vedi il commento di `::before`,
+           e la ragione è un 1,39:1 misurato). */
+        view-timeline-name: --halston-banda;
+      }
+      [data-theme='c'] .banda-granata::before {
+        animation: halston-serranda linear both;
+        animation-timeline: --halston-banda;
+        /* `entry`: il range dura quanto è alta la banda (≈ 514 px a 1440), cioè
+           la serranda finisce di ritirarsi mentre la banda finisce di entrare.
+           Con `cover` sarebbe durato viewport + banda, e il gesto sarebbe stato
+           finito prima di essere visto. */
+        animation-range: entry 0% entry 62%;
+      }
+    }
+  }
+}
+
+@keyframes halston-serranda {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   2 · IL FILETTO CHE SI RICOMPONE  ★ wow 2  (blocco 2, la copertina)
+   ----------------------------------------------------------------------------
+   È **la cosa che Halston fa e gli altri no**: sotto il titolo di copertina non
+   c'è una riga, ce ne sono **due**, separate da un vuoto, e il taglio cade al
+   **49 % della finestra** — la riga di metadati sotto è già divisa in due campi
+   prima che ci sia scritto qualcosa. La pagina si *divide* invece di allinearsi.
+   A 390 i due filetti tornano uno, misurato, e il gesto sparisce con loro.
+
+   Qui quel passaggio si **esegue**: allo scorrimento i due tronconi si chiudono
+   l'uno verso l'altro e diventano la riga sola della sua versione mobile. Il
+   vuoto è il `gap` della griglia, `1.25rem` = 20 px, quindi ognuno percorre
+   esattamente **la metà**: `0.625rem`. Il valore è legato al `gap` e va rifatto
+   se quello cambia — è l'unica misura scritta a mano di tutto il blocco.
+
+   **Lo stato di riposo qui è il filetto spezzato, non quello chiuso**, e la
+   scelta va dichiarata perché sembra il contrario della regola. Il filetto
+   spezzato **è** lo stato finito della reference: è quello che quel sito
+   spedisce, non si chiude mai da solo, ed è la sua firma. Chiuderlo per
+   default vorrebbe dire perdere la firma per chi non ha `animation-timeline`.
+   E non c'è niente da degradare: i due `<span>` sono `aria-hidden` e
+   `data-decorativo`, non portano nessuna informazione — quello che si perde
+   senza il gesto è un movimento, non una riga di contenuto.
+
+   **`scroll(root)` e non `view()`**, ed è una trappola già pagata su B: la
+   barra della proposta sta nel flusso sopra la copertina e a 390 va a capo,
+   passando da 44 px a 150; un `view()` avrebbe l'origine appesa a quella
+   geometria. `scroll(root)` non dipende da nessun elemento. Il range finisce a
+   **28 svh** perché il filetto sta a ≈ 300 px dall'alto e a 1440 esce dalla
+   finestra poco dopo: se si chiudesse più tardi, si chiuderebbe fuori campo.
+
+   Il gesto vale **solo sopra i 56 rem**: sotto, il secondo troncone non è in
+   pagina (`display: none` nel blocco a 390) e non c'è niente da chiudere.
+   -------------------------------------------------------------------------- */
+
+@supports (animation-timeline: scroll(root)) {
+  @media (prefers-reduced-motion: no-preference) {
+    @media (min-width: 56rem) {
+      @layer components {
+        [data-theme='c'] .copertina-filetto span:first-child {
+          animation: halston-troncone-destra linear both;
+          animation-timeline: scroll(root);
+          animation-range: 0 28svh;
+        }
+        [data-theme='c'] .copertina-filetto span:last-child {
+          animation: halston-troncone-sinistra linear both;
+          animation-timeline: scroll(root);
+          animation-range: 0 28svh;
+        }
+      }
+    }
+  }
+}
+
+/* Metà del `gap` per parte: i due tronconi si toccano al 49 %, dove cadeva il
+   taglio. */
+@keyframes halston-troncone-destra {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(0.625rem);
+  }
+}
+
+@keyframes halston-troncone-sinistra {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-0.625rem);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   3 · LA RIVELAZIONE, CHE È **SISTEMA** E NON WOW
+   ----------------------------------------------------------------------------
+   `opacity` più 16 px di `translateY`, guidati dalla `view-timeline` di ogni
+   blocco. Due cose la tengono lontana dal default generato:
+
+   - **non sta su ogni elemento.** Sta dove la reference ce l'ha: le **teste di
+     banda** (quattro in pagina) e le **righe dei servizi** (sei). Dieci
+     elementi, non centoventi. Un fade su tutto è la cosa che ogni generatore
+     scrive, e si riconosce proprio perché non seleziona niente;
+   - **il filetto non si muove.** Quello che entra è il **testo**, non la
+     scatola: la testa di banda e la riga dei servizi portano ognuna il proprio
+     `border-top`, e sono quei filetti a fare la struttura di questa pagina. Una
+     struttura che scivola di 16 px alla volta, riga per riga, non è una
+     rivelazione: è una tabella che si sfalda. Quindi la `view-timeline` sta
+     sulla riga e l'animazione sui suoi figli, così tutte le voci di una riga si
+     muovono insieme e le linee restano dove sono.
+
+   `cover 0% → cover 25%` invece di `entry`: una testa di banda è alta ~60 px, e
+   sul suo `entry` il gesto durerebbe 60 px di scorrimento, cioè un lampo. Il
+   `cover` dura finestra + elemento (≈ 960 px a 900 di viewport), e un quarto di
+   quello sono ~240 px: l'elemento è a posto quando è salito di un quarto di
+   schermata dal bordo basso.
+
+   Il colore non cambia mai: quello che si muove è l'opacità di testi che a
+   riposo stanno tutti in soglia (rosa muto `#AB9C9C` sulla banda scura
+   **5,22:1**, muto `#6D5C5C` sulla carta **4,54:1**, inchiostro **12,93:1**).
+   -------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @layer components {
+      [data-theme='c'] .testa-banda {
+        view-timeline-name: --halston-testa;
+      }
+      [data-theme='c'] .servizi-righe > li {
+        view-timeline-name: --halston-riga;
+      }
+      /* Le tre voci della testa (etichetta, targa, etichetta) e le due della
+         riga di servizio (nome, valore) leggono la timeline del proprio
+         antenato: stesso nome su elementi diversi, e ognuno trova il suo
+         risalendo.
+
+         **`animation` sta per primo, e non è una questione di ordine di
+         lettura**: la scorciatoia `animation` **azzera** `animation-timeline` e
+         `animation-range`. Scritta dopo, spegnerebbe la timeline che la riga
+         sopra ha appena assegnato — e il risultato non sarebbe un errore
+         visibile, sarebbe un'animazione che parte da sola al caricamento. Per
+         questo le due regole sono separate invece che raccolte in un selettore
+         solo con la scorciatoia in comune. */
+      [data-theme='c'] .testa-banda > * {
+        animation: halston-entra linear both;
+        animation-timeline: --halston-testa;
+        animation-range: cover 0% cover 25%;
+      }
+      [data-theme='c'] .servizi-riga > * {
+        animation: halston-entra linear both;
+        animation-timeline: --halston-riga;
+        animation-range: cover 0% cover 25%;
+      }
+      /* **Il fuoco vince sulla rivelazione**, ed è il difetto che ogni reveal
+         allo scorrimento si porta dietro: la riga di servizio è un link, e chi
+         ci arriva col tabulatore la fa portare in vista dal browser **dal
+         bordo basso**, cioè al progresso 0 della sua timeline. L'anello di
+         fuoco sarebbe finito attorno a un testo a `opacity: 0`. Con
+         `animation-name: none` l'animazione si annulla e restano i valori
+         dichiarati qui, che sono lo stato finito. */
+      [data-theme='c'] .servizi-riga:focus-within > * {
+        animation-name: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+}
+
+@keyframes halston-entra {
+  from {
+    opacity: 0;
+    transform: translateY(1rem); /* 16 px */
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

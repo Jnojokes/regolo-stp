@@ -36,7 +36,7 @@ export const metadata: Metadata = {
  * | | ecoLINEAR, misurato | qui |
  * |---|---|---|
  * | 1 | il foglio: griglia di costruzione, disegni a filo, il marchio grande | `Copertina` |
- * | 2 | i numeri come **quote vere** con l'annotazione | `Numeri` |
+ * | 2 | i numeri come **quote su un volume** assonometrico | `Numeri` |
  * | 3 | l'invito **prima** della galleria | `Invito` |
  * | 4 | la galleria a **colonne sfalsate**, rapporti misti | `Galleria` |
  * | 5 | i servizi come **fasi pinnate** accanto alla tavola | `Fasi` |
@@ -51,21 +51,30 @@ export const metadata: Metadata = {
  *
  * ## Il funnel
  *
- * B **non ha un registro sopra la piega**: l'invito porta al brief con
- * un'ancora, e il brief comincia da «passo 1 di 5». È diverso da A, che smista
- * con cinque bottoni che precompilano il passo 1, e da C, che non chiede niente
- * fino in fondo. Tre proposte, tre funnel, e
+ * B **non ha un registro a cinque bottoni sopra la piega** come A: l'azione
+ * primaria della copertina è una sola, ed è un'**annotazione di quota** in
+ * basso a destra del logotipo che porta a `#brief`. Poi l'invito, prima della
+ * galleria, che è l'impianto misurato della reference. Il brief comincia da
+ * «passo 1 di 5». Tre proposte, tre funnel, e
  * `scripts/collaudo/nojs-rotte.mjs` lo legge come numero.
  *
- * ## Il movimento
+ * ## I due wow, e non sono di fila
  *
- * Uno solo, e non è una rivelazione allo scorrimento: **le fasi sono pinnate**
- * — il pannello della tavola e il righello restano fermi mentre le fasi
- * passano. È `position: sticky`, cioè una posizione e non un'animazione:
- * funziona senza JavaScript, e con `prefers-reduced-motion: reduce` non c'è
- * niente da spegnere. L'unica cosa animata è quale disegno è acceso dentro il
- * pannello, e dove quel supporto manca resta acceso il primo, che è uno stato
- * finito.
+ * 1. **il volume dei numeri** (posizione 2): un'assonometria a filo con le
+ *    quattro cifre appese come quote vere. Si rende come SVG dal server — che è
+ *    il disegno finito — e sopra, se il browser ce la fa, un `<canvas>` in
+ *    WebGL grezzo che gira di pochi gradi con lo scorrimento;
+ * 2. **il plotter delle fasi** (posizione 5): il pannello e il righello sono
+ *    `position: sticky`, cioè una posizione e non un'animazione, e la tavola
+ *    dentro il pannello non compare in dissolvenza — viene **tracciata**, da una
+ *    maschera che trasla con un mirino d'ambra sul bordo d'attacco.
+ *
+ * Fra i due ci sono tre blocchi, quindi la regola dei due wow «mai di fila»
+ * (`CLAUDE.md` § Regole, 3) è rispettata.
+ *
+ * Tutti e due degradano allo stato **finito** e non a quello vuoto: senza
+ * JavaScript, senza `animation-timeline` e con `prefers-reduced-motion: reduce`
+ * restano il volume in SVG e la prima tavola intera.
  */
 export default function OpzioneB() {
   return (
@@ -80,7 +89,7 @@ export default function OpzioneB() {
       <Persone />
       {/* Nessun `passo1Esterno`: in B il brief comincia dall'inizio. */}
       <Brief pagina="/opzione-b" etichetta="il brief" />
-      <BarraMobile />
+      <BarraMobile segnaposto="riempimento" href="#brief" />
     </>
   )
 }

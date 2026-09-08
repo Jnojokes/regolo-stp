@@ -10,3 +10,9 @@ package-lock.json
 # Il kit di progetto: i due prototipi sono il brief visivo per il cliente,
 # si leggono come sono stati scritti e non si riformattano.
 kit/
+
+# script copiati dalle skill: si aggiornano rilanciando la copia, non riformattandoli
+scripts/misura-reference.mjs
+scripts/opzioni-diff.mjs
+scripts/qa-browser.mjs
+scripts/collaudo/soglie.json

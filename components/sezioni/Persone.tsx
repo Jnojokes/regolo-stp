@@ -76,10 +76,14 @@ export function Persone() {
   )
 
   return (
+    /* Nessuna `etichetta`: `[le persone]` sopra un titolo che dice «in una
+       società tra professionisti si sceglie chi firma» non aggiunge una parola.
+       Le etichette di sezione della home sono passate da sette a tre — che è il
+       tetto del test meccanico della skill, ⌈8 sezioni / 3⌉ — e restano dove
+       nominano una cosa che il titolo non nomina. */
     <Sezione
       id="persone"
       passo="largo"
-      etichetta="le persone"
       titolo="In una società tra professionisti si sceglie chi firma."
       nota={notaPersone}
     >

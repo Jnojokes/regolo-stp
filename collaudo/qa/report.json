@@ -1,0 +1,148 @@
+{
+  "base": "http://localhost:3001",
+  "data": "2026-09-08T17:59:16.648Z",
+  "pagine": {
+    "/": {
+      "360": {
+        "overflow": 0,
+        "errori": [],
+        "falliti": []
+      },
+      "390": {
+        "overflow": 0,
+        "errori": [],
+        "falliti": []
+      },
+      "768": {
+        "overflow": 0,
+        "errori": [],
+        "falliti": []
+      },
+      "1024": {
+        "overflow": 0,
+        "errori": [],
+        "falliti": []
+      },
+      "1440": {
+        "overflow": 0,
+        "errori": [],
+        "falliti": []
+      },
+      "1920": {
+        "overflow": 0,
+        "errori": [],
+        "falliti": []
+      },
+      "axe-390": [],
+      "axe-1440": []
+    }
+  },
+  "esiti": [
+    {
+      "n": 11,
+      "titolo": "Nessuna richiesta di misurazione prima del consenso",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 12,
+      "titolo": "Banner non trovato: sito senza cookie (nessun banner richiesto) oppure passa --rifiuta <selettore>",
+      "ok": true,
+      "dettaglio": [],
+      "warn": true
+    },
+    {
+      "n": 1,
+      "titolo": "Screenshot a 6 larghezze per 1 pagine in collaudo/qa — da guardare, uno per uno",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 2,
+      "titolo": "Nessuno scroll orizzontale",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 3,
+      "titolo": "CTA (chiama / preventivo / contatti) nel primo viewport a 390 (844 px) e 1440 (760 px utili, laptop)",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 4,
+      "titolo": "Tap target ≥ 24 px a 390 (WCAG 2.5.8)",
+      "ok": false,
+      "dettaglio": [
+        "/: progetti 16×57",
+        "/: servizi 16×57",
+        "/: studio 16×57",
+        "/: contatti 16×57"
+      ],
+      "warn": false
+    },
+    {
+      "n": 4,
+      "titolo": "Bottoni e link sotto i 44 px a 390 (obiettivo Apple/Material)",
+      "ok": false,
+      "dettaglio": [
+        "/: B 24×44",
+        "/: C 24×44"
+      ],
+      "warn": true
+    },
+    {
+      "n": 5,
+      "titolo": "Input ≥ 16 px a 390 (iOS non fa zoom)",
+      "ok": false,
+      "dettaglio": [
+        "/: intervento 14.2px",
+        "/: intervento 14.2px",
+        "/: intervento 14.2px",
+        "/: intervento 14.2px",
+        "/: intervento 14.2px",
+        "/: intervento 14.2px"
+      ],
+      "warn": false
+    },
+    {
+      "n": 6,
+      "titolo": "Console senza errori",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 7,
+      "titolo": "Nessuna richiesta fallita (4xx/5xx), nessun mixed content",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 8,
+      "titolo": "axe-core: nessuna violazione serious/critical (WCAG 2.2 AA)",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 9,
+      "titolo": "prefers-reduced-motion: pagina completa, nessuna animazione infinita",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    },
+    {
+      "n": 10,
+      "titolo": "Tastiera: il fuoco si muove ed è visibile",
+      "ok": true,
+      "dettaglio": [],
+      "warn": false
+    }
+  ]
+}

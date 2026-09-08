@@ -204,7 +204,14 @@
   --regolo-btn-border: var(--regolo-ink);
   --regolo-btn-bg-hover: #2b2b2b; /* carta sopra = 14,15:1 */
 
-  --regolo-header-h: 88px;
+  /* **76 px e non 88.** La § 1 della skill `sito-design` conta fra le tell «nav
+     su due righe o oltre gli 80 px a desktop», e A ne misurava **89** contro i
+     72 di B e i 64 di C: era l'unica delle tre fuori soglia, e la ragione era
+     che il lockup di A è su due righe (il nome e la sede sotto). 76 px tengono
+     le due righe — 22 px di logotipo più la riga di sede a 12,6, più 2 × 14 di
+     respiro — e restituiscono 13 px al primo viewport, che è il posto dove
+     servono: la CTA della hero. */
+  --regolo-header-h: 76px;
   --regolo-logo-size: 1.375rem;
   --regolo-logo-weight: 500;
   --regolo-logo-tracking: -0.015em;

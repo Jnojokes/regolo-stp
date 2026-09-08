@@ -31,6 +31,21 @@ import type { ReactNode } from 'react'
  * che al blocco precedente, e il raggruppamento si legge **senza divisori**.
  *
  * Il titolo è sempre un `<h2>`: l'`<h1>` è uno per pagina e ce l'ha la hero.
+ *
+ * ## Ripassata di design — la testa è **una** famiglia, non la sola
+ *
+ * Il guscio resta, ma sulla home non è più il vestito di tutti: quattro sezioni
+ * di fila con la stessa `testa-sezione` sono una tell misurata (`sito-design`
+ * § 1: su 8 sezioni almeno 4 famiglie di layout, mai due di fila della stessa).
+ * Oggi sulla home la testa la usano **tre** blocchi non consecutivi — progetti,
+ * come lavoriamo, persone — mentre lo smistamento e i servizi si compongono la
+ * propria (la tabella sta in `app/css/sezioni.css`, § Le famiglie di
+ * impaginazione). Sulle pagine interne, dove le sezioni sono poche e il ruolo è
+ * documentale, la testa resta la forma normale.
+ *
+ * Perché `Sezione` non ha una prop `famiglia`: un blocco che non usa la testa
+ * non ne usa una variante, **non la usa**. Passa i figli e si compone la testa
+ * che gli serve, che è composizione e non un interruttore.
  */
 export function Sezione({
   id,

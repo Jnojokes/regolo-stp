@@ -4,8 +4,8 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | **ripassata di design, passo 0 — strumenti e inventario** (08/09/2026). La fase piena chiusa prima resta la 3 quinquies (2/2) |
-| Prossima fase | **ripassata di design, passo 1 — le tre tabelle di composizione** (`/fase-3-ripassa`), che è a uno stop: le tabelle le approva FT prima che si scriva codice. Dopo la ripassata: la decisione n. 1 (A / B / C), poi `/fase-5-movimento` |
+| Ultima fase chiusa | **ripassata di design, passo 2 — il codice** (08/09/2026). La fase piena chiusa prima resta la 3 quinquies (2/2) |
+| Prossima fase | **ripassata di design, passo 3 — revisori terzi e diversità misurata**. Dopo la ripassata: la decisione n. 1 (A / B / C), poi `/fase-5-movimento` |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
@@ -66,6 +66,83 @@
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 | 08/09/2026 | **3 quinquies (2/2)** | **le due alternative rifatte «identiche» ai due indirizzi indicati dal committente**: B = ecoLINEAR, C = Halston, con le lettere rinominate da C/D a B/C | catturate e misurate nel browser; classi condivise con A da 65/54 % a **46 %**; il `<main>` di A byte-identico. Il dettaglio qui sotto |
 
+
+## Ripassata di design — passo 2: la § 1 riga per riga, e il codice (08/09/2026)
+
+### La passata della lista di calibrazione, misurata
+
+I controlli meccanici della § 1 lanciati sul build servito, prima e dopo. Dove una tell è
+**scelta e misurata sulla reference**, la reference vince e la riga dice perché — è la regola di
+precedenza della skill (§ 7).
+
+| Controllo | A prima | A dopo | B | C |
+|---|---|---|---|---|
+| eyebrow ≤ ⌈sezioni/3⌉ | 0 ✔ | 0 ✔ (e ne sono usciti quattro con le teste di sezione) | le maiuscole contate sono voci di menu e etichette di quota, non occhielli ✔ | **fuori scala per dichiarazione**: 20+ targhe in mono maiuscolo, che sono l'apparato misurato di Halston (270 `uppercase`). La reference vince |
+| «→» in coda | 0 ✔ | 0 ✔ | **1 → 0**: la CTA dell'invito aveva la freccia, adesso ha il segno **dentro il cerchietto**, che è quello che la reference ha (`1440-meta-88`) | 0 ✔ (usa `+`, che è di Halston) |
+| «·» multipli | 10 | 10 — sono le **specifiche dei segnaposto** (`2400 × 1650 px · AVIF · ≤ 250 KB`) e le righe di licenza, non metadati ornamentali. Spariscono con i media veri | idem | idem |
+| «PAROLA — frammento» | 0 ✔ | 0 ✔ | 0 ✔ | 0 ✔ |
+| «Scroll ↓» | 0 ✔ | 0 ✔ | 0 ✔ | 0 ✔ |
+| h1 ≤ 3 righe a 1440 | **4 ✘** | **3 ✔** | 1 ✔ | 2 ✔ |
+| h1 ≤ 4 righe a 390 | 4 ✔ | 4 ✔ | 2 ✔ | 4 ✔ |
+| un solo h1 | ✔ | ✔ | ✔ | ✔ |
+| mono per le etichette dati | 0 ✔ | 0 ✔ | 0 ✔ | **misurata sulla reference**: 34 nodi mono su 298 in Halston, e la divisione del lavoro è la sua |
+| raggi diversi per sezione | nessun raggio ✔ | nessun raggio ✔ | 2 px e 50 % — **misurati** (20 e 3 occorrenze in ecoLINEAR) | **3 px e basta**: il `50 %` è uscito, non era nella reference (raggi misurati: solo `0px`) |
+| ombre | 0 ✔ | 0 ✔ | 2 — **misurate** (`0 30px 60px -35px` e l'alone d'ambra) | 0 ✔ (Halston misura zero ombre) |
+| gradient text · glow | 0 ✔ | 0 ✔ | 0 ✔ | 0 ✔ |
+| nav ≤ 80 px a desktop | **89 ✘** | **77 ✔** | 72 ✔ | 64 ✔ |
+| due navigazioni insieme a 1440 | — | — | — | **sì ✘ → no ✔**: la pastiglia `MENU` scende sotto i 56 rem |
+| CTA nel primo viewport a 1440 | **no ✘** (844 su 760) | **sì ✔** (588) | **no ✘** (2187) → **sì ✔** | sì ✔ |
+| CTA nel primo viewport a 390 | **tagliata ✘** (793-849 su 844) | **sì ✔** (561) | via la barra mobile ✔ | sì ✔ |
+| ≥ 4 famiglie di layout su 8 sezioni | 6, ma **4 di fila con lo stesso guscio ✘** | **4 famiglie, nessuna due volte di fila ✔** | 7 ✔ | 7 ✔ |
+| `#000` / `#fff` puri | sì | sì — **scelto e misurato**: tre delle quattro tier A misurano `rgb(0,0,0)`, e `CLAUDE.md` § Colore lo scrive («`#0B0B0B` e `#111` sono la tell n. 5») | l'inchiostro è una terra | l'inchiostro è un antracite |
+| tema che si ribalta a metà pagina | no | no | no | **sì, ed è la proposta**: cinque superfici non-carta, misurate sulla reference |
+
+### Blocco → reference → cosa ho preso
+
+| Blocco | Reference | Cosa ho preso | Cluster che NON uso |
+|---|---|---|---|
+| **A · hero** ★ | **`air`** `air-1440-meta.png` | la prima schermata **senza fotografia**: il payoff spinto ai due margini e in mezzo **un volume bianco su bianco** che gli passa dietro e dentro. Tre valori quasi bianchi (1,32 · 1,17 · 1,06:1) più un filo a 4,61:1, e **solo gli spigoli che stanno su una faccia visibile** — 21 su 29: con tutti e 29 l'oggetto leggeva come una gabbia, cioè come la lingua di B | **1** carta calda + serif + terracotta · **4** la card con l'ombra: l'ombra qui **è la faccia** |
+| **A · smistamento** | **`lpas`** `lpas-1440-meta.png` | il **conteggio come prova**: `5 ruoli`, `6 servizi`, `128 comuni`, tutti contati dagli elenchi del repo. Su LPAS ogni scheda porta `5 / 5` e i contatori per categoria 27 · 13 · 12 · 6 · 14 | **4** le cinque pastiglie identiche · **5** l'occhiello e la freccia su ogni voce |
+| **A · guscio delle sezioni** | `storey` (vuoto disuguale) · `as-associates` (l'indice come scheda tecnica) | due blocchi **perdono la testa di sezione**: da 2 famiglie di layout a 4, nessuna due volte di fila | l'aggiunta di casa «lo stesso padding fra tutti i blocchi» |
+| **A · esploso** ★ | `eladio-dieste` (la quota come struttura, l'asse verticale delle fasi) | i cinque livelli **si separano allo scorrimento**, `view-timeline` + `translateY`, zero JavaScript. Su mobile arrivano **e si accendono** uno alla volta, che è quello che il capitolato chiedeva dalla fase 3 | **4** l'esploso come illustrazione dentro una card |
+| **A · testata** | `kononenko` | 77 px invece di 89: era l'unica delle tre sopra la soglia di 80 | **5** la pastiglia in alto a destra |
+| **B · fasi pinnate** ★ | `ecolinear` `1440-meta-52` · `1440-meta-70` | il disegno non compare in dissolvenza: **viene tracciato**. Due tende opache del colore del pannello che traslano e un **mirino d'ambra** sul bordo d'attacco — la stessa lingua del puntatore CAD già in pagina. Tracciamento 12 %, cancellazione 12 %, e **il 76 % del tempo la tavola è intera e ferma** | **il default**: la rivelazione in dissolvenza |
+| **B · numeri** ★ | `ecolinear` (la quota che porta un numero vero, `14.34 M — ESC 1:50`) | le quattro cifre diventano **quote su un volume assonometrico**: SVG server-rendered **prima**, e sopra un `<canvas>` in **WebGL grezzo** — nessuna libreria, `gl.LINES`, ruota fra −6,3° e +6,3° con la posizione nella finestra | **5** le unità in mono maiuscolo |
+| **B · copertina** | `ecolinear` `1440-hero` per la forma, regola di casa per la posizione | la CTA entra sopra la piega **come una quota** — lo stesso `.quota-linea` dei numeri, non una forma che gli somiglia. Dichiarato: la reference non ha un'azione sopra la piega, la regola di casa sì | **4** il bottone pieno appiccicato in cima |
+| **B · galleria** | `ecolinear` `1440-meta-70` | due colonne su quattro portano **disegni veri** — due assonometrie a due angoli e due proiezioni ortogonali, dagli stessi volumi. Non è contenuto inventato: è geometria del repo | **3** il tratteggio come texture decorativa |
+| **C · le bande** ★ | `halston` `1440-meta-18` | la banda **cambia superficie mentre la attraversi**. E il verso è stato invertito dopo la misura: era il granata che saliva **sotto** al testo su un fondo di carta, e `contrasto-dom.mjs` ha letto il titolo a **1,39:1**. Adesso la banda è granata sempre e a muoversi è **una serranda di carta sopra**, che si ritira: stesso gesto a schermo, 10,15:1 in ogni fotogramma | **4** il contenuto tagliato in riquadri: qui è tagliato dalle **superfici** |
+| **C · il filetto** ★ | `halston` `1440-hero` — «la cosa che fa lui e gli altri no» | i **due tronconi** del filetto spezzato si chiudono l'uno verso l'altro e diventano una riga sola, che è la sua versione a 390 eseguita. `scroll(root)` e non `view()`, perché la barra della proposta è nel flusso sopra e a 390 passa da 44 a 150 px | **5** il filetto come divisore decorativo: qui **divide la pagina**, non separa due blocchi |
+| **C · la rivelazione** | `halston`, misurato: gsap + ScrollTrigger + Lenis, **205 elementi a `opacity: 0`** prima dello scorrimento e 78 dopo | dieci elementi — le quattro teste di banda e le sei righe dei servizi — entrano con `opacity` e 16 px di `translateY`. **Al contrario della reference**: lo stato di riposo è il contenuto **già visibile** | il default della rivelazione su *ogni* blocco |
+| **C · copertina** | `halston` `misure.json` (`heroInfo.video: true`, hero al 135 % del viewport) | la copertina è **un video**, non una fotografia. Muto, `playsinline`, `loop`, poster; con `prefers-reduced-motion` resta il solo poster. Resta un campo **segnaposto dichiarato** | — |
+
+### Le prove, a fine passo
+
+| Prova | Esito |
+|---|---|
+| `npm run build` · `tsc --noEmit` · `eslint` · `prettier --check` | puliti |
+| `contrasto-dom.mjs` | **121 coppie distinte su 8 rotte, zero sotto soglia**. Una ne ha trovata e l'ha fatta correggere: `.banda-titolo` di C a **1,39:1** |
+| `interlinee.mjs` | **969 testi che vanno a capo, zero sotto la soglia d'inchiostro**, a parte i quattro difetti dichiarati di A. Il payoff a tre righe è stato riverificato con fontTools sui contorni: coppia 1-2 tocca di 0,045 em (la composizione che c'era già), coppia 2-3 **pulita a 1440** e mezzo pixel a 390 |
+| `collisioni.mjs` | nessuna classe di B o C stilata da un foglio condiviso fuori dai prefissi dichiarati |
+| `cursore.mjs` | 21 prove su 21 |
+| `nojs-rotte.mjs` | tutte e tre le home: testo reso, `passiVisibili: 5`, `passo 1 di 5`, form inviabile, nessun overflow |
+| `peso.mjs` | A **283 KB / 16 richieste** · B 323 / 18 · C 304 / 17 · servizio 217 / 12. JavaScript 150 · 152 · 149 KB su un budget di 180. Il WebGL di B costa **2 KB** (152 contro i 150 di A). Il video di C sta in `dopo`: 2.093 KB dopo il `load`, non nel primo caricamento |
+| `qa-browser.mjs`, sei larghezze | **10 ✔ · 1 ⚠ · 2 ✘** — e i due ✘ sono falsi positivi, verificati a mano (sotto) |
+| Il volume di A | l'oggetto sfondava di 664 px nella sezione dopo e copriva le sei voci dello smistamento: un `<svg>` con `inset: 0` prende l'altezza dal rapporto del `viewBox`. Corretto con `width/height: 100%` e `overflow: clip` sulla scena |
+| Il plotter di B | misurato a 50 quote × 2 altezze di finestra: **0 quote** in cui si legge una fase e la sua tavola è scoperta meno del 55 %. Prima delle correzioni erano 8 su 50 |
+| La serranda di C | catturata durante l'ingresso a sette quote: si vede la carta ritirarsi verso l'alto fra `entry 15 %` e `entry 62 %` |
+
+**I due ✘ di `qa-browser.mjs`, verificati a mano e dichiarati falsi positivi:**
+
+1. **«Tap target ≥ 24 px: `progetti · servizi · studio · contatti` 16 × 57».** Sono le voci del
+   menu **dentro una `<details>` chiusa**: Chromium dà loro un riquadro di layout anche da chiusa,
+   ma non sono toccabili. Misurate **aperte**: `358 × 57` su A, `350 × 60` su B, `358 × 55` su C.
+2. **«Input ≥ 16 px: `intervento` 14,2 px».** Sono i `radio` del passo 1 del brief. iOS ingrandisce
+   la pagina solo sui campi di **immissione di testo**, e quelli stanno tutti a **18 px**
+   (`comune`, `nome`, `telefono`, `email`, `note`, e l'honeypot). Il bersaglio dei radio è la
+   `<label>`, misurata 318 × 48,5.
+
+Corretto invece il ⚠ che era vero: i due link fra le proposte erano **8 e 9 px** di larghezza
+(«B» e «C», una lettera ciascuno). Adesso 24 × 44.
 
 ## Ripassata di design — passo 0: strumenti e inventario (08/09/2026)
 

@@ -65,17 +65,32 @@ import { eSegnaposto, site } from '@/lib/site'
  * Il corpo del marchio **non è un gradino di scala**: è una funzione della
  * finestra e delle dieci lettere, come in `A` la quota è una funzione dei
  * ruoli. Così tocca i due margini a qualunque larghezza.
+ *
+ * ## Il marchio non è il titolo della pagina, e sulla reference nemmeno
+ *
+ * Il logotipo a 219 px era l'`h1`, e diceva `REGOLO STP` — cioè il nome dello
+ * studio, che sta già nella testata e nel `<title>`. Come **titolo della
+ * pagina** non porta niente: un motore e uno screen reader leggono l'`h1` per
+ * sapere di che cosa parla questo documento, e «REGOLO STP» risponde «di
+ * REGOLO STP».
+ *
+ * E non è nemmeno quello che fa la reference: su `ecolinearstudio.com` l'`h1`
+ * misura **32 px** (`kit/reference/ecolinear/misure.json`, `m1440.tip.h1`),
+ * cioè non è il marchio grande della copertina. Quindi qui l'`h1` è la riga
+ * che segue — quella che dice mestiere e luogo — e il logotipo torna a essere
+ * un `<p>`, che è quello che è. Il rendering non cambia di un pixel: il corpo,
+ * il peso e il colore stanno sulle classi, non sul tag.
  */
 export function Copertina() {
   return (
-    <section className="foglio" aria-label={`${site.nomeEsteso} — la copertina`}>
+    <section className="foglio" aria-labelledby="foglio-titolo">
       <GrigliaCostruzione />
       <SegnoPorta className="segno-porta" />
       <SegnoPilastro className="segno-pilastro" />
       <SegnoSezione className="segno-sezione" />
 
       <div className="foglio-centro">
-        <h1 className="foglio-marchio">
+        <p className="foglio-marchio">
           <span>REG</span>
           {/* La lettera con il blocco: `aria-hidden` sul blocco, non sulla
               lettera — il marchio dev'essere leggibile per intero da chi
@@ -84,12 +99,16 @@ export function Copertina() {
             O<span className="foglio-blocco" aria-hidden="true" />
           </span>
           <span>LO STP</span>
-        </h1>
+        </p>
         <p className="foglio-filetto" aria-hidden="true" data-decorativo="" />
-        <p className="foglio-sotto">
+        {/* L'unico `h1` della pagina. Sta qui e non sul logotipo: vedi la nota
+            in testa al blocco. Il corpo resta 18 px, che è quello che la
+            composizione misurata vuole in questo punto — un `h1` non è un
+            gradino di scala, è un ruolo nel documento. */}
+        <h1 id="foglio-titolo" className="foglio-sotto">
           Ingegneria civile e architettura a {site.citta}: progetto architettonico e strutturale,
           pratiche, cantiere.
-        </p>
+        </h1>
         {/* L'azione primaria **dentro** la copertina, e nella lingua
             dell'apparato invece che sopra di esso.
 
@@ -360,8 +379,14 @@ export function Numeri() {
       <p className="registro-etichetta">
         <span>i numeri</span>
       </p>
+      {/* **Il titolo non è più «Quanto abbiamo costruito.»**, e il motivo è che
+          la galleria si chiama «Quello che abbiamo costruito.»: due blocchi a
+          due schermate di distanza con lo stesso titolo meno una parola non
+          sono due blocchi, sono uno letto due volte. Qui si misura lo studio —
+          anni, incarichi, superficie, comuni — e le cifre sono **quote su un
+          volume**: il titolo dice quello. */}
       <h2 id="numeri-titolo" className="ecolinear-titolo">
-        Quanto abbiamo costruito.
+        Lo studio, misurato.
       </h2>
       <div className="ecolinear-volume-corpo">
         <VolumeAssonometrico />
@@ -369,10 +394,17 @@ export function Numeri() {
           {numeri.map((n) => (
             <div key={n.etichetta} className="quota-numero">
               <dt>{n.etichetta}</dt>
+              {/* **La linea di quota sta dentro il `<dd>` e non accanto.** Un
+                  `<div>` figlio di `<dl>` ammette solo `<dt>` e `<dd>` (più gli
+                  elementi di supporto script): uno `<span>` fratello lì dentro
+                  è markup non valido, e il parser lo sposta fuori dal gruppo.
+                  Il disegno non cambia — la linea è `position: absolute` e il
+                  suo blocco contenitore resta `.quota-numero`, che è l'unico
+                  antenato posizionato. */}
               <dd>
-                <SegnapostoCifra chiede={n.chiedere} cifre={n.etichetta.includes('mq') ? 5 : 2} />
+                <SegnapostoCifra chiede={n.chiedere} />
+                <span className="quota-linea" aria-hidden="true" data-decorativo="" />
               </dd>
-              <span className="quota-linea" aria-hidden="true" data-decorativo="" />
             </div>
           ))}
         </dl>
@@ -485,8 +517,14 @@ export function Opere() {
       <p className="registro-etichetta">
         <span>in evidenza</span>
       </p>
+      {/* **Non «Tre tavole.»**: qui non ci sono tavole. Le tavole — le quattro
+          assonometrie e proiezioni di `lib/volume.ts` — stanno nella galleria,
+          due blocchi sopra; in questo ci sono tre schede con la fotografia e i
+          dati duri, ruolo dello studio compreso. Un titolo che promette un
+          disegno e mostra una scheda fa cercare al visitatore una cosa che non
+          c'è. */}
       <h2 id="opere-titolo" className="ecolinear-titolo">
-        Tre tavole.
+        Le schede tecniche.
       </h2>
       <div className="opere-tre">
         {progetti.map((p, i) => (

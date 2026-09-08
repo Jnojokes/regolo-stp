@@ -79,7 +79,16 @@ export function MediaEsempio({ dato, priorita }: { dato: Esempio; priorita: bool
         width={dato.larghezza}
         height={dato.altezza}
         muted
-        loop
+        /* **Non in loop**, e la ragione è normativa. Il file dura 8 secondi:
+           un contenuto che si muove da solo per più di cinque e non ha un
+           comando per fermarlo è WCAG 2.2 SC 2.2.2 *Pause, Stop, Hide*, livello
+           A. Un comando di pausa qui sarebbe peggio del problema — questo non è
+           un video da guardare, è la superficie di un campo segnaposto, e un
+           bottone sopra lo trasformerebbe in un componente. Quindi gira **una
+           volta sola** e si ferma sull'ultimo fotogramma: il movimento c'è,
+           l'ha visto chi arriva, e dopo la pagina sta ferma.
+           `loop` restava dalla hero di A, dove il campo era piccolo e in alto;
+           adesso l'unico chiamante è la copertina di C, che è alta 135 svh. */
         playsInline
         preload="none"
         /* Non è un contenuto da guardare, è una superficie: niente controlli,

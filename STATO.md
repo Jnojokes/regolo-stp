@@ -4,8 +4,8 @@
 
 | | |
 |---|---|
-| Ultima fase chiusa | **ripassata di design, passo 2 — il codice** (08/09/2026). La fase piena chiusa prima resta la 3 quinquies (2/2) |
-| Prossima fase | **ripassata di design, passo 3 — revisori terzi e diversità misurata**. Dopo la ripassata: la decisione n. 1 (A / B / C), poi `/fase-5-movimento` |
+| Ultima fase chiusa | **ripassata di design, passo 3 — revisori e diversità** (09/09/2026). La ripassata è **finita**: quattro passi su quattro |
+| Prossima fase | **la decisione n. 1** — quale delle tre home. La prende il cliente in call con FT, e le altre due rotte si cancellano. Poi `/fase-4-contenuti` per le parti rimaste e `/fase-5-movimento` |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
 | Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
@@ -66,6 +66,115 @@
 | 07/09/2026 | 4 | corretto un bug della fase 3: la CTA di `/servizi/energia-acustica` produceva un `?intervento=` che il brief scartava in silenzio | il campo ora è `undefined` e il parametro non si mette. Quale risposta del passo 1 gli spetti è la **decisione n. 16**, aperta |
 | 08/09/2026 | **3 quinquies (2/2)** | **le due alternative rifatte «identiche» ai due indirizzi indicati dal committente**: B = ecoLINEAR, C = Halston, con le lettere rinominate da C/D a B/C | catturate e misurate nel browser; classi condivise con A da 65/54 % a **46 %**; il `<main>` di A byte-identico. Il dettaglio qui sotto |
 
+
+## Ripassata di design — passo 3: revisori terzi e diversità misurata (08-09/09/2026)
+
+### Come sono stati passati
+
+Tre revisori indipendenti hanno lanciato **`/impeccable critique`** e **`/impeccable audit`** su
+una rotta ciascuno, e un quarto ha passato i componenti toccati con **`web-design-guidelines`**
+(le regole scaricate da `vercel-labs/web-interface-guidelines`). Il plugin risponde
+`NO_PRODUCT_MD` — atteso, e non blocca: `critique` e `audit` sono comandi di raffinamento
+circoscritti e la risposta stessa lo dice (`SCOPED_EXISTING_ALLOWED`). **Non** sono stati lanciati
+`init`, `document`, `extract`, `craft`, `live`: producono un `DESIGN.md`, e qui la direzione viene
+da `kit/reference/` (protocollo, regola 14). Nessun `PRODUCT.md` e nessun `DESIGN.md` è stato
+creato.
+
+*Una sostituzione dichiarata*: il protocollo di `impeccable` chiede di interpellare l'utente sulle
+scelte. Il committente ha lasciato istruzione esplicita di procedere senza chiedere («fai tutto
+senza chiedermi il permesso»), quindi le decisioni sono state prese qui e sono scritte in questa
+sezione.
+
+**48 rilievi**, 16 dei quali P0/P1. Poi una **passata avversariale**: ogni P0/P1 è stato passato a
+un secondo agente con il compito di **confutarlo**, misurando lui invece di ripetere la misura
+altrui. Ha funzionato: **tre rilievi gravi sono caduti**, tre sono stati ridimensionati, e due
+sono stati confermati **peggio** di come erano scritti. La regola di precedenza è stata applicata
+alla lettera — dove un rilievo contraddice una reference misurata, vince la reference — e sotto è
+scritto ogni volta che è successo.
+
+### P0 e P1 — corretti prima dello stop
+
+| # | Rotta | Rilievo | Esito |
+|---|---|---|---|
+| 1 | `/` | il titolo di «le persone» esce a **144 px e otto righe**, una parola per riga, su ogni finestra ≥ 896 px | **fatto.** La colonna dell'etichetta esisteva anche dove l'etichetta non c'è più (il passo 2 ne ha tolte quattro): `.testa-sezione-titolo:not(:has(.etichetta-sezione))` torna a una colonna |
+| 2 | `/` | a **359-363 px** la pagina scorre in orizzontale: il segnaposto del primo progetto sfonda | **fatto**, e non con la correzione proposta. Misurate una alla volta: `overflow-wrap: anywhere` e `word-break` lasciano 4 px, perché il line-breaker **conta** bordo e padding d'apertura e non riserva il padding di **chiusura clonato**. `box-decoration-break: slice` porta a 0 — ed è anche più giusto: il filetto è una spina a sinistra e su un segnaposto che va a capo non si ripete. **360 px è entrata fra le larghezze di `sweep.mjs`** |
+| 3 | `/opzione-b` | le fasi pinnate mostrano ancora **due tavole e due didascalie sovrapposte** | **fatto**, e il rilievo era in difetto: non 11 quote su 81 ma **20 su 81, a quattro altezze di finestra**, perché la sovrapposizione valeva il 29,6 % del range **per costruzione**. La tenda `copre` chiude adesso al 68 %, cioè prima del 70,4 % in cui la fase dopo si accende. Rimisurato: **0 su 81** a 760, 900 e 1080 px |
+| 4 | `/opzione-b` · `/opzione-c` | il **terminatore obliquo a 45° di A** è dipinto nella quota del footer di B e di C, e un commento nel codice dice che non lo è | **fatto.** È **un** rilievo e non due: una regola base non qualificata (`sezioni.css`, `.quota > *::before`), un componente, due temi che non la disapplicano. In B il terminatore è **verticale** come il righello delle fasi, in C **non c'è** — e il valore di quella quota passa in mono, che è la lingua dei dati di C |
+| 5 | `/opzione-b` | a 390 la CTA della copertina sta **sotto** la barra fissa | **fatto**, e la tesi era sbagliata: l'azione primaria **non** manca (c'è la cella della barra). Quello che manca è peggio ed è normativo — al sesto `Tab` l'elemento col fuoco è coperto al 100 % e il browser non scorre: **WCAG 2.2 SC 2.4.11 *Focus Not Obscured*, AA**. La copertina riserva l'altezza della barra sotto i 56 rem |
+| 6 | `/opzione-b` · `/opzione-c` | a 390 le **targhette dei segnaposto sbordano** dal riquadro e si stampano sopra il fondo della pagina | **fatto**, e il rilievo era prudente: non «23-28 %» ma **97 % e 117 %** di copertura su due campi, con sbordo di 29 e 50 px. Sotto i 30 rem targhetta e riga di licenza escono dall'assoluto e vanno **in flusso**, sotto il campo |
+| 7 | `/opzione-c` · `/opzione-b` | «Lo studio in numeri» rende **quattro cifre plausibili** senza nessun marcatore in pagina | **fatto**, e il rilievo era incompleto: succede **su due rotte**, non una. La deroga della n. 41 è scritta per il **lorem ipsum**, che si riconosce a vista; «77.039 mq progettati» no, e nessuna voce di `DECISIONI.md` la estende alle cifre. `SegnapostoCifra` rende `VALORE_ATTESO` — il trattino che **A usa da sempre** nello stesso blocco — e `data-chiede` resta |
+| 8 | `/opzione-b` | **`cursor: none` è già attivo quando il mirino non c'è ancora** | **fatto**, e la prova è peggiore di come era scritta: non è un lampo prima del primo movimento. Chi scorre **col trackpad o con la rotellina** — due dita su un Mac non spostano il puntatore — percorre tutti e 10.945 i pixel della pagina senza **nessun** puntatore in finestra. L'attributo si mette dentro `muovi()` e si toglie in `esci()`; `cursore.mjs` è passato da 21 a **23 prove**, e le due nuove sono esattamente quelle che mancavano |
+| 9 | `/opzione-c` | il video di copertina va in **autoplay in loop infinito** per 8 s senza pausa | **fatto.** WCAG 2.2 SC 2.2.2 *Pause, Stop, Hide*, livello A: sopra i cinque secondi serve un comando. Un bottone qui sarebbe peggio del problema — questo non è un video da guardare, è la superficie di un campo segnaposto — quindi gira **una volta sola** e si ferma sull'ultimo fotogramma |
+| — | `/` | le cinque voci dello smistamento **non si vedono come link** | **CONFUTATO**, e la reference vince. AS Associates — la tier A che quel blocco cita — ha nove righe di link neri a 36 px su bianco, **zero sottolineature, zero bordi, zero riquadri**, con il conteggio in grigio accanto: è lo stesso identico dispositivo. In più la regola in pagina è coerente e non arbitraria: **ogni link ≤ 22,8 px è sottolineato, i soli non sottolineati sono le undici righe d'indice a 32,4 px**; e sotto l'elenco c'è la nota che dice a parole cosa fa una voce. Nessun appiglio AA: WCAG F73 riguarda link distinti **dal colore dentro un blocco di prosa**, e qui non è né l'uno né l'altro |
+| — | `/` | l'unico momento orchestrato di A **si consuma fuori dall'inquadratura** | **CONFUTATO.** I numeri del rilievo sono giusti, la conclusione no: contando i pixel diversi dallo stato di riposo, a `cover 35 %` il disegno è inquadrato al 65 % e **il 14,3 % dei pixel è diverso**; a 45 % il 10,5 %. Il gesto si vede, e si vede inquadrato. La correzione proposta (`entry 100% contain 100%`) è stata **eseguita a runtime**: `.esploso` è più alto della finestra, quindi quell'intervallo dura 153 px e sopra di esso il valore base torna a valere — l'esploso **si richiude di scatto**, che è il difetto per cui l'intervallo attuale esiste. Resta un residuo da **P3**: fra `cover 12 %` e 25 % la fascia alta entra quasi vuota |
+| — | `/opzione-b` | la **griglia di costruzione** esiste solo nella copertina e nessun blocco si appoggia a lei | **CONFUTATO**, ed è la reference misurata: su ecoLINEAR la griglia tratteggiata c'è **nella prima schermata e da nessun'altra parte** — `1440-meta-18` (galleria) e `1440-meta-52` (fasi pinnate) sono carta liscia — e il logotipo la **attraversa** invece di appoggiarcisi. La correzione proposta (montarla su tutta la pagina) tradirebbe la misura |
+| — | `/opzione-b` · `/opzione-c` | la cella centrale della barra fissa è la parola latina **«aliquip»** | **RIDIMENSIONATO a P3** da due verificatori — la cella non è un bottone rotto: `<span>` e non `<a>`, 12,6 px contro 14,2, peso 500 contro 600, colore `muted`, fuori dall'ordine di tabulazione, `lang="la"`. Nessuna azione manca. **Corretto lo stesso**, perché la sostanza residua è vera: in B e in C la cella resta **vuota** con il solo `data-chiede`, così la lista della spesa non perde una riga e in pagina non c'è una parola latina fra due azioni |
+
+### P2 e P3 — fatto, oppure no e perché
+
+| Rotta | Rilievo | Esito |
+|---|---|---|
+| `/` | «Come lavoriamo» disegna una **quarta quota senza numero**, e a mobile i suoi filetti diventano separatori fra le righe di un elenco | **fatto.** La tacca a 45° è uscita: `CLAUDE.md` § L'apparato chiede tre condizioni e la terza — un numero che il repo conta — qui non c'è. Sotto i 60 rem il filetto passa **a sinistra**: cinque `border-top` in colonna sono cinque righelli fra le righe di un elenco, che è la voce «il filetto non separa mai» |
+| `/` | la **mappa del footer non è leggibile come mappa**: 356 × 102 px, un frammento di perimetro, nessun nome | **fatto.** Il `viewBox` non è più una finestra 21/6 ma il riquadro della provincia della sede, calcolato dal percorso vero; in pagina perimetro intero, croce della sede e **nome del comune**. E il `fill` dell'etichetta ha smesso di essere un token derivato: una proprietà personalizzata che contiene `var()` si sostituisce **sull'elemento che la usa**, quindi dentro la banda scura diventava chiara e il nome usciva carta su carta |
+| `/` | tre «Raccontaci il progetto» e **due destinazioni** | **no, ed è dichiarato.** La CTA della hero è un'ancora interna (`#brief`), quella della barra persistente porta a `/contatti#brief`: fanno lavori diversi — una scorciatoia che vale su nove rotte non può puntare a un'ancora che esiste solo su tre. Il perché sta nel commento di `app/(a)/layout.tsx` |
+| `/` | il ruolo dello studio si legge per **indice posizionale** (`dati[3]`) | **fatto.** `lib/progetti.ts` esporta `dato(progetto, etichetta)` con un elenco chiuso tipizzato: un riordino dell'array non fa più scivolare la superficie al posto del ruolo, e una chiave sbagliata non compila |
+| `/` | il collaudo del contrasto legge il **fondo sbagliato** sotto il paragrafo della hero | **fatto**, e misurando è saltato fuori un difetto vero accanto: `.hero-lead` su `--regolo-volume-tono-0` sta a **5,01:1**, sopra soglia, quindi non si tocca; ma `.hero-quota` era a **4,11:1** — il suo commento dichiarava 4,55, e quel numero valeva prima che il passo 2 scurisse i tre toni. Portata a `#636363`: 6,01:1 sulla carta, 4,64 sulla faccia in ombra |
+| `/opzione-b` | con **`prefers-reduced-motion: reduce` quattro tavole su cinque non si vedono mai** | **fatto.** Lo stato di riposo «disegno 0 acceso» va bene come fallback di un'animazione, non come stato definitivo di una preferenza: i cinque disegni sono **contenuto**, uno per fase. Con `reduce` il pannello non è più pinnato e le cinque tavole stanno in flusso, che è l'impaginazione che il blocco ha già sotto i 56 rem |
+| `/opzione-b` | l'unico **`<h1>` di B è il logotipo**, e sulla reference misurata il logotipo non è l'h1 | **fatto.** Su ecoLINEAR l'`h1` misura 32 px (`misure.json`): è un titolo, non il marchio. Il logotipo torna un `<p>` e l'`h1` passa sulla riga che descrive lo studio |
+| `/opzione-b` | fra **800 e 895 px** spariscono insieme la barra mobile e la navigazione estesa | **fatto, e alla radice**: la soglia della barra passa da 48 a **55,999 rem**, che è dove `nav:hidden` spegne la `<details>`. Era il buco fra due soglie che nessuno aveva allineato, e valeva per tutte e tre |
+| `/opzione-b` | due sezioni con **titoli quasi identici**, e una terza che promette tavole e mostra progetti | **fatto** (i titoli sono nostri, non dati del cliente) |
+| `/opzione-b` | la testata **non ha fondo**: il marchio è dipinto sopra il contenuto | **no.** È la reference misurata: su ecoLINEAR il logotipo sta sul foglio nudo e **solo il menu** prende la pastiglia scorrendo. `contrasto-dom.mjs` misura zero coppie sotto soglia su quella rotta |
+| `/opzione-b` | l'**anello di fuoco** è il grigio-terra attenuato, non l'inchiostro | **no, per ora.** È una scelta di token del tema e non tocca la soglia 3:1; va guardata insieme al resto del fuoco alla fase 5 |
+| `/opzione-c` | il momento orchestrato **si esaurisce prima che il titolo della banda entri** | **fatto**: `entry 0% → 85%` invece di 62 %, rimisurato sulla geometria vera della banda |
+| `/opzione-c` | la **citazione ripete alla lettera l'h1** della stessa pagina | **fatto**: la frase vera esce, la citazione diventa riempimento dichiarato per intero e resta a due voci, che è il gesto misurato su `1440-meta-35` |
+| `/opzione-c` | la **monospace dei servizi** porta frasi da 41-62 caratteri invece di un valore | **fatto**: la frase esce dalla mono. L'altra uscita — mettere un valore corto — avrebbe voluto dire **inventare una quantità**, che è la regola 1 |
+| `/opzione-c` | `<dd>` prima di `<dt>`: HTML non valido | **fatto** su tutte e due le proposte: markup in ordine e `flex-direction: column-reverse` per l'ordine visivo, che è la stessa soluzione di A nello smistamento |
+| `/opzione-c` | le **targhe delle persone** smettono di essere pastiglie quando il ruolo è lungo | **fatto**, e guardando la reference prima: nelle cinque occorrenze misurate la targa è sempre un'etichetta corta su **una riga** |
+| `/opzione-c` | a 390 il campo ritratto della citazione è più piccolo della propria didascalia | **già chiuso** dalla correzione del P1 n. 6, verificato e non toccato |
+| tutte e tre | **`role="img"` sul segnaposto** rende presentazionali la specifica e la riga di fonte e licenza | **fatto.** Sono le due cose che rendono il segnaposto una dichiarazione invece che un buco (n. 27 b), e la riga di licenza è anche un obbligo verso Mixkit e StockSnap: `role="img"` scende sul solo campo del media |
+| 404 | il menu del 404 non è dentro un **landmark di navigazione** | **fatto**: `<nav aria-label="Principale">`, lo stesso nome della testata perché non si sdoppino |
+| `/` | l'ancora **`#brief` non sposta il fuoco** | **fatto**: `tabIndex={-1}` sulla sezione del brief, che è lo stesso patto di `<main tabIndex={-1}>`, più l'anello che quello stato adesso può ricevere |
+| `/opzione-b` | due `dataset` scritti **fuori** dal `requestAnimationFrame`, e `getBoundingClientRect()` a ogni evento di scorrimento | **fatti tutti e due** |
+| tutte e tre | `touch-action` e `-webkit-tap-highlight-color` non dichiarati | **no**: non è un difetto misurato su questo sito, e il valore di default è quello giusto per bersagli che non fanno gesti propri |
+| `/opzione-b` | axe segna cinque volte il numerone delle fasi a 1,12:1 | **no, ed è un falso positivo messo per iscritto**: il numerone è dichiarato al **12 % di opacità** ed è la misura della reference (`158,4 px al 12 %`). Non è testo da leggere, è una superficie |
+
+### La diversità, misurata
+
+`node scripts/opzioni-diff.mjs http://localhost:3001 / /opzione-b /opzione-c --ref /=air --ref /opzione-b=ecolinear --ref /opzione-c=halston`
+
+| Coppia | Classi condivise (soglia ≤ 50 %) | Assi diversi (minimo 3 su 5) | Colori di fondo in comune |
+|---|---|---|---|
+| A ↔ B | **38 %** | **3** — impaginazione · tipografia · fotografia | 0 su 5 |
+| A ↔ C | **39 %** | **3** — gesto della hero · impaginazione · tipografia | 0 su 5 |
+| B ↔ C | **43 %** | **4** — gesto · impaginazione · tipografia · fotografia | 1 su 5 |
+
+Alla prima misura **A ↔ B stava a 2 assi su 5**, e la causa era vera: togliendo la fotografia
+dalla hero di A, A e B erano diventate due pagine senza fotografia sopra la piega **e con zero
+immagini a piena larghezza**. La correzione non è cosmetica — il blocco progetti di A era tre
+schede uguali in fila, l'ultima cosa di quella pagina che leggeva come un catalogo, e adesso è un
+**progetto di testa che sborda oltre il margine destro** più due sotto. Chiude anche una voce di
+`CLAUDE.md` § Impaginazione che quel blocco non rispettava.
+
+L'asse che resta uguale in tutte e tre le coppie è **«chrome e movimento»**, e vale la pena
+dirlo: lo script lo misura come `posizione della testata + numero di voci + numero di animazioni`,
+e le tre testate sono tutte `sticky` con quattro voci. Quello che le distingue — il lockup su due
+righe con il menu-frase (A), la pastiglia che compare scorrendo (B), la pastiglia granata e il
+menu centrato (C) — quel conteggio non lo vede.
+
+### `collaudo/opzioni/CONFRONTO.png`, la prova dei tre secondi
+
+Guardata. Le tre righe sono reference · opzione a 1440 · opzione a 390. Quello che si vede,
+in tre righe:
+
+1. **Sono tre siti**, non tre pelli: carta bianca con un oggetto disegnato e nessuna fotografia
+   sopra la piega · carta grigia con una griglia di costruzione e un marchio in terracotta ·
+   carta calda in maiuscolo con una fotografia a piena finestra sotto una riga di dati.
+2. **Ognuna somiglia alla propria reference senza copiarla**: A prende da AIR il gesto — il tipo
+   ai due margini e il disegno in mezzo — e non la sua palette; B e C sono i due sistemi che il
+   committente ha chiesto «identici», e a fianco della cattura si riconoscono.
+3. Il posto in cui A resta più debole delle altre due è **la miniatura a 390**: la barra della
+   proposta le mangia 150 px, e sotto restano il payoff e la quota. È chrome di vendita e sparisce
+   alla fase 5, ma in call quella schermata si guarda.
 
 ## Ripassata di design — passo 2: la § 1 riga per riga, e il codice (08/09/2026)
 
@@ -281,8 +390,9 @@ Verificati sul file, non su quello che `STATO.md` dichiarava.
 
 | Data | Revisore | Rotta | Rilievi | Esito |
 |---|---|---|---|---|
-| — | `/impeccable critique` + `audit` | / · /opzione-b · /opzione-c | — | **da fare al passo 3 della ripassata.** Gli strumenti sono stati installati l'08/09: prima non c'erano |
-| — | `web-design-guidelines` | componenti toccati | — | idem |
+| 08-09/09/2026 | `/impeccable critique` + `/impeccable audit` | `/` · `/opzione-b` · `/opzione-c`, un revisore per rotta | 44 | **nessun P0/P1 aperto.** Il dettaglio voce per voce è in § Ripassata di design · passo 3 |
+| 08-09/09/2026 | `web-design-guidelines` (regole scaricate da `vercel-labs/web-interface-guidelines`) | i componenti toccati dalla passata | 4 | idem |
+| 08-09/09/2026 | passata **avversariale** sui 16 P0/P1 | tutte e tre | — | tre rilievi gravi **confutati** con misura contraria, tre ridimensionati, due confermati peggio di come erano scritti |
 
 ## Fase 3 quinquies (2/2) — le due alternative rifatte «identiche» alle reference indicate (08/09/2026)
 

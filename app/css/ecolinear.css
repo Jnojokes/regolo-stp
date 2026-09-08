@@ -94,6 +94,7 @@
        da A, che ha tre passi dichiarati. */
     padding-inline: var(--regolo-margine);
   }
+
   .foglio-centro {
     position: relative;
     z-index: 1;
@@ -146,6 +147,15 @@
     margin: 0;
     background-color: #3a2a20;
   }
+  /* **È l'`h1` della pagina**, non un sottotitolo: il marchio grande è un
+     marchio (vedi la nota in `components/ecolinear/Blocchi.tsx`, e la reference,
+     dove l'`h1` misura 32 px e non è il logotipo). Il tag è cambiato, il
+     rendering no — ma quattro dichiarazioni vanno riportate qui, perché
+     `@layer base` veste `h1, h2, h3, h4` e un `<p>` non le prendeva:
+     `letter-spacing` è l'unica che si vedrebbe (−0,02 em su 18 px = −0,36 px
+     per lettera su una riga di corpo, che è la tracciatura del display messa
+     dove non va), le altre tre erano già dichiarate e restano per non dipendere
+     dall'ordine dei layer. */
   .foglio-sotto {
     margin: 0;
     max-width: 38rem;
@@ -154,6 +164,7 @@
     font-weight: 400;
     font-size: 1.125rem; /* 18 px, misurato */
     line-height: 1.83; /* 33 / 18, misurata */
+    letter-spacing: normal; /* il corpo di ecoLINEAR misura `normal`, non −0,02 em */
     color: var(--regolo-muted); /* 4,52:1 */
   }
 
@@ -510,10 +521,22 @@
   /* Dove l'animazione non c'è resta acceso **il primo**, che è uno stato finito
      e coerente: la tavola del primo incontro accanto al metodo. È lo stesso
      principio degli `initial-value` di casa.
-     I casi sono **due e vanno nominati tutti e due** — il browser senza
-     `animation-timeline` e `prefers-reduced-motion: reduce`, che qui spegne
-     l'animazione con un `@media` e non con una durata. E la condizione **non si
-     può omettere**: questa regola è stata per una passata senza `@supports`, e
+
+     **Il caso `prefers-reduced-motion: reduce` non è più questo.** Era anche
+     lui qui, con la stessa riga — e su una preferenza dell'utente quella riga
+     non è un fallback, è uno **stato definitivo**: i cinque disegni sono
+     contenuto, uno per fase, e chi ha chiesto meno movimento ne perdeva
+     quattro per sempre. Il suo fallback sta in fondo al foglio, § «CON
+     `reduce` LE CINQUE TAVOLE RESTANO TUTTE E CINQUE», e le mostra tutte.
+
+     Qui sotto resta il solo caso «manca la funzione», dove la perdita è la
+     stessa ma temporanea: il giorno che il motore implementa
+     `animation-timeline` le cinque tavole tornano da sé. Se si decide che non
+     basta, la riparazione è la stessa impaginazione in flusso, e va **scelta**
+     — cambia quello che vede oggi la metà dei browser, non un caso di bordo.
+
+     La condizione **non si può omettere**: questa regola è stata per una
+     passata senza `@supports`, e
      siccome l'animazione è dichiarata senza `animation-fill-mode` (scelta del
      blocco «IL PLOTTER» in fondo al foglio), fuori dal proprio range il valore
      base torna a valere. Risultato misurato a cinque quote: il disegno 0
@@ -522,11 +545,6 @@
      `fig. 0⅓`. Un fallback non condizionato non è un fallback: è uno stato in
      più. */
   @supports not (animation-timeline: view()) {
-    .fasi-disegno[data-fase='0'] {
-      opacity: 1;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
     .fasi-disegno[data-fase='0'] {
       opacity: 1;
     }
@@ -1010,6 +1028,144 @@
       white-space: normal;
     }
   }
+
+  /* ==========================================================================
+     LA BARRA CTA MOBILE — la soglia adesso è nel foglio condiviso
+     --------------------------------------------------------------------------
+     Qui c'era una regola `[data-theme='b']` che portava `.barra-mobile` da 48 a
+     55,999 rem, perché fra 768 e 895 px la barra era sparita e il menu era
+     ancora a scomparsa. Il difetto era di tutte e tre le proposte, non di
+     questa: la soglia è stata allineata alla radice (`app/css/sezioni.css`,
+     `@media (max-width: 55.999rem)`) e la regola locale, che diceva la stessa
+     cosa per un tema solo, è uscita.
+
+     Quello che resta qui è **la conseguenza per B**, che le altre due non hanno:
+     `.foglio` è `min-height: 100svh` con `padding-bottom: 0`, quindi dove la
+     barra c'è e lo spazio no, la CTA della copertina finisce **sotto** la barra
+     e il fuoco da tastiera con lei — WCAG 2.2 SC 2.4.11 *Focus Not Obscured*.
+     La riserva d'altezza segue la soglia della barra, o il difetto si sposta da
+     390 px a 800.
+     ======================================================================== */
+
+  @media (max-width: 55.999rem) {
+    [data-theme='b'] .foglio {
+      padding-block-end: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  /* ==========================================================================
+     CON `reduce` LE CINQUE TAVOLE RESTANO TUTTE E CINQUE
+     --------------------------------------------------------------------------
+     Il difetto: lo stato di riposo del plotter è «il disegno 0 acceso e gli
+     altri quattro a `opacity: 0`». Come **fallback di un'animazione** è giusto
+     — è uno stato finito, non un buco — ma con `prefers-reduced-motion: reduce`
+     diventa **permanente**, e i cinque disegni non sono decorazione: sono
+     contenuto, uno per fase, e la didascalia `fig. 0n` che portano lo dichiara.
+     Chi chiede meno movimento perdeva **quattro figure su cinque**.
+
+     La riparazione non aggiunge niente di nuovo: riusa l'impaginazione che il
+     blocco ha già sotto i 56 rem — pannello **non** pinnato, disegni in flusso
+     — e la estende a ogni larghezza quando la preferenza è `reduce`. Niente si
+     anima, e le cinque tavole ci sono tutte.
+
+     Dove c'è la seconda colonna (≥ 56 rem) ogni disegno sta **sulla riga della
+     propria fase**, e il modo è `grid-template-rows: subgrid`: `.fasi-pinnate`
+     dichiara le righe una volta, `.fasi-tavola` e `.fasi-corpo` le ereditano, e
+     `.fasi-pannello` le eredita a sua volta — così il pannello **resta un
+     pannello**, con il suo fondo, il raggio e le quattro squadrette d'ambra
+     misurate, invece di sparire in un `display: contents` che porterebbe via
+     con sé anche le squadrette. Se un giorno un browser non conoscesse
+     `subgrid`, la dichiarazione cade e resta una colonna di tavole accanto a
+     una colonna di fasi: disallineate, ma **tutte e cinque visibili**, che è la
+     cosa per cui questo blocco esiste.
+     ======================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Niente pinnaggio: un pannello incollato che non cambia mai disegno è
+       mezza finestra occupata da una figura sola. */
+    .fasi-tavola {
+      position: static;
+    }
+    /* Il pannello diventa la colonna delle cinque tavole. `aspect-ratio: auto`
+       perché l'altezza adesso la fanno i disegni, non il rapporto 403/522 —
+       che passa a ognuno di loro. */
+    .fasi-pannello {
+      display: grid;
+      aspect-ratio: auto;
+      max-width: none;
+    }
+    /* In flusso, tutti accesi. `inset: auto` è obbligatorio: la regola base
+       dice `inset: 8%` per il posizionamento assoluto, e su un elemento
+       `relative` quegli 8 % diventerebbero uno scarto. Il margine li
+       sostituisce, e `relative` resta perché le due tende ci si appendono. */
+    .fasi-disegno {
+      position: relative;
+      inset: auto;
+      margin: 8%;
+      aspect-ratio: 403 / 522;
+      /* `start` e non lo `stretch` di default: dove la fase accanto è più alta
+         del disegno, lo stiramento vincerebbe sull'`aspect-ratio` e la tavola
+         uscirebbe schiacciata. Il rapporto 403 / 522 è misurato, e un rapporto
+         misurato non si allunga per riempire una riga. */
+      align-self: start;
+      opacity: 1;
+    }
+    /* Senza pinnaggio l'altezza di una schermata per fase non serve più: era il
+       tempo di lettura che teneva ferma la tavola, e la tavola adesso non si
+       muove per costruzione. */
+    .fase {
+      min-height: 0;
+      padding-block: clamp(1.5rem, 4vw, 3rem);
+    }
+    /* Il righello scende con la pagina invece di restare appeso, e resta
+       `relative` perché l'asta e le cinque tacche sono assolute su di lui. */
+    .fasi-righello {
+      position: relative;
+      height: auto;
+    }
+  }
+
+  /* La coppia disegno ↔ fase esiste solo dove ci sono due colonne. Sotto i
+     56 rem la colonna è una sola: lì le cinque tavole stanno in cima al blocco
+     e le cinque fasi sotto, appaiate dal numero (`fig. 03` e il numerone `03`),
+     che è quello che il layout mobile già faceva con una tavola sola. */
+  @media (prefers-reduced-motion: reduce) and (min-width: 56rem) {
+    .fasi-pinnate {
+      /* La prima riga è l'etichetta `il metodo`, le altre cinque sono le fasi. */
+      grid-template-rows: auto repeat(5, auto);
+      align-items: stretch;
+    }
+    /* Le colonne si dichiarano invece di lasciarle all'auto-collocamento: con
+       tre elementi che occupano ognuno tutte le righe, «dove finisce il terzo»
+       diventa una deduzione sull'ordine del DOM, e una deduzione non è un
+       piano. */
+    .fasi-tavola {
+      grid-column: 1;
+      grid-row: 2 / -1;
+      display: grid;
+      grid-template-rows: subgrid;
+    }
+    .fasi-pannello {
+      grid-row: 1 / -1;
+      grid-template-rows: subgrid;
+    }
+    .fasi-corpo {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      grid-template-rows: subgrid;
+    }
+    /* L'etichetta e il titolo di sezione stanno sulla prima riga; le cinque
+       `.fase` si collocano da sole nelle cinque che restano. Il titolo è
+       `sr-only`, quindi non occupa spazio accanto all'etichetta. */
+    .fasi-corpo > .registro-etichetta,
+    .fasi-corpo > h2 {
+      grid-row: 1;
+    }
+    .fasi-righello {
+      grid-column: 3;
+      grid-row: 1 / -1;
+    }
+  }
 }
 
 /* ============================================================================
@@ -1175,11 +1331,22 @@
         transform: translateX(101%);
       }
     }
+    /* **La cancellazione finisce al 68 %, non al 100 %**, e il numero non è di
+       gusto: è aritmetica. Con `.fase { min-height: 82svh }` e
+       `animation-range: cover 18% cover 82%`, la fase successiva **si accende**
+       al 70,4 % del range di quella prima. Se la tenda `copre` arriva dopo, le
+       due tavole convivono — misurato: **20 quote su 81**, a 760, 844, 900 e
+       1080 px di finestra, con le due `.fasi-fig` sullo stesso rettangolo
+       d'inchiostro (`fig. 01` sopra `fig. 02`, che a schermo si legge `fig. 0Ƶ`).
+       La sovrapposizione era del 29,6 % del range **per costruzione**, non per
+       caso. Chiudendo la corsa al 68 % la tavola precedente è già via quando la
+       successiva compare, e restano 12 → 56 % di tavola intera e ferma. */
     @keyframes ecolinear-plotter-copre {
       0%,
-      88% {
+      56% {
         transform: translateX(-101%);
       }
+      68%,
       100% {
         transform: translateX(0);
       }

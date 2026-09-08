@@ -1,4 +1,5 @@
-import { cifra, riempimento } from '@/lib/segnaposto'
+import { riempimento } from '@/lib/segnaposto'
+import { VALORE_ATTESO } from '@/lib/numeri'
 
 /**
  * Il segnaposto di testo delle proposte C e D: **lorem ipsum in pagina, la
@@ -54,23 +55,35 @@ export function Segnaposto({
 }
 
 /**
- * Il segnaposto di una **cifra**: gli stessi due lavori, e la stessa
- * circoscrizione della decisione n. 27 — il valore si vede, ma è dichiarato
- * segnaposto dall'attributo, dalla barra della proposta e dalla lista della
- * spesa. Fuori da C e D non si usa.
+ * Il segnaposto di una **cifra**, e adesso rende un trattino.
+ *
+ * ## Perché non rende più un numero
+ *
+ * Rendeva `11`, `75`, `77.039`, `47` — cifre deterministiche ma **plausibili**,
+ * nel colore del testo accanto, senza niente in pagina che le dichiarasse. La
+ * deroga che circoscrive la regola 1 è scritta per il **lorem ipsum**
+ * (`DECISIONI.md` n. 41: *«invece di mettere "DA CLIENTE" metti lorem ipsum»*),
+ * e il lorem ipsum si riconosce a vista: «77.039 mq progettati» no. Nessuna
+ * voce di `DECISIONI.md` estende quella deroga alle cifre — verificato — quindi
+ * la estendeva questo componente di sua iniziativa.
+ *
+ * La mitigazione c'era e non arrivava dove serve: la barra della proposta scrive
+ * «numeri, nomi e progetti sono segnaposto dichiarati», ma sta a `y 64-108` e su
+ * `/opzione-c` l'ultima cifra sta a **`y 3822`**, cioè quasi quattromila pixel
+ * più in basso.
+ *
+ * La soluzione non è nuova: è quella che **A usa da sempre** nello stesso
+ * blocco (`lib/numeri.ts`, `VALORE_ATTESO`), ed è meglio di un
+ * `[[DA CLIENTE: …]]` dentro una cifra da 129 px — che riempirebbe la cella su
+ * tre righe e farebbe sembrare la striscia rotta invece che in attesa. Il
+ * trattino a corpo display si legge come **una casella da riempire**, e la
+ * richiesta resta nel DOM in `data-chiede`, dove `scripts/segnaposto.mjs` la
+ * raccoglie.
  */
-export function SegnapostoCifra({
-  chiede,
-  cifre = 2,
-  className,
-}: {
-  chiede: string
-  cifre?: number
-  className?: string
-}) {
+export function SegnapostoCifra({ chiede, className }: { chiede: string; className?: string }) {
   return (
     <span data-chiede={chiede} className={className ? `segnaposto ${className}` : 'segnaposto'}>
-      {cifra(chiede, cifre)}
+      {VALORE_ATTESO}
     </span>
   )
 }

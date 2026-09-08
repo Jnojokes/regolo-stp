@@ -43,6 +43,15 @@ console.log('\ni quattro stati, a 1440:')
       c: !!n,
       vis: n ? 'visibile' in n.dataset : null,
       op: n ? getComputedStyle(n).opacity : null,
+      /* **La prova che mancava**, e per cui questo script diceva 21 su 21 su un
+         difetto vero: `cursor` si leggeva per la prima volta **dopo**
+         `p.mouse.move()`. Prima l'attributo `data-cursore` si metteva al
+         montaggio, quindi chi scorreva con il trackpad o con la rotellina —
+         due dita su un Mac non spostano il puntatore — percorreva l'intera
+         pagina senza **nessun** puntatore in finestra: né quello di sistema
+         (`cursor: none`) né il mirino (`opacity: 0`). */
+      attr: document.documentElement.dataset.cursore ?? null,
+      cursore: getComputedStyle(document.body).cursor,
     }
   })
   ok(primaDelMoto.c === true, 'il nodo esiste dopo l’idratazione', primaDelMoto)
@@ -50,6 +59,26 @@ console.log('\ni quattro stati, a 1440:')
     primaDelMoto.vis === false && primaDelMoto.op === '0',
     'invisibile finché il puntatore non si muove',
     primaDelMoto,
+  )
+  ok(
+    primaDelMoto.attr === null && primaDelMoto.cursore !== 'none',
+    'il puntatore di sistema c’è ancora **prima** del primo movimento',
+    primaDelMoto,
+  )
+
+  /* E dopo lo scorrimento senza muovere il puntatore: è il caso vero, non un
+     lampo fra il carico e il primo movimento. */
+  await p.mouse.wheel(0, 1200)
+  await p.waitForTimeout(300)
+  const dopoScorrimento = await p.evaluate(() => ({
+    attr: document.documentElement.dataset.cursore ?? null,
+    cursore: getComputedStyle(document.body).cursor,
+    y: Math.round(scrollY),
+  }))
+  ok(
+    dopoScorrimento.attr === null && dopoScorrimento.cursore !== 'none',
+    'e c’è ancora dopo aver scorso con la rotellina senza muovere il puntatore',
+    dopoScorrimento,
   )
 
   /* Stato «carta»: mirino, finestra di selezione, lettura. */

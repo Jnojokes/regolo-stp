@@ -18,7 +18,22 @@
 
 import { daCliente } from './site'
 
-export type DatoDuro = { etichetta: string; valore: string }
+/**
+ * I campi di una scheda, **chiusi**: l'elenco è il messaggio (§ Scheda
+ * progetto), quindi non è una stringa libera. Serve a `dato()` qui sotto: chi
+ * legge un campo lo chiede per nome, e un nome sbagliato non compila.
+ */
+export const ETICHETTE_DATI = [
+  'Luogo',
+  'Anno',
+  'Superficie',
+  'Ruolo dello studio',
+  'Committente',
+] as const
+
+export type EtichettaDato = (typeof ETICHETTE_DATI)[number]
+
+export type DatoDuro = { etichetta: EtichettaDato; valore: string }
 
 export type Progetto = {
   /** Come si chiama la scheda finché non ha un nome. */
@@ -45,6 +60,28 @@ function scheda(numero: string, copertina: string): Progetto {
       { etichetta: 'Committente', valore: daCliente('committente, se citabile') },
     ],
   }
+}
+
+/**
+ * Il valore di un campo, **per chiave e mai per indice**.
+ *
+ * La home leggeva `dati[0]` e `dati[3]` per luogo e ruolo. Il giorno che
+ * qualcuno riordina l'array qui sopra — o gli aggiunge «Impresa», che § Scheda
+ * progetto elenca fra i dati duri — la scheda stampa la **superficie** sotto la
+ * riga del ruolo, e non si rompe niente: nessun tipo cambia, nessun collaudo
+ * fallisce, e in pagina resta una credenziale sbagliata. Ma il ruolo è il campo
+ * che § Scheda progetto vieta di omettere, cioè quello che dice cosa sanno
+ * fare: è l'ultimo che può scivolare in silenzio.
+ *
+ * Si ferma invece di stampare il campo sbagliato: il tipo chiude l'elenco, e se
+ * un progetto vero arriva senza il ruolo il build cade qui, con scritto quale
+ * campo manca. È lo stesso patto di `scripts/genera-territorio.mjs`, che si
+ * ferma quando le numerosità cambiano.
+ */
+export function dato(progetto: Progetto, etichetta: EtichettaDato): string {
+  const trovato = progetto.dati.find((d) => d.etichetta === etichetta)
+  if (!trovato) throw new Error(`Progetto «${progetto.titolo}» senza il campo «${etichetta}»`)
+  return trovato.valore
 }
 
 export const progetti: readonly Progetto[] = [

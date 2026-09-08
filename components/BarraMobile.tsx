@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { DaCliente } from '@/components/Placeholder'
-import { Segnaposto } from '@/components/Segnaposto'
 import { ctaPrimaria, daCliente, site } from '@/lib/site'
 
 /**
@@ -60,7 +59,17 @@ export function BarraMobile({
         {segnaposto === 'visibile' ? (
           <DaCliente>{daCliente('WhatsApp')}</DaCliente>
         ) : (
-          <Segnaposto chiede="numero WhatsApp dello studio" parole={1} maiuscola={false} />
+          /* In B e in C la cella resta **vuota**, e porta solo `data-chiede`.
+             La prima stesura ci metteva una parola di riempimento e in pagina
+             usciva «aliquip» fra due azioni vere: due revisori l'hanno alzata
+             indipendentemente, e hanno ragione — il lorem ipsum dichiara un
+             **testo che arriverà**, ma qui non arriverà un testo, arriverà un
+             numero di telefono o niente. Una parola latina in una barra
+             persistente su ogni schermata sembra un terzo bottone rotto.
+             `data-chiede` resta, quindi `scripts/segnaposto.mjs` continua a
+             raccogliere la richiesta dall'HTML buildato e la lista della spesa
+             non perde una riga. */
+          <span data-chiede="numero WhatsApp dello studio" aria-hidden="true" />
         )}
       </span>
 

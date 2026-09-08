@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { DaCliente, Placeholder } from '@/components/Placeholder'
 import { Sezione } from '@/components/sezioni/Sezione'
-import { notaProgetti, progetti, type Progetto } from '@/lib/progetti'
+import { dato, notaProgetti, progetti, type Progetto } from '@/lib/progetti'
 import { operaPerIndice, type ChiaveEsempio } from '@/lib/media-demo'
 
 /**
@@ -98,12 +98,18 @@ function SchedaFoto({
           esiste e sarebbe un dato inventato. E perché sopra tre rettangoli
           vuoti `codice · nome · vedi progetto` **è** un annuncio immobiliare,
           mentre `luogo · direzione lavori · vedi progetto` è una credenziale. */}
+      {/* **Per chiave, non per indice** (`dato()` in `lib/progetti.ts`). Erano
+          `dati[0]` e `dati[3]`: basta riordinare l'array o infilarci
+          «Impresa» — che § Scheda progetto elenca fra i dati duri e oggi non
+          c'è — e questa riga stampa la superficie sotto il posto del ruolo,
+          senza che niente si rompa. Il ruolo è il campo che § Scheda progetto
+          vieta di omettere, cioè il meno adatto a scivolare in silenzio. */}
       <p className="progetto-riga">
         <span className="progetto-luogo">
-          <DaCliente>{progetto.dati[0].valore}</DaCliente>
+          <DaCliente>{dato(progetto, 'Luogo')}</DaCliente>
         </span>
         <span className="progetto-ruolo">
-          <DaCliente>{progetto.dati[3].valore}</DaCliente>
+          <DaCliente>{dato(progetto, 'Ruolo dello studio')}</DaCliente>
         </span>
       </p>
     </article>

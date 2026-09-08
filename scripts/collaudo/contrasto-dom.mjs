@@ -38,7 +38,13 @@ for (const url of [
     const fondo = (el) => {
       let n = el
       while (n && n !== document.documentElement) {
-        const bg = getComputedStyle(n).backgroundColor
+        const cs = getComputedStyle(n)
+        /* Il `fill` di un antenato SVG **non** si usa come fondo: dentro un
+           `<g>` vale il nero ereditato e non dipinge niente dietro il testo.
+           Il fondo vero di una figura è il `background-color` dell'`<svg>`, che
+           questa risalita trova comunque — sul riquadro della mappa è
+           `--regolo-mappa-fondo`. */
+        const bg = cs.backgroundColor
         if (bg && !/rgba\(0, 0, 0, 0\)|transparent/.test(bg)) return bg
         n = n.parentElement
       }
@@ -67,7 +73,12 @@ for (const url of [
       // grep: `aria-hidden` da solo sarebbe un permesso troppo largo.
       if (el.closest('[data-decorativo]')) return
       out.push({
-        fg: cs.color,
+        /* **Su un `<text>` SVG il colore è il `fill`, non `color`.** `color` si
+           eredita e su un SVG dentro una banda scura vale il chiaro del piano:
+           misurato, il nome del comune sulla mappa del footer risultava «bianco
+           su bianco, 1:1» mentre il `fill` vero era `#000000`. Un falso positivo
+           che nasconde i veri. */
+        fg: el instanceof SVGElement && cs.fill && cs.fill !== 'none' ? cs.fill : cs.color,
         bg: fondo(el),
         size: parseFloat(cs.fontSize),
         weight: cs.fontWeight,

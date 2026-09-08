@@ -67,7 +67,7 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 <!-- SEGNAPOSTO:inizio -->
 
 > **Generato**, non scritto a mano: `npm run build && node scripts/segnaposto.mjs --scrivi`.
-> 55 richieste distinte, raccolte dall'HTML reso di 17 pagine.
+> 56 richieste distinte, raccolte dall'HTML reso di 17 pagine.
 > Le due forme sono volute: in A il segnaposto **si vede** (è la proposta candidata alla
 > produzione), in B e C si legge lorem ipsum e la richiesta resta in `data-chiede`.
 
@@ -89,8 +89,9 @@ Finché non torna confermata, quelle due frasi non vanno considerate contenuto d
 | da che anno lavora lo studio (o il predecessore, se la continuità si dichiara) | /opzione-b · /opzione-c | lorem ipsum |
 | elenco dei comuni in cui avete lavorato | / | visibile |
 | email pubblica | / · /cookie · /note-legali · /opzione-b · /opzione-c · /privacy · /progetti/esempio-scheda · /servizi · /servizi/casa-nuova · /servizi/energia-acustica · /servizi/opere-pubbliche · /servizi/pratiche · /servizi/ristrutturazioni · /servizi/strutture · /studio | visibile |
+| il seguito della stessa frase — che cosa cambia, in concreto, per chi vi affida un lavoro | /opzione-c | lorem ipsum |
 | impresa esecutrice, se citabile | /progetti/esempio-scheda | visibile |
-| la frase del titolare sul modo di lavorare dello studio, da confermare parola per parola | /opzione-c | lorem ipsum |
+| la frase con cui il titolare dice come lavora lo studio — una sola, e che regga da sola | /opzione-c | lorem ipsum |
 | le scelte di progetto e il perché. Non l’elenco delle lavorazioni: le due o tre decisioni che hanno fatto la differenza, e cosa sarebbe andato storto scegliendo diversamente. È la parte che un altro committente legge per capire se ragionate come serve a lui. | /progetti/esempio-scheda | visibile |
 | le scelte di progetto e il perché. Non l'elenco delle lavorazioni:\\nle due o tre decisioni che hanno fatto la differenza, e cosa sarebbe andato\\nstorto scegliendo diversamente. È la parte che un altro committente legge per\\ncapire se ragionate come serve a lui. | /progetti/esempio-scheda | visibile |
 | luogo del progetto 1 | /opzione-b · /opzione-c | lorem ipsum |

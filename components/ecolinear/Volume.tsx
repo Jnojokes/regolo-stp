@@ -164,6 +164,26 @@ export function VolumeAssonometrico() {
     let giro = 0
     let inCoda = false
 
+    /* **Il rettangolo si memorizza, non si rimisura a ogni evento.**
+       `getBoundingClientRect()` costringe il browser a calcolare il layout, e
+       chiamarlo dentro un gestore di `scroll` — ~100 volte al secondo su un
+       trackpad — è il caso da manuale del *layout thrashing*. Per giunta per
+       leggere un valore che **scorrendo non cambia**: la posizione della figura
+       *nel documento* è la stessa a ogni pixel di scorrimento; quello che
+       cambia è `scrollY`, che si legge senza toccare il layout.
+
+       Le due sole cose che spostano la figura nel documento sono un cambio di
+       impaginazione e un rientro in finestra dopo che qualcosa sopra è cresciuto:
+       la prima la vede il `ResizeObserver` (che chiama `misura()`), la seconda
+       l'`IntersectionObserver`, che il rettangolo ce l'ha già in mano e lo dà
+       gratis. */
+    let cima = 0
+    let altezza = 0
+    const rileva = (r: DOMRectReadOnly) => {
+      cima = r.top + window.scrollY
+      altezza = r.height
+    }
+
     const disegna = () => {
       inCoda = false
       gl.viewport(0, 0, c.width, c.height)
@@ -186,6 +206,7 @@ export function VolumeAssonometrico() {
     const misura = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const r = c.getBoundingClientRect()
+      rileva(r)
       c.width = Math.max(1, Math.round(r.width * dpr))
       c.height = Math.max(1, Math.round(r.height * dpr))
       const u = Math.min(
@@ -199,8 +220,7 @@ export function VolumeAssonometrico() {
        tempo: fermando lo scorrimento si ferma anche l'oggetto, che è quello che
        fa un modello guardato e non un'animazione che parte. */
     const aggiorna = () => {
-      const r = c.getBoundingClientRect()
-      const centro = (r.top + r.height / 2) / window.innerHeight
+      const centro = (cima - window.scrollY + altezza / 2) / window.innerHeight
       giro = (0.5 - Math.min(1, Math.max(0, centro))) * 2 * GIRO_MAX
       chiedi()
     }
@@ -211,6 +231,9 @@ export function VolumeAssonometrico() {
     const io = new IntersectionObserver((voci) => {
       for (const v of voci) {
         if (v.isIntersecting) {
+          /* Il rettangolo dell'osservazione è già misurato: si prende da lì
+             invece di chiederne uno nuovo. */
+          rileva(v.boundingClientRect)
           window.addEventListener('scroll', aggiorna, { passive: true })
           aggiorna()
         } else {

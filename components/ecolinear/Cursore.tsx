@@ -100,15 +100,28 @@ export function Cursore() {
     if (!nodo) return
 
     const radice = document.documentElement
-    radice.dataset.cursore = 'cad'
 
     let x = 0
     let y = 0
-    let pendente = false
+    let stato = 'carta'
+    let frame = 0
 
+    /* **Tutto quello che tocca il DOM del mirino sta qui dentro**, e non in
+       `muovi()`. Un `pointermove` arriva alla frequenza del dispositivo — su un
+       trackpad Apple sono ~120 eventi al secondo, e con `pointerrawupdate` di
+       più — mentre i fotogrammi sono 60: scrivere `dataset.stato` e
+       `dataset.visibile` nel gestore voleva dire **due invalidazioni di stile
+       per evento** invece di due per fotogramma, cioè il doppio del lavoro per
+       zero pixel di differenza. Il calcolo dello stato resta in `muovi()`,
+       dov'è: solo lì c'è il bersaglio dell'evento. */
     const disegna = () => {
-      pendente = false
+      frame = 0
       nodo.style.transform = `translate3d(${x}px, ${y}px, 0)`
+      /* Si scrive solo se il valore cambia davvero: fra due fotogrammi lo stato
+         è lo stesso quasi sempre, e un attributo riscritto identico è
+         comunque una mutazione. */
+      if (nodo.dataset.stato !== stato) nodo.dataset.stato = stato
+      if (nodo.dataset.visibile === undefined) nodo.dataset.visibile = ''
       if (lettura.current) {
         /* 1 px CSS = 25,4 / 96 mm. La virgola è quella italiana, come il resto
            del sito, e la larghezza non balla perché Montserrat ha `tnum`. */
@@ -127,13 +140,27 @@ export function Cursore() {
       const t = e.target as Element | null
       const campo = t?.closest?.('input, textarea, select, [contenteditable="true"]')
       const tocca = t?.closest?.('a, button, summary, label, [role="button"]')
-      nodo.dataset.stato = campo ? 'campo' : tocca ? 'attivo' : 'carta'
-      nodo.dataset.visibile = ''
+      stato = campo ? 'campo' : tocca ? 'attivo' : 'carta'
+      /* **`cursor: none` si accende qui, al primo movimento, e non al
+         montaggio.** Prima l'attributo si metteva appena l'effetto girava,
+         mentre il mirino resta a `opacity: 0` finché il puntatore non si muove:
+         misurato, chi arriva su questa pagina e scorre **con il trackpad o con
+         la rotellina** — due dita su un Mac non spostano il puntatore —
+         percorre tutti e 10.945 i pixel della pagina **senza nessun puntatore
+         in finestra**, né quello di sistema né il mirino. Non è un lampo prima
+         del primo movimento: è uno stato stabile che dura quanto la lettura, ed
+         è esattamente il caso che la decisione n. 53 esiste per escludere. Il
+         commento in testa a questo file lo diceva già — «l'attributo lo mette
+         il JavaScript **dopo** che il mirino esiste» — ma lo metteva dopo che
+         esisteva il **nodo**, che non è la stessa cosa.
 
-      if (!pendente) {
-        pendente = true
-        requestAnimationFrame(disegna)
-      }
+         Questo **non** va rimandato al `requestAnimationFrame`: è la riga che
+         garantisce che ci sia un puntatore in finestra, e un fotogramma di
+         ritardo su quella garanzia è esattamente il buco che la decisione
+         n. 53 esiste per escludere. */
+      radice.dataset.cursore = 'cad'
+
+      if (!frame) frame = requestAnimationFrame(disegna)
     }
 
     /* Il mirino non compare finché il puntatore non si muove: chi arriva da
@@ -141,7 +168,18 @@ export function Cursore() {
        quando il puntatore esce dalla finestra, altrimenti resta appiccicato
        all'ultimo pixel toccato. */
     const esci = () => {
+      /* Il fotogramma in coda si annulla, altrimenti rimetterebbe `visibile`
+         mezzo istante dopo averlo tolto: adesso che è `disegna()` a scriverlo,
+         uscire dalla finestra e ridisegnare sono due cose in corsa. */
+      if (frame) {
+        cancelAnimationFrame(frame)
+        frame = 0
+      }
       delete nodo.dataset.visibile
+      /* E con lui se ne va `cursor: none`: se il puntatore esce dalla finestra
+         o la finestra perde il fuoco, il mirino non si vede più, quindi il
+         puntatore di sistema deve tornare. Al rientro lo rimette `muovi()`. */
+      delete radice.dataset.cursore
     }
 
     window.addEventListener('pointermove', muovi, { passive: true })
@@ -149,6 +187,7 @@ export function Cursore() {
     window.addEventListener('blur', esci)
 
     return () => {
+      if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', muovi)
       document.removeEventListener('pointerleave', esci)
       window.removeEventListener('blur', esci)

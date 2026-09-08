@@ -152,11 +152,20 @@
      ======================================================================== */
 
   /* La mono a 13,7 px con interlinea 1,0 e il maiuscolo: è la voce dei dati e
-     delle etichette, misurata su 80 nodi. */
+     delle etichette, misurata su 80 nodi.
+
+     **`.servizi-valore` è uscito da questo elenco**, ed è la regola applicata a
+     sé stessa: su Halston la mono sta su **34 nodi su 298**, e sono valori
+     corti — `48+ HOUSES`, `AVG. 14 MONTHS`. La colonna destra delle righe dei
+     servizi porta invece i sottotitoli dei sei servizi, che sono **frasi da
+     41 a 62 caratteri** («progettazione strutturale, adeguamento e
+     miglioramento sismico»). Una frase non è un dato: dentro la mono, in
+     maiuscolo, a interlinea 1,15, diventava un blocco di testo tecnico e
+     spendeva su una riga di servizio la voce che questa pagina riserva ai
+     numeri. Il ragionamento per esteso sta sopra `.servizi-valore`. */
   [data-theme='c'] .halston-micro,
   [data-theme='c'] .targa,
   [data-theme='c'] .testa-banda-capo,
-  [data-theme='c'] .servizi-valore,
   [data-theme='c'] .metodo-numero,
   [data-theme='c'] .halston-progetto-dati dt,
   [data-theme='c'] .numeri-celle dt,
@@ -385,8 +394,11 @@
      10,15:1 in ogni fotogramma, e sotto la serranda non c'è niente da leggere
      perché la serranda è opaca.
      `z-index: 2`, cioè **sopra** il contenuto, e nessuna trasformazione a
-     riposo: senza `animation-timeline` e con `prefers-reduced-motion` la
-     serranda non è mai dichiarata e la banda è già piena. */
+     riposo: senza `animation-timeline`, con `prefers-reduced-motion` e **sotto
+     i 56 rem** la serranda non è mai dichiarata e la banda è già piena. Il
+     `transform: scaleY(0)` qui sotto non è una precauzione teorica: se un
+     giorno qualcuno togliesse il blocco animato senza togliere questo
+     `::before`, resterebbe un pannello di carta a coprire la banda per sempre. */
   .banda-granata::before {
     content: '';
     position: absolute;
@@ -498,8 +510,17 @@
   .citazione-testo p {
     margin: 0;
   }
-  .citazione-testo strong {
-    font-weight: 500; /* non più grassa: cambia il **tono**, non il peso */
+  /* Il primo dei due toni. Era un `<strong>`, e non lo è più: adesso quello che
+     ci sta dentro è **riempimento dichiarato**, e annunciare a una sintesi
+     vocale «importante» sopra un lorem ipsum è una promessa che il testo non
+     mantiene. Qui serve solo un aggancio per il colore, e il peso resta 500 —
+     cambia il **tono**, non il peso, che è quello che la reference misura.
+
+     Il selettore è a tre classi apposta: `[data-theme='c'] .segnaposto` più in
+     basso in questo stesso layer porta `color: inherit` con due componenti, e a
+     parità di specificità vincerebbe perché viene dopo. Qui l'apertura *deve*
+     essere più scura del resto, quindi vince questa. */
+  [data-theme='c'] .citazione-testo .citazione-apertura {
     color: var(--regolo-ink); /* 12,93:1 — la prima frase */
   }
   .citazione-firma {
@@ -566,18 +587,40 @@
     text-transform: uppercase;
     color: var(--regolo-muted-invert); /* 5,22:1 */
   }
+  /* La seconda voce della riga: **la proporzionale, non la mono.**
+
+     Su Halston la divisione del lavoro fra le due famiglie è misurata — General
+     Sans su 298 nodi, JetBrains Mono su 34 — e la mono sta dove c'è **un
+     dato**: `48+ HOUSES`, `AVG. 14 MONTHS`, due o tre parole. Qui la colonna
+     destra porta i sottotitoli dei sei servizi, che `CLAUDE.md` § I sei servizi
+     fissa come «tecnicismo in seconda riga»: da **41 a 62 caratteri**
+     («progettazione strutturale, adeguamento e miglioramento sismico», 62).
+
+     Delle due uscite possibili — la frase esce dalla mono, oppure diventa un
+     valore corto — **la seconda non è praticabile**: i valori della reference
+     sono quantità sull'attività dello studio (quante case, quanti mesi), e qui
+     sarebbero numeri inventati, che è la cosa che `CLAUDE.md` § Regole, 1
+     vieta. Il sottotitolo invece è contenuto vero e serve. Quindi resta, e
+     cambia voce.
+
+     Cosa cambia in pagina: 16 px (il gradino sotto i 19,4 del corpo, misurato
+     nella scala di Halston), interlinea 1,5 — la soglia d'inchiostro di General
+     Sans è 1,208, quindi due righe non si toccano —, **niente maiuscolo** e
+     niente tracciatura da etichetta. La `max-width` in `ch` fa cadere il ritorno
+     a capo dove lo decide la composizione e non la larghezza della colonna: 62
+     caratteri su 34 stanno in due righe a ogni larghezza misurata. Il colore
+     non cambia (5,22:1 sulla banda), quindi non c'è niente da riverificare. */
   [data-theme='c'] .servizi-valore {
+    max-width: 34ch;
+    justify-self: end;
     text-align: right;
-    color: var(--regolo-muted-invert);
-    /* L'interlinea misurata sulla mono è **1,0 esatta** — e nella reference lo
-       è perché quei valori sono `48+ HOUSES` e `AVG. 14 MONTHS`: una riga, mai
-       due. Qui il valore è la seconda riga di un servizio italiano, e a 390 va
-       a capo: `interlinee.mjs` l'ha misurato a 1,11 di soglia sulla stringa
-       vera («…AGIBILITÀ», dove l'accento della `À` incontra la virgola della
-       riga sopra). A una riga il valore non si vede — cambia solo l'altezza
-       della scatola, dentro una riga alta 150 px — quindi si alza qui e la
-       misura della reference resta vera dove è stata presa. */
-    line-height: 1.15;
+    font-family: var(--regolo-font-display);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--regolo-muted-invert); /* 5,22:1 sulla banda */
   }
   .servizi-riga:hover .servizi-nome {
     color: var(--regolo-paper);
@@ -590,7 +633,23 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     border-top: 1px solid var(--regolo-scuro-linea);
   }
+  /* `column-reverse`, ed è la stessa soluzione che A usa nello smistamento
+     (`sezioni.css`, `.smistamento-conti > div`): in una `<dl>` il `<dt>` viene
+     **prima** del `<dd>` — è la chiave che introduce il valore, e una sintesi
+     vocale deve sentire «anni di attività, —» e non due frammenti scollegati.
+     Qui il markup era invertito per ottenere il numero sopra l'etichetta:
+     HTML non valido per avere un'impaginazione. L'impaginazione la fa questa
+     riga, l'ordine di lettura resta quello giusto.
+
+     `justify-content: flex-end` non è un vezzo: in `column-reverse` il main-end
+     è **in alto**, e le quattro celle sono item di griglia che si stirano
+     all'altezza della riga. Senza, il contenuto si impilerebbe in fondo alla
+     cella e le quattro cifre non starebbero più sulla stessa linea. */
   .numeri-celle > div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-start;
     padding: clamp(2rem, 4vw, 3.5rem) 1rem clamp(2rem, 4vw, 3.5rem) 0;
     border-right: 1px solid var(--regolo-scuro-linea);
   }
@@ -734,8 +793,33 @@
     line-height: 1.4;
     color: var(--regolo-ink);
   }
-  .persona-targa {
+  /* **Il ruolo non sta più dentro la targa**, e la reference è la ragione, non
+     una comodità.
+
+     La targa è misurata su `1440-meta-70.jpeg` e `-35.jpeg`, e in tutte le
+     occorrenze — `• HOMEOWNER`, `• RESIDENCE OWNER`, `• PRIVATE CLIENT`,
+     `• QUOTE`, `• TESTIMONIALS` — è **un'etichetta corta su una riga sola**: la
+     più lunga sta in 15 caratteri e 130 px. I nostri ruoli no: «ingegnere ·
+     coordinamento sicurezza» sono 35 caratteri e il quarto è un
+     `[[DA CLIENTE: mestiere di chi segue pratiche e cantiere]]`, 57. Misurati
+     dentro la pastiglia: 2 righe a 1440 (celle da 350 px), **4 e 6 righe a
+     768** (celle da 232), a interlinea 1,0 — cioè un blocco di mono dentro un
+     bordo, che non è più una targa. E la pastiglia non si può nemmeno troncare:
+     il ruolo è il dato che dice cosa sa fare chi firma.
+
+     Nella stessa reference un ruolo **lungo** c'è, ed è impaginato così:
+     `Founder & Principal Architect`, nella firma della citazione, in
+     proporzionale grigia e **senza pastiglia**. È quello che si fa qui. Il
+     blocco non resta senza il suo micro-elemento: la targa ce l'ha la testa di
+     sezione (`• Chi firma`), che è il ritmo della reference — una per blocco. */
+  .halston-persona-ruolo {
     margin: 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 400;
+    font-size: 0.91875rem; /* 14,7 px — il gradino sotto i 16 del nome, ed è
+                              nella scala misurata di Halston, dove 14 non c'è */
+    line-height: 1.45; /* > 1,208, la soglia d'inchiostro di General Sans */
+    color: var(--regolo-muted); /* 4,54:1 sulla carta */
   }
 
   /* Il segnaposto di testo non si veste da segnaposto (`DECISIONI.md` n. 41). */
@@ -802,7 +886,10 @@
       align-content: center;
       padding-block: 1.25rem;
     }
+    /* Su una colonna sola la seconda voce torna a sinistra, sotto il nome: a
+       destra sarebbe allineata a un bordo che non c'è più. */
     [data-theme='c'] .servizi-valore {
+      justify-self: start;
       text-align: left;
     }
     /* La testata a 390, misurata su `390-hero.jpeg` (ricatturata: la prima
@@ -1091,6 +1178,22 @@
     height: 1px;
     border-top: 1px solid var(--regolo-muted);
   }
+  /* **Il terminatore obliquo a 45° è di A e in C non entra.** Stessa falla della
+     barra del brief, un componente più in là: `.quota > *::before` sta in una
+     regola base non qualificata di `app/css/sezioni.css`, e la quota del footer
+     la ereditava — misurati quattro trattini obliqui sulla banda antracite,
+     identici a quelli di A. C **non ha terminatori**: filetti da 1 px e il
+     valore all'estremo destro, ed è quello che `CLAUDE.md` § L'apparato
+     prescrive. */
+  [data-theme='c'] .quota > *::before {
+    content: none;
+  }
+  /* E il valore di quella quota va in **mono**, come ogni dato di questa pagina:
+     era in General Sans, cioè nella proporzionale, che è l'unico posto del tema
+     dove un dato non parlava la lingua dei dati. */
+  [data-theme='c'] .quota-annotazione {
+    font-family: var(--regolo-font-mono);
+  }
   [data-theme='c'] .brief-tacche li::before {
     content: none;
   }
@@ -1211,39 +1314,85 @@
    effetto preso da un catalogo: è la sua unica differenza strutturale, messa in
    movimento.
 
-   **Il contrasto, fotogramma per fotogramma.** Il testo della banda è bianco
-   (`--regolo-ink: #ffffff` sul granata, **10,15:1**). Sulla carta `#DBDBD8` lo
-   stesso bianco starebbe a **1,28:1**, cioè illeggibile — quindi il testo
-   **entra dopo**: la sua opacità comincia a salire a `entry 66 %`, quando la
-   superficie è piena dal 62 % e sotto di lui c'è granata da un pezzo. Non c'è
-   un fotogramma in cui del testo bianco stia sulla carta. Gli altri due
-   inquilini della banda non hanno il problema: la fotografia è opaca e la
-   targhetta del segnaposto è **dipinta di carta** con l'inchiostro a 12,93:1
-   (decisione n. 27 b, e il piano è già ridichiarato in cima a questo foglio).
+   **Il contrasto, fotogramma per fotogramma, non è più un problema di tempi.**
+   Il testo della banda è bianco sul granata (**10,15:1**) e il granata c'è dal
+   primo pixel: quello che si muove è una serranda di **carta opaca** sopra, e
+   sotto una superficie opaca non c'è nessun rapporto da verificare. Era vero il
+   contrario nella prima stesura, dove a salire era il granata sotto al testo e
+   `contrasto-dom.mjs` lesse `.banda-titolo` a **1,39:1**; la nota sopra
+   `.banda-granata::before` racconta quella correzione.
 
-   La `view-timeline` sta **sulla banda** e i due animati la leggono per nome:
-   sono suoi discendenti, quindi la trovano risalendo gli antenati e non serve
+   ## Quando finisce il gesto, e come si è misurato
+
+   Il verso della serranda è deciso: `transform-origin: top`, `scaleY(1) → 0`,
+   quindi copre la **parte alta** della banda e scopre dal basso. Questo lega il
+   gesto alla geometria, e la geometria si misura invece di stimarla.
+
+   A 1440 (`node scripts/collaudo/…`, misurato sul build servito) la banda è
+   alta **514 px** e il titolo, che `align-content: end` spinge in fondo alla
+   sua colonna, sta a **328-402 px** dal bordo alto della banda. Siccome la
+   banda è più bassa della finestra, l'intervallo `entry` dura esattamente la
+   sua altezza: quindi il titolo entra in finestra a **entry 63,8 %** ed è
+   leggibile per intero a **entry 78,2 %**. Con `entry 0% entry 62%` la serranda
+   finiva di ritirarsi a `scrollY 677,9` e il bordo alto del titolo attraversava
+   la piega a `687`: **9 px dopo**. Il gesto c'era e si consumava sotto la
+   piega — cioè non lo vedeva nessuno.
+
+   **85 %** sposta la fine a `scrollY 796`, cioè **35 px dopo** che la banda è
+   leggibile: quando il titolo arriva in finestra la serranda copre ancora 128
+   px di banda e la si vede ritirarsi. Rimisurato alle altre larghezze del
+   layout due-up, dove il titolo è leggibile a entry 77,6 % (1280, 1024 e 900):
+   85 % le serve tutte.
+
+   ## Perché il gesto si ferma sotto i 56 rem, ed è una misura
+
+   Sotto i 56 rem la banda diventa una colonna: il titolo sale in cima e sta a
+   **48 px** dal bordo alto della banda, cioè entra in finestra a **entry
+   11,1 %** (390 × 844, banda alta 432 px). Ma la serranda scopre dal basso,
+   quindi quel titolo — già in finestra — resterebbe sotto la carta opaca fino a
+   entry 75,6 %: **279 px di scorrimento con un `h2` visibile e nascosto** (a
+   62 % erano già 181, misurati, e nessuno li aveva contati).
+
+   E non si risolve girando la serranda: con `transform-origin: bottom` il bordo
+   della carta sta a `H·p` mentre il fondo della finestra sta a `H·e`, e con un
+   intervallo che finisce prima del 100 % si ha sempre `p > e` — cioè il bordo
+   resta **sotto la piega** per tutta la corsa e il gesto non lo vede nessuno.
+   Delle due, la sola onesta è non farlo: sotto i 56 rem la banda è granata dal
+   primo pixel, che è lo stato di riposo *e* lo stato finito. È lo stesso
+   cancello di larghezza del wow 2 (il filetto che si ricompone), per una
+   ragione della stessa famiglia: là sotto i 56 rem non c'è il secondo troncone,
+   qui non c'è lo spazio per ritirarsi senza coprire il testo.
+
+   La `view-timeline` sta **sulla banda** e l'animato la legge per nome: è un
+   suo discendente, quindi la trova risalendo gli antenati e non serve
    `timeline-scope`. Il nome porta il prefisso del tema come le classi, per la
    stessa ragione: un nome generico è un nome già preso.
    -------------------------------------------------------------------------- */
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    @layer components {
-      [data-theme='c'] .banda-granata {
-        /* Il fondo **non** si tocca: resta granata. Quello che cambia è la
-           serranda di carta che gli sta sopra (vedi il commento di `::before`,
-           e la ragione è un 1,39:1 misurato). */
-        view-timeline-name: --halston-banda;
-      }
-      [data-theme='c'] .banda-granata::before {
-        animation: halston-serranda linear both;
-        animation-timeline: --halston-banda;
-        /* `entry`: il range dura quanto è alta la banda (≈ 514 px a 1440), cioè
-           la serranda finisce di ritirarsi mentre la banda finisce di entrare.
-           Con `cover` sarebbe durato viewport + banda, e il gesto sarebbe stato
-           finito prima di essere visto. */
-        animation-range: entry 0% entry 62%;
+    /* Solo dove la banda è due-up e il titolo sta in fondo alla sua colonna:
+       vedi «Perché il gesto si ferma sotto i 56 rem» qui sopra. */
+    @media (min-width: 56rem) {
+      @layer components {
+        [data-theme='c'] .banda-granata {
+          /* Il fondo **non** si tocca: resta granata. Quello che cambia è la
+             serranda di carta che gli sta sopra (vedi il commento di `::before`,
+             e la ragione è un 1,39:1 misurato). */
+          view-timeline-name: --halston-banda;
+        }
+        [data-theme='c'] .banda-granata::before {
+          animation: halston-serranda linear both;
+          animation-timeline: --halston-banda;
+          /* `entry`: l'intervallo dura quanto è alta la banda (514 px a 1440),
+             non quanto la finestra. Con `cover` sarebbe durato finestra + banda
+             e il gesto sarebbe finito ancora prima.
+             **85 e non 62**: a 62 % la serranda spariva 9 px prima che il
+             titolo attraversasse la piega — misurato, e il conto sta qui sopra.
+             Il titolo è leggibile per intero a entry 78,2 % (77,6 % a 1280,
+             1024 e 900): 85 % chiude il gesto 35 px dopo, non prima. */
+          animation-range: entry 0% entry 85%;
+        }
       }
     }
   }

@@ -134,6 +134,16 @@
       gap: 0 clamp(1.5rem, 3vw, 2.5rem);
       align-items: baseline;
     }
+    /* **La colonna dell'etichetta esiste solo se c'è un'etichetta.** Il passo 2
+       ne ha tolte quattro per rompere le sezioni con lo stesso guscio, e questa
+       griglia è rimasta indietro: senza etichetta il titolo cadeva nella prima
+       colonna da 9 rem e `#persone h2` usciva **144 × 315 px, otto righe, una
+       parola per riga**, su ogni finestra ≥ 896 px — con «professionisti» che
+       sbordava di 95 px sulla colonna vuota accanto. Misurato a sette larghezze;
+       era l'unica istanza in tutto il sito, cioè una griglia rimasta sola. */
+    .testa-sezione-titolo:not(:has(.etichetta-sezione)) {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
   .corpo-sezione {
     margin-top: clamp(1.75rem, 3vw, 2.75rem);
@@ -461,14 +471,28 @@
     }
   }
   /* La quota passa **sopra** l'oggetto, e questo cambia il suo fondo: il
-     `--regolo-line` (4,61:1 sulla carta) scende a **3,94:1** sulla faccia più
-     in ombra del volume — sotto soglia, su un testo da 12,6 px. Si corregge il
-     testo, non l'oggetto: un grigio un gradino più scuro passa su tutti e due i
-     piani, **5,33:1 sulla carta e 4,55:1 su `--regolo-volume-tono-0`**.
-     Schiarire la faccia invece avrebbe voluto dire portarla a #FEFEFE, cioè
-     spegnere la sola cosa che rende leggibile un oggetto bianco su bianco. */
+     `--regolo-line` (4,61:1 sulla carta) scende a 3,94:1 sulla faccia più in
+     ombra del volume — sotto soglia, su un testo da 12,6 px. Si corregge il
+     testo, non l'oggetto: schiarire la faccia avrebbe voluto dire portarla a
+     #FEFEFE, cioè spegnere la sola cosa che rende leggibile un oggetto bianco
+     su bianco.
+
+     **Era `#6b6b6b`, e il numero che lo giustificava è scaduto.** Quel valore
+     passava a 4,55:1 quando la faccia in ombra era `#ededed`; poi i tre toni
+     dell'oggetto sono stati abbassati (1,17 → 1,32:1 sulla carta, poche righe
+     più su) e il rapporto è sceso a **4,11:1** sul nuovo `#e2e2e2` — sotto
+     soglia, con in pagina un commento che continuava a dire 4,55. È la stessa
+     famiglia di difetto del rilievo sul paragrafo qui sotto: due valori legati
+     da un calcolo, e solo uno dei due ricalcolato.
+     `#636363` è il gradino che passa su tutti e due i piani: **6,01:1 sulla
+     carta e 4,64:1 su `--regolo-volume-tono-0`**, formula WCAG sui valori veri.
+     Il filetto e il terminatore obliquo sono `currentColor`, quindi seguono e
+     restano sopra il 3:1 di WCAG 1.4.11.
+     `scripts/collaudo/contrasto-dom.mjs` **non può trovare questo caso**: cerca
+     il fondo risalendo gli antenati, e qui il fondo è un fratello dipinto
+     dietro. Sono due rapporti da riverificare a mano quando cambia un tono. */
   .hero-quota {
-    --regolo-quota-colore: #6b6b6b;
+    --regolo-quota-colore: #636363;
     margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
   }
   /* Sotto i 40 rem la regola generale incolonna le voci della quota una per
@@ -501,6 +525,18 @@
       column-gap: clamp(2rem, 6vw, 6rem);
     }
   }
+  /* **Il fondo di questa riga non è la carta**, ed è misurato: la colonna di
+     destra cade dentro il riquadro dell'oggetto (`.hero-volume`, che comincia
+     al 30 % della larghezza), quindi il caso peggiore è la faccia in ombra,
+     `--regolo-volume-tono-0` = `#e2e2e2`. `--color-muted` (`#5E5E5E`) vale
+     6,48:1 sulla carta ma **5,01:1** lì sopra — formula WCAG sui valori veri, e
+     `contrasto-dom.mjs` dichiarava il primo dei due perché cerca il fondo
+     risalendo gli antenati e qui il fondo è un fratello dipinto dietro.
+     5,01 sta sopra il 4,5 richiesto a 18 px, quindi il testo **non si alza**:
+     abbassarlo di un gradino non comprerebbe niente, e l'oggetto non si tocca
+     perché l'oggetto è il gesto. Il numero sta qui perché il collaudo non lo
+     vede: se un giorno un tono scende ancora, questa riga va rifatta a mano
+     come quella della quota qui sopra. */
   .hero-lead {
     font-size: var(--text-lead);
     line-height: 1.4;
@@ -902,25 +938,35 @@
     border-top: 1px solid var(--color-line);
     padding: 0.75rem 1.25rem 0 0;
   }
-  /* La tacca: lo stesso tratto obliquo a 45° della quota. */
-  .fasi-quota > li::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-left: 1px solid var(--color-line);
-    transform: rotate(45deg);
-    transform-origin: top left;
-  }
+  /* **La tacca a 45° è uscita, e la regola che la toglie è di casa.**
+     `CLAUDE.md` § L'apparato: una quota si disegna solo se passa tre condizioni,
+     e la terza è **un numero che il repo può contare**. Le cinque fasi non ne
+     hanno uno: le etichette `01…05` sono una chiave d'ordine e il visitatore le
+     conta a vista, perché sono cinque colonne affiancate. In tutto il sito le
+     quote sono tre — `5 ruoli`, `128 comuni · FM 40 · MC 55 · AP 33`,
+     `passo n di 5` — e questa era la quarta, disegnata con il terminatore ISO
+     senza portare una misura.
+     Resta il **filetto**, che qui non è una quota: è l'asse a cui le cinque fasi
+     sono appese, ed è il gesto di Eladio Dieste che `kit/OPZIONI.md` § A cita —
+     «la linea di quota come struttura, l'asse verticale delle fasi». */
   @media (max-width: 60rem) {
     .fasi-quota {
       grid-template-columns: 1fr;
     }
+    /* E sotto i 60 rem il filetto passa **a sinistra**. In colonna cinque
+       `border-top` diventano cinque righelli **fra le righe di un elenco**, che
+       è la voce di `CLAUDE.md` § Cosa non deve esserci — «il filetto non separa
+       mai: misura, o delimita una figura». A sinistra torna a essere l'asse che
+       era a 1440, ruotato di novanta gradi con la griglia. */
     .fasi-quota > li {
+      border-top: 0;
+      border-left: 1px solid var(--color-line);
       padding-right: 0;
+      padding-left: 1.25rem;
       padding-bottom: 1.25rem;
+    }
+    .fasi-quota > li:last-child {
+      padding-bottom: 0;
     }
   }
 
@@ -1517,15 +1563,55 @@
      Territorio — il perimetro vero delle tre province, in SVG.
      Nessun tile server: nessun terzo vede l'IP di chi visita.
      ======================================================================== */
-  /* Il ritaglio della sede nel footer: stessi token della mappa grande, e la
-     croce di quota al posto del pallino. */
+  /* La mappa della sede nel footer: stessi token della mappa grande, e la
+     croce di quota al posto del pallino.
+
+     **Niente `aspect-ratio` qui.** Era `21 / 6`, cioè una striscia da
+     356 × 102 px in cui il perimetro entrava tagliato ai quattro lati: una
+     misura scritta a mano in un foglio, che decideva la forma di una figura
+     disegnata in un altro file. Adesso il rapporto lo porta il `viewBox` —
+     il riquadro vero della provincia, calcolato dal percorso in
+     `components/MappaSede.tsx` — e `height: auto` lo eredita: c'è un posto solo
+     dove la mappa cambia forma, ed è quello dove sta la geometria.
+
+     Il `max-width` invece è di qui, perché è impaginazione: a 1440 la colonna
+     del footer misura 352 px (1,1fr su 3,9) e la mappa arriva a 310 px di
+     altezza, con un `viewBox` di 389,1 × 342,6; senza il limite, sotto i 56 rem
+     la colonna diventa larga quanto la pagina e in fondo a ogni schermata di
+     telefono ci sarebbe una mappa alta mezzo viewport. */
   .mappa-sede-footer {
     display: block;
     width: 100%;
+    max-width: 22rem;
     height: auto;
-    aspect-ratio: 21 / 6;
     background-color: var(--regolo-mappa-fondo);
     border: 1px solid var(--regolo-mappa-linea);
+  }
+  /* Il nome del comune, sulla mappa piccola. **15 e non 13**: il `viewBox` è
+     largo 389 unità rese in 352 px, quindi un'unità vale 0,9 px — a 13 il nome
+     uscirebbe a 11,8 px, cioè più piccolo del testo più piccolo del footer.
+     A 15 arriva a 13,6 px.
+
+     **`--regolo-mappa-linea` e non `--color-ink`**, ed è la trappola della
+     decisione n. 50 vista dal lato opposto. Questo riquadro è dipinto di carta
+     (`--regolo-mappa-fondo`) dentro un footer che in A e in C è una banda
+     scura: `--color-ink` lì è ridichiarato al valore chiaro del piano — in C
+     vale `#dbdbd8` — e il nome sarebbe uscito carta su carta, 1,0:1.
+     `--regolo-mappa-linea` invece porta un **valore scritto** e non un `var()`,
+     proprio per questo: una proprietà personalizzata che contiene `var()` si
+     sostituisce sull'elemento che la usa, non su `:root`, quindi dentro la banda
+     sarebbe diventata chiara lo stesso — misurato, 1:1 su `/` e su `/opzione-c`
+     prima della correzione. Adesso resta il segno che sta sulla carta della
+     mappa in tutti e tre i temi: 21:1 in A, 4,52:1 in B, 12,93:1 in C. È anche
+     lo stesso colore del perimetro, e va bene così: il nome fa parte del
+     disegno. */
+  .mappa-sede-footer .mappa-etichetta-sede {
+    font-size: 15px;
+    fill: var(--regolo-mappa-linea);
+    paint-order: stroke;
+    stroke: var(--regolo-mappa-fondo);
+    stroke-width: 4;
+    stroke-linejoin: round;
   }
   .mappa-croce line {
     stroke: var(--regolo-mappa-sede);
@@ -1603,7 +1689,14 @@
     /* sotto la tacca dei telefoni recenti */
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
-  @media (max-width: 48rem) {
+  /* **La soglia è 55,999 rem e non 48**, ed è quella del menu: `--breakpoint-nav`
+     vale 56 rem (896 px), cioè dove `nav:hidden` spegne la `<details>` e compare
+     la navigazione estesa. Con la barra a 48 rem restavano **128 px di
+     larghezze** — 768 → 895 — in cui la barra era già sparita e il menu era
+     ancora a scomparsa: nessuna azione primaria sopra la piega, e l'unica
+     navigazione un `<details>` chiuso. Era il buco fra due soglie che nessuno
+     aveva allineato, non una scelta. */
+  @media (max-width: 55.999rem) {
     .barra-mobile {
       display: grid;
     }

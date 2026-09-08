@@ -40,7 +40,17 @@ export function Brief({
   passo1Esterno?: boolean
 }) {
   return (
-    <section id="brief" className="brief">
+    <section
+      id="brief"
+      className="brief"
+      /* Il bersaglio di un'ancora deve poter **ricevere il fuoco**, altrimenti
+         il browser scorre ma il punto di tabulazione resta dov'era: chi arriva
+         qui da tastiera premendo la CTA continua a tabulare da metà pagina. È
+         lo stesso patto di `<main tabIndex={-1}>` nei tre layout, ed è per
+         questo che lo skip link funziona e questa ancora no. `-1` e non `0`: si
+         riceve il fuoco per programma, non entra nell'ordine di tabulazione. */
+      tabIndex={-1}
+    >
       <div className="wrap brief-griglia">
         <div className="brief-testo">
           <p className="eyebrow brief-occhiello">{etichetta}</p>

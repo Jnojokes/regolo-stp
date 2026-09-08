@@ -16,6 +16,16 @@ const ECCEZIONI = [
       'il mirino CAD dell’opzione B è un punto di 0 × 0 in `position: fixed` che segue il puntatore, e i suoi quattro tratti sono lunghi 64 px: quando il puntatore sta vicino a un bordo, un tratto esce dalla finestra e viene ritagliato — esattamente come nella reference. Prima del primo movimento il punto sta all’origine, quindi il tratto sinistro sborda sempre. Non tocca la larghezza del documento (`scrollW == clientW`, verificato qui sotto) e l’elemento non è nemmeno dipinto: `opacity: 0` finché il puntatore non si muove. Chi lo collauda è `cursore.mjs`, che ne prova 21 condizioni',
   },
   {
+    selettore: '.hero-volume',
+    perche:
+      'l’oggetto della hero di A è un `<svg>` in `position: absolute` con `inset: -14% -4% -22% 30%`: sborda **di proposito** oltre i quattro lati della scena, perché su AIR l’oggetto è tagliato dalla finestra ed è quello che gli dà la scala. Il ritaglio lo fa `.hero-scena` con `overflow: clip`, quindi non tocca la larghezza del documento — `scrollW == clientW`, verificato qui sotto anche a 360',
+  },
+  {
+    selettore: '.ecolinear-tenda',
+    perche:
+      'le due tende del plotter di B sono i pannelli che scoprono e ricoprono la tavola: a riposo stanno **fuori** dal riquadro del disegno (`translateX(±101%)`), che è il loro stato corretto. Il ritaglio lo fa `.fasi-disegno` con `overflow: clip`. Chi le collauda è la misura del passo 2: zero quote su cinquanta in cui si legge una fase e la sua tavola è coperta',
+  },
+  {
     selettore: 'svg *',
     perche:
       'un figlio di un SVG misurato con `getBoundingClientRect()` restituisce coordinate che non tengono conto del `viewBox` del genitore: è il falso positivo noto di `path.[object`, e il perimetro delle tre province — come l’esploso e i disegni di B — non sborda da nessuna parte. L’SVG che li contiene è misurato normalmente e sta dentro il riquadro',
@@ -24,7 +34,12 @@ const ECCEZIONI = [
 
 const b = await chromium.launch()
 const out = []
-for (const w of [1440, 390]) {
+/* **360 e non solo 1440 e 390.** 360 px è la larghezza di viewport Android più
+   diffusa, e un difetto vero ci è passato in mezzo: fra 359 e 363 px la home
+   scorreva in orizzontale per il padding di chiusura clonato di `.da-cliente`.
+   `qa-browser.mjs` la prova già, questo script no — e questo è quello che gira
+   a ogni fine passata. */
+for (const w of [1440, 390, 360]) {
   const ctx = await b.newContext({ viewport: { width: w, height: 900 } })
   const p = await ctx.newPage()
   for (const [nome, url] of [

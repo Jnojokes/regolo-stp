@@ -71,18 +71,35 @@ export function Placeholder({
     <div
       className={`placeholder-media ${className}`.trim()}
       style={ratio ? { aspectRatio: ratio } : undefined}
-      role="img"
-      /* Il nome accessibile dice **prima** che è un esempio e poi cosa si vede:
-         chi ascolta non ha nessun altro canale per saperlo, e la fotografia di
-         qualcun altro presentata come opera dello studio è il difetto che tutta
-         questa impalcatura serve a non commettere. */
-      aria-label={
-        e
-          ? `Segnaposto con immagine di esempio — ${e.soggetto}. Al suo posto andrà: ${label}`
-          : `Segnaposto: ${label}`
-      }
     >
-      {e ? <MediaEsempio dato={e} priorita={priorita} /> : null}
+      {/* **La figura è il campo, non tutto il blocco**, e il `role="img"` sta
+          qui e non sul contenitore. Sul contenitore era un difetto: `role="img"`
+          rende presentazionali *tutti* i discendenti (WAI-ARIA 1.2, «children
+          presentational»), quindi sparivano dall'albero accessibile le due cose
+          che fanno del segnaposto una dichiarazione invece che un buco
+          (decisione n. 27 b) — la scheda di specifica
+          (`2400 × 1650 px · AVIF · ≤ 250 KB`), che in call è la lista della
+          spesa da mandare allo studio, e la riga di fonte e licenza, che verso
+          Mixkit e StockSnap è anche un obbligo. Due testi stampati in pagina che
+          chi ascolta non riceveva.
+          Il riquadro è lo stesso di prima (`inset: 0`), quindi
+          `.placeholder-esempio` — che si posiziona sull'antenato posizionato più
+          vicino — non si sposta di un pixel.
+          Il nome accessibile dice **prima** che è un esempio e poi cosa si vede:
+          chi ascolta non ha nessun altro canale per saperlo, e la fotografia di
+          qualcun altro presentata come opera dello studio è il difetto che tutta
+          questa impalcatura serve a non commettere. */}
+      <span
+        className="placeholder-campo"
+        role="img"
+        aria-label={
+          e
+            ? `Segnaposto con immagine di esempio — ${e.soggetto}. Al suo posto andrà: ${label}`
+            : `Segnaposto: ${label}`
+        }
+      >
+        {e ? <MediaEsempio dato={e} priorita={priorita} /> : null}
+      </span>
       {/* Le quattro squadrette. `aria-hidden` perché il significato è già nel
           nome accessibile del campo: leggerle sarebbe rumore. */}
       <span className="placeholder-registro" aria-hidden="true" />

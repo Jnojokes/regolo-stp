@@ -290,9 +290,19 @@
   --regolo-esploso-aria: #1a1a1a;
 
   /* territorio: il perimetro vero, non una mappa a tile */
-  --regolo-mappa-linea: var(--regolo-ink);
-  --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-ink);
+  /* **I tre token della mappa portano un valore, non un `var()`**, e la ragione
+     è la decisione n. 50 vista dal lato opposto. Il riquadro della mappa è
+     dipinto di carta **dentro** un footer che in A e in C è una banda scura, e
+     lì il piano ridichiara `--regolo-ink` al valore chiaro: un
+     `--regolo-mappa-linea: var(--regolo-ink)` **non** si risolve una volta sola
+     su `:root` — le proprietà personalizzate si sostituiscono sull'elemento che
+     le usa, quindi dentro la banda diventava il colore chiaro e il nome del
+     comune usciva **carta su carta, 1:1**, misurato da `contrasto-dom.mjs` su
+     `/` e su `/opzione-c`. Con il valore scritto, il segno resta quello che sta
+     sulla carta della mappa in tutti e tre i temi. */
+  --regolo-mappa-linea: #000000; /* 21,00:1 sulla carta della mappa */
+  --regolo-mappa-fondo: #ffffff;
+  --regolo-mappa-sede: #000000;
 
   /* Il footer di A è una banda `ink` **saldata al brief**: nessun filetto in
      testa, perché il terzo piano della pagina non si interrompe. */
@@ -479,9 +489,9 @@
   --regolo-esploso-acqua: #876352;
   --regolo-esploso-aria: #b3a79d;
 
-  --regolo-mappa-linea: var(--regolo-muted);
-  --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-ambra-testo);
+  --regolo-mappa-linea: #876352; /*  4,52:1 sulla carta della mappa */
+  --regolo-mappa-fondo: #ececec;
+  --regolo-mappa-sede: #965e1c;
 
   --regolo-footer-bg: var(--regolo-paper);
   --regolo-footer-fg: var(--regolo-muted); /*  4,52:1 */
@@ -636,9 +646,9 @@
   --regolo-esploso-acqua: #6d5c5c;
   --regolo-esploso-aria: #9c9b94;
 
-  --regolo-mappa-linea: var(--regolo-ink);
-  --regolo-mappa-fondo: var(--regolo-paper);
-  --regolo-mappa-sede: var(--regolo-granata);
+  --regolo-mappa-linea: #171716; /* 12,93:1 sulla carta della mappa */
+  --regolo-mappa-fondo: #dbdbd8;
+  --regolo-mappa-sede: #593939;
 
   --regolo-footer-bg: var(--regolo-banda);
   --regolo-footer-fg: var(--regolo-paper); /*  9,92:1 */
@@ -832,14 +842,12 @@
    ========================================================================== */
 
 @layer components {
-  /* La mappa del footer è una **striscia**, non un riquadro: su `/contatti` c'è
-     già una mappa 4/3 nella sezione «dove siamo», e due rettangoli identici a
-     una schermata di distanza sembrano un errore di impaginazione. Larga e
-     bassa dice «sei arrivato in fondo», non «ecco la mappa» — ed è anche il
-     rapporto che ha nel prototipo B. */
-  .mappa-footer {
-    aspect-ratio: 21 / 6;
-  }
+  /* Qui c'era `.mappa-footer { aspect-ratio: 21 / 6 }`, senza un chiamante in
+     tutto il repo: la striscia del footer se lo scriveva da sé
+     (`.mappa-sede-footer` in `app/css/sezioni.css`). Una classe di riserva è un
+     invito a rimetterla in pagina alla prossima lettura, e la ragione che la
+     giustificava — «larga e bassa, per non ripetere la mappa 4/3 di
+     `/contatti`» — è quella che aveva reso illeggibile la mappa vera. */
 
   .placeholder-media {
     position: relative;
@@ -848,6 +856,24 @@
     background-size: var(--regolo-ph-size);
     border: var(--regolo-ph-border);
     overflow: hidden;
+  }
+  /* Il campo, cioè **la figura**: è lui a portare `role="img"` e il nome
+     accessibile, non il contenitore (`components/Placeholder.tsx`). Sul
+     contenitore, `role="img"` rendeva presentazionali tutti i discendenti e
+     toglieva dall'albero accessibile la scheda di specifica e la riga di fonte
+     e licenza — le due cose che fanno del segnaposto una dichiarazione.
+     `inset: 0` e non un elemento in flusso: dev'essere lo **stesso riquadro** di
+     prima, perché `.placeholder-esempio` si posiziona sull'antenato posizionato
+     più vicino e quello adesso è questo. Nessuno spostamento, nessun ricalcolo. */
+  .placeholder-campo {
+    position: absolute;
+    inset: 0;
+    display: block;
+    /* Inerte come le squadrette: è una figura, non un bersaglio. Sotto i 30 rem
+       la targhetta e la riga di licenza escono dal riquadro e vanno in flusso
+       (§ qui sotto), quindi il campo le ricopre — senza questa riga sarebbe lui
+       a ricevere il puntatore al posto dei due testi che deve dichiarare. */
+    pointer-events: none;
   }
   /* Le quattro squadrette d'angolo: i segni di registro con cui si delimita
      un'area su una tavola. **Non sono decorazione**: il piano del segnaposto sta
@@ -923,8 +949,18 @@
     text-decoration-style: dotted;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+    /* **`slice` e non `clone`**, ed è una correzione misurata. Con `clone` ogni
+       frammento di riga si porta dietro bordo e padding — 15 px per frammento —
+       e il line-breaker **non riserva il padding di chiusura**: a 359-363 px la
+       home scorreva in orizzontale (fino a 5 px), perché il primo frammento di
+       `[[DA CLIENTE: nome del progetto 01]]` misurava 348,5 px dentro un `h3`
+       largo 344. Provate una alla volta sul build servito: `overflow-wrap:
+       anywhere` e `word-break: break-word` lasciano **4 px** (il testo ci sta
+       per metrica, esce la spalla), `slice` e `padding-right: 0` portano a 0.
+       Fra i due, `slice` è anche più giusto a vedersi: il filetto è **una
+       spina a sinistra**, e su un segnaposto che va a capo non si ripete. */
+    box-decoration-break: slice;
+    -webkit-box-decoration-break: slice;
   }
 
   /* La scheda di specifica del segnaposto: dice cosa manca **e in che formato
@@ -984,6 +1020,33 @@
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
     text-transform: var(--regolo-eyebrow-transform);
+  }
+
+  /* **Sotto i 30 rem le due targhette escono dal riquadro e vanno in flusso.**
+     Il vincolo a destra c'era, quello in altezza no: misurato a 390 sulla
+     galleria di B, l'etichetta è alta 142 px dentro campi da 104 e 125 —
+     copertura **97 % e 117 %**, con due righe stampate **fuori** dalla propria
+     pastiglia, sopra il fondo della pagina. Succede anche su C (81,8 %). Una
+     targhetta che copre la fotografia che sta descrivendo non dichiara: nasconde.
+     Sopra i 30 rem restano dove sono — lì il campo è largo abbastanza. */
+  @media (max-width: 29.999rem) {
+    .placeholder-media:has(.placeholder-etichetta) {
+      /* La pila: il campo, poi la targhetta, poi la fonte. `contents` non serve:
+         basta togliere l'assoluto e lasciare che il flusso li impili. */
+      display: block;
+    }
+    .placeholder-etichetta,
+    .placeholder-fonte {
+      position: static;
+      display: block;
+      max-width: none;
+      margin-top: 0.375rem;
+      padding-inline: 0;
+      background-color: transparent;
+    }
+    .placeholder-etichetta {
+      color: var(--color-muted);
+    }
   }
 
   .btn {
@@ -1360,6 +1423,15 @@
     }
   }
 
+  /* L'anello di fuoco della sezione del brief. Esiste perché `Brief.tsx` porta
+     `tabIndex={-1}`: l'ancora `#brief` sposta il fuoco qui, e un fuoco che si
+     riceve e non si vede è peggio di un fuoco che non si sposta. `-2px` di
+     offset perché l'anello di un elemento largo quanto la pagina, disegnato
+     fuori, esce dalla finestra — è la stessa scelta di `<main>`. */
+  .brief:focus-visible {
+    outline: 2px solid var(--color-timbro-chiaro, currentColor);
+    outline-offset: -2px;
+  }
   .brief {
     /* Come le sezioni della home: l'ancora `#brief` non deve finire sotto la
        barra sticky (la regola gemella sta in `app/css/sezioni.css`).

@@ -31,9 +31,9 @@ import { comuni, province } from '@/lib/territorio'
  * tavola continua e cambia solo un filetto in testa — perché in B il fondo non
  * cambia mai.
  *
- * La «mappa statica» di `CLAUDE.md` è un **ritaglio dello stesso SVG del
- * territorio** sulla sede (`components/MappaSede.tsx`): zero byte in più, zero
- * terzi, nessun iframe, nessun banner, e nessun segnaposto da riempire.
+ * La «mappa statica» di `CLAUDE.md` è **lo stesso SVG del territorio** ridotto
+ * alla provincia della sede (`components/MappaSede.tsx`): zero byte in più,
+ * zero terzi, nessun iframe, nessun banner, e nessun segnaposto da riempire.
  */
 const contaComuni = (sigla: string) => comuni.filter((c) => c.sigla === sigla).length
 
@@ -99,11 +99,12 @@ export function SiteFooter({
           </dd>
         </dl>
 
-        {/* Non è più un rettangolo dichiarato: è un **ritaglio dello stesso
-            SVG del territorio** centrato sulla sede. Zero richieste, zero
-            terzi, nessun iframe, e si ritematizza. È l'unico segnaposto che
-            questa fase ha potuto eliminare, perché era l'unico che non
-            aspettava niente dal cliente. */}
+        {/* Non è più un rettangolo dichiarato: è **lo stesso SVG del
+            territorio** ridotto alla provincia della sede, con il perimetro
+            intero, il punto e il nome del comune. Zero richieste, zero terzi,
+            nessun iframe, e si ritematizza. È l'unico segnaposto che questa
+            fase ha potuto eliminare, perché era l'unico che non aspettava
+            niente dal cliente. */}
         <MappaSede />
       </div>
 

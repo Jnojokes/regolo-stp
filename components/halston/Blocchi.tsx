@@ -205,8 +205,13 @@ export function Copertina() {
  *
  * Qui non serve markup: il livello che sale è uno `::before` della banda. Lo
  * **stato di riposo è la banda già piena** — senza `animation-timeline`, senza
- * JavaScript e con `prefers-reduced-motion: reduce` il granata c'è dal primo
- * pixel e non si perde una parola.
+ * JavaScript, con `prefers-reduced-motion: reduce` e **sotto i 56 rem** il
+ * granata c'è dal primo pixel e non si perde una parola.
+ *
+ * Il cancello dei 56 rem è una misura: sotto, la banda diventa una colonna e il
+ * titolo sale a 48 px dal suo bordo alto, cioè entra in finestra a entry 11 %,
+ * mentre la serranda scopre dal basso e lo lascerebbe sotto la carta per 279 px
+ * di scorrimento. Il conto sta in `app/css/halston.css` § LA BANDA CHE INVADE.
  */
 export function Bande() {
   return (
@@ -256,10 +261,21 @@ export function Bande() {
  * all'estremo destro un **valore in mono** (`48+ HOUSES`, `AVG. 14 MONTHS`).
  * Righe alte ~150 px.
  *
- * I valori qui sono **segnaposto dichiarati** (`data-chiede`), perché quanti
- * incarichi e quanto durano lo sa lo studio: inventarli sarebbe la cosa che
- * `CLAUDE.md` § Regole, 1 vieta, e in un blocco che parla di volumi sarebbe
- * anche la più facile da credere.
+ * ## Il posto del valore, e perché qui non c'è un valore
+ *
+ * I valori della reference sono quantità sull'attività dello studio — quante
+ * case, quanti mesi — e qui sarebbero **numeri inventati**, cioè la cosa che
+ * `CLAUDE.md` § Regole, 1 vieta, e in un blocco che parla di volumi la più
+ * facile da credere. Quindi in quella colonna c'è il **sottotitolo del
+ * servizio**, che è contenuto vero e che il capitolato chiede («titolo come
+ * esito, tecnicismo in seconda riga»).
+ *
+ * E siccome è una frase da 41-62 caratteri e non un dato, **non sta nella
+ * mono**: su Halston la mono è misurata su 34 nodi di testo su 298, e sono
+ * valori corti. La colonna destra parla la proporzionale; la mono di questa
+ * sezione resta dove c'è un numero, cioè `6 voci` nella testa di banda. Il
+ * ragionamento e le misure stanno in `app/css/halston.css`, sopra
+ * `.servizi-valore`.
  *
  * **Il filetto fra le righe qui è ammesso**, ed è una deviazione dichiarata
  * dalla voce di casa «il filetto non separa mai»: quella regola difende A. Su
@@ -298,11 +314,22 @@ export function Servizi() {
  * 43,2 px con la **prima frase più scura del resto**, l'attribuzione
  * `nome · ruolo` con il nome più scuro, e una targa `• QUOTE` a destra.
  *
- * Il testo **non è una testimonianza inventata**: è la frase del payoff dello
- * studio, che viene dal prototipo approvato, più un segnaposto dichiarato per
- * la parte che manca. `CLAUDE.md` § Regole, 1 vieta le testimonianze
- * inventate, e questa è la ragione per cui la seconda metà è lorem ipsum con la
- * sua richiesta in `data-chiede` e non una frase che suona bene.
+ * ## Perché la citazione è riempimento per intero
+ *
+ * Apriva con «Progettiamo e dirigiamo: dal disegno al cantiere.», che è **lo
+ * stesso payoff dell'`h1` di copertina**, alla lettera, 1.400 px più in su
+ * nella stessa pagina. Una citazione che ripete il titolo non è una citazione:
+ * è il titolo scritto due volte, e in una demo di vendita si legge come una
+ * pagina a corto di cose da dire. Non era nemmeno vero che «il testo non è
+ * inventato»: metà lo era già (lorem), e l'altra metà era una frase dello
+ * studio messa in bocca a una persona che non l'ha detta.
+ *
+ * Adesso tutte e due le voci sono riempimento dichiarato, e **restano due**
+ * perché il gesto misurato sulla reference è proprio quello: la prima frase in
+ * inchiostro pieno, il resto nel grigio medio (`1440-meta-35.jpeg`). Le due
+ * richieste stanno in `data-chiede` e dicono allo studio che cosa serve — la
+ * frase e il suo seguito — e da lì `scripts/segnaposto.mjs` le porta in
+ * `CONTENUTI-DA-CLIENTE.md`.
  */
 export function Citazione() {
   return (
@@ -325,10 +352,18 @@ export function Citazione() {
         </div>
         <blockquote className="citazione-testo">
           <p>
-            <strong>Progettiamo e dirigiamo: dal disegno al cantiere.</strong>{' '}
+            {/* Il primo tono. Non è un `<strong>`: qui dentro c'è un
+                riempimento, e annunciare «importante» sopra un lorem ipsum
+                promette una cosa che il testo non mantiene. La classe serve
+                solo al colore. */}
             <Segnaposto
-              chiede="la frase del titolare sul modo di lavorare dello studio, da confermare parola per parola"
-              parole={18}
+              className="citazione-apertura"
+              chiede="la frase con cui il titolare dice come lavora lo studio — una sola, e che regga da sola"
+              parole={12}
+            />{' '}
+            <Segnaposto
+              chiede="il seguito della stessa frase — che cosa cambia, in concreto, per chi vi affida un lavoro"
+              parole={17}
               maiuscola={false}
             />
           </p>
@@ -437,6 +472,13 @@ export function Metodo() {
  *
  * È la stessa lingua delle righe dei servizi (nome + valore in mono) ma in
  * griglia invece che in colonna: quattro celle con il filetto fra loro.
+ *
+ * **`<dt>` prima di `<dd>`**, che è l'ordine che una `<dl>` prescrive: la
+ * chiave introduce il valore, e una sintesi vocale legge «anni di attività,
+ * —». Prima erano invertiti per ottenere il numero sopra l'etichetta, cioè si
+ * pagava con HTML non valido un'impaginazione che il CSS sa fare da sé:
+ * `flex-direction: column-reverse` sul `<div>` della cella, la stessa
+ * soluzione che A usa nello smistamento.
  */
 export function Numeri() {
   return (
@@ -447,10 +489,10 @@ export function Numeri() {
       <dl className="numeri-celle">
         {numeri.map((n) => (
           <div key={n.etichetta}>
-            <dd>
-              <SegnapostoCifra chiede={n.chiedere} cifre={n.etichetta.includes('mq') ? 5 : 2} />
-            </dd>
             <dt>{n.etichetta}</dt>
+            <dd>
+              <SegnapostoCifra chiede={n.chiedere} />
+            </dd>
           </div>
         ))}
       </dl>
@@ -460,7 +502,26 @@ export function Numeri() {
 
 /* -------------------------------------------------------------------------- */
 
-/** Le persone: quattro campi ritratto e una targa per ognuno. */
+/**
+ * Le persone: quattro campi ritratto, il nome e il ruolo.
+ *
+ * ## Il ruolo è uscito dalla targa, e la reference è il motivo
+ *
+ * La targa è misurata su `1440-meta-70.jpeg` e `-35.jpeg`, e in ogni
+ * occorrenza è **un'etichetta corta su una riga sola**: `• HOMEOWNER`,
+ * `• RESIDENCE OWNER`, `• PRIVATE CLIENT`, `• QUOTE` — la più lunga sta in 15
+ * caratteri. I nostri ruoli no: «ingegnere · coordinamento sicurezza» sono 35
+ * caratteri e il quarto è un `[[DA CLIENTE: …]]` di 57. Misurati dentro la
+ * pastiglia: **2 righe a 1440, 4 e 6 a 768**, a interlinea 1,0 — cioè un
+ * blocco di mono dentro un bordo, che non è più una targa. Troncare non è
+ * un'opzione: il ruolo è il dato che dice cosa sa fare chi firma.
+ *
+ * Nella stessa reference un ruolo lungo esiste — `Founder & Principal
+ * Architect`, nella firma della citazione — ed è impaginato in proporzionale
+ * grigia, **senza pastiglia**. È quello che si fa qui. Il blocco non resta
+ * senza il suo micro-elemento: la targa ce l'ha la testa di sezione
+ * (`• Chi firma`), che è il ritmo della reference, una per blocco.
+ */
 export function Persone() {
   return (
     <section className="halston-persone" id="persone" aria-labelledby="persone-titolo">
@@ -480,8 +541,8 @@ export function Persone() {
             <p className="halston-persona-nome">
               <DaCliente>{p.nome}</DaCliente>
             </p>
-            <p className="persona-targa">
-              <Targa>{eSegnaposto(p.ruolo) ? <DaCliente>{p.ruolo}</DaCliente> : p.ruolo}</Targa>
+            <p className="halston-persona-ruolo">
+              {eSegnaposto(p.ruolo) ? <DaCliente>{p.ruolo}</DaCliente> : p.ruolo}
             </p>
           </li>
         ))}

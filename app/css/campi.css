@@ -1,230 +1,208 @@
 /* ============================================================================
-   IL DOCUMENTO — il guscio dell'opzione B (fase 3 ter)
+   IL MANIFESTO — il sistema di bande dell'opzione B (fase 3 quater)
    ----------------------------------------------------------------------------
-   Qui non ci sono sezioni: c'è **un documento**, e i blocchi sono campi
-   contigui divisi da un filetto. È il pezzo che rende le due proposte diverse
-   per *come funzionano* e non per come sono colorate — vedi il commento in
-   `components/campo/Campo.tsx` per il perché, con i numeri.
+   Tre reference scelte dal committente l'08/09/2026 dicono la stessa cosa in
+   tre modi, e questa è la sintesi:
 
-   Tre regole tengono questo file, e sono le tre che non vanno violate:
+   - **il tipo a scala architettonica, a filo sinistro, che tocca il bordo.**
+     105 px, 160 px, o abbastanza grande da sbordare dal viewport. Interlinea
+     0,80-0,94. «If all letters are fully visible, it is too small»;
+   - **bande a piena larghezza**, non una colonna centrata. La pagina è una
+     sequenza di fasce che alternano superficie — osso, indaco, fotografia — e
+     *«do not stack multiple bone sections without an indigo interruption»*;
+   - **zero card, zero ombre, zero raggi.** Il contenuto sta direttamente sul
+     fondo, diviso solo da filetti hairline. *«Do not use cards with
+     backgrounds, padding, or radius.»*
+   - **la gerarchia si fa con la sola dimensione**: una famiglia da 12 a 160 px,
+     nessun secondo peso. Più una monospace **sotto i 14 px** per le
+     micro-etichette tecniche — è il gesto centrale, «editorial sans +
+     technical mono».
 
-   1. **Il foglio lo dipinge `.documento`, una volta sola, con un `background`.**
-      Nessun campo si dipinge di bianco. Prima erano otto rettangoli bianchi
-      appoggiati su un fondo — cluster n. 4 — elencati a mano in `globals.css`.
-      Con una banda di sfondo un nono foglio non si può disegnare per
-      distrazione: non c'è niente da elencare.
-   2. **Niente `.wrap` in questo file.** `@utility wrap` compila in
-      `@layer utilities` e batte `@layer components` in silenzio (trappola
-      già pagata due volte). Il documento si impagina da sé.
-   3. **Niente `--regolo-passo-*`.** Non esistono in `[data-theme='b']`: un
-      `var()` non definito rende la dichiarazione invalida e il padding torna a
-      zero **in silenzio**. Qui si usa `--regolo-appeso` e basta.
+   Che cosa **non** è cambiato, e resta la ragione per cui B è una proposta e
+   non una colorazione: il **meccanismo**. La hero è il passo 1 del brief, la
+   scelta si propaga alla tabella e alla riga di lettura, tutto senza una riga
+   di JavaScript. Quello è in `components/campo/Campo.tsx` e nelle sezioni; qui
+   c'è solo come si vede.
+
+   Due regole che tengono questo file:
+   1. **niente `.wrap`** — `@utility` compila in `@layer utilities` e batte
+      `@layer components` in silenzio. La banda si impagina da sé;
+   2. `campi.css` è importato **prima** delle regole di `globals.css`: a pari
+      specificità perde in silenzio. Dove serve vincere si aggiunge un antenato,
+      non un `!important`.
    ========================================================================== */
 
 @layer components {
+  /* Il documento non dipinge niente: le bande si dipingono da sé. Serve solo a
+     dire dove finisce il contenuto sui monitor larghi. */
   .documento {
-    /* Il contenuto sta comunque dentro i 1440 di `CLAUDE.md` § Impaginazione:
-       la tavola continua fuori, ed è giusto — la tavola è la pagina, il
-       documento è quello che ci sta sopra. */
+    --campo-x: 0px;
+  }
+
+  /* ---- la banda ----------------------------------------------------------
+     Piena larghezza, contenuto a filo sinistro dentro il margine di pagina.
+     Non c'è una griglia a colonne: c'è il bordo sinistro, e tutto ci si
+     allinea. «The grid is invisible — there is no column system, only
+     viewport-edge alignment and generous negative space.» */
+  .campo {
+    position: relative;
+    padding-block: var(--regolo-banda-y);
+    scroll-margin-top: 0;
+    background-color: var(--regolo-paper);
+    color: var(--regolo-ink);
+  }
+  .campo > .campo-margine,
+  .campo > .campo-foglio {
     max-width: var(--regolo-wrap);
     margin-inline: auto;
-
-    /* Il bordo sinistro del foglio: **34,4 %**, misurato. Kononenko butta
-       l'etichetta «Offices» nel margine vuoto a x≈417 e comincia la tabella a
-       x = 493 su 1440, cioè il 34,2 %. È lo stesso valore che l'asse aveva già
-       (`--regolo-asse-frazione`): l'asse non è più un filetto disegnato sopra
-       la pagina, **è diventato il bordo del foglio**. Un filetto in meno che
-       attraversa il testo, e un oggetto in più che porta informazione. */
-    --campo-x: calc(
-      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
-    );
+    padding-inline: var(--regolo-margine);
   }
 
-  /* ---- il campo -----------------------------------------------------------
-     Due colonne: il margine di classificazione sulla tavola, il contenuto sul
-     foglio. Non è una griglia a 12 colonne — non ne serve una: le due colonne
-     del documento sono il documento. */
-  .campo {
-    display: grid;
-    grid-template-columns: var(--campo-x) minmax(0, 1fr);
-    align-items: start;
-    scroll-margin-top: var(--regolo-header-h);
+  /* Il filetto fra due bande dello stesso colore. Fra osso e indaco non serve:
+     il cambio di superficie **è** il confine, e un filetto lì sopra sarebbe il
+     segno che annuncia quello che si vede già. */
+  .campo + .campo:not([data-banda='indaco']) {
+    border-top: 1px solid var(--regolo-line);
+  }
+  .campo[data-banda='indaco'] + .campo:not([data-banda='indaco']),
+  .campo-primo {
+    border-top: 0;
   }
 
-  /* Il margine di classificazione **è la tavola**: niente bordo, niente fondo,
-     niente raggio. Se fosse un pannello sarebbe una card, e saremmo daccapo. */
+  /* ---- l'etichetta: mono, minuscola, in cima alla banda ------------------
+     Fra parentesi quadre messe dal CSS (AS misurato: `[Projects]`), non un
+     occhiello in maiuscoletto spaziato. Sotto i 14 px, che è dove la mono può
+     stare: sopra diventerebbe contenuto. */
   .campo-margine {
-    /* `margin` e non `padding`: `box-sizing: border-box` + una larghezza
-       imposta + `padding-left` mangia la larghezza del contenuto (trappola
-       n. 4, già pagata). */
-    margin-inline-start: var(--regolo-margine);
-    margin-inline-end: var(--regolo-gutter);
-    padding-top: calc(var(--regolo-appeso) + 1px);
-    color: var(--regolo-muted); /* 7,46:1 sulla tavola */
-    font-size: var(--text-eyebrow);
-    line-height: 1.35;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
-
   .campo-etichetta {
     margin: 0;
+    font-family: var(--regolo-font-mono);
+    font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--regolo-muted);
   }
-  /* Le quadre le mette il CSS: così non finiscono nel nome accessibile né in un
-     copia-incolla. È il gesto misurato di AS (`[Projects]`, `[Materials]`), non
-     un occhiello in maiuscoletto spaziato. */
   .campo-etichetta::before {
     content: '[';
   }
   .campo-etichetta::after {
     content: ']';
   }
+  /* La nota di cantiere: mono, sotto il contenuto, mai in mezzo. */
   .campo-nota {
-    margin-top: 1.5rem;
-    max-width: 30ch;
+    font-family: var(--regolo-font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    max-width: 60ch;
   }
 
-  /* ---- la colonna del contenuto, sul foglio ------------------------------
-     Il filetto in testa **è il bordo del campo**, non un annuncio: senza, due
-     campi contigui senza vuoto in mezzo sarebbero indistinguibili. È
-     l'informazione che in A porta lo spazio bianco.
-     Il campo pende di `--regolo-appeso` (12 px) e finisce dove finisce il suo
-     contenuto: lo spazio fra due campi non è un token, quindi gli intervalli
-     escono **disuguali per costruzione**. */
-  .campo-foglio {
-    /* **Chi sta su un piano deve dichiarare il `color`, non solo i token.**
-       `color` eredita il *valore calcolato* del genitore: il `body` è la tavola
-       e calcola bianco, quindi ridichiarare `--regolo-ink: #000` qui dentro non
-       ricalcola niente e il testo resta bianco — su un foglio bianco.
-       È la trappola n. 2, e si è ripresentata esattamente qui: al primo
-       caricamento della hero nuova l'`<h1>` e i sei nomi delle righe non
-       c'erano. Non erano nascosti: erano bianchi su bianco. */
-    color: var(--regolo-ink);
-    /* IL FOGLIO, e il perché è dipinto qui e non con una banda di sfondo su
-       `.documento`.
-
-       La prima versione era un `linear-gradient` sul contenitore: una sola
-       banda bianca continua dietro tutti i campi, così un nono foglio non si
-       poteva disegnare per distrazione. Bello, e **invisibile al collaudo**:
-       `scripts/collaudo/contrasto-dom.mjs` risale gli antenati cercando un
-       `background-color`, un gradiente non lo è, e quindi misurava ogni testo
-       di B contro il nero del `<body>`. Risultato: cinque falsi «sotto soglia»
-       su coppie che in pagina stanno a 21:1 — e, quel che conta, **nessuna
-       possibilità di prendere un bianco su bianco vero**, che in questa fase è
-       già successo due volte.
-
-       Un piano che il collaudo non sa misurare è un piano che tornerà
-       illeggibile in silenzio. Quindi il foglio lo dipinge il campo, con un
-       `background-color` che lo strumento vede.
-
-       La continuità resta garantita, per costruzione e non per fiducia: i campi
-       sono **contigui** — niente margini verticali, il padding di uno finisce
-       dove comincia il filetto del prossimo — e usano tutti la stessa classe.
-       Non c'è una classe-foglio da inventare per blocco: era quello il difetto
-       della lista di otto selettori, non il modo di dipingere. */
-    background-color: var(--regolo-surface);
-    margin-inline-end: var(--regolo-margine);
-    padding-inline: var(--regolo-gutter);
-    padding-top: var(--regolo-appeso);
-    padding-bottom: calc(var(--regolo-appeso) * 3);
-    border-top: 1px solid var(--regolo-line); /* 4,54:1 sul foglio */
-  }
-  /* Il primo campo non porta il filetto: non separa niente. */
-  .campo-primo > .campo-foglio {
-    border-top: 0;
-  }
-
+  /* ---- la testa della banda ---------------------------------------------
+     Il titolo è **a filo sinistro, a piena larghezza, e non si centra mai**.
+     «Do not center headlines or wrap them — display type stays flush-left and
+     bleeds toward the page edge.» */
   .campo-testa {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--regolo-gutter);
     flex-wrap: wrap;
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
   }
   .campo-testa h2 {
     margin: 0;
     font-family: var(--regolo-font-display);
     font-size: var(--text-h2);
     line-height: var(--regolo-lh-h2);
-    letter-spacing: -0.015em;
-    font-weight: var(--regolo-display-weight);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    /* L'allineamento ottico: la sagoma della prima lettera lascia un vuoto che
+       il bordo del testo non vede. A 46 px si nota. */
+    margin-left: -0.03em;
+    max-width: 22ch;
   }
   .campo-intro {
-    margin: 0.5rem 0 0;
+    margin: 0.75rem 0 0;
     max-width: var(--regolo-misura);
     color: var(--regolo-muted);
+    font-size: var(--text-body);
   }
 
-  /* ---- il campo pieno: l'unico che esce dal foglio -----------------------
-     Uno solo in tutta la pagina, il prima/dopo, dove il taglio fra i due piani
-     **è** il contenuto. Si ridipinge la tavola perché la banda del foglio passa
-     dietro anche qui, e chi dipinge un fondo dichiara anche il `color`: `color`
-     eredita il valore *calcolato* del genitore, non si ricalcola dai token
-     (trappola n. 2). */
+  /* ---- la banda piena: la fotografia a 100vw -----------------------------
+     «Let photography fill 100vw with zero padding or border-radius. Full-bleed
+     is non-negotiable for visual panels.» È la rottura fra due bande quiete, e
+     in B è **una sola**: il prima/dopo. */
   .campo-pieno {
-    display: block;
-    background-color: var(--regolo-paper);
-    color: var(--regolo-ink);
+    padding-block: 0;
   }
   .campo-pieno > .campo-margine {
-    margin-inline-end: var(--regolo-margine);
-    padding-top: 0;
-    padding-bottom: var(--regolo-appeso);
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+    padding-block: var(--regolo-banda-y) clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: 0;
   }
   .campo-pieno > .campo-foglio {
-    background-color: transparent;
-    color: inherit;
+    max-width: none;
     margin-inline: 0;
     padding-inline: 0;
-    border-top: 0;
+  }
+  .campo-pieno .campo-testa {
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+    padding-inline: var(--regolo-margine);
+  }
+  .campo-pieno .confronto-lettura,
+  .campo-pieno .confronto-fonte {
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+    padding-inline: var(--regolo-margine);
   }
 
-  /* ---- 390 px: PROGETTATA, non compressa ---------------------------------
-     La banda di margine sparisce (decisione n. 24: a 96 px l'asse passava in
-     mezzo al testo) e il foglio va a piena larghezza. L'apparato **non si
-     accatasta sotto il contenuto**: si ribalta in una striscia di tavola sopra
-     ogni campo, con le voci ai due estremi e il vuoto in mezzo — la riga a tre
-     tempi misurata su Pelizzari. */
+  /* ---- la hero: il display a scala architettonica ------------------------
+     160 px a 1440, interlinea 0,94, a filo sinistro. È la firma del tema, e la
+     regola delle reference è netta: se tutte le lettere stanno comode dentro la
+     finestra, il corpo è troppo piccolo. `overflow: clip` sulla banda tiene la
+     pagina senza scorrimento orizzontale mentre il tipo arriva al bordo —
+     `clip` e non `hidden` perché non crea un contenitore di scorrimento e non
+     ritaglia l'anello di fuoco dei figli posizionati. */
+  .campo-hero {
+    overflow-x: clip;
+    padding-top: clamp(2rem, 4vw, 3.5rem);
+  }
+  .hero-domanda {
+    margin: 0 0 clamp(1.25rem, 2.5vw, 2rem);
+    font-family: var(--regolo-font-display);
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    margin-left: -0.045em;
+    text-wrap: balance;
+  }
+  .campo-hero .hero-lead {
+    margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+    /* `.hero-lead` porta un `max-width` più stretto da `sezioni.css`, e questo
+       file perde a pari specificità: serve l'antenato. */
+    max-width: 46rem;
+    font-size: var(--text-lead);
+    line-height: 1.35;
+    color: var(--regolo-muted);
+  }
+  .hero-quota-registro {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  /* ---- 390 px ------------------------------------------------------------
+     Il display resta grande — 56 px — perché è la firma, e a quel corpo una
+     parola del payoff ci sta intera. Le bande restano bande: a piena larghezza
+     alternano superficie come a 1440, che è l'unico modo perché il gesto
+     sopravviva al telefono. */
   @media (max-width: 55.999rem) {
-    /* Sotto i 56 rem il foglio va a piena larghezza: non serve nient'altro,
-       perché a dipingerlo è già il campo. */
-    .campo {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .campo-margine {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-inline: 0;
-      padding: 0.25rem var(--regolo-margine);
-      min-height: 1.25rem;
-      /* La striscia È la tavola, quindi qui il fondo si dipinge davvero — e
-         con lui il `color`, per la trappola n. 2. */
-      background-color: var(--regolo-paper);
-      color: var(--regolo-muted);
-    }
-    /* La striscia regge due voci ai due estremi, non una nota: la nota va a
-       capo e prende tutta la riga, e la striscia diventa un blocchetto di
-       tavola fra due campi. Su telefono è anche il confine che a 1440 fa il
-       filetto. */
-    .campo-margine {
-      flex-wrap: wrap;
-    }
-    .campo-nota {
-      flex: 1 0 100%;
-      margin-top: 0.5rem;
+    .campo-testa h2 {
       max-width: none;
     }
-    .campo-foglio {
-      margin-inline: 0;
-      padding-inline: var(--regolo-margine);
-      border-top: 0; /* il filetto lo fa la striscia: due segni per un confine sono uno di troppo */
-    }
-    .campo-pieno {
-      background-color: transparent;
-    }
     .campo-pieno > .campo-margine {
-      padding-bottom: 0.25rem;
+      padding-bottom: 0.75rem;
     }
   }
 }
@@ -317,26 +295,10 @@
    ========================================================================== */
 
 @layer components {
-  .campo-hero > .campo-foglio {
-    padding-bottom: calc(var(--regolo-appeso) * 4);
-  }
-  .hero-domanda {
-    margin: 0;
-    font-family: var(--regolo-font-display);
-    font-size: var(--text-h1);
-    line-height: var(--regolo-lh-h1);
-    letter-spacing: var(--regolo-display-tracking);
-    font-weight: var(--regolo-display-weight);
-    max-width: 18ch;
-  }
-  .campo-hero .hero-lead {
-    margin: 1rem 0 0;
-    max-width: var(--regolo-misura);
-    color: var(--regolo-muted);
-  }
-  .hero-quota-registro {
-    margin-top: clamp(1.5rem, 3vw, 2.25rem);
-  }
+  /* Il display, il lead e la quota della hero stanno **in testa a questo file**,
+     con il resto del sistema a bande: qui c'era la loro versione della fase
+     3 ter, che essendo più in basso vinceva a pari specificità e teneva il lead
+     a 30 rem. È la stessa trappola dell'ordine di sorgente, dentro un file solo. */
 
   /* ---- il registro -------------------------------------------------------
      Nessun filetto in testa e nessuno fra le righe: il passo di riga fa il
@@ -359,7 +321,7 @@
   }
   @media (min-width: 56rem) {
     .riga {
-      grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
       gap: var(--regolo-gutter);
       align-items: center;
       min-height: 2.5rem;
@@ -666,31 +628,32 @@
    ========================================================================== */
 
 @layer components {
-  .site-header-cartiglio {
+  /* `header.` in più: `.site-header { position: sticky }` sta in `globals.css`,
+     ha la stessa specificità e viene dopo. È la quarta volta in questa fase che
+     l'ordine di importazione morde, e la regola da ricordare è una sola:
+     **in questo file, per vincere su `globals.css` serve un antenato o un tipo,
+     non un `!important`.** */
+  header.site-header-cartiglio {
     position: static;
   }
+  /* La testata: una riga sola a filo sinistro, come tutto il resto. Il nome, la
+     sede in monospace, e il menu spinto al bordo destro con il vuoto in mezzo.
+     **Niente virgole** — il menu-frase è il gesto di A — e **non è sticky**: la
+     testata di un documento non ti segue mentre lo leggi, e restituisce la
+     prima schermata al display. */
   .cartiglio {
     max-width: var(--regolo-wrap);
     margin-inline: auto;
-    --campo-x: calc(
-      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
-    );
-    display: grid;
-    grid-template-columns: var(--campo-x) minmax(0, 1fr);
-    align-items: center;
-    gap: 0;
+    padding-inline: var(--regolo-margine);
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.4vw, 2rem);
     min-height: var(--regolo-header-h);
-    padding-block: 0.75rem;
+    padding-block: 1rem;
   }
   /* Tre celle su due colonne: il nome nel margine, la sede e il menu sul
      foglio, ai due estremi con il vuoto in mezzo (Pelizzari misurato). */
-  .cartiglio {
-    grid-template-areas: 'nome resto';
-  }
   .cartiglio-nome {
-    grid-area: nome;
-    margin-inline-start: var(--regolo-margine);
-    margin-inline-end: var(--regolo-gutter);
     font-family: var(--regolo-logo-family);
     font-size: var(--regolo-logo-size);
     font-weight: var(--regolo-logo-weight);
@@ -701,20 +664,22 @@
     align-items: center;
     min-height: 2.75rem;
   }
+  /* La sede in monospace: è un dato, non un sottotitolo del marchio. */
   .cartiglio-sede {
-    grid-area: resto;
-    /* Il bordo sinistro del foglio, come ogni altro contenuto del documento:
-       centrata nella cella leggeva come una didascalia messa lì per riempire. */
-    justify-self: start;
-    margin: 0 0 0 var(--regolo-gutter);
+    margin: 0;
+    font-family: var(--regolo-font-mono);
     font-size: var(--text-eyebrow);
     letter-spacing: var(--regolo-eyebrow-tracking);
     color: var(--color-muted);
-    font-variant-numeric: tabular-nums;
   }
   .cartiglio > .site-nav,
   .cartiglio > .menu-mobile {
-    grid-area: resto;
+    margin-left: auto;
+  }
+  .site-header-cartiglio .site-nav a {
+    font-family: var(--regolo-font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
   }
   .cartiglio > .site-nav,
   .cartiglio > .menu-mobile {
@@ -743,16 +708,9 @@
     gap: clamp(1rem, 2.2vw, 2rem);
   }
 
+  /* Sotto i 56 rem la sede sparisce dalla testata: sta già nel footer in
+     chiaro, e in testa ruberebbe la riga al nome. */
   @media (max-width: 55.999rem) {
-    .cartiglio {
-      grid-template-columns: minmax(0, 1fr) auto;
-      column-gap: 1rem;
-    }
-    .cartiglio-nome {
-      margin-inline-end: 0;
-    }
-    /* Sotto i 56 rem la sede sparisce dal cartiglio: sta già nel footer in
-       chiaro, e in testa ruberebbe la riga al nome. */
     .cartiglio-sede {
       display: none;
     }
@@ -842,7 +800,10 @@
   body:has(#percorso-casa-nuova:checked) .scheda tbody tr[data-intervento='casa-nuova'] {
     opacity: 1;
   }
-  body:has(#percorso-ristrutturazione:checked) .scheda tbody tr[data-intervento='ristrutturazione'] {
+  body:has(#percorso-ristrutturazione:checked)
+    .scheda
+    tbody
+    tr[data-intervento='ristrutturazione'] {
     opacity: 1;
   }
   body:has(#percorso-pratica-bonus:checked) .scheda tbody tr[data-intervento='pratica-bonus'] {
@@ -1007,6 +968,85 @@
           --x: 50%;
         }
       }
+    }
+  }
+}
+
+/* ============================================================================
+   DUE AGGIUSTAMENTI CHE IL CAMBIO DI SCALA HA RESO NECESSARI
+   ----------------------------------------------------------------------------
+   Portare il display di B da 43,6 a 160 px non è un cambio di un numero: è un
+   cambio di sistema, e due blocchi che leggevano `--text-h1` e
+   `--regolo-asse-frazione` si sono rotti. Vale la pena scriverlo, perché è la
+   forma generale del rischio: **un token che cambia significato rompe chi lo
+   legge per un altro motivo.**
+   ========================================================================== */
+
+@layer components {
+  /* 1 · Le due didascalie del prima/dopo leggevano `--text-h1` per stare «a
+     scala di titolo». A 160 px si sono sovrapposte in mezzo al taglio e si
+     leggeva «stato attualeetto». Qui prendono una scala propria, che è quella
+     di un titolo di sezione e non del display. */
+  [data-theme='b'] .confronto-stato {
+    font-size: var(--text-h3);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  /* 2 · La griglia del brief cadeva sull'asse verticale (`--regolo-asse-frazione`),
+     che in questo tema vale **0** perché l'asse non si disegna più: la colonna
+     del testo diventava larga zero e il paragrafo usciva una parola per riga.
+     Adesso la proporzione è dichiarata, e la scheda resta la parte larga. */
+  @media (min-width: 56rem) {
+    /* `.brief` in più, e serve: la regola di `globals.css` ha la stessa
+       specificità e sta dopo — la terza volta in questa fase. */
+    [data-theme='b'] .brief .brief-griglia {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
+    [data-theme='b'] .brief .brief-griglia > .brief-colonna-scheda {
+      margin-left: 0;
+    }
+  }
+}
+
+/* ============================================================================
+   IL RADIO SULLA BANDA INDACO
+   ----------------------------------------------------------------------------
+   Il controllo nativo si disegna con il **proprio** fondo chiaro: su una
+   superficie satura un radio non spuntato esce come un dischetto bianco pieno,
+   cioè identico a uno spuntato. `accent-color` non basta — colora il segno di
+   spunta, non la cornice.
+
+   Qui il controllo si ridisegna a mano, e resta **un `<input type="radio">`**:
+   niente JavaScript, niente `<div role="radio">`, le frecce della tastiera
+   continuano a funzionare di serie e il fuoco è quello del browser.
+   ========================================================================== */
+
+@layer components {
+  [data-banda='indaco'] .riga-scelta input[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 50%;
+    background: transparent;
+    display: grid;
+    place-content: center;
+  }
+  [data-banda='indaco'] .riga-scelta input[type='radio']::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-ink);
+    transform: scale(0);
+  }
+  [data-banda='indaco'] .riga-scelta input[type='radio']:checked::before {
+    transform: scale(1);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-banda='indaco'] .riga-scelta input[type='radio']::before {
+      transition: transform 120ms ease-out;
     }
   }
 }

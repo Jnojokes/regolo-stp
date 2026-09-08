@@ -197,6 +197,7 @@ function HeroDomanda({ interventoIniziale }: { interventoIniziale?: string | nul
   return (
     <Campo
       primo
+      banda="indaco"
       id="percorsi"
       etichetta="il punto di partenza"
       className="campo-hero"
@@ -315,7 +316,6 @@ function HeroDomanda({ interventoIniziale }: { interventoIniziale?: string | nul
           )
         })}
       </div>
-
     </Campo>
   )
 }

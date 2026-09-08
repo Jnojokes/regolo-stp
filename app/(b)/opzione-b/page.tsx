@@ -59,11 +59,18 @@ export default function OpzioneB() {
           campi. Non è una scelta estetica — è la ragione per cui in B non si
           può disegnare un nono foglio per distrazione: prima erano otto
           selettori elencati a mano in `globals.css`, cioè otto card. */}
+      {/* Il ritmo di B **è il cambio di superficie**, non lo spazio bianco:
+          **INDACO** · osso · osso · INDACO · osso · FOTOGRAFIA a 100vw · osso ·
+          INDACO. La prima schermata detona: è il gesto della reference, e in
+          una miniatura al 25 % è quello che distingue le due proposte prima di
+          qualunque parola. Le reference lo scrivono come divieto — «do not stack multiple
+          bone sections without an indigo interruption» — e in una miniatura al
+          25 % è quello che si vede per primo. */}
       <Documento>
         <Hero variante="domanda" />
         <Numeri />
         <Servizi variante="tabella" />
-        <ComeLavoriamo variante="sequenza" />
+        <ComeLavoriamo variante="sequenza" banda="indaco" />
         <Progetti variante="dati" />
         <PrimaDopo />
         <Persone variante="registro" />

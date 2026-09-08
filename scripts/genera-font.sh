@@ -46,8 +46,14 @@ fai() { # nome  url  assi  uscita
   echo "· $nome"
   curl -sSL -o "$TMP/$nome.woff2" "$url"
   local prima; prima=$(wc -c <"$TMP/$nome.woff2")
-  # shellcheck disable=SC2086
-  "$TMP/venv/bin/fonttools" varLib.instancer "$TMP/$nome.woff2" $assi -o "$TMP/$nome-inst.ttf" >/dev/null
+  # Con assi vuoti la famiglia e' statica: `varLib.instancer` fallirebbe (nessuna
+  # tabella `fvar`) e `set -euo pipefail` farebbe cadere tutto lo script.
+  if [ -n "$assi" ]; then
+    # shellcheck disable=SC2086
+    "$TMP/venv/bin/fonttools" varLib.instancer "$TMP/$nome.woff2" $assi -o "$TMP/$nome-inst.ttf" >/dev/null
+  else
+    cp "$TMP/$nome.woff2" "$TMP/$nome-inst.ttf"
+  fi
   "$TMP/venv/bin/pyftsubset" "$TMP/$nome-inst.ttf" \
     --unicodes="$LAT" --layout-features="$FEAT" \
     --flavor=woff2 --output-file="$DEST/$out"
@@ -72,6 +78,16 @@ fai anybody \
   "wght=400:600 wdth=100" \
   "anybody-regolo-latin-var.woff2"
 
+# Il mono tecnico dell'opzione B. Non e' un ripensamento sul divieto della
+# fase 3 bis («niente monospace per le etichette dati», cluster n. 5): e' che il
+# brief visivo e' cambiato. Le tre reference scelte dal committente hanno tutte
+# lo stesso gesto centrale — «editorial sans + technical mono» — e la mono ci
+# sta SOLO sotto i 14 px, come annotazione, mai come contenuto.
+fai plexmono \
+  "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.woff2" \
+  "" \
+  "plexmono-regolo-latin-400.woff2"
+
 # --- due istanze STATICHE per l'immagine Open Graph -------------------------
 # `next/og` (satori) non legge i woff2 variabili: vuole un file statico a un
 # peso fisso. Queste due non vengono servite al browser — stanno fuori da
@@ -94,8 +110,18 @@ import sys, glob, os
 from fontTools.ttLib import TTFont
 for f in sorted(glob.glob(os.path.join(sys.argv[1], "*-regolo-*.woff2"))):
     t = TTFont(f)
-    assi = [(a.axisTag, a.minValue, a.defaultValue, a.maxValue) for a in t["fvar"].axes]
+    assi = (
+        [(a.axisTag, a.minValue, a.defaultValue, a.maxValue) for a in t["fvar"].axes]
+        if "fvar" in t
+        else "statico"
+    )
     gsub = sorted({r.FeatureTag for r in t["GSUB"].table.FeatureList.FeatureRecord})
-    assert "tnum" in gsub, f"{f}: manca tnum, le colonne di numeri si disallineano"
-    print(f"  {os.path.basename(f)}  {assi}  tnum:sì  glifi:{len(t.getGlyphOrder())}")
+    # `tnum` serve a rendere tabellari le cifre di una famiglia proporzionale.
+    # Una monospace ha gia' tutte le cifre della stessa larghezza per
+    # definizione, e infatti IBM Plex Mono non espone la funzione: chiederla
+    # anche a lei sarebbe come pretendere una chiave inglese da una chiave fissa.
+    mono = t["post"].isFixedPitch != 0
+    if not mono:
+        assert "tnum" in gsub, f"{f}: manca tnum, le colonne di numeri si disallineano"
+    print(f"  {os.path.basename(f)}  {assi}  {'monospace' if mono else 'tnum:sì'}  glifi:{len(t.getGlyphOrder())}")
 PY

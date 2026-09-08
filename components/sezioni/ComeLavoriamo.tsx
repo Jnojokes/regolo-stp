@@ -37,10 +37,13 @@ import { fasi, introProcesso } from '@/lib/processo'
 export function ComeLavoriamo({
   variante,
   id = 'processo',
+  banda = 'osso',
 }: {
-  /** `elenco` = opzione A · `sequenza` = opzione B, un campo del documento. */
+  /** `elenco` = opzione A · `sequenza` = opzione B, una banda del manifesto. */
   variante: 'elenco' | 'sequenza'
   id?: string
+  /** Solo per `sequenza`: la superficie della banda. */
+  banda?: 'osso' | 'indaco'
 }) {
   const inCampo = variante === 'sequenza'
 
@@ -71,7 +74,13 @@ export function ComeLavoriamo({
 
   if (inCampo) {
     return (
-      <Campo id={id} etichetta="come lavoriamo" titolo="E poi cosa succede?" intro={introProcesso}>
+      <Campo
+        id={id}
+        banda={banda}
+        etichetta="come lavoriamo"
+        titolo="E poi cosa succede?"
+        intro={introProcesso}
+      >
         {elenco}
       </Campo>
     )

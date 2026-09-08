@@ -365,14 +365,14 @@ il brief con sei righe di diff su 267 elementi, e **42 token su 98 con lo stesso
 — l'intero sistema di impaginazione compreso. Correggere un valore (il grigio, poi il nero) non
 poteva bastare, e non è bastato due volte.
 
-| | A «Lo studio» — route `/` | B «Lo strumento» — route `/opzione-b` |
+| | A «Lo studio» — route `/` | B «Il manifesto» — route `/opzione-b` |
 |---|---|---|
 | **Meccanismo** | un **foglio stampato**: dichiara, sempre uguale a chiunque. L'audacia sta nella **scala** — 7,3× di contrasto, display 132 | **la pagina risponde.** Le sei righe della hero *sono* il passo 1 del brief (`form="brief-form"`): scegliendo si apre il pannello, la riga della scheda resta a inchiostro pieno e le altre si attenuano, il brief comincia a «passo 2 di 5». **Zero byte di JavaScript**, e A non lo può fare per costruzione |
 | **Guscio** | `components/sezioni/Sezione.tsx`: sezioni separate dal vuoto, **tre passi** 48 · 96 · 200 | `components/campo/Campo.tsx`: **campi contigui** divisi da un filetto. Niente ritmo verticale — `--regolo-appeso` 12 px, e lo spazio fra due campi è quello che il contenuto occupa, quindi gli intervalli escono disuguali *per costruzione*. Un solo silenzio, davanti al brief |
-| Impianto | un piano solo, la carta, con due tagli netti verso il nero | **un foglio solo**, dal 34,4 % (Kononenko misurato: x=493 su 1440) al margine destro, continuo dalla hero al brief. L'asse non è più un filetto disegnato: **è il bordo del foglio** |
-| Token | il **tavolo da disegno**: `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575` | la **tavola**: `paper #000000 · surface #FFFFFF · ink #FFFFFF · muted #9A9A9A · line #5C5C5C`. Il nero resta `#000000` e **la questione è chiusa** (n. 29): non porta più la differenza, fa un lavoro solo — rende il foglio un **oggetto** |
-| Accento | `timbro #123C7A`, **solo** sui segnaposto | `timbro #93B7DE` sulla tavola, `#123C7A` sui fogli |
-| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Anybody** (`wght` 400-600, `wdth` istanziato via **dentro il file**), 19,0 KB. Scelto sul **Δ x/cap** e non sul genere: Archivo e Chivo avevano la cap-height identica al millesimo (0,686) |
+| Impianto | un piano solo, la carta, con due tagli netti verso il nero | **bande a piena larghezza** che alternano superficie — osso · INDACO · osso · INDACO · osso · fotografia a 100vw · osso · INDACO. È il cambio di superficie a fare il ritmo, dove A usa tre passi di spazio bianco (decisione n. 35) |
+| Token | il **tavolo da disegno**: `paper #FFFFFF · ink #000000 · muted #5E5E5E · line #757575` | la **carta osso**: `paper #E8E6E0 · ink #000000 · muted #4A4A4A · line #5C5C5C`, più `indaco #1925AA` |
+| Accento | `timbro #123C7A`, **solo** sui segnaposto | l'indaco **non è un accento: è una superficie.** Riempie bande intere, porta il titolo in bianco, e **non entra mai nel fondo di un bottone**. Il `timbro #123C7A` resta sui soli segnaposto |
+| Font | **Archivo** (`wght` 400-600 + `wdth` 62-100): il display si comprime | **Anybody** 19,0 KB (scelto sul **Δ x/cap**, +14,6 % da Archivo) + **IBM Plex Mono** 13,5 KB **solo sotto i 14 px**. La gerarchia si fa **con la sola dimensione**: una famiglia da 12 a 160 px, nessun secondo peso |
 | Apparato | la quota è una **linea di misura**: filetto + terminatore obliquo a 45° ISO 129-1 | la quota è una **riga di documento**: etichetta a sinistra, valore incolonnato a destra, **nessun terminatore**. Un documento non disegna quote su se stesso |
 | Testata | lockup + menu-frase con le virgole, barra **sticky** | **cartiglio**: tre celle sulla griglia dei campi, niente virgole, **non sticky** |
 | Movimento | nessuno | **solo come risposta a un'azione.** Una eccezione, e ripara un difetto: il prima/dopo che senza JS resterebbe fermo a 50 % |

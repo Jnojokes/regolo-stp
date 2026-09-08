@@ -75,6 +75,7 @@ export function Campo({
   children,
   primo = false,
   pieno = false,
+  banda = 'osso',
   className = '',
 }: {
   id?: string
@@ -99,11 +100,22 @@ export function Campo({
   /** Il primo campo del documento non porta il filetto in testa: non separa niente. */
   primo?: boolean
   /**
-   * Il campo esce dal foglio e attraversa tutta la larghezza, i due piani
-   * compresi. **Uno solo in tutta la pagina**: il prima/dopo, dove il taglio
-   * fra tavola e foglio *è* il contenuto.
+   * La banda esce dal margine e arriva a 100vw. **Una sola in tutta la
+   * pagina**: il prima/dopo. «Full-bleed is non-negotiable for visual panels.»
    */
   pieno?: boolean
+  /**
+   * La superficie della banda. `osso` è la carta del documento; `indaco` è la
+   * tinta che detona — riempie la fascia intera, porta il titolo in bianco, e
+   * **non entra mai nel fondo di un bottone**.
+   *
+   * La regola di composizione, presa dalle reference: *«alternate between the
+   * bone canvas and the indigo full-bleed to create section rhythm — do not
+   * stack multiple bone sections without an indigo interruption»*. È il cambio
+   * di superficie a fare il ritmo, dove A usa tre passi di spazio bianco: per
+   * questo in B il ritmo verticale non esiste e c'è un solo `--regolo-banda-y`.
+   */
+  banda?: 'osso' | 'indaco'
   className?: string
 }) {
   const classi = ['campo', primo ? 'campo-primo' : '', pieno ? 'campo-pieno' : '', className]
@@ -113,29 +125,19 @@ export function Campo({
   const haTesta = titolo || intro || azione
 
   return (
-    <section id={id} className={classi}>
-      {/* Il margine di classificazione: sta sulla tavola, quindi qui dentro
-          `--regolo-ink` è chiaro e non va ridichiarato niente. A 390 px questa
-          colonna si ribalta in una striscia orizzontale sopra il campo, con
-          l'apparato spinto ai due bordi (la riga a tre tempi di Pelizzari). */}
+    <section id={id} className={classi} data-banda={banda === 'indaco' ? 'indaco' : undefined}>
+      {/* L'etichetta in cima alla banda: monospace, minuscola, fra quadre messe
+          dal CSS. Sotto i 14 px — sopra la mono smetterebbe di essere
+          un'annotazione e diventerebbe contenuto. */}
       <div className="campo-margine">
         {etichetta && <p className="campo-etichetta">{etichetta}</p>}
         {margine}
-        {/* La nota di cantiere sta **nel margine**, non in fondo al contenuto:
-            è un'annotazione a margine, che è letteralmente il posto suo. E
-            libera il foglio, dove interrompeva la lettura del campo con una
-            riga di servizio. A 390 px la striscia non la regge — lì torna in
-            fondo al foglio, dove c'era. */}
-        {nota && <p className="nota-cantiere campo-nota">{nota}</p>}
       </div>
 
-      {/* La colonna del contenuto sta **sul foglio**, e lo dichiara. Il foglio
-          non è dipinto qui — lo dipinge `<Documento>` una volta sola per tutta
-          la pagina — ma i token vanno ridichiarati lo stesso, perché un
-          elemento non sa su quale piano si trova. Vedi il blocco «B: i token
-          sono legati al PIANO» in `app/globals.css`: si ridichiarano **tutti e
-          due i prefissi**, e `--regolo-surface` non si tocca. */}
-      <div className="campo-foglio" data-piano={pieno ? undefined : 'foglio'}>
+      {/* Il contenuto. Non dichiara niente sul piano: è la **banda** a
+          ridichiarare i token, e lo fa una volta sola per tutta la fascia
+          (`app/globals.css`, blocco «B: i token sono legati alla BANDA»). */}
+      <div className="campo-foglio">
         {haTesta && (
           <div className="campo-testa">
             <div>
@@ -146,6 +148,10 @@ export function Campo({
           </div>
         )}
         {children}
+        {/* La nota di cantiere in coda alla banda, in monospace: è
+            un'annotazione di servizio, e in cima si leggerebbe come
+            un'introduzione — cioè come contenuto. */}
+        {nota && <p className="nota-cantiere campo-nota">{nota}</p>}
       </div>
     </section>
   )

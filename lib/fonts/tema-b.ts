@@ -76,4 +76,37 @@ const anybody = localFont({
   ],
 })
 
-export const fontsThemeB = anybody.variable
+/**
+ * Il mono tecnico — **e sotto i 14 px, mai come contenuto**.
+ *
+ * La fase 3 bis aveva tolto JetBrains Mono con un argomento giusto: «monospace
+ * per le piccole etichette dati» è la tell n. 5 della lista di calibrazione, e
+ * le cifre di un grottesco con `tnum` si incolonnano lo stesso. Quell'argomento
+ * vale ancora **contro un default**. Qui il brief visivo è cambiato: le tre
+ * reference scelte dal committente hanno tutte lo stesso gesto tipografico
+ * centrale — un editoriale enorme accanto a una mono minuscola — e una di loro
+ * lo scrive per esteso: «la mono segnala *tecnico / normativo / specifica* e
+ * sta sotto i 14 px, così legge come annotazione e non come contenuto». La
+ * skill lo prevede: *dove il brief fissa una direzione la si segue alla
+ * lettera, anche se chiede uno di questi look.*
+ *
+ * IBM Plex Mono e non JetBrains: è disegnata per la documentazione tecnica,
+ * non per il codice, e a 10-12 px resta neutra invece di fare la vezzosa.
+ * **13,5 KB**, un peso solo, e non ha `tnum` perché non le serve — una
+ * monospace ha già tutte le cifre della stessa larghezza.
+ */
+const plexMono = localFont({
+  variable: '--font-mono',
+  display: 'swap',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+  preload: false,
+  src: [
+    {
+      path: '../../public/fonts/plexmono-regolo-latin-400.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+})
+
+export const fontsThemeB = `${anybody.variable} ${plexMono.variable}`

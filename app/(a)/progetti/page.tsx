@@ -286,10 +286,7 @@ export default async function Progetti({ searchParams }: { searchParams: Promise
           {esempio && (
             <p className="text-small mt-8 max-w-[68ch]">
               Intanto si può vedere com’è fatta una scheda:{' '}
-              <Link
-                href={`/progetti/${esempio.slug}`}
-                className="underline underline-offset-2"
-              >
+              <Link href={`/progetti/${esempio.slug}`} className="underline underline-offset-2">
                 apri la scheda di esempio
               </Link>
               . È un <strong>esempio</strong>, non un progetto: i campi ci sono tutti, i valori sono

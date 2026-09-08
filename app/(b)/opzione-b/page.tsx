@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
 import { Documento } from '@/components/campo/Campo'
+import { Lastra, Parola } from '@/components/campo/Rottura'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
@@ -70,8 +71,16 @@ export default function OpzioneB() {
         <Hero variante="domanda" />
         <Numeri />
         <Servizi variante="tabella" />
-        <ComeLavoriamo variante="sequenza" banda="indaco" />
+        <Lastra
+          label="Fotografia di un’opera realizzata — dallo studio, non un render"
+          demo="opera-01"
+          nota="[la fotografia entra solo dove è la prova di un’affermazione fatta lì accanto]"
+        />
+        <ComeLavoriamo variante="sequenza" />
         <Progetti variante="dati" />
+        <Parola banda="indaco" sopra="[dal progetto]" sotto="[al cantiere]">
+          CANTIERE
+        </Parola>
         <PrimaDopo />
         <Persone variante="registro" />
       </Documento>

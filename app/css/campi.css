@@ -1050,3 +1050,106 @@
     }
   }
 }
+
+/* ============================================================================
+   LE ROTTURE — la parola che sborda e la lastra a piena finestra
+   ----------------------------------------------------------------------------
+   «Wide quiet sections, then sudden full-bleed visual ruptures, then quiet
+   again.» È il ritmo delle tre reference, ed è quello che separa un manifesto
+   da una pagina di sezioni tutte uguali.
+   ========================================================================== */
+
+@layer components {
+  /* ---- la parola ---------------------------------------------------------
+     Il corpo **non è un valore**: è `100vw` diviso il numero di lettere, per
+     un coefficiente che tiene conto della larghezza media del glifo maiuscolo
+     di Anybody (~0,62 em). Il risultato è che la parola misura ~1,25 volte la
+     finestra **a qualunque larghezza**, quindi sborda sempre — che è la regola:
+     *«if all letters are fully visible, it is too small»*. Nessun `clamp` da
+     ricalcolare se domani la parola cambia.
+
+     `overflow-x: clip` e non `hidden`: non crea un contenitore di scorrimento,
+     quindi non ritaglia l'anello di fuoco di un figlio posizionato e non
+     inventa una barra orizzontale. È anche il motivo per cui la pagina resta a
+     `scrollWidth == clientWidth` mentre il tipo esce dai due lati. */
+  .campo-parola {
+    overflow-x: clip;
+    padding-block: clamp(3.5rem, 8vw, 7rem);
+    text-align: center;
+  }
+  .parola {
+    margin: 0;
+    font-family: var(--regolo-font-display);
+    font-weight: 600;
+    /* ~1,45 volte la larghezza della finestra: sborda dai due lati — che è la
+       regola — ma la parola resta riconoscibile. A 200vw se ne leggevano
+       quattro lettere su sette, e una parola che non si legge non è un
+       manifesto, è una texture. */
+    font-size: calc(140vw / var(--lettere, 8));
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+    color: var(--regolo-ink);
+  }
+  .parola-nota {
+    margin: 0 auto clamp(1.5rem, 3vw, 2.5rem);
+    max-width: var(--regolo-wrap);
+    padding-inline: var(--regolo-margine);
+    font-family: var(--regolo-font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--regolo-muted);
+    text-align: left;
+  }
+  .parola-nota-sotto {
+    margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
+    text-align: right;
+  }
+
+  /* ---- la lastra ---------------------------------------------------------
+     100vw, nessun margine, nessun raggio, e un'altezza che lascia respirare la
+     banda dopo senza mangiarsi lo schermo intero: a 1440 sono ~620 px, cioè
+     abbastanza per essere una rottura e non tanto da diventare una hero. */
+  .campo-lastra {
+    padding-block: 0;
+    background-color: var(--regolo-paper);
+  }
+  .campo-lastra .lastra {
+    aspect-ratio: auto;
+    height: clamp(20rem, 52vw, 42rem);
+    width: 100%;
+  }
+  .campo-lastra .lastra img,
+  .campo-lastra .lastra video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .lastra-nota {
+    max-width: var(--regolo-wrap);
+    margin: 0.75rem auto 0;
+    padding-inline: var(--regolo-margine);
+    font-family: var(--regolo-font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--regolo-muted);
+  }
+  /* Una lastra fra due bande non porta filetti: il cambio di superficie è già
+     il confine. */
+  .campo-lastra + .campo,
+  .campo-parola + .campo {
+    border-top: 0;
+  }
+
+  @media (max-width: 55.999rem) {
+    /* A 390 px la parola sborda lo stesso, e di più: il coefficiente sale
+       perché su una finestra stretta una parola che sta dentro non è una
+       rottura, è un titolo. */
+    .parola {
+      font-size: calc(160vw / var(--lettere, 8));
+    }
+    .campo-lastra .lastra {
+      height: clamp(15rem, 62vw, 22rem);
+    }
+  }
+}

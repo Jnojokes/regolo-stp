@@ -17,6 +17,11 @@ for (const url of ['http://localhost:3001/','http://localhost:3001/opzione-b','h
       const cs = getComputedStyle(el)
       const r = el.getBoundingClientRect()
       if (r.width===0 || r.height===0 || cs.visibility==='hidden' || cs.opacity==='0') return
+      // `.sr-only` è testo per chi ascolta, non per chi guarda: è ritagliato a
+      // 1x1 px e non ha nessun contrasto da controllare. Senza questa riga lo
+      // strumento lo misura contro qualunque cosa gli stia dietro e produce un
+      // difetto che non esiste — successo sui puntini di navigazione di C.
+      if (el.closest('.sr-only')) return
       out.push({ fg: cs.color, bg: fondo(el), size: parseFloat(cs.fontSize), weight: cs.fontWeight, cls: (el.className||'').toString().split(' ')[0].slice(0,26), testo: t.slice(0,24) })
     })
     return out

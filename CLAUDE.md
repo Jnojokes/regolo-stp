@@ -348,10 +348,19 @@ apertura form · completamento form · click telefono · click WhatsApp. Quattro
 - [ ] Non sfonda il performance budget
 - [ ] Nessun contenuto inventato: solo `[[DA CLIENTE: …]]`
 
-## Due opzioni di homepage (fino alla fase 3)
+## Le quattro opzioni di homepage (fino alla fase 5)
 
-FT vende con due toni; il cliente sceglie (`DECISIONI.md` n. 1). Stessa architettura, stessi
-componenti, due ordini e due set di token. I prototipi stanno nel repo, in
+FT vende con più toni; il cliente sceglie (`DECISIONI.md` n. 1 e n. 36). **Quattro proposte, uno
+stesso contenuto**: stessi blocchi, stesso ordine, stesse parole. È la condizione perché il
+cliente giudichi la *lingua visiva* e non quattro pagine diverse — e perché, in call, passare da
+una scheda all'altra sia la dimostrazione.
+
+| | Da dove viene | Come si riconosce in tre secondi |
+|---|---|---|
+| **A** «Lo studio» — `/` | il progetto, fase 3 bis | carta bianca, payoff a 132 px, fotografia |
+| **B** «Il manifesto» — `/opzione-b` | Outsource Consultants | carta osso, bande **indaco** a piena larghezza, display 160 |
+| **C** «La parete» — `/opzione-c` | Iad-lab | **carbone**, due parole colossali che sbordano, tre puntini al posto del menu |
+| **D** «Il marmo» — `/opzione-d` | IDHEAL | marmo bianco, masthead 105, **il corpo è un serif**, filetti magenta | I prototipi stanno nel repo, in
 `kit/opzioni/REGOLO_Opzione_A.html` e `kit/opzioni/REGOLO_Opzione_B.html`: sono il brief visivo.
 
 > **L'opzione B è stata rifatta alla fase 3 ter** (08/09/2026, decisioni 28-34). La riga qui sotto

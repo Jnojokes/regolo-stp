@@ -49,14 +49,21 @@ import { menu, ctaPrimaria, site } from '@/lib/site'
  *   schermata al contenuto, che in una pagina densa è quello che conta. Su
  *   telefono B ha comunque la barra fissa con la CTA.
  */
-export function SiteHeader({ variante = 'lockup' }: { variante?: 'lockup' | 'cartiglio' }) {
+export function SiteHeader({
+  variante = 'lockup',
+}: {
+  variante?: 'lockup' | 'cartiglio' | 'puntini' | 'pastiglia'
+}) {
   return (
     <header className={`site-header site-header-${variante}`}>
-      <div className={variante === 'cartiglio' ? 'cartiglio' : 'wrap site-header-riga'}>
+      {/* `lockup` è A e basta; tutte le altre tre proposte usano lo stesso
+          contenitore a celle — quello che cambia è come il tema lo veste
+          (`app/css/campi.css` per B, `app/css/temi-cd.css` per C e D). */}
+      <div className={variante === 'lockup' ? 'wrap site-header-riga' : 'cartiglio'}>
         {/* Niente aria-label: sostituirebbe il testo visibile con uno diverso,
             e per chi usa il comando vocale il nome accessibile deve contenere
             quello che si legge. Il testo del link basta da solo. */}
-        {variante === 'cartiglio' ? (
+        {variante !== 'lockup' ? (
           /* Nel cartiglio di un disegno il nome e la sede non sono un lockup:
              sono **due celle del riquadro delle iscrizioni**, e cadono sulle
              due colonne del documento — il nome nel margine di
@@ -86,12 +93,24 @@ export function SiteHeader({ variante = 'lockup' }: { variante?: 'lockup' | 'car
             né in un eventuale copia-incolla della voce. */}
         <nav
           aria-label="Principale"
-          className={`site-nav nav:block hidden ${variante === 'cartiglio' ? 'site-nav-registro' : ''}`}
+          className={`site-nav nav:block hidden ${variante === 'lockup' ? '' : 'site-nav-registro'}`}
         >
           <ul>
             {menu.map((v) => (
               <li key={v.href}>
-                <Link href={v.href}>{v.label.toLowerCase()}</Link>
+                {/* In `puntini` la voce è un puntino di 8 px e il nome sta in
+                    uno `sr-only`: nascosto alla vista, **non** a chi ascolta né
+                    al comando vocale. Con `text-indent: -9999px` il nome
+                    restava un nodo di testo dentro il link — invisibile, ma
+                    misurabile: il collaudo del contrasto lo prendeva come
+                    difetto, e aveva ragione a chiederselo. */}
+                <Link href={v.href}>
+                  {variante === 'puntini' ? (
+                    <span className="sr-only">{v.label.toLowerCase()}</span>
+                  ) : (
+                    v.label.toLowerCase()
+                  )}
+                </Link>
               </li>
             ))}
           </ul>

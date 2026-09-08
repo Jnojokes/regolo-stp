@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="REGOLO STP">
+  <!-- Opzione D. Il meccanismo a 16 px: il marmo bianco, il masthead nero e
+       il tratto di matita colorata che lo annota. Non un logo (TODO-MEDIA.md). -->
+  <rect width="32" height="32" fill="#ffffff"/>
+  <rect x="3" y="8" width="26" height="9" fill="#000000"/>
+  <rect x="3" y="21" width="26" height="2" fill="#ff00bc"/>
+</svg>

@@ -88,6 +88,35 @@ fai plexmono \
   "" \
   "plexmono-regolo-latin-400.woff2"
 
+# --- opzione C «la parete» (Iad-lab) ----------------------------------------
+# Display: Anybody con l'asse di larghezza TENUTO e portato a 150 — e' il
+# sostituto OFL piu' vicino a «Obviously Wide Black»: un grottesco meccanico
+# largo e pesantissimo, che a 900 e wdth 150 fa la parola colossale che sborda.
+# In B lo stesso file ha l'asse istanziato via a 100: stessa famiglia, due
+# strumenti opposti, e nessuna delle due puo' fare il gesto dell'altra.
+fai anybodywide \
+  "https://cdn.jsdelivr.net/fontsource/fonts/anybody:vf@latest/latin-wdth-normal.woff2" \
+  "wght=700:900 wdth=100:150" \
+  "anybody-wide-regolo-latin-var.woff2"
+
+# Inter: il sostituto dichiarato di Neue Haas Unica (C) e di Helvetica Neue (D).
+# Una famiglia sola per tutta la copia di interfaccia, pesi 400 e 700 in C,
+# 400 e 500 in D.
+fai inter \
+  "https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2" \
+  "wght=400:700" \
+  "inter-regolo-latin-var.woff2"
+
+# --- opzione D «il marmo» (IDHEAL) ------------------------------------------
+# Il serif editoriale: New Century Schoolbook non e' libero, e i sostituti
+# dichiarati sono Charter / Source Serif / Crimson. Source Serif 4 e' l'unico
+# con un asse ottico, e a `opsz 20` ha le grazie robuste dello Schoolbook invece
+# delle grazie fini di un didone — che sarebbe il cluster n. 1.
+fai sourceserif \
+  "https://cdn.jsdelivr.net/fontsource/fonts/source-serif-4:vf@latest/latin-opsz-normal.woff2" \
+  "wght=400:600 opsz=20" \
+  "sourceserif-regolo-latin-var.woff2"
+
 # --- due istanze STATICHE per l'immagine Open Graph -------------------------
 # `next/og` (satori) non legge i woff2 variabili: vuole un file statico a un
 # peso fisso. Queste due non vengono servite al browser — stanno fuori da

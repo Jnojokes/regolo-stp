@@ -16,16 +16,25 @@ import { MEDIA_DEMO } from '@/lib/media-demo'
  * in produzione non restano due home, e su una home sola questa barra è solo
  * una riga di rumore sopra la hero.
  */
-export function BarraProposta({ opzione }: { opzione: 'a' | 'b' }) {
-  // I nomi sono quelli di CLAUDE.md § Due opzioni, che sono anche quelli con cui
-  // FT le vende in call: non si cambiano da qui. «L'elevato» e «Il registro»
-  // sono i nomi *interni* dei due temi nel codice e nella cartella di prove —
-  // dicono il meccanismo tipografico, non il tono — e restano lì.
-  const questa = opzione === 'a' ? 'opzione A — «lo studio»' : 'opzione B — «il cantiere»'
-  const altra =
-    opzione === 'a'
-      ? { href: '/opzione-b', label: 'guarda l’opzione B' }
-      : { href: '/', label: 'guarda l’opzione A' }
+const PROPOSTE = {
+  a: { nome: 'opzione A — «lo studio»', href: '/' },
+  b: { nome: 'opzione B — «il manifesto»', href: '/opzione-b' },
+  c: { nome: 'opzione C — «la parete»', href: '/opzione-c' },
+  d: { nome: 'opzione D — «il marmo»', href: '/opzione-d' },
+} as const
+
+type Opzione = keyof typeof PROPOSTE
+
+export function BarraProposta({ opzione }: { opzione: Opzione }) {
+  // I nomi sono quelli di CLAUDE.md § Le quattro opzioni, che sono anche quelli
+  // con cui FT le vende in call. Da qui non si cambiano.
+  //
+  // Da due proposte a quattro (`DECISIONI.md` n. 35): non è un catalogo, è che
+  // il committente ha portato **tre sistemi misurati** e ognuno è una direzione
+  // intera, non una variante. La barra le mette tutte in fila perché in call si
+  // alternano le schede, e passare da una all'altra è la dimostrazione.
+  const questa = PROPOSTE[opzione].nome
+  const altre = (Object.keys(PROPOSTE) as Opzione[]).filter((k) => k !== opzione)
 
   return (
     <div className="barra-proposta">
@@ -45,7 +54,11 @@ export function BarraProposta({ opzione }: { opzione: 'a' | 'b' }) {
               ? 'le fotografie e il video sono esempi liberi da licenza, non opere dello studio; numeri, nomi e progetti sono segnaposto dichiarati'
               : 'le fotografie, i numeri, i nomi e i progetti arrivano dallo studio: in pagina sono segnaposto dichiarati'}
           </span>
-          <Link href={altra.href}>{altra.label}</Link>
+          {altre.map((k) => (
+            <Link key={k} href={PROPOSTE[k].href} className="barra-proposta-vai">
+              {k.toUpperCase()}
+            </Link>
+          ))}
         </span>
       </div>
     </div>

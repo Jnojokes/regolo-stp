@@ -1,0 +1,312 @@
+/* ============================================================================
+   OPZIONE C «La parete» e OPZIONE D «Il marmo»
+   ----------------------------------------------------------------------------
+   Due sistemi interi, presi dalle reference portate dal committente
+   (`DECISIONI.md` n. 35). Riusano gli stessi componenti di B — `<Campo>`,
+   `<Parola>`, `<Lastra>`, le sezioni — perché **il contenuto e l'ordine dei
+   blocchi sono identici nelle tre proposte**: è la sola condizione perché il
+   cliente giudichi la lingua visiva e non tre pagine diverse.
+
+   ATTENZIONE all'ordine: questo file è importato **prima** delle regole di
+   `globals.css`, quindi a pari specificità perde in silenzio. `[data-theme]`
+   dà un attributo di specificità in più e basta quasi sempre; dove non basta si
+   aggiunge un antenato, mai un `!important`.
+   ========================================================================== */
+
+/* ============================================================================
+   C — LA PARETE
+   *«A digital exhibition wall rather than a conventional website.»*
+   ========================================================================== */
+
+@layer components {
+  /* Niente chrome: la testata è un'etichetta in alto a sinistra e basta.
+     «Do not add a traditional navigation bar, header, or footer chrome — the
+     meta label and dot navigation are the entire structural frame.» */
+  [data-theme='c'] header.site-header {
+    position: absolute;
+    /* 44 px è la barra della proposta, che è impalcatura di vendita e sparisce
+       alla fase 5 con le rotte non scelte: allora questo torna 0 e l'etichetta
+       si appoggia al bordo della finestra, come nella reference. */
+    top: 44px;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    background: transparent;
+    border-bottom: 0;
+  }
+  [data-theme='c'] .cartiglio {
+    max-width: none;
+    padding-inline: var(--regolo-margine);
+    padding-block: 1rem;
+    min-height: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  /* Il marchio è una meta-etichetta, non un logotipo: quattro righe corte a
+     16 px dal bordo, come la reference. */
+  [data-theme='c'] .cartiglio-nome {
+    font-size: var(--text-eyebrow);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.25;
+    min-height: 2.75rem;
+    align-items: flex-start;
+  }
+  [data-theme='c'] .cartiglio-sede {
+    display: none;
+  }
+  /* La navigazione: **tre puntini sul margine destro**, verticali, centrati.
+     È l'intera struttura di navigazione del sistema. */
+  [data-theme='c'] .cartiglio > .site-nav {
+    position: fixed;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    margin: 0;
+    z-index: 45;
+  }
+  [data-theme='c'] .site-nav ul {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  /* L'antenato in più: `.site-nav li:not(:last-child)::after` in `globals.css`
+     ha la stessa specificità e sta dopo, quindi le virgole di A ricomparivano
+     fra i puntini come piccoli trattini. */
+  [data-theme='c'] .site-header .site-nav li::after {
+    content: none;
+  }
+  /* Il puntino: il nome resta nel DOM ed è il nome accessibile del link — si
+     nasconde alla vista, non a chi ascolta. Al passaggio e al fuoco riappare,
+     perché un puntino senza etichetta è un indovinello. */
+  [data-theme='c'] .site-header .site-nav a {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-line); /* 3,46:1 sulla parete — elemento non testuale */
+    transition: background-color 160ms ease-out;
+  }
+  /* Il bersaglio tattile: il puntino è 8 px, ma l'area toccabile è 44.
+     `::after` e non padding, perché il padding sposterebbe il disegno. */
+  [data-theme='c'] .site-header .site-nav a::after {
+    content: '';
+    position: absolute;
+    inset: -18px;
+  }
+  [data-theme='c'] .site-header .site-nav li {
+    position: relative;
+  }
+  [data-theme='c'] .site-header .site-nav a:hover,
+  [data-theme='c'] .site-header .site-nav a:focus-visible,
+  [data-theme='c'] .site-header .site-nav a[aria-current='page'] {
+    background: var(--color-ink);
+  }
+  @media (max-width: 55.999rem) {
+    [data-theme='c'] .cartiglio > .site-nav {
+      position: static;
+      transform: none;
+      margin-left: auto;
+    }
+    [data-theme='c'] .site-nav ul {
+      flex-direction: row;
+    }
+  }
+
+  /* La pagina è una sequenza di sezioni a piena finestra: il respiro è largo e
+     lento. «Wide quiet sections, then sudden full-bleed visual ruptures.» */
+  [data-theme='c'] .campo {
+    padding-block: var(--regolo-banda-y);
+  }
+  [data-theme='c'] .campo-hero {
+    padding-top: clamp(6rem, 12vw, 9rem);
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  /* Il display della hero **non** è la parola colossale: quello è il ruolo
+     delle due parole di programma, e darlo anche alla domanda toglierebbe a
+     tutte e due la scala. Qui la domanda sta a 36 px, come la reference mette
+     il suo testo, e la scala vive nelle rotture. */
+  [data-theme='c'] .hero-domanda {
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    letter-spacing: -0.01em;
+    margin-left: 0;
+    max-width: 20ch;
+  }
+  [data-theme='c'] .campo-testa h2 {
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  /* «Separate list items with 1px solid bottom borders. This hairline divider
+     is the primary structural separator in the system.» */
+  [data-theme='c'] .riga {
+    border-bottom: 1px solid var(--color-line);
+  }
+  [data-theme='c'] .riga-nome {
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+  }
+  [data-theme='c'] .riga:has(input:checked) .riga-nome {
+    font-weight: 700; /* «reserve weight 700 for active or emphasized labels only» */
+    box-shadow: none;
+  }
+  /* Il raggio da 20 px, e vive **solo** sulle pastiglie: è l'unico dei quattro
+     temi che ha un raggio, ed è dichiarato come vincolo. */
+  [data-theme='c'] .btn {
+    border-radius: 20px;
+    padding-inline: 1.5rem;
+  }
+  [data-theme='c'] .campo + .campo {
+    border-top: 0;
+  }
+  /* La parola colossale sta sulla parete, che è già il fondo: nessuna banda da
+     dichiarare, e il tipo è quello largo. */
+  [data-theme='c'] .parola {
+    font-stretch: 150%;
+    font-weight: 900;
+    line-height: 0.85;
+  }
+  [data-theme='c'] .campo-lastra .lastra {
+    height: clamp(24rem, 78vh, 46rem);
+  }
+}
+
+/* ============================================================================
+   D — IL MARMO
+   *«Architectural editorial masthead on white marble.»*
+   ========================================================================== */
+
+@layer components {
+  /* La navigazione è una **pastiglia** con il raggio più generoso del sistema
+     (37,5 px) e l'unica ombra ammessa, morbida e bassa. In A, B e C non c'è
+     nessuna ombra: qui è dichiarata. */
+  [data-theme='d'] header.site-header {
+    position: static;
+    background: transparent;
+    border-bottom: 0;
+    padding-block: 1.25rem;
+  }
+  [data-theme='d'] .cartiglio {
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+    padding-inline: var(--regolo-margine);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: var(--regolo-header-h);
+    border: 1px solid #000000;
+    border-radius: 37.5px;
+    padding-block: 0.625rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 4px 2px 4px 0;
+  }
+  [data-theme='d'] .cartiglio-nome {
+    font-family: var(--regolo-font-display);
+    font-size: 1rem;
+    font-weight: 500;
+    padding-inline-start: 1.25rem;
+  }
+  [data-theme='d'] .cartiglio-sede {
+    font-family: var(--regolo-font-display);
+    color: var(--color-muted);
+  }
+  [data-theme='d'] .cartiglio > .site-nav {
+    margin-left: auto;
+    padding-inline-end: 0.5rem;
+  }
+  [data-theme='d'] .site-nav a {
+    font-family: var(--regolo-font-display);
+    font-size: 0.875rem;
+    padding-inline: 0.625rem;
+  }
+  [data-theme='d'] .site-header .site-nav li::after {
+    content: none;
+  }
+
+  /* Il masthead: 105 px, peso **500 e non 700**. «Heavy enough to anchor the
+     page, never so heavy it becomes a poster.» */
+  [data-theme='d'] .hero-domanda {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    letter-spacing: -0.025em;
+    margin-left: -0.04em;
+    max-width: none;
+  }
+  /* Il lead è il **serif**, e da qui in giù lo è tutto il corpo del testo. È la
+     differenza che si legge invece di guardarla. */
+  [data-theme='d'] .campo-hero .hero-lead,
+  [data-theme='d'] .campo-intro,
+  [data-theme='d'] .pannello ul,
+  [data-theme='d'] .scheda tbody th,
+  [data-theme='d'] .scheda tbody td,
+  [data-theme='d'] .fase-testo,
+  [data-theme='d'] .brief-lead {
+    font-family: var(--regolo-font-body);
+  }
+  /* I titoli di sezione sono il serif editoriale a 43 px, con il tratto di
+     matita sotto: «optional terracotta or magenta 1–2px bottom border». */
+  [data-theme='d'] .campo-testa h2 {
+    font-family: var(--regolo-font-body);
+    font-weight: 400;
+    font-size: var(--text-h2);
+    line-height: var(--regolo-lh-h2);
+    letter-spacing: -0.005em;
+    padding-bottom: 0.375rem;
+    border-bottom: 2px solid var(--color-terracotta);
+    display: inline-block;
+  }
+  /* L'etichetta di banda torna al lineare: in D la mono non esiste. */
+  [data-theme='d'] .campo-etichetta,
+  [data-theme='d'] .campo-nota,
+  [data-theme='d'] .lastra-nota,
+  [data-theme='d'] .parola-nota {
+    font-family: var(--regolo-font-display);
+    letter-spacing: 0;
+  }
+  /* Il divisore di sezione è **magenta**, e sostituisce il grigio: è la
+     punteggiatura cromatica del sistema. Filetto, mai testo — a 3,51:1 sul
+     bianco passa come elemento non testuale e non passerebbe come parola. */
+  [data-theme='d'] .campo + .campo {
+    border-top: 1px solid var(--color-magenta);
+  }
+  [data-theme='d'] .campo-lastra + .campo,
+  [data-theme='d'] .campo-primo {
+    border-top: 0;
+  }
+  /* Il ghost button: nessun riempimento, filetto nero, raggio 15. «No fill —
+     the outline IS the design.» */
+  [data-theme='d'] .btn {
+    border-radius: 15px;
+    border-width: 1px;
+    padding-inline: 1.25rem;
+  }
+  /* Il link editoriale è **oliva**, e sta nel corpo senza spezzare la lettura. */
+  [data-theme='d'] .pannello-vai,
+  [data-theme='d'] .uscita {
+    color: var(--color-oliva);
+    text-decoration-color: var(--color-oliva);
+  }
+  /* La riga scelta prende il tratto di matita terracotta invece del nero. */
+  [data-theme='d'] .riga:has(input:checked) .riga-nome {
+    box-shadow: 0 2px 0 0 var(--color-terracotta);
+  }
+  [data-theme='d'] .riga-nome {
+    font-family: var(--regolo-font-display);
+    font-weight: 500;
+  }
+  [data-theme='d'] .scheda thead th {
+    font-family: var(--regolo-font-display);
+    border-bottom-color: var(--color-magenta);
+  }
+  [data-theme='d'] .campo-lastra .lastra {
+    height: clamp(18rem, 42vw, 34rem);
+  }
+}

@@ -16,3 +16,4 @@ scripts/misura-reference.mjs
 scripts/opzioni-diff.mjs
 scripts/qa-browser.mjs
 scripts/collaudo/soglie.json
+collaudo/

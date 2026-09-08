@@ -1129,13 +1129,15 @@ Su `/opzione-b` il peso totale sale per i font in più — debito tecnico della 
 
 | Cosa | Da chi dipende | Blocca |
 |---|---|---|
-| **A / B / mix — decisione n. 1** | cliente, in call con FT | **la fase 5**. Le due pagine su cui decidere sono in piedi: `/` e `/opzione-b` dallo stesso deploy, con la barra in cima per passare dall'una all'altra. La fase 4 si può fare comunque: i contenuti sono gli stessi per entrambe |
+| **A / B / C — decisione n. 1** | cliente, in call con FT | **tutto il resto.** Le tre pagine sono in piedi sullo stesso deploy, con la barra in cima per passare dall'una all'altra, e adesso sono **tre sistemi diversi misurati**: classi condivise 38/39/43 %, assi diversi 3/3/4 su 5, un momento orchestrato ciascuna, la CTA nel primo viewport su tutte e tre a 390 e a 1440. Quando la decisione arriva, le due rotte non scelte si cancellano — e con loro spariscono la barra della proposta, il debito del preload dei font e i tre valori di impaginazione che tenevano conto della barra |
 | Come parte la mail del brief: **decisione n. 14** (Resend / SMTP dello studio / SMTP di una casella `brief@`) | NB con il titolare | **la fase 7**: `/privacy` deve nominare il responsabile del trattamento, e con SMTP non c'è nessun terzo da nominare. Le variabili in `.env.example` sono quelle dell'opzione A: quali servano davvero lo dice la n. 14 |
 | Dominio | cliente | fase 6 (SEO). Finché non c'è, `metadataBase` resta vuoto, non si dichiara nessun canonical e il `BreadcrumbList` **non si emette** (URL relativi in un JSON-LD non servono a niente) |
 | **Le 18 risposte alle FAQ da validare** | studio | niente: in pagina si vedono marcate «proposta». Bloccano solo lo schema `FAQPage`, che oggi non si emette |
 | **Decisione n. 16**: che risposta del passo 1 dare a «Comfort, energia, acustica» | NB con FT | niente. Oggi quella CTA manda al brief senza precompilare |
 | Foto e dati dei progetti | cliente | fase 4 (contenuti reali) |
 | Quale analytics (decisione n. 10) | NB | fase 7. **Tutti e quattro** gli eventi sono ora cablati: `brief_apertura` e `brief_inviato` in `BriefForm`, `click_telefono` e `click_whatsapp` in `components/Misurazione.tsx` (un ascoltatore delegato, non un componente per link). `lib/analytics.ts` resta muto finché non c'è la libreria. *Fino all'08/09 questa riga diceva «già cablati» e valeva per due su quattro: gli altri due erano solo una voce del tipo `Evento`* |
+| **La ricerca depositata**: `ricognizione.json`, dieci DESIGN.md contati, i sei `misure.json` che mancano e le due righe assenti nei sei blocchi vecchi di `SCHEDA.md` | NB | niente sul sito: sono le voci A1, A3, A5 e A6 della lista unica, e si chiudono senza toccare una riga di codice. Restano aperte perché quelle sei reference sono state catturate a mano prima che `misura-reference.mjs` entrasse in uso |
+| **La licenza di General Sans** (n. 48) | cliente | il go-live di C. Non è OFL come gli altri tre caratteri: è di Indian Type Foundry, uso commerciale e self-hosting permessi. Va confermata per iscritto |
 | Node locale v25.7.0, non LTS | NB | niente: `.nvmrc` e `engines` fissano 22 LTS, che è quello che usa Vercel |
 
 ## Debiti tecnici, da saldare alla fase 5

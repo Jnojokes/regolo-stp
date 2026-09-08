@@ -1,6 +1,6 @@
 /**
  * Lo stesso edificio di `lib/esploso.ts`, **in prospettiva** invece che in
- * isometria: è il degrado del blocco 3D dell'opzione C (decisione n. 44).
+ * isometria: è il degrado del blocco 3D dell'opzione B (decisione n. 44).
  *
  * ## Perché esiste un secondo proiettore
  *

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 /**
- * Il guscio dell'opzione C — e il motivo per cui non è quello di nessun altro.
+ * Il guscio dell'opzione B — e il motivo per cui non è quello di nessun altro.
  *
  * ## Perché esiste un terzo guscio
  *

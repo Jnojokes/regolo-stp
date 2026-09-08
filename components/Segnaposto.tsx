@@ -12,7 +12,7 @@ import { cifra, riempimento } from '@/lib/segnaposto'
  * dall'HTML buildato per generare `CONTENUTI-DA-CLIENTE.md`.
  *
  * `data-chiede` è anche il gancio del collaudo, e copre **più** casi del `grep`
- * che sostituisce: cinque `[[DA CLIENTE` di `/opzione-c` stavano fuori dal
+ * che sostituisce: cinque `[[DA CLIENTE` di `/opzione-b` stavano fuori dal
  * componente `DaCliente` — in un `caption.sr-only`, in due
  * `.confronto-specifica`, in una `nota` passata dalla pagina — quindi il gancio
  * vecchio non li vedeva.

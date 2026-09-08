@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 /**
- * Il guscio dell'opzione D: **una pagina di fascicolo**.
+ * Il guscio dell'opzione C: **una pagina di fascicolo**.
  *
  * ## Perché è il terzo guscio e non una variante del primo
  *

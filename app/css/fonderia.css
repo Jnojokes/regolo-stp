@@ -250,7 +250,7 @@
     line-height: 1;
     text-decoration: none;
   }
-  [data-theme='c'] .testata-pastiglia {
+  [data-theme='b'] .testata-pastiglia {
     border-radius: 999px;
     font-family: var(--regolo-font-mono);
     text-transform: uppercase;
@@ -261,7 +261,7 @@
 /* ============================================================================
    IL GESTO DI C: LA COLATA
    ----------------------------------------------------------------------------
-   La sola animazione allo scorrimento dell'opzione C — e in C, al contrario di
+   La sola animazione allo scorrimento dell'opzione B — e in C, al contrario di
    quello che valeva per B, il movimento **è** il meccanismo: il committente ha
    chiesto esattamente questo, e la pagina di D resta ferma per differenza.
 
@@ -790,7 +790,7 @@
             99×43 fissa in basso a destra (margini 34/34 a 1440, 14/14 a 390);
             a 390 non c'è nessun menu di testo. Qui la testata di C è in flusso
             e scorre via da sé, e questa è la pastiglia che la sostituisce. */
-      [data-theme='c'] .menu-mobile {
+      [data-theme='b'] .menu-mobile {
         animation: pastiglia-entra linear;
         animation-timeline: scroll(root);
         animation-range: 70svh 100svh;
@@ -824,14 +824,14 @@
    una differenza di comportamento da D, dove la testata resta in cima sopra la
    fotografia. I margini sono i suoi: 34 px a 1440, 14 a 390. */
 @layer components {
-  [data-theme='c'] .menu-mobile {
+  [data-theme='b'] .menu-mobile {
     display: block;
     position: fixed;
     right: clamp(14px, 2.4vw, 34px);
     bottom: clamp(14px, 2.4vw, 34px);
     z-index: 60;
   }
-  [data-theme='c'] .menu-mobile > summary {
+  [data-theme='b'] .menu-mobile > summary {
     min-height: 2.6875rem; /* 43 px, la misura della reference */
     padding-inline: 1.125rem;
     background-color: var(--regolo-btn-bg);
@@ -846,7 +846,7 @@
      al primo fotogramma, la sostituisce dopo. Sotto, la nav non c'è e la
      pastiglia è l'unico accesso — quindi non può dipendere da un'animazione:
      `initial-value` la lascia visibile, ed è la ragione della cautela 5. */
-  [data-theme='c'] .menu-mobile[open] > summary {
+  [data-theme='b'] .menu-mobile[open] > summary {
     border-radius: 0;
   }
 }
@@ -870,7 +870,7 @@
    ========================================================================== */
 
 @layer components {
-  [data-theme='c'] .site-footer {
+  [data-theme='b'] .site-footer {
     --regolo-quota-colore: #a8a49c; /* 7,45:1 sul footer */
     --regolo-ink: #f3f0ec; /* 15,18:1 */
     --regolo-muted: #a8a49c;
@@ -904,14 +904,14 @@
    ========================================================================== */
 
 @layer components {
-  [data-theme='c'] header.site-header {
+  [data-theme='b'] header.site-header {
     position: static;
     z-index: 40;
     background-color: transparent;
     border-bottom: 0;
     color: var(--regolo-ink);
   }
-  [data-theme='c'] .testata {
+  [data-theme='b'] .testata {
     max-width: var(--regolo-wrap);
     margin-inline: auto;
     padding-inline: var(--regolo-margine);
@@ -921,24 +921,24 @@
     gap: 1rem;
     min-height: var(--regolo-header-h);
   }
-  [data-theme='c'] .testata-nome {
+  [data-theme='b'] .testata-nome {
     font-family: var(--regolo-font-body);
     font-size: 0.9375rem;
     color: var(--regolo-ink);
     text-decoration: none;
   }
-  [data-theme='c'] .testata > .site-nav {
+  [data-theme='b'] .testata > .site-nav {
     justify-self: center;
     margin: 0;
   }
-  [data-theme='c'] .site-header .site-nav ul {
+  [data-theme='b'] .site-header .site-nav ul {
     display: flex;
     gap: 1.25rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  [data-theme='c'] .site-header .site-nav a {
+  [data-theme='b'] .site-header .site-nav a {
     color: var(--regolo-ink);
     font-family: var(--regolo-font-body);
     font-size: 0.9375rem;
@@ -947,7 +947,7 @@
   /* Niente virgole fra le voci: il menu-frase con le virgole è il gesto di A
      (Kononenko misurato), e due proposte che lo usano non lo hanno nessuna
      delle due. */
-  [data-theme='c'] .site-header .site-nav li::after {
+  [data-theme='b'] .site-header .site-nav li::after {
     content: none;
   }
 
@@ -957,7 +957,7 @@
      pastiglia fissa in basso, quindi qui la `<details>` esce dalla riga del
      tutto e la testata resta il solo marchio. */
   @media (max-width: 55.999rem) {
-    [data-theme='c'] .testata {
+    [data-theme='b'] .testata {
       grid-template-columns: 1fr;
     }
   }
@@ -1047,7 +1047,7 @@
    ========================================================================== */
 
 @layer components {
-  [data-theme='c'] .colata-volume {
+  [data-theme='b'] .colata-volume {
     --volume-alto: #8f8b84;
     --volume-sinistra: #6a665f;
     --volume-destra: #46443f;

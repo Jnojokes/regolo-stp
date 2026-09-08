@@ -2,13 +2,13 @@ import { chromium } from 'playwright'
 const b = await chromium.launch()
 /* C e D sono rientrate nell'elenco dopo l'uscita di B: erano state tolte con
    lei per sbaglio, e sono proprio le due rotte in cui il peso è cambiato —
-   `/opzione-c` monta il volume in WebGL, che è l'unico JavaScript aggiunto
+   `/opzione-b` monta il volume in WebGL, che è l'unico JavaScript aggiunto
    dalla fase 3 quinquies. Il budget è in `CLAUDE.md` § Performance: **180 KB gz
    di JS al primo carico**, limite 250. */
 for (const [n, u] of [
   ['A', 'http://localhost:3001/'],
-  ['C', 'http://localhost:3001/opzione-c'],
-  ['D', 'http://localhost:3001/opzione-d'],
+  ['C', 'http://localhost:3001/opzione-b'],
+  ['D', 'http://localhost:3001/opzione-c'],
   ['S', 'http://localhost:3001/servizi/strutture'],
 ]) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 } })

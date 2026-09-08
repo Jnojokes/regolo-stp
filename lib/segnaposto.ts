@@ -31,7 +31,7 @@
  *
  * Raccogliere dall'HTML invece che dal codice non è un dettaglio: è **più
  * robusto del `grep` che sostituisce**. La critica della ricognizione ha trovato
- * che cinque `[[DA CLIENTE` di `/opzione-c` stanno **fuori** dal componente
+ * che cinque `[[DA CLIENTE` di `/opzione-b` stanno **fuori** dal componente
  * `DaCliente` — due in un `<caption class="sr-only">`, due in
  * `.confronto-specifica`, uno in una `nota` passata dalla pagina — quindi erano
  * invisibili all'unico gancio automatico che c'era. Un raccoglitore che legge la

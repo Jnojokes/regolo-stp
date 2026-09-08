@@ -58,7 +58,7 @@ export type Poligono = { faccia: Faccia; punti: string }
  * proiezione: `x`/`y` in celle sul piano, `z` in celle in altezza.
  *
  * Esiste perché `lib/volume.ts` deve poter proiettare gli stessi volumi in
- * **prospettiva** invece che in isometria — è il blocco 3D dell'opzione C,
+ * **prospettiva** invece che in isometria — è il blocco 3D dell'opzione B,
  * decisione n. 44 — e finché la geometria viveva solo dentro le stringhe di
  * punti già proiettate non era riusabile. La lista è **una**: A la disegna
  * piatta come una tavola, C la cola in volume. Stesso dato, due lingue.

@@ -136,7 +136,7 @@
   }
   /* In D non ha raggio: Storey, misurato, ha `border-radius` **zero
      occorrenze** in tutta la pagina. */
-  [data-theme='d'] .testata-pastiglia {
+  [data-theme='c'] .testata-pastiglia {
     border-radius: 0;
     background-color: #ffffff;
     color: #000000;
@@ -361,7 +361,7 @@
      regola base `.quota > *::before` in `app/css/sezioni.css` non è isolata per
      tema. Non c'è nessuna `.quota` in D — questa riga è la garanzia che non ne
      compaia una per errore, e il commento è il motivo per cui non si cancella. */
-  [data-theme='d'] .quota > *::before {
+  [data-theme='c'] .quota > *::before {
     content: none;
   }
 
@@ -649,7 +649,7 @@
    ========================================================================== */
 
 @layer components {
-  [data-theme='d'] header.site-header {
+  [data-theme='c'] header.site-header {
     position: absolute;
     top: 0;
     left: 0;
@@ -659,7 +659,7 @@
     border-bottom: 0;
     color: #ffffff;
   }
-  [data-theme='d'] .testata {
+  [data-theme='c'] .testata {
     max-width: none;
     padding-inline: var(--regolo-margine);
     display: grid;
@@ -668,30 +668,30 @@
     gap: 1rem;
     min-height: var(--regolo-header-h);
   }
-  [data-theme='d'] .testata-nome,
-  [data-theme='d'] .site-header .site-nav a {
+  [data-theme='c'] .testata-nome,
+  [data-theme='c'] .site-header .site-nav a {
     color: #ffffff;
     text-decoration: none;
     font-family: var(--regolo-font-body);
     font-size: 0.9375rem;
   }
-  [data-theme='d'] .testata > .site-nav {
+  [data-theme='c'] .testata > .site-nav {
     justify-self: center;
     margin: 0;
   }
-  [data-theme='d'] .site-header .site-nav ul {
+  [data-theme='c'] .site-header .site-nav ul {
     display: flex;
     gap: 1.25rem;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  [data-theme='d'] .site-header .site-nav li::after {
+  [data-theme='c'] .site-header .site-nav li::after {
     content: none;
   }
   /* La sfumatura: decorazione pura, e dichiarata tale. La garanzia di contrasto
      sta nel `background-color` della testata, non qui. */
-  [data-theme='d'] header.site-header::after {
+  [data-theme='c'] header.site-header::after {
     content: '';
     position: absolute;
     left: 0;
@@ -706,10 +706,10 @@
      tre colonne la `<details>` finiva in una colonna implicita e sfondava di
      8 px a 390 — misurato, non supposto. */
   @media (max-width: 55.999rem) {
-    [data-theme='d'] .testata {
+    [data-theme='c'] .testata {
       grid-template-columns: 1fr auto;
     }
-    [data-theme='d'] .testata > .menu-mobile {
+    [data-theme='c'] .testata > .menu-mobile {
       justify-self: end;
     }
   }

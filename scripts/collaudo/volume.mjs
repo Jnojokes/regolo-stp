@@ -19,7 +19,7 @@
 import { chromium } from 'playwright'
 import { PNG } from 'pngjs'
 
-const URL = 'http://localhost:3001/opzione-c'
+const URL = 'http://localhost:3001/opzione-b'
 const b = await chromium.launch()
 const guasti = []
 

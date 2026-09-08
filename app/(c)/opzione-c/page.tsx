@@ -2,73 +2,83 @@ import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
 import { BarraProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
-import { Cifre, Dichiarazione, Firme, Metodo, Opere } from '@/components/fonderia/Blocchi'
-import { Getto } from '@/components/fonderia/Colata'
-import { Volume } from '@/components/fonderia/Volume'
-import { HeroFonderia } from '@/components/sezioni/HeroFonderia'
+import {
+  Banda,
+  Colophon,
+  Frontespizio,
+  Metodo,
+  PrimaDopo,
+  Ritratti,
+  Sommario,
+  Tavole,
+} from '@/components/monografia/Blocchi'
+import { Copertina } from '@/components/monografia/Copertina'
+import { Fascicolo } from '@/components/monografia/Segnatura'
 
 export const metadata: Metadata = {
   title: 'Homepage',
   description:
-    'Proposta di homepage per REGOLO, variante «La fonderia»: la fotografia è una scheggia che si apre scorrendo, e il vuoto è la struttura.',
+    'Proposta di homepage per REGOLO, variante «La monografia»: un fascicolo stampato — frontespizio, indice, tavole con i dati duri, colophon.',
 }
 
 /**
- * Home — opzione C «La fonderia», dal sistema di **Studio Foundry**
- * (`kit/reference/studio-foundry/`, guardato).
+ * Home — opzione C «La monografia».
  *
- * ## Il meccanismo: **lo scorrimento**
+ * ## Perché non si chiama più «La casa»
  *
- * Ogni proposta ha il suo, e sono tre cose diverse (`DECISIONI.md` n. 40):
+ * Il committente ha chiesto *«uno più istituzionale editorial artigiano
+ * architetto»*, e quel nome descriveva la reference, non la proposta. **Storey
+ * resta la reference dei valori misurati** — interlinea stretta, spaziatura
+ * negativa anche sul maiuscolo, vuoto disuguale, immagine che sborda da un lato,
+ * contatore tono su tono, schedina a righe — ma non del tono: Storey è minimale
+ * e quieta. Il tono è la **monografia stampata**, e da lì vengono le cose che
+ * nessun'altra proposta ha: il **frontespizio** col masthead allargato, il
+ * **folio** al margine esterno, l'occhiello corrente, le figure numerate
+ * `fig. 03`, il **colophon** con una riga scritta a mano.
  *
- * - **A** è un foglio stampato: non si muove, dichiara;
- * - **C** cola: la fotografia è una scheggia che si apre, una lastra per
- *   finestra, il volume che si separa, il testo del metodo che entra. Il
- *   movimento **porta contenuto**, non lo decora;
- * - **D** è un fascicolo rilegato: non si muove niente.
+ * ## Il meccanismo: **la stampa**
  *
- * ## Il funnel di C è diverso, e non per caso
+ * In D non si muove niente, ed è la differenza da C, dove lo scorrimento *è* il
+ * meccanismo (`DECISIONI.md` n. 40). Una sola eccezione, e **ripara un
+ * difetto**: il prima/dopo, che senza JavaScript resterebbe fermo a metà perché
+ * il cursore non viene reso. Nessuna rivelazione allo scorrimento: è il pattern
+ * di movimento più generato che esista, e chiamarlo diversamente non lo cambia.
  *
- * *«L'impianto del funnel tra le diverse opzioni può essere diverso comunque.»*
- * Il registro delle sei righe — il meccanismo nato per B, che precompilava il
- * passo 1 del brief senza una riga di JavaScript — **esce da C**. C vende con
- * le fotografie e non chiede niente sopra la piega, che è quello che fa la
- * reference: `1440-hero.jpeg` non ha CTA, non ha occhiello, non ha numeri.
- * Il brief parte da «passo 1 di 5».
+ * ## Il funnel di D è l'indice, e fa partire il brief da «passo 2 di 5»
  *
- * Il registro resta a **D**, dove diventa l'indice del monografico. Così i tre
- * funnel sono tre, e `scripts/collaudo/nojs-rotte.mjs` lo legge come numero: A
- * e C «passo 1 di 5», D «passo 2 di 5».
+ * Le sei voci del sommario sono `radio` con `form="brief-form"`: sono membri del
+ * form che sta in fondo alla pagina, quindi la risposta arriva **senza una riga
+ * di JavaScript**. È il gesto che A non ha per costruzione, e che C non ha per
+ * scelta — C vende con le fotografie e non chiede niente sopra la piega. Tre
+ * proposte, tre funnel, e `scripts/collaudo/nojs-rotte.mjs` lo legge come
+ * numero.
  *
- * ## L'ordine, e il perché di ognuno
+ * ## L'ordine è quello di un libro, non di una home
  *
- * copertina → dichiarazione → cifre → tre opere → metodo → volume → firme →
- * brief. Non è l'ordine di `CLAUDE.md` § Homepage e la deviazione è dichiarata:
- * escono la tabella dei sei servizi, il prima/dopo (va a D) e il territorio,
- * perché portavano 2.400 caratteri per dire cose che una proposta con «molto
- * meno copy e più media» non deve dire in home.
- *
- * **Due blocchi wow, non adiacenti** (`CLAUDE.md` § Regole, 3): la colata in
- * copertina e il volume a metà pagina. Fra loro ci sono quattro colate.
+ * copertina → frontespizio → indice → tre tavole → metodo → banda →
+ * prima/dopo → ritratti → colophon → brief. Deviazione dichiarata da
+ * `CLAUDE.md` § Homepage: escono la tabella dei sei servizi, i numeri e il
+ * territorio. I numeri stanno a C, dove sono quattro cifre ai due estremi di
+ * quattro righe; qui i dati duri sono **nelle tavole**, che è dove un
+ * monografico li mette.
  */
-export default function OpzioneC() {
+export default function OpzioneD() {
   return (
     <>
       <BarraProposta opzione="c" />
-      {/* La pagina apre su **carta**, con una scheggia di fotografia in mezzo
-          che si apre mentre si scorre. Il perché — e l'errore che ripara — sta
-          in `components/sezioni/HeroFonderia.tsx`. */}
-      <HeroFonderia />
-      <Getto>
-        <Dichiarazione />
-        <Cifre />
-        <Opere />
+      <Copertina />
+      <Fascicolo>
+        <Frontespizio />
+        <Sommario />
+        <Tavole />
         <Metodo />
-        <Volume />
-        <Firme />
-      </Getto>
-      {/* Nessun `passo1Esterno`: in C il brief comincia dall'inizio. */}
-      <Brief pagina="/opzione-c" etichetta="il brief" />
+        <Banda />
+        <PrimaDopo />
+        <Ritratti />
+        <Colophon />
+      </Fascicolo>
+      {/* `passo1Esterno`: il passo 1 è l'indice, e il brief comincia dal 2. */}
+      <Brief pagina="/opzione-c" etichetta="il brief" passo1Esterno />
       <BarraMobile />
     </>
   )

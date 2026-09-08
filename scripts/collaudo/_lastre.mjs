@@ -2,7 +2,7 @@ import { chromium } from 'playwright'
 const b = await chromium.launch()
 const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } })
 const p = await ctx.newPage()
-await p.goto('http://localhost:3001/opzione-c', { waitUntil: 'load' })
+await p.goto('http://localhost:3001/opzione-b', { waitUntil: 'load' })
 await p.waitForTimeout(400)
 console.log(
   JSON.stringify(

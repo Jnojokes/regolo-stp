@@ -18,7 +18,7 @@
  */
 import { chromium } from 'playwright'
 
-const URL = 'http://localhost:3001/opzione-c'
+const URL = 'http://localhost:3001/opzione-b'
 const b = await chromium.launch()
 const guasti = []
 

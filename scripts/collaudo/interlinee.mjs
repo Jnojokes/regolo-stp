@@ -28,7 +28,7 @@
  * E su un sito italiano l'alto **non è la maiuscola: è l'accento sulla
  * maiuscola.** In Inter la `E` sale a 0,728 em e la `È` a 0,942: chi misura la
  * cap-height sbaglia di due decimi di em, che a 63 px sono 13 px. È esattamente
- * il difetto che il committente ha visto nei titoli dell'opzione D, che stavano
+ * il difetto che il committente ha visto nei titoli dell'opzione C, che stavano
  * a 63,36 px con interlinea 63,36.
  *
  * ## Da dove vengono i numeri
@@ -63,8 +63,8 @@ const FILE = {
 
 const ROTTE = [
   ['A', '/'],
-  ['C', '/opzione-c'],
-  ['D', '/opzione-d'],
+  ['C', '/opzione-b'],
+  ['D', '/opzione-c'],
   ['studio', '/studio'],
   ['servizio', '/servizi/strutture'],
   ['progetti', '/progetti'],

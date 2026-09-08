@@ -126,7 +126,7 @@ export function SiteFooter({
       )}
 
       {/* La riga scritta a mano: **una volta sola in tutta la pagina**, e solo
-          nell'opzione D. È la firma di Storey, che usa una calligrafica
+          nell'opzione C. È la firma di Storey, che usa una calligrafica
           esattamente una volta, in fondo. Negli altri tre temi il CSS non la
           disegna nemmeno — la regola sta lì, non qui, così non si può
           «accendere» per sbaglio da un altro blocco. */}

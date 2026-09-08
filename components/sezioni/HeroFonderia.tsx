@@ -5,7 +5,7 @@ import { site } from '@/lib/site'
 const CLAIM = ['Progettiamo e dirigiamo.', 'Dal disegno al cantiere.'] as const
 
 /**
- * Hero dell'opzione C «La fonderia» — **la colata**.
+ * Hero dell'opzione B «La fonderia» — **la colata**.
  *
  * ## L'errore che questo file ripara
  *

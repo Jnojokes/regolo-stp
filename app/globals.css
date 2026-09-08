@@ -313,7 +313,7 @@
    qui la reference *è* il brief, e la skill dice di seguirlo alla lettera.
    ========================================================================== */
 
-[data-theme='c'] {
+[data-theme='b'] {
   --regolo-paper: #f3f0ec; /* la carta calda misurata sulla reference */
   --regolo-surface: #ffffff;
   --regolo-ink: #1b1b19; /* 15,18:1 sulla carta */
@@ -463,7 +463,7 @@
    sezione, e una **calligrafica usata una volta sola** in tutta la pagina.
    ========================================================================== */
 
-[data-theme='d'] {
+[data-theme='c'] {
   --regolo-paper: #ffffff;
   --regolo-surface: #ffffff;
   --regolo-ink: #000000; /* 21,00:1 */

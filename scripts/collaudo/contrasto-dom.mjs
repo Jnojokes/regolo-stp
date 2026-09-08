@@ -24,8 +24,8 @@ for (const url of [
   // due rotte del progetto non verificate dallo script che trova i difetti
   // veri — ed e' proprio dove stanno i casi difficili (testo bianco sopra una
   // fotografia). DECISIONI n. 38.
+  'http://localhost:3001/opzione-b',
   'http://localhost:3001/opzione-c',
-  'http://localhost:3001/opzione-d',
   'http://localhost:3001/servizi/strutture',
   'http://localhost:3001/progetti',
   'http://localhost:3001/contatti',

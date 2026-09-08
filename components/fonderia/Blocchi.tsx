@@ -8,7 +8,7 @@ import { progetti } from '@/lib/progetti'
 import { eSegnaposto, site } from '@/lib/site'
 
 /**
- * I blocchi dell'opzione C, sotto la copertina.
+ * I blocchi dell'opzione B, sotto la copertina.
  *
  * Stanno in un file solo e non uno per componente perché sono **piccoli**, ed è
  * il punto: il corpo di C prima portava **7.139 caratteri**, il +17 % rispetto

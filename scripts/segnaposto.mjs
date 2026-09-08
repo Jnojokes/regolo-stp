@@ -21,7 +21,7 @@
  *
  * Non è una scelta di comodo: è **più robusto del `grep` che sostituisce**. La
  * critica della ricognizione ha trovato che cinque `[[DA CLIENTE` di
- * `/opzione-c` stavano **fuori** dal componente `DaCliente` — due in un
+ * `/opzione-b` stavano **fuori** dal componente `DaCliente` — due in un
  * `<caption class="sr-only">`, due in `.confronto-specifica`, uno in una `nota`
  * passata dalla pagina — quindi erano invisibili all'unico gancio automatico che
  * c'era. Un raccoglitore che legge la pagina resa non ha quel punto cieco: vede

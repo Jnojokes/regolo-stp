@@ -396,11 +396,28 @@
     inset: 8%;
     opacity: 0;
   }
-  /* Fuori dal supporto di `animation-timeline` resta acceso **il primo**, che è
-     uno stato finito e coerente: la tavola del primo incontro accanto al
-     metodo. È lo stesso principio degli `initial-value` di casa. */
-  .fasi-disegno[data-fase='0'] {
-    opacity: 1;
+  /* Dove l'animazione non c'è resta acceso **il primo**, che è uno stato finito
+     e coerente: la tavola del primo incontro accanto al metodo. È lo stesso
+     principio degli `initial-value` di casa.
+     I casi sono **due e vanno nominati tutti e due** — il browser senza
+     `animation-timeline` e `prefers-reduced-motion: reduce`, che qui spegne
+     l'animazione con un `@media` e non con una durata. E la condizione **non si
+     può omettere**: questa regola è stata per una passata senza `@supports`, e
+     siccome l'animazione è dichiarata senza `animation-fill-mode` (scelta di
+     :763), fuori dal proprio range il valore base torna a valere. Risultato
+     misurato a cinque quote: il disegno 0 restava acceso **sotto** tutti gli
+     altri e le due didascalie finivano allo stesso pixel — `fig. 01` sopra
+     `fig. 03`, che a schermo si legge `fig. 0⅓`. Un fallback non condizionato
+     non è un fallback: è uno stato in più. */
+  @supports not (animation-timeline: view()) {
+    .fasi-disegno[data-fase='0'] {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fasi-disegno[data-fase='0'] {
+      opacity: 1;
+    }
   }
   .fasi-disegno .segno {
     position: static;

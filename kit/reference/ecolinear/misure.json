@@ -1,0 +1,457 @@
+{
+  "url": "https://ecolinearstudio.com/",
+  "slug": "ecolinear",
+  "data": "2026-09-08",
+  "strumento": "misura-reference.mjs (Playwright, stili calcolati dal DOM vivo)",
+  "m1440": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "Ecolinear studio",
+        "famiglia": "Montserrat",
+        "px": 32,
+        "interlinea": "normal",
+        "peso": "700",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 1037
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "About Us",
+        "famiglia": "Montserrat",
+        "px": 18,
+        "interlinea": "normal",
+        "peso": "500",
+        "spaziatura": "0.9px",
+        "trasformazione": "lowercase",
+        "colore": "rgb(157, 116, 96)",
+        "larghezza": 87
+      },
+      "h3": {
+        "selettore": "h3",
+        "testo": "Feasibility & Consultation",
+        "famiglia": "Montserrat",
+        "px": 46.08,
+        "interlinea": 51.61,
+        "peso": "500",
+        "spaziatura": "-0.9216px",
+        "trasformazione": "none",
+        "colore": "rgb(157, 116, 96)",
+        "larghezza": 563
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Fig. 01 / 10",
+        "famiglia": "Montserrat",
+        "px": 16,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 95
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Chichele RoadChichele Road",
+        "famiglia": "Montserrat",
+        "px": 16,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 288
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "Contact Us",
+        "famiglia": "Montserrat",
+        "px": 13.33,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(23, 23, 23)",
+        "larghezza": 184
+      },
+      "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]": {
+        "selettore": "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]",
+        "testo": "About Us",
+        "famiglia": "Montserrat",
+        "px": 16,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 103
+      }
+    },
+    "fonts": [
+      "Montserrat 300 normal",
+      "Montserrat 400 normal",
+      "Montserrat 500 normal",
+      "Montserrat 600 normal",
+      "Montserrat 700 normal",
+      "Montserrat 800 normal",
+      "Montserrat Fallback normal normal"
+    ],
+    "palette": [
+      {
+        "colore": "#000000",
+        "n": 379,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#9d7460",
+        "n": 50,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#f3f5f1",
+        "n": 21,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#d98e36",
+        "n": 18,
+        "ruoli": [
+          "testo",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#171717",
+        "n": 11,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#9d7460 α0.45",
+        "n": 8,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ececec",
+        "n": 4,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#9d7460 α0.75",
+        "n": 4,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#d98e36 α0.4",
+        "n": 4,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ededed",
+        "n": 2,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#d98e36 α0.5",
+        "n": 2,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#9d7460 α0.12",
+        "n": 1,
+        "ruoli": [
+          "testo"
+        ]
+      }
+    ],
+    "fondoPagina": "#ededed",
+    "raggi": {
+      "0px": 68
+    },
+    "contenitore": 1440,
+    "spazioMediano": 96,
+    "spazi": [
+      32,
+      96
+    ],
+    "heroInfo": {
+      "altezza": 900,
+      "altezzaViewport": "100%",
+      "video": false,
+      "videoAutoplay": false,
+      "immagine": true,
+      "testoPrimoViewport": "Ecolinear studio\n\nFIG. 01 / 10\n\nstudio\nARCHITECTURE FOR THE WAY PEOPLE LIVE AND WORK",
+      "cta": []
+    },
+    "headerPos": "fixed",
+    "lib": {
+      "lenis": true,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": true,
+      "webflow": false,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 130,
+    "altezzaPagina": 10640,
+    "titolo": "ecoLINEAR Studio | Architecture and Design, London",
+    "lang": "en-GB",
+    "sezSel": null
+  },
+  "classiRevealAlloScroll": [],
+  "m390": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "Ecolinear studio",
+        "famiglia": "Montserrat",
+        "px": 32,
+        "interlinea": "normal",
+        "peso": "700",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 359
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "About Us",
+        "famiglia": "Montserrat",
+        "px": 18,
+        "interlinea": "normal",
+        "peso": "500",
+        "spaziatura": "0.9px",
+        "trasformazione": "lowercase",
+        "colore": "rgb(157, 116, 96)",
+        "larghezza": 87
+      },
+      "h3": {
+        "selettore": "h3",
+        "testo": "Feasibility & Consultation",
+        "famiglia": "Montserrat",
+        "px": 18,
+        "interlinea": 20.16,
+        "peso": "500",
+        "spaziatura": "-0.36px",
+        "trasformazione": "none",
+        "colore": "rgb(157, 116, 96)",
+        "larghezza": 220
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Fig. 01 / 10",
+        "famiglia": "Montserrat",
+        "px": 16,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 95
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Chichele RoadChichele Road",
+        "famiglia": "Montserrat",
+        "px": 16,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 167
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "Contact Us",
+        "famiglia": "Montserrat",
+        "px": 13.33,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(23, 23, 23)",
+        "larghezza": 158
+      },
+      "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]": {
+        "selettore": "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]",
+        "testo": "About Us",
+        "famiglia": "Montserrat",
+        "px": 16,
+        "interlinea": "normal",
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 103
+      }
+    },
+    "fonts": [
+      "Montserrat 300 normal",
+      "Montserrat 400 normal",
+      "Montserrat 500 normal",
+      "Montserrat 600 normal",
+      "Montserrat 700 normal",
+      "Montserrat 800 normal",
+      "Montserrat Fallback normal normal"
+    ],
+    "palette": [
+      {
+        "colore": "#000000",
+        "n": 424,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#9d7460",
+        "n": 60,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#d98e36",
+        "n": 34,
+        "ruoli": [
+          "testo",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#171717",
+        "n": 15,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#f3f5f1",
+        "n": 10,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ececec",
+        "n": 8,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ffffff",
+        "n": 5,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#d98e36 α0.35",
+        "n": 4,
+        "ruoli": [
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#9d7460 α0.75",
+        "n": 4,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#9d7460 α0.45",
+        "n": 4,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ededed",
+        "n": 2,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#0000ee",
+        "n": 1,
+        "ruoli": [
+          "testo"
+        ]
+      }
+    ],
+    "fondoPagina": "#ededed",
+    "raggi": {
+      "0px": 55
+    },
+    "contenitore": 390,
+    "spazioMediano": 40,
+    "spazi": [
+      40,
+      40
+    ],
+    "heroInfo": {
+      "altezza": 844,
+      "altezzaViewport": "100%",
+      "video": false,
+      "videoAutoplay": false,
+      "immagine": true,
+      "testoPrimoViewport": "Ecolinear studio\n\nFIG. 01 / 10\n\nstudio\nARCHITECTURE FOR THE WAY PEOPLE LIVE AND WORK",
+      "cta": []
+    },
+    "headerPos": "fixed",
+    "lib": {
+      "lenis": true,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": true,
+      "webflow": false,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 107,
+    "altezzaPagina": 8638,
+    "titolo": "ecoLINEAR Studio | Architecture and Design, London",
+    "lang": "en-GB",
+    "sezSel": null
+  }
+}

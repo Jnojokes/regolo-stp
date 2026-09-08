@@ -9,22 +9,44 @@
 > I PNG sono stati riconvertiti in JPEG q82 dopo la lettura (22 MB → 11 MB): la cartella è
 > l'archivio del ragionamento, non un asset del sito.
 
-## 0 · Selezione finale, e le due esclusioni
+## 0 · Selezione, per proposta *(rifatta alla ripassata di design, 08/09/2026)*
 
-Tetto della skill: max **3 tier A** (estetica), **2 tier B** (impianto), **1 tier C** (verticale).
+Il tetto della skill è max **3 tier A** (estetica), **2 tier B** (impianto), **1 tier C**
+(verticale), **+ 1 anti-pattern catturato**. Fino a oggi la scheda teneva una lista sola per il
+progetto, e non reggeva più: da quando le proposte sono **tre sistemi disgiunti** (n. 45, n. 46)
+una lista unica dice a quale sito somiglia «il sito», che è una domanda senza risposta. Quindi il
+tetto si conta **per proposta**, ed è una deviazione dichiarata.
 
-| Tier | Sito | Stato |
-|---|---|---|
-| **A** | Storey Architecture — https://www.storeyarchitecture.co.uk/ | dentro |
-| **A** | Kononenko Architectural Bureau — https://kononenkogroup.com/ | dentro |
-| **A** | **AS Associates — https://as-associates.jp/** | **dentro (entra, vedi sotto)** |
-| — | Studio Foundry — https://studio-foundry.sujen.co/ | **guardato, fuori dal tier A** |
-| narrativa | Eladio Dieste — https://www.eladiodieste.com/ | dentro, fuori tetto: non dà token |
-| **B** | ecoLINEAR Studio — https://ecolinearstudio.com/ | dentro, e alla fase 3 quinquies **è il sistema dell'opzione B** |
-| **B** | Pelizzari Studio — https://www.pelizzari.com/ | dentro |
-| **C** | schlaich bergermann partner — https://www.sbp.de/ | dentro (è il tier C di `references/studi-tecnici.md`) |
-| **—** | **Halston (template Webflow) — https://halston-architecture-template.webflow.io/** | **entrato per nome dal committente: è il sistema dell'opzione C** |
-| — | Nabil Issa — https://nabilissa.com/ | **guardato, fuori** |
+| | tier A — estetica | tier B — impianto | tier C / narrativa |
+|---|---|---|---|
+| **A** «lo studio» — `/` | **AIR** *(nuova, misurata con lo script)* · Storey · Kononenko | **LPAS** *(nuova, misurata)* · AS Associates *(scesa da tier A: quello che dà è **l'indice come scheda tecnica**, cioè impianto)* | Eladio Dieste (narrativa: la quota come struttura, e il movimento) |
+| **B** «il foglio» — `/opzione-b` | **ecoLINEAR** — non «tier A»: **è il sistema**, per nome dal committente (n. 46) | Pelizzari | — |
+| **C** «le bande» — `/opzione-c` | **Halston** — idem, **è il sistema** (n. 46) | — | schlaich bergermann partner |
+| **tutte** | — | — | **anti-pattern: Ingegneria Civitanova** *(nuovo, catturato)* — il concorrente vero nella stessa regione |
+
+Fuori: **Studio Foundry** (guardata, fuori dal tier A — il perché sotto) · **Nabil Issa**
+(guardato, fuori) · **refero** `DESIGN-structured.md`, che **non è una reference**: è una pelle,
+e la regola 14 vieta di usarla come input di un'opzione. Resta come prova da contare e va
+spostata in `kit/ricerca/refero/`.
+
+**Le tre entrate della ripassata, e perché.** A non aveva **nessuna reference sua**: i suoi
+blocchi citavano il fondo comune (Storey, Kononenko, AS, Pelizzari, Dieste) e i suoi token erano
+nati dal brief, che era voce per voce il cluster n. 1. Adesso:
+
+- **AIR** le dà il gesto che le mancava, e che risolve un problema di contenuto e non di stile:
+  **lo studio non ha una fotografia**, ne ha 62 di segnaposto — e AIR fa una prima schermata
+  senza fotografia, con un oggetto tridimensionale bianco su bianco dentro cui sta il tipo. I
+  volumi dell'edificio REGOLO ce li ha già, in `lib/esploso.ts`, e sono un dato del repo.
+- **LPAS** le dà lo smistamento **con il conteggio**: schede-mercato che smistano, con il numero
+  della posizione sulla scheda e i contatori per categoria più giù.
+- **Ingegneria Civitanova** è l'anti-pattern che il gate A4 chiede da sempre e che non c'era.
+  Non è un uomo di paglia costruito apposta: è uno studio vero, stessa regione, stessi servizi.
+
+**Come sono state misurate, e la differenza che fa.** Le prime nove reference sono state
+catturate a mano con l'MCP Playwright (lo dice il cappello qui sopra): i numeri sono veri ma
+**trascritti**, e non c'è un `misure.json` da ricontrollare. Le tre nuove, più **ecoLINEAR** e
+**Halston** ricatturate, sono passate da `scripts/misura-reference.mjs`: cinque PNG e un
+`misure.json` per slug. Dove i due metodi divergono, vale il file.
 
 ### Le due entrate della fase 3 quinquies, e cosa cambia nella natura di questa scheda
 
@@ -210,6 +232,72 @@ il contrario della decisione presa qui (analytics senza cookie, nessun banner).
 | **Il difetto misurato** *(nuovo, 08/09)* | **due navigazioni accese insieme a 1440**: la pastiglia granata `MENU` (che è il comando del menu a scomparsa) sta in testata **mentre** il menu esteso — About · Services · Disciplines · Projects · Journal — è già tutto visibile accanto. Contate sui nodi visibili: 7 link di navigazione **più** un `MENU`. In più l'ultima voce ha il testo duplicato nel DOM (`MoreMore`), che una sintesi vocale legge due volte. Sono difetti da template: un template deve coprire ogni larghezza, e li lascia accesi tutti. **E l'opzione C oggi ha lo stesso**, misurato sul build: a 1440 la `<details>` «menu» è visibile insieme al menu esteso, mentre su A e su B a 1440 la `<details>` è nascosta. Non lo correggo qui: «identico» lo autorizza, un bottone-menu accanto a un menu già aperto è comunque un difetto, e la scelta è di FT (passo 2) |
 | **Da qui prendo per REGOLO** | tutto: è la specifica dell'opzione C. Fuori dall'opzione C resta **una** lezione trasferibile — il ritmo di una pagina si può fare con il **cambio di superficie** invece che con il vuoto, e allora non serve un ritmo verticale dichiarato |
 | **Non prendo** *(nuovo, 08/09)* | il testo di nav duplicato · il **mauve a 4,13:1** e le altre due tinte sotto soglia, corrette tenendo tinta e saturazione (n. 49) · i «premi» inventati della riga di metadati (`RECOGNITION — Mies van der Rohe Shortlist`), che su REGOLO sarebbero contenuto inventato · e il **video** di copertina, che qui è un file da template e da noi non esiste |
+
+### AIR business center · **tier A dell'opzione A** *(entrata alla ripassata, 08/09/2026)* · `air/`
+
+> Misurata con `scripts/misura-reference.mjs` — è la **prima** reference del progetto che passa
+> dallo script invece che dall'MCP a mano, quindi la prima con un `misure.json` ricontrollabile.
+> Cinque catture: 1440 hero · metà · intera, 390 hero · metà.
+
+| Voce | Misurato |
+|---|---|
+| Famiglie | **Onest sola**, pesi 400 e 500. Nessun display separato, nessuna monospace |
+| Scala 1440 | h1 **71 px / interlinea 70** (0,986) · corpo **28 / 30** · micro 11 maiuscolo. Le tre lettere `A I R` in pagina non sono l'`h1`: l'`h1` è la frase intera, composta a 71 px |
+| Scala 390 | 42 / 45 → rapporto display **1,69×** |
+| Tracciatura | **−2,84 px sull'h1** = −0,040 em, e maiuscolo. Negativa sulle maiuscole, come le tre tier A già in scheda |
+| Misura della prosa | **261 px.** Non è un errore: il testo di questa pagina non è prosa, è didascalia |
+| Colori | fondo `#ffffff`, testo `#000000`, muto `#8d8d8d`, più quattro trasparenze. **Nessun accento**, come Storey, Kononenko e AS |
+| Angoli | 0 px ×34 e 5 px ×12 (solo le pastiglie della testata) |
+| Contenitore | **nessuno**: 1440, cioè tutta la finestra |
+| Testata | `position: fixed`, hamburger e un cuore a sinistra, il claim **centrato** in due righe, una pastiglia nera `CHOOSE AN OFFICE` a destra |
+| **La prima schermata** | le tre lettere **`A · I · R` spinte ai margini** — la A al margine sinistro, la R al destro, la I in mezzo — con nel vuoto fra I e R tre righe di micro-testo. E in mezzo, **un nastro pieghettato tridimensionale bianco** che attraversa la pagina in diagonale e passa **dietro e fra** le lettere. Bianco su bianco: l'oggetto si legge solo per la propria ombra |
+| **La fotografia, come è ritagliata** | **non c'è nessuna fotografia.** L'immagine della pagina è un oggetto renderizzato, bianco su fondo bianco, senza cornice e senza bordo: il contrasto lo fa l'ombra propria. È l'unica reference del kit in cui la prima schermata non ha né una foto né un colore |
+| A 390 | **lo stesso gesto, non una riduzione**: le tre lettere restano ai due margini a 42 px, l'oggetto passa sopra, il micro-testo scende sotto. Non c'è una versione «impilata» |
+| Movimento | una sola animazione infinita e 86 elementi con transizione; nessuna classe di reveal allo scorrimento. Il gesto è **l'oggetto**, non la comparsa dei blocchi |
+| **La cosa che fa lui e gli altri no** | **il disegno occupa la pagina e il tipo gli sta dentro.** Non è tipo *sopra* una foto (Halston, Studio Foundry, Heatherwick) né tipo *accanto* a una foto (A oggi): le lettere e l'oggetto stanno **sullo stesso piano**, e l'oggetto le copre. Il risultato è che la pagina ha un'immagine forte **senza avere una fotografia** |
+| **Il difetto misurato** | **scroll virtuale (Locomotive)**: `document.body.scrollHeight` resta **900 px** su una pagina che ne scorre ventimila, quindi senza JavaScript la pagina non scorre affatto e una cattura «intera» è inservibile — il PNG `air-1440-intera.png` è la prova, è identico alla hero. In più un banner cookie fisso in basso |
+| **Da qui prendo per REGOLO** | **il gesto dell'opzione A**: l'oggetto tridimensionale bianco su bianco al posto della fotografia, con il payoff che gli sta dentro invece che accanto. È la risposta al problema vero di REGOLO — **lo studio non ha ancora una fotografia**, e ne ha 62 di segnaposto — mentre i volumi dell'edificio ce li ha già, in `lib/esploso.ts`, e sono un dato del repo, non un contenuto inventato. Prendo anche: una famiglia sola, zero accenti, la tracciatura negativa sulle maiuscole, e le lettere spinte ai due margini con il vuoto in mezzo |
+| **Non prendo** | il **Locomotive** e ogni scroll virtuale: la regola 4 di casa dice che senza JavaScript il contenuto resta leggibile, e qui non resta nemmeno raggiungibile · il banner cookie · l'`h1` invisibile · il cuore «preferiti» in testata, che è un pattern da immobiliare |
+
+### LPAS · **tier B dell'opzione A** *(entrata alla ripassata, 08/09/2026)* · `lpas/`
+
+| Voce | Misurato |
+|---|---|
+| Famiglie | **Aeonik sola**, 400 e 600 |
+| Scala 1440 | h1 **75 / 75** (interlinea 1,0) · h2 56 / 61,6 · corpo 16 / 21,6 |
+| Scala 390 | 46 / 46 → rapporto **1,63×** |
+| Colori | fondo `#ffffff`, inchiostro `#111111`, banda `#262626`, muto `#747474`; e i **pannelli dei mercati**, ognuno con la sua tinta desaturata |
+| Angoli | 0 px ×74, 50 % ×5 (i pulsanti `+`), 6 px ×1 |
+| Contenitore | 1.340 px · spazio fra le sezioni **240 px** (mediano) |
+| Altezza | 9.363 px a 1440 · 8.005 a 390 |
+| Hero | 100 svh, **video in autoplay**, e le CTA **sono i mercati**: `Affordable Housing`, `Student Housing`, `Market Rate Housing`, `Senior Housing` |
+| **Lo smistamento, che è il motivo per cui entra** | il blocco che smista non è una griglia di pastiglie: è un **carosello orizzontale di schede-mercato**, e ogni scheda è una fotografia sopra **un pannello di colore pieno** che porta il nome del mercato a 75 px, un claim allineato a destra (`Design for business value`), un `+` in un cerchio, e in basso a sinistra **il contatore di posizione `5 / 5`** |
+| **La fotografia, come è ritagliata** | a filo del pannello, senza cornice e senza raggio, e **il pannello continua la fotografia**: il taglio orizzontale fra i due è netto e cade sempre alla stessa quota, così la fila di schede si legge come una banda unica |
+| **La cosa che fa lui e gli altri no** | **conta.** `5 / 5` sulla scheda, e più giù i contatori per categoria (27 · 13 · 12 · 6 · 14) letti sui nodi veri: è la prova di volume **senza scrivere «siamo bravi»** |
+| **Il difetto misurato** | il carosello è l'**unico** modo di raggiungere i mercati e scorre in orizzontale: a 390 il contatore `5 / 5` resta, ma quattro schede su cinque stanno fuori dalla finestra e nessuna ancora le indicizza. E il video della hero parte in autoplay senza un comando di pausa visibile |
+| **Da qui prendo per REGOLO** | **il conteggio come prova** sullo smistamento di A: oggi le cinque righe non portano nessun numero, e i numeri che il repo può contare esistono (`RUOLI.length`, i sei servizi, i 128 comuni). E la **riga a tre tempi sulla scheda** — nome grande a sinistra, claim al bordo destro, contatore in basso — che è la stessa lezione di Pelizzari con un dato in più |
+| **Non prendo** | il **carosello orizzontale** come unico accesso (contro la regola SEO di casa: niente di importante raggiungibile solo per gesto) · il video in autoplay senza comando · le tinte dei pannelli, una per mercato, che sono cinque accenti |
+
+### Ingegneria Civitanova · **anti-pattern** · `_antipattern-ingegneria-civitanova/`
+
+> Il gate A4 della lista unica chiede **un anti-pattern catturato, non descritto**: «è il prodotto
+> contro cui si vende, e va visto». Questo è un concorrente vero, nella stessa regione e con gli
+> stessi servizi — ingegneria civile, architettura, direzione lavori, sicurezza, collaudi — a
+> quaranta minuti da Fermo. Non è un uomo di paglia: è il livello medio della categoria.
+
+| Voce | Misurato |
+|---|---|
+| Famiglie | **Yanone Kaffeesatz** 200/300/400, un condensato da Google Fonts, servito a runtime |
+| Scala 1440 | h1 **49,5 px con interlinea 33,3** — cioè **0,67**, sotto la soglia d'inchiostro di qualunque carattere: i titoli su due righe si toccano · corpo **36 / 45** su una misura di 588 px |
+| A 390 | l'`h1` **non esiste**: la pagina mobile è un'altra pagina, ed è **più alta** di quella desktop (4.603 px contro 2.611) |
+| Colori | fondo `#d4d9dd` con una texture di rumore, testo `#546b76` e `#474f51` — grigio-azzurro su grigio-azzurro |
+| Contenitore | **323 px** di mediana: il contenuto sta in colonne strette dentro una finestra da 1440 |
+| Hero | **17 % della finestra.** Non c'è una prima schermata: c'è una citazione |
+| CTA | **nessuna.** Le uniche azioni misurate sono le sei voci di menu |
+| Movimento | zero animazioni, zero transizioni |
+| **Che cosa mette al posto del lavoro** | una **citazione letteraria** (Alain de Botton) al posto della proposta di valore; come immagine di apertura, **la fotografia della targhetta dello studio**; e sotto, quattro schede identiche con cornice bianca e ombra, ognuna con una **fotografia d'archivio** — il disegno con la penna, la calcolatrice sul grafico, l'operaio col casco, le gru — e un titolo generico (`Benvenuti`, `Preventivi e Sopralluoghi`, `Direzione Lavori`, `Sicurezza`) |
+| **A cosa serve avercelo** | in call è la diapositiva prima. Le tre proposte di REGOLO si giudicano contro **questo**, non contro Awwwards: nessuna fotografia d'archivio, nessuna citazione al posto di una frase propria, una CTA che esiste, e i numeri che il repo può contare al posto di quattro schede uguali |
+| **Il difetto che vale la pena copiare al contrario** | il banner cookie con `Accetto` in **verde acceso** su un sito che non ha nessuna misurazione da autorizzare. La decisione n. 10 di REGOLO — analytics senza cookie, nessun banner — restituisce la prima schermata al contenuto, ed è una differenza che in call **si vede** |
 
 ### Pelizzari Studio · tier B (impianto) · `pelizzari/`
 

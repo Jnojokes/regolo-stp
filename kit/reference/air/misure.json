@@ -1,0 +1,340 @@
+{
+  "url": "https://aircenter.space/",
+  "slug": "air",
+  "data": "2026-09-08",
+  "strumento": "misura-reference.mjs (Playwright, stili calcolati dal DOM vivo)",
+  "m1440": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "AIR — A Premium Class A Business Center on Khodynka Field by Tekta Group",
+        "famiglia": "Onest",
+        "px": 71,
+        "interlinea": 70,
+        "peso": "400",
+        "spaziatura": "-2.84px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 1
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "The momentum\n            to rise higher",
+        "famiglia": "Onest",
+        "px": 71,
+        "interlinea": 70,
+        "peso": "400",
+        "spaziatura": "-2.84px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 1400
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "The architecture\nof New Success",
+        "famiglia": "Onest",
+        "px": 28,
+        "interlinea": 30,
+        "peso": "400",
+        "spaziatura": "-0.56px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 261
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Skip to main content",
+        "famiglia": "Onest",
+        "px": 14,
+        "interlinea": 18,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 1
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "",
+        "famiglia": "Onest",
+        "px": 11,
+        "interlinea": 14,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 60
+      }
+    },
+    "fonts": [
+      "Onest 400 normal",
+      "Onest 500 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#8d8d8d",
+        "n": 132,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ffffff",
+        "n": 65,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 62,
+        "ruoli": [
+          "testo",
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#ffffff α0.1",
+        "n": 4,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000 α0.05",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000 α0.1",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ffffff α0.3",
+        "n": 1,
+        "ruoli": [
+          "testo"
+        ]
+      }
+    ],
+    "fondoPagina": "#ffffff",
+    "raggi": {
+      "5px": 12,
+      "0px": 34
+    },
+    "contenitore": 1440,
+    "spazioMediano": null,
+    "spazi": [],
+    "heroInfo": {
+      "altezza": 900,
+      "altezzaViewport": "100%",
+      "video": false,
+      "videoAutoplay": false,
+      "immagine": true,
+      "testoPrimoViewport": "AIR — A PREMIUM CLASS A BUSINESS CENTER ON KHODYNKA FIELD BY TEKTA GROUP\n\nTHE ARCHITECTURE\nOF NEW SUCCESS\n\n\nCLASS (A)\nPREMIUM BUSINESS\nCENTER",
+      "cta": []
+    },
+    "headerPos": "fixed",
+    "lib": {
+      "lenis": false,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": true,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": false,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 1,
+    "elementiConTransizione": 86,
+    "altezzaPagina": 900,
+    "titolo": "AIR business center",
+    "lang": "en",
+    "sezSel": null
+  },
+  "classiRevealAlloScroll": [],
+  "m390": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "AIR — A Premium Class A Business Center on Khodynka Field by Tekta Group",
+        "famiglia": "Onest",
+        "px": 42,
+        "interlinea": 45,
+        "peso": "400",
+        "spaziatura": "-0.84px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 1
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "The momentum\n            to rise higher",
+        "famiglia": "Onest",
+        "px": 42,
+        "interlinea": 45,
+        "peso": "400",
+        "spaziatura": "-0.84px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 350
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "The architecture\nof New Success",
+        "famiglia": "Onest",
+        "px": 21,
+        "interlinea": 24,
+        "peso": "400",
+        "spaziatura": "-0.21px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 350
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Skip to main content",
+        "famiglia": "Onest",
+        "px": 13,
+        "interlinea": 16,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 1
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "",
+        "famiglia": "Onest",
+        "px": 10,
+        "interlinea": 13,
+        "peso": "500",
+        "spaziatura": "0.1px",
+        "trasformazione": "uppercase",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 60
+      }
+    },
+    "fonts": [
+      "Onest 400 normal",
+      "Onest 500 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#8d8d8d",
+        "n": 218,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ffffff",
+        "n": 73,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 54,
+        "ruoli": [
+          "testo",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000 α0.1",
+        "n": 4,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ffffff α0.1",
+        "n": 4,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#8d8d8d α0.7",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ffffff α0.15",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000 α0.05",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#ffffff α0.3",
+        "n": 1,
+        "ruoli": [
+          "testo"
+        ]
+      }
+    ],
+    "fondoPagina": "#ffffff",
+    "raggi": {
+      "5px": 21,
+      "0px": 47
+    },
+    "contenitore": 390,
+    "spazioMediano": null,
+    "spazi": [],
+    "heroInfo": {
+      "altezza": 844,
+      "altezzaViewport": "100%",
+      "video": false,
+      "videoAutoplay": false,
+      "immagine": true,
+      "testoPrimoViewport": "AIR — A PREMIUM CLASS A BUSINESS CENTER ON KHODYNKA FIELD BY TEKTA GROUP\n\nTHE ARCHITECTURE\nOF NEW SUCCESS\n\n\nCLASS (A)\nPREMIUM BUSINESS\nCENTER",
+      "cta": []
+    },
+    "headerPos": "fixed",
+    "lib": {
+      "lenis": false,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": false,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 90,
+    "altezzaPagina": 844,
+    "titolo": "AIR business center",
+    "lang": "en",
+    "sezSel": null
+  }
+}

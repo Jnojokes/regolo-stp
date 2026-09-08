@@ -1,0 +1,492 @@
+{
+  "url": "https://halston-architecture-template.webflow.io/",
+  "slug": "halston",
+  "data": "2026-09-08",
+  "strumento": "misura-reference.mjs (Playwright, stili calcolati dal DOM vivo)",
+  "m1440": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "Bespoke living defined by clarity",
+        "famiglia": "General Sans",
+        "px": 42.6,
+        "interlinea": 42.6,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 426
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "Founded in 2003, Halston is a deliberately small practice. The principal archite",
+        "famiglia": "General Sans",
+        "px": 26.8,
+        "interlinea": 34.84,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.9 0.89902 0.890196)",
+        "larghezza": 498
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Architecture",
+        "famiglia": "General Sans",
+        "px": 13.7,
+        "interlinea": 21.92,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "rgb(88, 57, 57)",
+        "larghezza": 105
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Halston",
+        "famiglia": "General Sans",
+        "px": 16,
+        "interlinea": 20.8,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 99
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "ConsultationConsultation",
+        "famiglia": "General Sans",
+        "px": 16,
+        "interlinea": 20.8,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.172549 0.111765 0.111765)",
+        "larghezza": 160
+      },
+      "nav a": {
+        "selettore": "nav a",
+        "testo": "Halston",
+        "famiglia": "General Sans",
+        "px": 16,
+        "interlinea": 20.8,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 99
+      },
+      "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]": {
+        "selettore": "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]",
+        "testo": "Recognition",
+        "famiglia": "JetBrains Mono",
+        "px": 12,
+        "interlinea": 14.4,
+        "peso": "400",
+        "spaziatura": "-0.4px",
+        "trasformazione": "uppercase",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 75
+      }
+    },
+    "fonts": [
+      "General Sans 200 700 normal",
+      "JetBrains Mono 300 normal",
+      "JetBrains Mono 400 normal",
+      "JetBrains Mono 500 normal",
+      "JetBrains Mono 600 normal",
+      "JetBrains Mono 700 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#000000",
+        "n": 609,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 274,
+        "ruoli": [
+          "testo",
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 62,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#583939",
+        "n": 47,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 42,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 31,
+        "ruoli": [
+          "filetto",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 30,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#010000",
+        "n": 20,
+        "ruoli": [
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 18,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 15,
+        "ruoli": [
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 10,
+        "ruoli": [
+          "testo",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#99988f",
+        "n": 9,
+        "ruoli": [
+          "fondo"
+        ]
+      }
+    ],
+    "fondoPagina": "#010101",
+    "raggi": {
+      "0px": 69
+    },
+    "contenitore": 1440,
+    "spazioMediano": 64,
+    "spazi": [
+      15,
+      30,
+      30,
+      48,
+      64,
+      128,
+      128,
+      158,
+      160
+    ],
+    "heroInfo": {
+      "altezza": 1215,
+      "altezzaViewport": "135%",
+      "video": true,
+      "videoAutoplay": true,
+      "immagine": true,
+      "testoPrimoViewport": "BESPOKE LIVING\nDEFINED BY CLARITY\n\nARCHITECTURE\n\nEXPLORE\n\nINTERIOR DESIGN\n\nEXPLORE\n\nRENOVATION\n\nEXPLORE\n\nRECOGNITION\nDAM Preis 2026\nArchitizer A+ Award\nMies van der Rohe Shortlist\nCONSULTATION\nCONSULTATION\n\nHALSTON\n\nARCHITECTURE AND\nINTERIO",
+      "cta": [
+        "ArchitectureExplore",
+        "Interior DesignExplore",
+        "RenovationExplore",
+        "ConsultationConsultation"
+      ]
+    },
+    "headerPos": "absolute",
+    "lib": {
+      "lenis": true,
+      "gsap": true,
+      "scrollTrigger": true,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": true,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 49,
+    "altezzaPagina": 20713,
+    "titolo": "Halston - Webflow HTML website template",
+    "lang": "en",
+    "sezSel": null
+  },
+  "classiRevealAlloScroll": [],
+  "m390": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "Bespoke living defined by clarity",
+        "famiglia": "General Sans",
+        "px": 28,
+        "interlinea": 28,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 280
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "Founded in 2003, Halston is a deliberately small practice. The principal archite",
+        "famiglia": "General Sans",
+        "px": 22,
+        "interlinea": 28.6,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.9 0.89902 0.890196)",
+        "larghezza": 365
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Architecture",
+        "famiglia": "General Sans",
+        "px": 12,
+        "interlinea": 19.2,
+        "peso": "500",
+        "spaziatura": "normal",
+        "trasformazione": "uppercase",
+        "colore": "rgb(88, 57, 57)",
+        "larghezza": 92
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Halston",
+        "famiglia": "General Sans",
+        "px": 16,
+        "interlinea": 20.8,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 91
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "ConsultationConsultation",
+        "famiglia": "General Sans",
+        "px": 16,
+        "interlinea": 20.8,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.172549 0.111765 0.111765)",
+        "larghezza": 139
+      },
+      "nav a": {
+        "selettore": "nav a",
+        "testo": "Halston",
+        "famiglia": "General Sans",
+        "px": 16,
+        "interlinea": 20.8,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 91
+      },
+      "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]": {
+        "selettore": "small, .eyebrow, [class*=\"eyebrow\"], [class*=\"label\"]",
+        "testo": "Recognition",
+        "famiglia": "JetBrains Mono",
+        "px": 12,
+        "interlinea": 14.4,
+        "peso": "400",
+        "spaziatura": "-0.4px",
+        "trasformazione": "uppercase",
+        "colore": "color(srgb 0.09 0.0894118 0.0841176)",
+        "larghezza": 75
+      }
+    },
+    "fonts": [
+      "General Sans 200 700 normal",
+      "JetBrains Mono 300 normal",
+      "JetBrains Mono 400 normal",
+      "JetBrains Mono 500 normal",
+      "JetBrains Mono 600 normal",
+      "JetBrains Mono 700 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#000000",
+        "n": 479,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 190,
+        "ruoli": [
+          "testo",
+          "filetto",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#583939",
+        "n": 39,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 38,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 36,
+        "ruoli": [
+          "filetto",
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 32,
+        "ruoli": [
+          "fondo",
+          "testo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 20,
+        "ruoli": [
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 18,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#010000",
+        "n": 10,
+        "ruoli": [
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#99988f",
+        "n": 9,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 8,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#010101",
+        "n": 6,
+        "ruoli": [
+          "testo"
+        ]
+      }
+    ],
+    "fondoPagina": "#010101",
+    "raggi": {
+      "0px": 58
+    },
+    "contenitore": 390,
+    "spazioMediano": 32,
+    "spazi": [
+      12,
+      24,
+      24,
+      24,
+      32,
+      48,
+      64,
+      64,
+      64
+    ],
+    "heroInfo": {
+      "altezza": 1036,
+      "altezzaViewport": "123%",
+      "video": true,
+      "videoAutoplay": true,
+      "immagine": true,
+      "testoPrimoViewport": "BESPOKE LIVING\nDEFINED BY CLARITY\n\nARCHITECTURE\n\nEXPLORE\n\nINTERIOR DESIGN\n\nEXPLORE\n\nRENOVATION\n\nEXPLORE\n\nRECOGNITION\nDAM Preis 2026\nArchitizer A+ Award\nMies van der Rohe Shortlist\nCONSULTATION\nCONSULTATION\n\nHALSTON\n\nARCHITECTURE AND\nINTERIO",
+      "cta": [
+        "ArchitectureExplore",
+        "Interior DesignExplore",
+        "RenovationExplore",
+        "ConsultationConsultation"
+      ]
+    },
+    "headerPos": "absolute",
+    "lib": {
+      "lenis": true,
+      "gsap": true,
+      "scrollTrigger": true,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": true,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 49,
+    "altezzaPagina": 13475,
+    "titolo": "Halston - Webflow HTML website template",
+    "lang": "en",
+    "sezSel": null
+  }
+}

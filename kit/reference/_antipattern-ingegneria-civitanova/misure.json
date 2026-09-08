@@ -1,0 +1,428 @@
+{
+  "url": "https://www.ingegneriacivitanova.it/",
+  "slug": "_antipattern-ingegneria-civitanova",
+  "data": "2026-09-08",
+  "strumento": "misura-reference.mjs (Playwright, stili calcolati dal DOM vivo)",
+  "m1440": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "Ingegneria Civitanova",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 49.5,
+        "interlinea": 33.3,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(71, 79, 81)",
+        "larghezza": 399
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "Benvenuti in Ingegneria Civitanova",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 22.5,
+        "interlinea": 33.3,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 281
+      },
+      "h3": {
+        "selettore": "h3",
+        "testo": "Civitanova Marche (MC)Trodica di Morrovalle (MC)",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 22.5,
+        "interlinea": 33.3,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(150, 169, 181)",
+        "larghezza": 323
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Ciò che cerchiamo in un'opera architettonica non è diverso da ciò che cerchiamo ",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 36,
+        "interlinea": 45,
+        "peso": "200",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 588
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "Ingegneria Civitanova",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 49.5,
+        "interlinea": 33.3,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 399
+      },
+      "nav a": {
+        "selettore": "nav a",
+        "testo": "Home",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 25.2,
+        "interlinea": 33.3,
+        "peso": "200",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(198, 200, 200)",
+        "larghezza": 48
+      }
+    },
+    "fonts": [
+      "Yanone Kaffeesatz 200 normal",
+      "Yanone Kaffeesatz 300 normal",
+      "Yanone Kaffeesatz 400 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#546b76",
+        "n": 96,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#474f51",
+        "n": 27,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ffffff",
+        "n": 25,
+        "ruoli": [
+          "testo",
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#a0a8ab",
+        "n": 15,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#e0e8eb",
+        "n": 12,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#e0e4e6",
+        "n": 11,
+        "ruoli": [
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#c6c8c8",
+        "n": 5,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#8d9ca3",
+        "n": 4,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#373f42",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#96a9b5",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ed391b",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#3b4346",
+        "n": 2,
+        "ruoli": [
+          "fondo"
+        ]
+      }
+    ],
+    "fondoPagina": "#d4d9dd",
+    "raggi": {
+      "0px": 33
+    },
+    "contenitore": 323,
+    "spazioMediano": 90,
+    "spazi": [
+      85,
+      85,
+      90,
+      90,
+      90,
+      110
+    ],
+    "heroInfo": {
+      "altezza": 156,
+      "altezzaViewport": "17%",
+      "video": false,
+      "videoAutoplay": false,
+      "immagine": true,
+      "testoPrimoViewport": "Ingegneria Civitanova\nHome Servizi Chi siamo Dove siamo Contatti",
+      "cta": [
+        "Ingegneria Civitanova",
+        "Home",
+        "Servizi",
+        "Chi siamo",
+        "Dove siamo",
+        "Contatti"
+      ]
+    },
+    "headerPos": "absolute",
+    "lib": {
+      "lenis": false,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": false,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 0,
+    "altezzaPagina": 2611,
+    "titolo": "Ingegneria Civitanova Marche (MC) - Ingegnere Nazzareno Zallocco",
+    "lang": "it",
+    "sezSel": null
+  },
+  "classiRevealAlloScroll": [],
+  "m390": {
+    "tip": {
+      "h2": {
+        "selettore": "h2",
+        "testo": "Benvenuti in Ingegneria Civitanova",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 21.67,
+        "interlinea": 24.27,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 350
+      },
+      "h3": {
+        "selettore": "h3",
+        "testo": "Civitanova Marche (MC)Trodica di Morrovalle (MC)",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 17.33,
+        "interlinea": 24.27,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(150, 169, 181)",
+        "larghezza": 310
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Ciò che cerchiamo in un'opera architettonica non è diverso da ciò che cerchiamo ",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 21.67,
+        "interlinea": 27.08,
+        "peso": "200",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 350
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 17.33,
+        "interlinea": 24.27,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 238)",
+        "larghezza": 350
+      },
+      "nav a": {
+        "selettore": "nav a",
+        "testo": "Home",
+        "famiglia": "Yanone Kaffeesatz",
+        "px": 21.67,
+        "interlinea": 43.33,
+        "peso": "300",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 275
+      }
+    },
+    "fonts": [
+      "Yanone Kaffeesatz 200 normal",
+      "Yanone Kaffeesatz 300 normal",
+      "Yanone Kaffeesatz 400 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#546b76",
+        "n": 96,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ffffff",
+        "n": 31,
+        "ruoli": [
+          "testo",
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#474f51",
+        "n": 24,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#a0a8ab",
+        "n": 15,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#e0e8eb",
+        "n": 12,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#e0e4e6",
+        "n": 11,
+        "ruoli": [
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#8d9ca3",
+        "n": 4,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#373d40",
+        "n": 4,
+        "ruoli": [
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#0000ee",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#373f42",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#96a9b5",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#ed391b",
+        "n": 3,
+        "ruoli": [
+          "testo"
+        ]
+      }
+    ],
+    "fondoPagina": "#d4d9dd",
+    "raggi": {
+      "0px": 32
+    },
+    "contenitore": 350,
+    "spazioMediano": 85,
+    "spazi": [
+      50,
+      60,
+      60,
+      85,
+      90,
+      90
+    ],
+    "heroInfo": {
+      "altezza": 1,
+      "altezzaViewport": "0%",
+      "video": false,
+      "videoAutoplay": false,
+      "immagine": true,
+      "testoPrimoViewport": "",
+      "cta": []
+    },
+    "headerPos": "absolute",
+    "lib": {
+      "lenis": false,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": false,
+      "wordpress": false,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 3,
+    "altezzaPagina": 4603,
+    "titolo": "Ingegneria Civitanova Marche (MC) - Ingegnere Nazzareno Zallocco",
+    "lang": "it",
+    "sezSel": null
+  }
+}

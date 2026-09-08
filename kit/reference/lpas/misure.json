@@ -1,0 +1,468 @@
+{
+  "url": "https://lpas.com/",
+  "slug": "lpas",
+  "data": "2026-09-08",
+  "strumento": "misura-reference.mjs (Playwright, stili calcolati dal DOM vivo)",
+  "m1440": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "We’re a process driven architecture and interior design studio",
+        "famiglia": "Aeonik",
+        "px": 75,
+        "interlinea": 75,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 900
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "Housing",
+        "famiglia": "Aeonik",
+        "px": 56,
+        "interlinea": 61.6,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 317
+      },
+      "h3": {
+        "selettore": "h3",
+        "testo": "Listen. Plan.  Analyze. Shape.",
+        "famiglia": "Aeonik",
+        "px": 14,
+        "interlinea": 18.9,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(17, 17, 17)",
+        "larghezza": 125
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "ResidentialHousing",
+        "famiglia": "Aeonik",
+        "px": 16,
+        "interlinea": 21.6,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 78
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "",
+        "famiglia": "Aeonik",
+        "px": 16,
+        "interlinea": 21.6,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 60
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "Menu\n    Close",
+        "famiglia": "Aeonik",
+        "px": 16,
+        "interlinea": 21.6,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 89
+      },
+      "nav a": {
+        "selettore": "nav a",
+        "testo": "Affordable Housing",
+        "famiglia": "Aeonik",
+        "px": 14,
+        "interlinea": 18.9,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 161
+      }
+    },
+    "fonts": [
+      "Aeonik 400 normal",
+      "Aeonik 600 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#ffffff",
+        "n": 230,
+        "ruoli": [
+          "testo",
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#111111",
+        "n": 93,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#262626",
+        "n": 82,
+        "ruoli": [
+          "fondo",
+          "testo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#747474",
+        "n": 82,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#d6d6d6",
+        "n": 9,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 6,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#a3a3a3",
+        "n": 2,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#0e0e0e α0.6",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#625653",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#925434",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#c9d3df",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#707569",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      }
+    ],
+    "fondoPagina": "#ffffff",
+    "raggi": {
+      "6px": 1,
+      "0px": 74,
+      "50%": 5
+    },
+    "contenitore": 1340,
+    "spazioMediano": 240,
+    "spazi": [
+      120,
+      200,
+      240,
+      4520
+    ],
+    "heroInfo": {
+      "altezza": 900,
+      "altezzaViewport": "100%",
+      "video": true,
+      "videoAutoplay": true,
+      "immagine": true,
+      "testoPrimoViewport": "Architecture + Interiors\nA Market-Focused Approach\nScroll to explore\nWe’re a process driven architecture and interior design studio\nAffordable Housing\nStudent Housing\nMarket Rate Housing\nSenior Housing\nHousing\n1 / 5\n\nResidential\nHousing\n\nIn",
+      "cta": [
+        "Affordable Housing",
+        "Student Housing",
+        "Market Rate Housing",
+        "Senior Housing"
+      ]
+    },
+    "headerPos": "static",
+    "lib": {
+      "lenis": true,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": false,
+      "wordpress": true,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 132,
+    "altezzaPagina": 9363,
+    "titolo": "LPAS - Architecture and Interiors",
+    "lang": "en",
+    "sezSel": null
+  },
+  "classiRevealAlloScroll": [],
+  "m390": {
+    "tip": {
+      "h1": {
+        "selettore": "h1",
+        "testo": "We’re a process driven architecture and interior design studio",
+        "famiglia": "Aeonik",
+        "px": 46,
+        "interlinea": 46,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 330
+      },
+      "h2": {
+        "selettore": "h2",
+        "testo": "Housing",
+        "famiglia": "Aeonik",
+        "px": 44,
+        "interlinea": 48.4,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 129
+      },
+      "h3": {
+        "selettore": "h3",
+        "testo": "Listen. Plan.  Analyze. Shape.",
+        "famiglia": "Aeonik",
+        "px": 14,
+        "interlinea": 18.9,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(17, 17, 17)",
+        "larghezza": 165
+      },
+      "p": {
+        "selettore": "p",
+        "testo": "Design foreveryday life",
+        "famiglia": "Aeonik",
+        "px": 14,
+        "interlinea": 18.9,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 140
+      },
+      "a[href]": {
+        "selettore": "a[href]",
+        "testo": "",
+        "famiglia": "Aeonik",
+        "px": 16,
+        "interlinea": 21.6,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(0, 0, 0)",
+        "larghezza": 60
+      },
+      "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]": {
+        "selettore": "button, a[class*=\"btn\"], a[class*=\"button\"], a[class*=\"cta\"]",
+        "testo": "Menu\n    Close",
+        "famiglia": "Aeonik",
+        "px": 16,
+        "interlinea": 21.6,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 89
+      },
+      "nav a": {
+        "selettore": "nav a",
+        "testo": "Affordable Housing",
+        "famiglia": "Aeonik",
+        "px": 14,
+        "interlinea": 18.9,
+        "peso": "400",
+        "spaziatura": "normal",
+        "trasformazione": "none",
+        "colore": "rgb(255, 255, 255)",
+        "larghezza": 146
+      }
+    },
+    "fonts": [
+      "Aeonik 400 normal",
+      "Aeonik 600 normal"
+    ],
+    "palette": [
+      {
+        "colore": "#ffffff",
+        "n": 219,
+        "ruoli": [
+          "testo",
+          "fondo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#111111",
+        "n": 92,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#747474",
+        "n": 88,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#262626",
+        "n": 84,
+        "ruoli": [
+          "fondo",
+          "testo",
+          "filetto"
+        ]
+      },
+      {
+        "colore": "#d6d6d6",
+        "n": 9,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#000000",
+        "n": 6,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#a3a3a3",
+        "n": 2,
+        "ruoli": [
+          "testo"
+        ]
+      },
+      {
+        "colore": "#0e0e0e α0.6",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#625653",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#925434",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#c9d3df",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      },
+      {
+        "colore": "#707569",
+        "n": 1,
+        "ruoli": [
+          "fondo"
+        ]
+      }
+    ],
+    "fondoPagina": "#ffffff",
+    "raggi": {
+      "6px": 1,
+      "0px": 76,
+      "50%": 5
+    },
+    "contenitore": 340,
+    "spazioMediano": 200,
+    "spazi": [
+      100,
+      200,
+      200
+    ],
+    "heroInfo": {
+      "altezza": 2419,
+      "altezzaViewport": "287%",
+      "video": true,
+      "videoAutoplay": true,
+      "immagine": true,
+      "testoPrimoViewport": "Architecture + Interiors\nA Market-Focused Approach\nSwipe up to explore\nWe’re a process driven architecture and interior design studio\nAffordable Housing\nStudent Housing\nMarket Rate Housing\nSenior Housing\nHousing\n1 / 5\nInteriors\n2 / 5\n\nDesig",
+      "cta": [
+        "Affordable Housing",
+        "Student Housing",
+        "Market Rate Housing",
+        "Senior Housing"
+      ]
+    },
+    "headerPos": "static",
+    "lib": {
+      "lenis": false,
+      "gsap": false,
+      "scrollTrigger": false,
+      "locomotive": false,
+      "swiper": false,
+      "splide": false,
+      "three": false,
+      "framer": false,
+      "nextjs": false,
+      "webflow": false,
+      "wordpress": true,
+      "astro": false
+    },
+    "animInfinite": 0,
+    "elementiConTransizione": 116,
+    "altezzaPagina": 8005,
+    "titolo": "LPAS - Architecture and Interiors",
+    "lang": "en",
+    "sezSel": null
+  }
+}

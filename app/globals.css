@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './css/sezioni.css';
+@import './css/campi.css';
 @import './css/pagine.css';
 
 /* ============================================================================
@@ -122,6 +123,11 @@
   --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem); /*  32 → 48  */
   --regolo-passo-normale: clamp(4rem, 6.67vw, 6rem); /*  64 → 96  */
   --regolo-passo-largo: clamp(6rem, 13.9vw, 12.5rem); /*  96 → 200 */
+  /* Il silenzio davanti al brief. In A è il passo largo — uno dei quattro; in
+     B i tre passi non esistono e questo è l'unico. Il token esiste perché
+     `.brief` è condiviso e deve poter chiedere «il silenzio» senza sapere se
+     il tema ha un ritmo. */
+  --regolo-silenzio: var(--regolo-passo-largo);
 
   /* --- il segnaposto immagine -------------------------------------------
      Via il tratteggio da disegno tecnico (A) e la carta millimetrata (B): due
@@ -276,12 +282,17 @@
   --regolo-timbro-piano: var(--regolo-timbro);
   --regolo-timbro-piano-soft: var(--regolo-timbro-soft);
 
-  --regolo-font-display: var(--font-chivo), 'Helvetica Neue', Arial, sans-serif;
-  --regolo-font-body: var(--font-chivo), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-display: var(--font-anybody), 'Helvetica Neue', Arial, sans-serif;
+  --regolo-font-body: var(--font-anybody), 'Helvetica Neue', Arial, sans-serif;
 
   --regolo-display-weight: 600;
   --regolo-display-tracking: -0.02em;
-  --regolo-display-wdth: 100; /* Chivo non ha l'asse di larghezza: A comprime, B no */
+  /* Anybody in sorgente ha `wdth 50-150`, cioè lo stesso trucco di Archivo:
+     `genera-font.sh` lo istanzia via, e il file di B contiene `fvar = [wght]`
+     e basta. «A comprime, B no» non è più una regola che si può disapplicare —
+     `font-stretch` in B non ha su cosa agire. Il token resta a 100 per non
+     lasciare un buco nelle regole condivise. */
+  --regolo-display-wdth: 100;
 
   /* Nessun salto: 43,6 è il gradino 8 della stessa scala 1,125 da base 17. */
   --regolo-text-h1: clamp(1.9125rem, 7.85vw, 2.725rem); /* 30,6 a 390 · 43,6 a 1440 */
@@ -298,9 +309,44 @@
   --regolo-radius: 0px;
   --regolo-misura: 30rem; /* 480 px */
 
-  --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem);
-  --regolo-passo-normale: clamp(4rem, 6.67vw, 6rem);
-  --regolo-passo-largo: clamp(6rem, 13.9vw, 12.5rem);
+  /* ---- IL RITMO VERTICALE NON ESISTE IN B, ed è la differenza -------------
+     I tre passi 48 · 96 · 200 **non sono dichiarati qui**, e non è una svista:
+     erano fra i 42 token che i due temi avevano con lo stesso identico valore,
+     cioè il pezzo che garantiva che le due proposte cadessero sullo stesso
+     respiro qualunque cosa si facesse ai colori. Con loro esce anche il guscio
+     `Sezione.tsx`, che li codifica: in B non ci sono sezioni separate da un
+     vuoto, ci sono **campi contigui** divisi da un filetto (`components/campo/`).
+
+     Al loro posto un valore solo: quanto un campo pende dal proprio filetto.
+     Lo spazio fra due campi **non è un token** — è quello che il contenuto
+     occupa, quindi gli intervalli escono disuguali *per costruzione*. È la
+     lettura letterale del vuoto disuguale misurato su Storey, e nega alla
+     radice l'aggiunta di casa «lo stesso padding fra tutti i blocchi».
+
+     ATTENZIONE — e questo è il motivo per cui i tre passi qui sotto ci sono
+     ANCORA. Un `var()` non definito rende la dichiarazione invalida e il
+     `padding-top` torna a **0 in silenzio**: `.sezione` legge
+     `--regolo-passo-normale`, e finché una sola sezione di B non è stata
+     convertita in `Campo` togliere il token non fa una pagina densa, fa una
+     pagina rotta. Si tolgono **per ultimi**, quando l'ultima `<Sezione>` esce
+     da `app/(b)`, e allora questo commento resta e le tre righe no.
+     Stato alla fermata 1: convertita la hero. Restano numeri, sei percorsi,
+     fasi, progetti, prima/dopo, persone. */
+  --regolo-passo-corto: clamp(2rem, 3.34vw, 3rem); /* TRANSITORIO — esce alla fermata 2 */
+  --regolo-passo-normale: clamp(4rem, 6.67vw, 6rem); /* TRANSITORIO — esce alla fermata 2 */
+  --regolo-passo-largo: clamp(6rem, 13.9vw, 12.5rem); /* TRANSITORIO — esce alla fermata 2 */
+  --regolo-appeso: 12px;
+  /* L'unico silenzio della pagina: i 200 px di tavola davanti al brief. In A
+     ce ne sono quattro, in B uno — ed è l'unico posto in cui il vuoto è
+     un'affermazione. Il token è distinto dai passi apposta: sopravvive alla
+     loro morte. */
+  --regolo-silenzio: clamp(6rem, 13.9vw, 12.5rem);
+  /* Il pavimento dell'attenuazione, ed è un pavimento perché sotto si sfonda:
+     l'inchiostro del piano a 0,60 dà 7,37:1 sulla tavola e 5,74:1 sul foglio;
+     a 0,55 sul foglio si scende a 4,74:1, a 0,50 a 3,95:1 — sotto AA.
+     È il canale con cui la pagina dice «questo campo non è quello in cui sei»:
+     l'unica gerarchia oltre al corpo e alla posizione. */
+  --regolo-attenua: 0.6;
 
   --regolo-ph-pattern: none;
   --regolo-ph-size: auto;
@@ -344,13 +390,15 @@
   --regolo-brief-fuoco: var(--regolo-ink);
 
   --regolo-quota-riga: block;
-  /* In A la quota si scrive con il colore del filetto, perché `line` sulla
-     carta sta a 4,61:1 ed è anche testo valido. Sulla tavola non si può:
-     `line` è 3,14:1 e regge solo come **linea** (WCAG 1.4.11), non come parola.
-     Quindi in B il filetto resta `line` e le voci passano a `muted` — 7,46:1.
-     Il token è uno solo perché è usato solo per `color:` (sei occorrenze,
-     tutte testo): la linea la disegnano i bordi. */
-  --regolo-quota-colore: var(--regolo-muted);
+  /* La quota di B **attraversa i due piani** — è l'unico oggetto dell'apparato
+     che lo fa — e quindi non può prendere il colore di nessuno dei due:
+     `muted` è 7,46:1 sulla tavola ma **2,81:1 su un foglio bianco**, cioè
+     illeggibile proprio dove la riga finisce. `#767676` è l'unico grigio che
+     passa AA su entrambi: 4,62:1 sulla tavola, 4,54:1 sul foglio.
+     Regola generale, e vale per qualunque cosa si aggiunga: **ciò che
+     attraversa i due piani si scrive con #767676, o prende il colore del piano
+     su cui si trova.** */
+  --regolo-quota-colore: #767676;
 
   /* l'asse verticale che attraversa dall'header al footer */
   --regolo-asse: block;
@@ -428,17 +476,27 @@
       l'inchiostro è bianco, ed è giusto così: è chrome invertito, non un
       foglio. In lista diventerebbe nera.
 
-   La riga del registro entra in lista con `:hover` e `:has(:checked)` e non da
-   ferma: la riga scelta **diventa** un foglio, ed è quello il gesto di B.
+   ## Fase 3 ter: la lista di otto classi diventa un attributo
+
+   Prima qui c'erano **otto selettori** — `.pannello`, `.sezione-scura`,
+   `.riga:hover`, `.riga:has(input:checked)`, `.brief-scheda`,
+   `.cta-contestuale`, `.confronto > .confronto-dopo`, `.barra-mobile > *`.
+   Cioè: otto rettangoli bianchi appoggiati su un fondo, che è la definizione
+   del **cluster n. 4** dentro la proposta che dovrebbe non averlo. E ogni
+   blocco nuovo andava ricordato qui a mano, o usciva illeggibile: debito, non
+   architettura.
+
+   Adesso il piano si **dichiara**, con `data-piano`, e il foglio è **uno solo**
+   e continuo dalla hero al brief — lo dipinge `.documento` con una banda di
+   sfondo, quindi un nono foglio non si può disegnare per distrazione: non c'è
+   più niente da elencare.
+
+   Sono sparite anche le due regole di stato (`.riga:hover`,
+   `.riga:has(input:checked)`): la riga scelta non «diventa un foglio», perché
+   il foglio sotto di lei c'è già. Il segnale di stato adesso è l'opacità e un
+   filetto — vedi `app/css/campi.css`. Un token in meno da tenere allineato.
    -------------------------------------------------------------------------- */
-[data-theme='b'] .pannello,
-[data-theme='b'] .sezione-scura,
-[data-theme='b'] .riga:hover,
-[data-theme='b'] .riga:has(input:checked),
-[data-theme='b'] .brief-scheda,
-[data-theme='b'] .cta-contestuale,
-[data-theme='b'] .confronto > .confronto-dopo,
-[data-theme='b'] .barra-mobile > * {
+[data-theme='b'] [data-piano='foglio'] {
   --regolo-paper: #ffffff;
   --regolo-ink: #000000; /* 21,00:1 sul foglio */
   --regolo-muted: #454a47; /*  9,04:1 */
@@ -1292,7 +1350,13 @@
        Il passo è `largo`: 200 px di silenzio davanti al blocco primario, che è
        l'unico posto della pagina in cui il vuoto è un'affermazione. */
     scroll-margin-top: var(--regolo-header-h);
-    --passo: var(--regolo-passo-largo);
+    /* `--regolo-silenzio`, non `--regolo-passo-largo`: in A vale esattamente il
+       passo largo — uno dei quattro silenzi — e in B è **l'unico**, e sopravvive
+       alla morte dei tre passi (fermata 2). Il blocco condiviso chiede «il
+       silenzio» senza dover sapere se il tema ha un ritmo.
+       Via anche la classe `passo-largo` dal markup: era l'unico posto in cui il
+       guscio di sezione entrava nel brief. */
+    --passo: var(--regolo-silenzio);
     padding-top: var(--passo);
     padding-bottom: calc(var(--passo) * 0.6);
     background-color: var(--regolo-brief-bg);

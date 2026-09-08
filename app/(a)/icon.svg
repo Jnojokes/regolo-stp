@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="REGOLO STP">
+  <!-- Opzione A. Non un logo — non ne esiste uno, e CLAUDE.md vieta di
+       inventarlo: è il MOTIVO GRAFICO del sito, cioè la linea di quota
+       (filetto + terminatore obliquo a 45° ISO 129-1). Inchiostro su carta,
+       come A. Va sostituito quando arriva il marchio dello studio: la riga è
+       in TODO-MEDIA.md. -->
+  <rect width="32" height="32" fill="#ffffff"/>
+  <g stroke="#000000" stroke-width="3" stroke-linecap="butt">
+    <line x1="4" y1="16" x2="28" y2="16"/>
+    <line x1="1.5" y1="21" x2="6.5" y2="11"/>
+    <line x1="25.5" y1="21" x2="30.5" y2="11"/>
+  </g>
+</svg>

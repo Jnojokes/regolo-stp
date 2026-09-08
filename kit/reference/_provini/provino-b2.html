@@ -1,0 +1,59 @@
+<!doctype html><meta charset="utf-8">
+<title>Provino B/2 — Anybody ai corpi veri di B, sui due piani</title>
+<style>
+@font-face{font-family:Archivo;src:url(archivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Chivo;src:url(chivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Anybody;src:url(anybody.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:EncodeSans;src:url(encodesans.woff2)format('woff2');font-weight:100 900}
+
+*{box-sizing:border-box}
+body{margin:0;background:#111;color:#fff;font:12px/1.4 -apple-system,system-ui}
+.coppia{display:grid;grid-template-columns:1fr 1fr}
+.nm{grid-column:1/-1;background:#3a3a3a;color:#fff;font:11px/1 -apple-system;padding:8px 20px}
+.nm b{font-size:13px}
+.piano{padding:20px 22px 26px}
+/* la tavola */
+.tavola{background:#000;color:#fff}
+.tavola .sec{color:#9A9A9A}
+.tavola .filo{border-top:1px solid #5C5C5C}
+/* il foglio */
+.foglio{background:#fff;color:#000}
+.foglio .sec{color:#454A47}
+.foglio .filo{border-top:1px solid #767676}
+
+/* i corpi veri di B a 1440: 43,6 · 30,6 · 17 · 13,4 · 12,6 */
+.d{font-size:43.6px;line-height:1;letter-spacing:-.02em;margin:0 0 10px}
+.t{font-size:30.6px;line-height:1.1;letter-spacing:-.015em;margin:0 0 10px}
+.c{font-size:17px;line-height:1.5;margin:0 0 14px;max-width:30rem}
+.tab{width:100%;border-collapse:collapse;font-size:13.4px;line-height:1;font-variant-numeric:tabular-nums}
+.tab td{padding:0 12px 0 0;height:26px;vertical-align:middle;white-space:nowrap}
+.tab td.n{text-align:right;padding-right:0}
+.micro{font-size:12.6px;margin:12px 0 0;padding-top:8px}
+.micro span{margin-right:22px}
+</style>
+<div id=out></div>
+<script>
+const F=[
+ ['Anybody',600,400,'la proposta del confronto — Δ x/cap +14,5 % da Archivo — 19,0 KB'],
+ ['EncodeSans',600,400,'ripiego n. 1 — Δ −4,9 % — 37,9 KB'],
+ ['Chivo',600,400,'« il carattere di B oggi » — Δ −2,9 % — 26,9 KB'],
+ ['Archivo',600,400,'« il carattere di A — il controllo » — 40,7 KB'],
+];
+const R=[
+ ['casa nuova','progettazione architettonica e direzione lavori','Fermo (FM)','2024','1.240'],
+ ['ristrutturazione o ampliamento','interventi sull’esistente, cambi di destinazione','Porto San Giorgio','2023','380'],
+ ['struttura e sisma','adeguamento e miglioramento sismico','Montegiorgio','2023','2.150'],
+];
+const corpo=(w)=>`
+ <p class=d style="font-weight:600">Che intervento hai in mente?</p>
+ <p class=t style="font-weight:400">Ristrutturare, ampliare, recuperare</p>
+ <p class=c style="font-weight:400">Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da parte tua. Ingegneria civile e architettura, a Fermo. 0734 510329</p>
+ <table class=tab style="font-weight:400">${R.map(r=>`<tr><td>${r[0]}</td><td class=sec>${r[1]}</td><td>${r[2]}</td><td class=n>${r[3]}</td><td class=n>${r[4]} m²</td></tr>`).join('')}</table>
+ <p class="micro filo sec" style="font-weight:400"><span>progetto architettonico</span><span>coordinamento sicurezza</span><span>collaudo</span><span>128 comuni · FM 40 · MC 55 · AP 33</span></p>`;
+document.getElementById('out').innerHTML=F.map(([f,wD,wB,nota])=>`
+<div class=coppia style="font-family:${f}">
+ <p class=nm><b>${f}</b> — ${nota}</p>
+ <div class="piano tavola">${corpo(wB)}</div>
+ <div class="piano foglio">${corpo(wB)}</div>
+</div>`).join('');
+</script>

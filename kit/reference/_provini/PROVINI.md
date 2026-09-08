@@ -81,3 +81,62 @@ monospace**. AS Associates fa così (nessun mono in tutto il sito, e la sua tabe
 Quindi **JetBrains Mono esce**: −31,3 KB, e insieme sparisce una delle tell del cluster n. 5
 («monospace per le piccole etichette dati»). Le cifre dei dati duri si compongono con
 `font-variant-numeric: tabular-nums` sul grottesco, che è una riga di CSS.
+
+---
+
+# Fase 3 ter (08/09/2026) — il carattere di B si è scelto su una **metrica**
+
+I provini di sopra rispondevano a una domanda sola: *quale carattere regge il display di A a
+96 px?* Per l'opzione B la domanda è un'altra — *quale carattere non si scambia con Archivo in
+una schermata?* — e la risposta non si vede a occhio: si misura.
+
+## La misura che spiega il difetto
+
+Presa con fontTools **sui due file veri di `public/fonts/`**, non sulle sorgenti:
+
+| | file nel repo | cap-height | x-height | **x/cap** | **Δ da Archivo** | peso di default |
+|---|---|---|---|---|---|---|
+| **Archivo** (A) | 40.692 B | **0,686** | 0,526 | 0,767 | — | 600 |
+| **Chivo** (B fino a ieri) | 26.980 B | **0,686** | 0,511 | 0,745 | −2,9 % | 500 |
+| Bitter | 27.880 B | 0,698 | 0,528 | 0,756 | −1,4 % | 100 |
+| Zilla Slab 400 | 23.104 B ×2 pesi | 0,650 | 0,445 | 0,685 | −10,7 % | — |
+| Young Serif 400 | 24.472 B | 0,750 | 0,500 | 0,667 | −13,1 % | — |
+| **Anybody** (`wdth` bloccato 100) | **19.488 B** | 0,675 | **0,593** | **0,879** | **+14,6 %** | 400 |
+
+**Archivo e Chivo hanno la cap-height identica al millesimo: 0,686.** Alla stessa dimensione
+nominale depositano la stessa quantità di nero, ed è per questo che a occhio sono lo stesso
+carattere. Non era un'impressione di FT: era una metrica.
+
+E **Bitter — la mossa ovvia, «cambio genere, prendo uno slab» — è più vicino ad Archivo di
+quanto lo sia Chivo.** Sceglierlo avrebbe *ridotto* la differenza percepita mentre si alternano
+due schede in call. È il motivo per cui il criterio conta più della famiglia:
+
+> **La famiglia di B si sceglie sul Δ x/cap rispetto ad Archivo, e sotto il 5 % non si sceglie.**
+
+Ordine di ripiego, già pesato: **Encode Sans** (−4,9 %, 37,9 KB) → **Zilla Slab**, ma solo
+riaprendo la regola con cui è uscito Geist (è il carattere di marca di Mozilla). Non Bitter,
+non Young Serif, non Chivo: sono le tre che il numero esclude.
+
+## I due provini nuovi
+
+| File | Cosa mette a confronto |
+|---|---|
+| `provino-b.html` → `provino-b-1440.jpeg` | Archivo e Chivo (i due controlli) contro Bitter, Zilla Slab, Young Serif e Anybody, con **le parole vere di B** — la domanda della hero, un titolo di servizio, il corpo, una tabella a cinque colonne e la riga dei ruoli |
+| `provino-b-cifre.html` | le cifre incolonnate con e senza `tabular-nums`, e la riga vera a 390 px |
+| `provino-b2.html` → `provino-b2-1440.jpeg` | **la prova che decide**: Anybody, Encode Sans, Chivo e Archivo ai corpi veri di B (43,6 · 30,6 · 17 · 13,4) e **sui due piani**, tavola nera a sinistra e foglio bianco a destra |
+
+`provino-b2` esiste per una ragione precisa: la riga di questa scheda che dava Anybody per
+«**a 17 px il corpo è un po' strano — resta display**» era formata rispondendo alla *prima*
+domanda, il display di A a 96 px. B non ha un display a 96 px. Ai suoi corpi veri, su tutti e
+due i piani, il corpo regge — e la x-height alta lavora **a favore** della tabella, che è dove
+B vive.
+
+Verificato con la pipeline vera del repo (`varLib.instancer` + `pyftsubset`, stessa `LAT` e
+stessa `FEAT` di `scripts/genera-font.sh`): il file generato contiene **`fvar = [wght 400-600]`
+e basta** — l'asse di larghezza è istanziato via, quindi «A comprime, B no» non è più una regola
+di CSS che si può disapplicare; `usWeightClass` esce a **400** (la sorgente è 100: senza la
+pipeline il corpo uscirebbe filiforme, non semibold); `tnum` c'è, quindi niente monospace.
+
+> I `woff2` di prova **non si committano**, come le altre volte: si riscaricano da fontsource
+> con gli URL in `scripts/genera-font.sh` e si riapre la cartella con
+> `python3 -m http.server`. Restano gli HTML e i JPEG, che sono le prove.

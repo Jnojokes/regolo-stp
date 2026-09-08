@@ -1,0 +1,639 @@
+/* ============================================================================
+   IL DOCUMENTO — il guscio dell'opzione B (fase 3 ter)
+   ----------------------------------------------------------------------------
+   Qui non ci sono sezioni: c'è **un documento**, e i blocchi sono campi
+   contigui divisi da un filetto. È il pezzo che rende le due proposte diverse
+   per *come funzionano* e non per come sono colorate — vedi il commento in
+   `components/campo/Campo.tsx` per il perché, con i numeri.
+
+   Tre regole tengono questo file, e sono le tre che non vanno violate:
+
+   1. **Il foglio lo dipinge `.documento`, una volta sola, con un `background`.**
+      Nessun campo si dipinge di bianco. Prima erano otto rettangoli bianchi
+      appoggiati su un fondo — cluster n. 4 — elencati a mano in `globals.css`.
+      Con una banda di sfondo un nono foglio non si può disegnare per
+      distrazione: non c'è niente da elencare.
+   2. **Niente `.wrap` in questo file.** `@utility wrap` compila in
+      `@layer utilities` e batte `@layer components` in silenzio (trappola
+      già pagata due volte). Il documento si impagina da sé.
+   3. **Niente `--regolo-passo-*`.** Non esistono in `[data-theme='b']`: un
+      `var()` non definito rende la dichiarazione invalida e il padding torna a
+      zero **in silenzio**. Qui si usa `--regolo-appeso` e basta.
+   ========================================================================== */
+
+@layer components {
+  .documento {
+    /* Il contenuto sta comunque dentro i 1440 di `CLAUDE.md` § Impaginazione:
+       la tavola continua fuori, ed è giusto — la tavola è la pagina, il
+       documento è quello che ci sta sopra. */
+    max-width: var(--regolo-wrap);
+    margin-inline: auto;
+
+    /* Il bordo sinistro del foglio: **34,4 %**, misurato. Kononenko butta
+       l'etichetta «Offices» nel margine vuoto a x≈417 e comincia la tabella a
+       x = 493 su 1440, cioè il 34,2 %. È lo stesso valore che l'asse aveva già
+       (`--regolo-asse-frazione`): l'asse non è più un filetto disegnato sopra
+       la pagina, **è diventato il bordo del foglio**. Un filetto in meno che
+       attraversa il testo, e un oggetto in più che porta informazione. */
+    --campo-x: calc(
+      var(--regolo-margine) + (100% - 2 * var(--regolo-margine)) * var(--regolo-asse-frazione)
+    );
+  }
+
+  /* ---- il campo -----------------------------------------------------------
+     Due colonne: il margine di classificazione sulla tavola, il contenuto sul
+     foglio. Non è una griglia a 12 colonne — non ne serve una: le due colonne
+     del documento sono il documento. */
+  .campo {
+    display: grid;
+    grid-template-columns: var(--campo-x) minmax(0, 1fr);
+    align-items: start;
+    scroll-margin-top: var(--regolo-header-h);
+  }
+
+  /* Il margine di classificazione **è la tavola**: niente bordo, niente fondo,
+     niente raggio. Se fosse un pannello sarebbe una card, e saremmo daccapo. */
+  .campo-margine {
+    /* `margin` e non `padding`: `box-sizing: border-box` + una larghezza
+       imposta + `padding-left` mangia la larghezza del contenuto (trappola
+       n. 4, già pagata). */
+    margin-inline-start: var(--regolo-margine);
+    margin-inline-end: var(--regolo-gutter);
+    padding-top: calc(var(--regolo-appeso) + 1px);
+    color: var(--regolo-muted); /* 7,46:1 sulla tavola */
+    font-size: var(--text-eyebrow);
+    line-height: 1.35;
+  }
+
+  .campo-etichetta {
+    margin: 0;
+    letter-spacing: var(--regolo-eyebrow-tracking);
+  }
+  /* Le quadre le mette il CSS: così non finiscono nel nome accessibile né in un
+     copia-incolla. È il gesto misurato di AS (`[Projects]`, `[Materials]`), non
+     un occhiello in maiuscoletto spaziato. */
+  .campo-etichetta::before {
+    content: '[';
+  }
+  .campo-etichetta::after {
+    content: ']';
+  }
+  .campo-nota {
+    margin-top: 1.5rem;
+    max-width: 30ch;
+  }
+
+  /* ---- la colonna del contenuto, sul foglio ------------------------------
+     Il filetto in testa **è il bordo del campo**, non un annuncio: senza, due
+     campi contigui senza vuoto in mezzo sarebbero indistinguibili. È
+     l'informazione che in A porta lo spazio bianco.
+     Il campo pende di `--regolo-appeso` (12 px) e finisce dove finisce il suo
+     contenuto: lo spazio fra due campi non è un token, quindi gli intervalli
+     escono **disuguali per costruzione**. */
+  .campo-foglio {
+    /* **Chi sta su un piano deve dichiarare il `color`, non solo i token.**
+       `color` eredita il *valore calcolato* del genitore: il `body` è la tavola
+       e calcola bianco, quindi ridichiarare `--regolo-ink: #000` qui dentro non
+       ricalcola niente e il testo resta bianco — su un foglio bianco.
+       È la trappola n. 2, e si è ripresentata esattamente qui: al primo
+       caricamento della hero nuova l'`<h1>` e i sei nomi delle righe non
+       c'erano. Non erano nascosti: erano bianchi su bianco. */
+    color: var(--regolo-ink);
+    /* IL FOGLIO, e il perché è dipinto qui e non con una banda di sfondo su
+       `.documento`.
+
+       La prima versione era un `linear-gradient` sul contenitore: una sola
+       banda bianca continua dietro tutti i campi, così un nono foglio non si
+       poteva disegnare per distrazione. Bello, e **invisibile al collaudo**:
+       `scripts/collaudo/contrasto-dom.mjs` risale gli antenati cercando un
+       `background-color`, un gradiente non lo è, e quindi misurava ogni testo
+       di B contro il nero del `<body>`. Risultato: cinque falsi «sotto soglia»
+       su coppie che in pagina stanno a 21:1 — e, quel che conta, **nessuna
+       possibilità di prendere un bianco su bianco vero**, che in questa fase è
+       già successo due volte.
+
+       Un piano che il collaudo non sa misurare è un piano che tornerà
+       illeggibile in silenzio. Quindi il foglio lo dipinge il campo, con un
+       `background-color` che lo strumento vede.
+
+       La continuità resta garantita, per costruzione e non per fiducia: i campi
+       sono **contigui** — niente margini verticali, il padding di uno finisce
+       dove comincia il filetto del prossimo — e usano tutti la stessa classe.
+       Non c'è una classe-foglio da inventare per blocco: era quello il difetto
+       della lista di otto selettori, non il modo di dipingere. */
+    background-color: var(--regolo-surface);
+    margin-inline-end: var(--regolo-margine);
+    padding-inline: var(--regolo-gutter);
+    padding-top: var(--regolo-appeso);
+    padding-bottom: calc(var(--regolo-appeso) * 3);
+    border-top: 1px solid var(--regolo-line); /* 4,54:1 sul foglio */
+  }
+  /* Il primo campo non porta il filetto: non separa niente. */
+  .campo-primo > .campo-foglio {
+    border-top: 0;
+  }
+
+  .campo-testa {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--regolo-gutter);
+    flex-wrap: wrap;
+  }
+  .campo-testa h2 {
+    margin: 0;
+    font-family: var(--regolo-font-display);
+    font-size: var(--text-h2);
+    line-height: var(--regolo-lh-h2);
+    letter-spacing: -0.015em;
+    font-weight: var(--regolo-display-weight);
+  }
+  .campo-intro {
+    margin: 0.5rem 0 0;
+    max-width: var(--regolo-misura);
+    color: var(--regolo-muted);
+  }
+
+  /* ---- il campo pieno: l'unico che esce dal foglio -----------------------
+     Uno solo in tutta la pagina, il prima/dopo, dove il taglio fra i due piani
+     **è** il contenuto. Si ridipinge la tavola perché la banda del foglio passa
+     dietro anche qui, e chi dipinge un fondo dichiara anche il `color`: `color`
+     eredita il valore *calcolato* del genitore, non si ricalcola dai token
+     (trappola n. 2). */
+  .campo-pieno {
+    display: block;
+    background-color: var(--regolo-paper);
+    color: var(--regolo-ink);
+  }
+  .campo-pieno > .campo-margine {
+    margin-inline-end: var(--regolo-margine);
+    padding-top: 0;
+    padding-bottom: var(--regolo-appeso);
+  }
+  .campo-pieno > .campo-foglio {
+    background-color: transparent;
+    color: inherit;
+    margin-inline: 0;
+    padding-inline: 0;
+    border-top: 0;
+  }
+
+  /* ---- 390 px: PROGETTATA, non compressa ---------------------------------
+     La banda di margine sparisce (decisione n. 24: a 96 px l'asse passava in
+     mezzo al testo) e il foglio va a piena larghezza. L'apparato **non si
+     accatasta sotto il contenuto**: si ribalta in una striscia di tavola sopra
+     ogni campo, con le voci ai due estremi e il vuoto in mezzo — la riga a tre
+     tempi misurata su Pelizzari. */
+  @media (max-width: 55.999rem) {
+    /* Sotto i 56 rem il foglio va a piena larghezza: non serve nient'altro,
+       perché a dipingerlo è già il campo. */
+    .campo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .campo-margine {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-inline: 0;
+      padding: 0.25rem var(--regolo-margine);
+      min-height: 1.25rem;
+      /* La striscia È la tavola, quindi qui il fondo si dipinge davvero — e
+         con lui il `color`, per la trappola n. 2. */
+      background-color: var(--regolo-paper);
+      color: var(--regolo-muted);
+    }
+    /* La striscia regge due voci ai due estremi, non una nota: la nota va a
+       capo e prende tutta la riga, e la striscia diventa un blocchetto di
+       tavola fra due campi. Su telefono è anche il confine che a 1440 fa il
+       filetto. */
+    .campo-margine {
+      flex-wrap: wrap;
+    }
+    .campo-nota {
+      flex: 1 0 100%;
+      margin-top: 0.5rem;
+      max-width: none;
+    }
+    .campo-foglio {
+      margin-inline: 0;
+      padding-inline: var(--regolo-margine);
+      border-top: 0; /* il filetto lo fa la striscia: due segni per un confine sono uno di troppo */
+    }
+    .campo-pieno {
+      background-color: transparent;
+    }
+    .campo-pieno > .campo-margine {
+      padding-bottom: 0.25rem;
+    }
+  }
+}
+
+/* ============================================================================
+   LA QUOTA, forma «registro» — l'apparato di misura di B
+   ----------------------------------------------------------------------------
+   Le tre condizioni e il tetto di tre quote in pagina restano quelli di
+   `CLAUDE.md`: cambia lo **strumento**, non la regola.
+
+   In A la quota è una **linea di misura**: filetto continuo, terminatore
+   obliquo a 45° ISO 129-1, annotazione all'estremo. In B è **una riga del
+   documento**, perché un documento non disegna quote su se stesso: dichiara
+   valori nei campi. Quindi qui spariscono tutti e due i segni che in A la
+   fanno — il filetto per voce e il terminatore — e restano le due cose che
+   portano informazione: le voci al bordo sinistro, il valore incolonnato al
+   bordo destro con le cifre tabellari, e il vuoto in mezzo (la riga a tre tempi
+   misurata su Pelizzari).
+
+   È anche il principio n. 3 della fase applicato: in una pagina densa ogni
+   segno ripetuto diventa fondo, e **l'apparato di B deve essere più piccolo di
+   quello di A, non più grande**.
+
+   La quota di B sta **sul foglio** e non attraversa i due piani: l'unico
+   oggetto autorizzato ad attraversare il confine è la fotografia.
+   Questo file è importato **dopo** `sezioni.css`, quindi a pari specificità
+   queste regole vincono. Non è un caso: è l'ordine dichiarato in `globals.css`.
+   ========================================================================== */
+
+@layer components {
+  .quota-registro > * {
+    border-top: 0;
+    padding-top: 0;
+    padding-right: 1.5rem;
+  }
+  /* Via il terminatore obliquo: è la firma di A. */
+  .quota-registro > *::before {
+    content: none;
+  }
+  .quota-registro {
+    align-items: baseline;
+    row-gap: 0.35rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .quota-registro .quota-annotazione {
+    color: var(--color-ink);
+  }
+  /* A 390 px non si incolonna una voce per riga come in A — cinque righe
+     sottolineate letto in miniatura è di nuovo la striscia di A. Le voci
+     restano in riga e vanno a capo da sé; il valore resta al bordo destro. */
+  @media (max-width: 40rem) {
+    .quota-registro > * {
+      flex: 0 1 auto;
+      max-width: none;
+      padding-right: 1rem;
+    }
+    .quota-registro .quota-annotazione {
+      order: 0;
+      flex: 1 0 auto;
+      text-align: right;
+      padding-right: 0;
+    }
+  }
+}
+
+/* ============================================================================
+   LA HERO DI B — il registro, e il pannello che si apre
+   ----------------------------------------------------------------------------
+   Questo è il meccanismo della proposta, non un blocco fra gli altri: le sei
+   righe sono i `radio` del passo 1 del brief (`components/sezioni/Hero.tsx`), e
+   tutto quello che segue nella pagina è la risposta a quella scelta. Zero byte
+   di JavaScript: `:has()` è Baseline da dicembre 2023 ed era già in produzione
+   in questa stessa pagina.
+
+   Due segni, e non uno di più — è il principio n. 3 della fase, «in B un
+   filetto esiste solo se delimita un piano o porta uno stato»:
+
+   - **l'opacità come gerarchia** (AS misurato): appena si sceglie, le altre
+     righe scendono a `--regolo-attenua` (0,60 → 5,74:1 sul foglio, AA).
+     Finché non si sceglie niente **non si attenua niente**: la pagina non
+     spegne qualcosa prima che ci sia un motivo;
+   - **un filetto sotto la riga scelta**, che porta uno stato.
+
+   Quello che NON c'è più, ed era la fase 3 bis: il filetto sotto **ogni** riga
+   (sei filetti che annunciano sei righe sono la texture, non una firma), la
+   riga che «diventa un foglio» (il foglio ora è uno solo e c'è già), la
+   `.riga-chiave` `01…05` (un numero che il lettore conta a vista non è
+   informazione), e il bordo di 1 px attorno al pannello (era una figura su un
+   fondo, cioè una card).
+   ========================================================================== */
+
+@layer components {
+  .campo-hero > .campo-foglio {
+    padding-bottom: calc(var(--regolo-appeso) * 4);
+  }
+  .hero-domanda {
+    margin: 0;
+    font-family: var(--regolo-font-display);
+    font-size: var(--text-h1);
+    line-height: var(--regolo-lh-h1);
+    letter-spacing: var(--regolo-display-tracking);
+    font-weight: var(--regolo-display-weight);
+    max-width: 18ch;
+  }
+  .campo-hero .hero-lead {
+    margin: 1rem 0 0;
+    max-width: var(--regolo-misura);
+    color: var(--regolo-muted);
+  }
+  .hero-quota-registro {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  /* ---- il registro -------------------------------------------------------
+     Nessun filetto in testa e nessuno fra le righe: il passo di riga fa il
+     lavoro, come nella tabella di AS (25 righe, sette colonne, zero divisori). */
+  .registro {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .riga {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.125rem;
+    padding: 0.625rem 0;
+    min-height: 2.75rem;
+    cursor: pointer;
+    /* L'attenuazione è l'unico canale di gerarchia oltre al corpo e alla
+       posizione: si anima solo l'opacità, e solo se il movimento è concesso
+       (vedi in fondo a questo file). */
+    opacity: 1;
+  }
+  @media (min-width: 56rem) {
+    .riga {
+      grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+      gap: var(--regolo-gutter);
+      align-items: center;
+      min-height: 2.5rem;
+    }
+  }
+
+  /* La gerarchia si accende **solo dopo** una scelta. */
+  .registro:has(input:checked) .riga {
+    opacity: var(--regolo-attenua);
+  }
+  .registro:has(input:checked) .riga:has(input:checked),
+  .registro .riga:hover,
+  .registro .riga:has(input:focus-visible) {
+    opacity: 1;
+  }
+
+  .riga-scelta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .riga-scelta input[type='radio'] {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0;
+    accent-color: var(--color-ink);
+  }
+  .riga-nome {
+    font-size: var(--text-h3);
+    line-height: var(--regolo-lh-h3);
+    font-weight: 500;
+  }
+  /* Il filetto che porta lo stato: sta sotto il nome, non sotto la riga intera,
+     così misura la scelta e non il contenitore. */
+  .riga:has(input:checked) .riga-nome {
+    box-shadow: 0 1px 0 0 currentColor;
+  }
+  .riga-ruolo {
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  .riga:has(input:focus-visible) {
+    outline: 2px solid var(--regolo-focus);
+    outline-offset: 2px;
+  }
+  .riga input[type='radio']:focus-visible {
+    outline: none;
+  }
+
+  /* ---- il pannello -------------------------------------------------------
+     Non è una figura su un fondo: è il record che si apre. Niente bordo,
+     niente fondo, niente raggio — sta già sul foglio. Pende dal filetto della
+     riga scelta e rientra, come una nota di una voce d'archivio. */
+  .pannello {
+    display: none;
+    margin: 0.25rem 0 0.75rem;
+    padding-top: var(--regolo-appeso);
+    border-top: 1px solid var(--color-line);
+  }
+  /* Il pannello **non rientra**: prende tutta la larghezza del foglio. Rientrarlo
+     sotto la colonna del nome sembrava giusto — la nota di una voce d'archivio —
+     e guardato in pagina lasciava metà foglio bianco vuoto e strozzava le tre
+     colonne a 150 px, con «verifica di cosa si può fare» su due righe. In una
+     tabella il dettaglio di una riga sta sotto la riga, non sotto la sua prima
+     cella. */
+  /* Una regola sola invece di sei: il pannello è il fratello immediatamente
+     successivo alla riga scelta. È il guadagno dell'interlacciamento. */
+  .registro-coppia:has(input:checked) > .pannello {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  @media (min-width: 56rem) {
+    .registro-coppia:has(input:checked) > .pannello {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .registro-coppia:has(input:checked) > .pannello-scarno {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pannello-azioni {
+      grid-column: 1 / -1;
+    }
+  }
+  /* Ripiego senza `:has()`. Cambia **verso** rispetto alla fase 3 bis: prima
+     mostrava UN pannello mentre niente era spuntato, cioè una bugia. Ora li
+     mostra tutti e sei aperti — una lista espansa è una degradazione onesta, e
+     sono già nel DOM. */
+  @supports not selector(:has(*)) {
+    .pannello {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+    }
+  }
+  .pannello-chiave {
+    margin: 0;
+    font-size: var(--text-eyebrow);
+    letter-spacing: var(--regolo-eyebrow-tracking);
+    color: var(--color-muted);
+  }
+  .pannello ul {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-body);
+  }
+  .pannello li + li {
+    margin-top: 0.25rem;
+  }
+  .pannello-scarno p {
+    margin: 0;
+    max-width: var(--regolo-misura);
+  }
+  .pannello-azioni {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    margin-top: 0.25rem;
+  }
+  .pannello-vai {
+    font-size: var(--text-small);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  /* ---- il movimento, e dove si ferma -------------------------------------
+     Regola di B, controllabile con un grep: **nessuna animazione comincia
+     perché la pagina ha scorso.** Il movimento è solo la risposta a un'azione
+     del visitatore — è la differenza fra uno strumento e un foglio stampato, e
+     la rivelazione allo scorrimento è il pattern di movimento più generato che
+     esista.
+
+     I `@keyframes` e le `transition` stanno **dentro** la media query, non
+     spenti da un `animation: none` più giù: con `reduce` non esistono, e non
+     c'è niente da ricordarsi su un blocco nuovo. Gli stati continuano a
+     cambiare — cambiano di colpo. Si animano solo `opacity` e `transform`. */
+  @media (prefers-reduced-motion: no-preference) {
+    .riga {
+      transition: opacity 180ms ease-out;
+    }
+    .riga-nome {
+      transition: box-shadow 180ms ease-out;
+    }
+    .registro-coppia:has(input:checked) > .pannello {
+      animation: campo-si-apre 220ms ease-out both;
+    }
+    @keyframes campo-si-apre {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  }
+}
+
+/* ============================================================================
+   LA RIGA DI LETTURA DEL BRIEF — il passo 1 risposto nella hero
+   ----------------------------------------------------------------------------
+   Le sei righe della hero e questa riga sono lo **stesso gruppo di radio**:
+   `name="intervento"` + `form="brief-form"`. Qui si legge quale è spuntato con
+   `:has()` sul `body`, che è l'antenato comune dei due — **zero byte di
+   JavaScript**, e funziona anche a form non idratato.
+
+   I sei valori stanno tutti nel markup e se ne mostra uno: è testo vero, non un
+   `content` generato, quindi si seleziona, si copia e si fa leggere. Il verso
+   della regola è studiato per il ripiego: «non ancora scelto» è visibile **per
+   default** e viene nascosto quando qualcosa è spuntato, così senza `:has()`
+   resta una frase onesta invece di una riga vuota.
+
+   Attenzione se un giorno cambiano le chiavi del passo 1: queste sei regole
+   sono generate dalle chiavi vere di `lib/brief/domande.ts`. Non sono
+   scrivibili con un selettore solo — `:has()` non porta il valore fuori.
+   ========================================================================== */
+
+@layer components {
+  .brief-risposta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-small);
+  }
+  .brief-risposta-chiave {
+    color: var(--color-muted);
+  }
+  .brief-risposta-valore {
+    font-size: var(--text-body);
+    font-weight: 500;
+  }
+  .brief-risposta-valore > [data-vale] {
+    display: none;
+  }
+  .brief-risposta-vuoto {
+    display: inline;
+    color: var(--color-muted);
+    font-weight: 400;
+  }
+  body:has(input[name='intervento']:checked) .brief-risposta-vuoto {
+    display: none;
+  }
+  body:has(#percorso-casa-nuova:checked) .brief-risposta-valore > [data-vale='casa-nuova'] {
+    display: inline;
+  }
+  body:has(#percorso-ristrutturazione:checked)
+    .brief-risposta-valore
+    > [data-vale='ristrutturazione'] {
+    display: inline;
+  }
+  body:has(#percorso-pratica-bonus:checked) .brief-risposta-valore > [data-vale='pratica-bonus'] {
+    display: inline;
+  }
+  body:has(#percorso-struttura-sisma:checked)
+    .brief-risposta-valore
+    > [data-vale='struttura-sisma'] {
+    display: inline;
+  }
+  body:has(#percorso-opera-pubblica:checked) .brief-risposta-valore > [data-vale='opera-pubblica'] {
+    display: inline;
+  }
+  body:has(#percorso-altro:checked) .brief-risposta-valore > [data-vale='altro'] {
+    display: inline;
+  }
+  .brief-risposta-cambia {
+    margin-left: auto;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+  /* Bersaglio tattile: sotto i 56 rem un link isolato va portato a 44 px, come
+     gli altri link isolati del sito (`sweep.mjs` lo misura). Il padding
+     verticale non sposta la riga perché la riga è già alta quanto il valore. */
+  @media (max-width: 55.999rem) {
+    .brief-risposta-cambia {
+      padding-block: 0.75rem;
+      margin-block: -0.5rem;
+    }
+  }
+  /* Il consenso non è dato e il campo è vuoto: l'errore si vede qui, dove sta
+     la risposta, e il link ci riporta. */
+  .brief-risposta[data-errore] {
+    border-bottom-color: var(--regolo-brief-errore);
+  }
+}
+
+/* ============================================================================
+   LA BARRA DI AVANZAMENTO DEL BRIEF, forma «registro»
+   ----------------------------------------------------------------------------
+   Era l'ultima occorrenza del motivo di A dentro l'opzione B: cinque tratti
+   obliqui a 45° ISO 129-1, gli stessi della quota della hero, nel blocco più
+   importante della pagina. In B la quota è una riga di documento, quindi qui
+   spariscono i terminatori e restano cinque segmenti — quelli fatti pieni,
+   quelli da fare sottili. La quantità che dichiara è la stessa, e resta l'unica
+   quota del sito che si muove.
+   ========================================================================== */
+
+@layer components {
+  .brief-tacche-registro li::before {
+    content: none;
+  }
+  .brief-tacche-registro li {
+    height: 0.25rem;
+    margin-right: 0.375rem;
+  }
+  .brief-tacche-registro li:last-child {
+    margin-right: 0;
+  }
+}

@@ -44,12 +44,38 @@
  *
  * A 390 px le voci si incolonnano e ognuna porta il suo filetto: la quota non
  * si spegne su mobile, cambia forma (`CLAUDE.md` § Regole, 5).
+ *
+ * ## La `forma`, e perché è nata (fase 3 ter, `DECISIONI.md` n. 34)
+ *
+ * `CLAUDE.md` dice che il motivo grafico del sito è **uno solo: la quota**. E
+ * fino alla fase 3 bis le due proposte disegnavano **la stessa identica quota**:
+ * `HeroFoto` e `HeroDomanda` montavano `<Quota voci={RUOLI} numero={RUOLI.length}
+ * unita="ruoli" />` con il commento «la stessa quota di A: è la grammatica
+ * condivisa». Messe accanto a 390 px, `kit/reference/_dopo/A-390-hero.jpeg` e
+ * `B-390-hero.jpeg` condividono la striscia **pixel per pixel** — stesse cinque
+ * parole, stesso ordine, stessi terminatori obliqui, stessa altezza. Era
+ * l'oggetto più letteralmente identico delle due home, ed è il difetto peggiore
+ * possibile: *un motivo grafico condiviso identico da due proposte non è il
+ * motivo di nessuna delle due.*
+ *
+ * Quindi: le tre condizioni **non si toccano** (sono `CLAUDE.md`, non una scelta
+ * di direzione), le quote restano **tre**, e cambia lo **strumento**.
+ *
+ * - `misura` (A) — la **linea di misura**: filetto, terminatore obliquo a 45°
+ *   ISO 129-1, annotazione all'estremo. È il gesto di chi disegna.
+ * - `registro` (B) — **una riga del documento**: etichetta al bordo sinistro,
+ *   valore incolonnato a destra con `tabular-nums`, **nessun terminatore
+ *   obliquo**. Perché *un documento non disegna quote su se stesso: dichiara
+ *   valori nei campi*. È anche coerente con il principio n. 3 della fase — in
+ *   una pagina densa ogni segno ripetuto diventa fondo, e l'apparato di B deve
+ *   essere più piccolo di quello di A, non più grande.
  */
 export function Quota({
   voci,
   numero,
   unita,
   dettaglio,
+  forma = 'misura',
   className = '',
 }: {
   /** Le etichette appese al filetto. Le tacche cadono dove finiscono. */
@@ -63,10 +89,17 @@ export function Quota({
   unita: string
   /** La scomposizione, quando esiste: «FM 40 · MC 55 · AP 33». Opzionale. */
   dettaglio?: string
+  /**
+   * Lo strumento con cui la quota si disegna. `misura` è la linea di quota di
+   * A; `registro` è la riga di documento di B. Le tre condizioni e il tetto di
+   * tre quote in pagina valgono **uguali** per tutte e due: cambia il segno,
+   * non la regola.
+   */
+  forma?: 'misura' | 'registro'
   className?: string
 }) {
   return (
-    <div className={`quota ${className}`.trim()}>
+    <div className={`quota quota-${forma} ${className}`.trim()}>
       {voci.map((voce) => (
         <span key={voce} className="quota-voce">
           {voce}

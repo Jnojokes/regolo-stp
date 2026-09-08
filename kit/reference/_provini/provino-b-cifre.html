@@ -1,0 +1,42 @@
+<!doctype html><meta charset="utf-8">
+<title>Provino B — cifre incolonnate e riga a 390</title>
+<style>
+@font-face{font-family:Archivo;src:url(archivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Bitter;src:url(bitter.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:ZillaSlab;src:url(zillaslab-400.woff2)format('woff2');font-weight:400}
+@font-face{font-family:ZillaSlab;src:url(zillaslab-600.woff2)format('woff2');font-weight:600}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font:12px/1.4 -apple-system,system-ui}
+.blocco{border-top:1px solid #000;padding:18px 20px 26px}
+.nm{font:11px/1 -apple-system;color:#5E5E5E;margin:0 0 12px}
+.nm b{color:#000;font-size:13px}
+.paio{display:flex;gap:40px}
+table{border-collapse:collapse;font-size:14px;line-height:1}
+caption{text-align:left;font:11px/1 -apple-system;color:#5E5E5E;padding-bottom:8px}
+td{padding:0 0 0 14px;height:26px;text-align:right;vertical-align:middle;white-space:nowrap}
+td:first-child{padding-left:0;text-align:left}
+.tab{font-variant-numeric:tabular-nums}
+/* la colonna di 390: la riga vera del telefono, misura piena */
+.tel{width:390px;border:1px dashed #757575;padding:16px;margin-top:22px}
+.tel .d{font-size:30.6px;line-height:1.05;letter-spacing:-.02em;margin:0 0 8px}
+.tel .t{font-size:24.2px;line-height:1.1;letter-spacing:-.015em;margin:0 0 8px}
+.tel .c{font-size:17px;line-height:1.5;margin:0}
+.tel .r{display:flex;justify-content:space-between;font-size:13.4px;margin-top:10px;border-top:1px solid #757575;padding-top:6px}
+</style>
+<div id=out></div>
+<script>
+const F=[['Archivo',600,400,'il controllo: il carattere di A'],['Bitter',600,400,'slab variabile 34,1 KB'],['ZillaSlab',600,400,'slab statico 26,5 KB × 2']];
+const N=[['collaudo statico','1.240','2024','111'],['adeguamento sismico','380','2023','111'],['direzione lavori','2.150','2019','111'],['pratica edilizia','96','2025','111'],['coordinamento sicurezza','12.480','2021','111']];
+const t=(f,w,tab)=>`<table class="${tab?'tab':''}" style="font-family:${f};font-weight:${w}"><caption>${tab?'con tabular-nums':'senza tabular-nums'}</caption>${N.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table>`;
+document.getElementById('out').innerHTML=F.map(([f,wD,wB,nota])=>`
+<div class=blocco>
+ <p class=nm><b>${f}</b> — ${nota}</p>
+ <div class=paio>${t(f,wB,false)}${t(f,wB,true)}</div>
+ <div class=tel style="font-family:${f}">
+   <p class=d style="font-weight:${wD}">Che intervento hai in mente?</p>
+   <p class=t style="font-weight:${wB}">Ristrutturare, ampliare, recuperare</p>
+   <p class=c style="font-weight:${wB}">Ti diciamo subito cosa comprende, come si svolge e cosa serve da parte tua.</p>
+   <p class=r style="font-weight:${wB}"><span>coordinamento sicurezza</span><span>1.240 m²</span></p>
+ </div>
+</div>`).join('');
+</script>

@@ -1,0 +1,60 @@
+<!doctype html><meta charset="utf-8">
+<title>Provino B — il carattere si scambia con Archivo?</title>
+<style>
+@font-face{font-family:Archivo;src:url(archivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Chivo;src:url(chivo.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:Bitter;src:url(bitter.woff2)format('woff2');font-weight:100 900}
+@font-face{font-family:ZillaSlab;src:url(zillaslab-400.woff2)format('woff2');font-weight:400}
+@font-face{font-family:ZillaSlab;src:url(zillaslab-600.woff2)format('woff2');font-weight:600}
+@font-face{font-family:YoungSerif;src:url(youngserif.woff2)format('woff2');font-weight:400}
+@font-face{font-family:Anybody;src:url(anybody.woff2)format('woff2');font-weight:100 900}
+
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font:13px/1.4 -apple-system,system-ui}
+.riga{border-top:1px solid #000;padding:22px 24px 30px}
+.riga.controllo{background:#ECECEC}
+.nm{font:11px/1 -apple-system;color:#5E5E5E;margin:0 0 14px;letter-spacing:0}
+.nm b{color:#000;font-size:13px}
+
+/* i corpi veri di B secondo la scala densa di AS misurata: 36 · 22 · 16 · 14 */
+.display{font-size:43.6px;line-height:1;letter-spacing:-.02em;margin:0 0 4px}
+.titolo{font-size:30.6px;line-height:1.1;letter-spacing:-.015em;margin:0 0 10px}
+.corpo{font-size:17px;line-height:1.5;letter-spacing:0;margin:0 0 14px;max-width:30rem}
+
+/* la tabella: il gesto di AS. Nessun filetto fra le righe, passo 27,5 px */
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:400;color:#5E5E5E;padding:0 16px 10px 0;font-size:12.6px}
+td{padding:0 16px 0 0;height:27.5px;vertical-align:middle;white-space:nowrap}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.cnt{color:#9A9A9A}
+.dense{display:flex;gap:28px;align-items:baseline;margin:14px 0 0;font-size:16px}
+.dense span:last-child{color:#5E5E5E}
+</style>
+<div id=out></div>
+<script>
+const F=[
+ ['Archivo',600,500,'« il carattere di A — il controllo »'],
+ ['Chivo',600,400,'« il carattere di B oggi — il controllo »'],
+ ['Bitter',600,400,'slab variabile · 34,1 KB'],
+ ['ZillaSlab',600,400,'slab statico · 26,5 KB × 2 pesi'],
+ ['YoungSerif',400,400,'serif display a basso contrasto · 27,0 KB · un peso solo'],
+ ['Anybody',700,500,'grottesco meccanico · 56,9 KB'],
+];
+const RIGHE=[
+ ['01','casa nuova','progettazione architettonica e direzione lavori','Fermo (FM)','2024','1.240'],
+ ['02','ristrutturazione o ampliamento','interventi sull’esistente, cambi di destinazione','Porto San Giorgio','2023','380'],
+ ['03','struttura e sisma','adeguamento e miglioramento sismico','Montegiorgio','2023','2.150'],
+];
+document.getElementById('out').innerHTML=F.map(([f,wD,wB,nota],i)=>`
+<div class="riga ${i<2?'controllo':''}" style="font-family:${f}">
+ <p class=nm><b>${f}</b> — display ${wD} / corpo ${wB} — ${nota}</p>
+ <p class=display style="font-weight:${wD}">Che intervento hai in mente?</p>
+ <p class=titolo style="font-weight:${wB}">Ristrutturare, ampliare, recuperare</p>
+ <p class=corpo style="font-weight:${wB}">Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da parte tua. Ingegneria civile e architettura, a Fermo. 0734 510329</p>
+ <table style="font-weight:${wB}">
+  <tr><th>n.</th><th>intervento</th><th>ruolo dello studio</th><th>luogo</th><th>anno</th><th style="text-align:right">m²</th></tr>
+  ${RIGHE.map(r=>`<tr><td class=n>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td class=n>${r[4]}</td><td class=n>${r[5]}</td></tr>`).join('')}
+ </table>
+ <p class=dense style="font-weight:${wB}"><span>progetto architettonico <b class=cnt>(5)</b></span><span>coordinamento sicurezza</span><span>collaudo</span><span>128 comuni · FM 40 · MC 55 · AP 33</span></p>
+</div>`).join('');
+</script>

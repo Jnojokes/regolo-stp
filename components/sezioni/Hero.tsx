@@ -1,14 +1,9 @@
 import Link from 'next/link'
+import { Campo } from '@/components/campo/Campo'
 import { Placeholder } from '@/components/Placeholder'
 import { Quota } from '@/components/Quota'
 import { RUOLI } from '@/lib/contenuti/schema'
-import {
-  hrefBrief,
-  hrefPercorso,
-  percorsi,
-  percorsoIniziale,
-  servizioDelPercorso,
-} from '@/lib/percorsi'
+import { hrefPercorso, righeIntervento, servizioDelPercorso } from '@/lib/percorsi'
 import { ctaPrimaria, site } from '@/lib/site'
 
 /**
@@ -60,8 +55,23 @@ import { ctaPrimaria, site } from '@/lib/site'
  * Il `radio` rivela, non naviga: per andare da qualche parte ci sono i link
  * dentro il pannello. Un controllo che cambia pagina non è un radio.
  */
-export function Hero({ variante }: { variante: 'foto' | 'domanda' }) {
-  return variante === 'foto' ? <HeroFoto /> : <HeroDomanda />
+export function Hero({
+  variante,
+  interventoIniziale = null,
+}: {
+  variante: 'foto' | 'domanda'
+  /**
+   * Solo per `domanda`: la riga già scelta da `?intervento=`. È l'unica ragione
+   * per cui una riga può nascere spuntata — è una scelta che il visitatore ha
+   * già fatto altrove, non una che gli mettiamo in bocca noi.
+   */
+  interventoIniziale?: string | null
+}) {
+  return variante === 'foto' ? (
+    <HeroFoto />
+  ) : (
+    <HeroDomanda interventoIniziale={interventoIniziale} />
+  )
 }
 
 /* -------------------------------------------------------------------------- */
@@ -141,124 +151,169 @@ function HeroFoto() {
 
 /* -------------------------------------------------------------------------- */
 
-function HeroDomanda() {
+/**
+ * Hero B — «Lo strumento». **È il passo 1 del brief**, e questo è il
+ * meccanismo dell'intera proposta (`DECISIONI.md` n. 31).
+ *
+ * Le sei righe sono `radio` con `name="intervento"` e `form="brief-form"`: sono
+ * membri del form che sta in fondo alla pagina, anche se stanno cinquemila
+ * pixel più su. L'attributo `form` include un controllo posseduto da un form
+ * fuori dal suo sottoalbero, quindi la risposta entra in `FormData` da sé.
+ * Costo: **zero byte di JavaScript**. E A non lo può fare — non ha una domanda
+ * in hero, non ha uno stato da propagare: è il primo meccanismo di questa fase
+ * che non è né colore né scala.
+ *
+ * ## Tre cose che sono cambiate, e nessuna è cosmetica
+ *
+ * **1. Le righe sono sei, non cinque.** Sono esattamente le sei risposte del
+ * passo 1 (`lib/percorsi.ts` → `righeIntervento`, costruite da `passi[0]`). Se
+ * fossero cinque, il gruppo della hero e quello del brief sarebbero due gruppi
+ * diversi con lo stesso nome, e il brief riceverebbe un valore che non sa
+ * validare. Deviazione dichiarata dai «5 bottoni» di `CLAUDE.md` § Homepage
+ * blocco 2: vale **solo** per B, lo smistamento di A resta a cinque.
+ *
+ * **2. Non c'è più `defaultChecked`.** Prima la riga 02 era spuntata di serie
+ * («per far vedere il pannello»). Unita al brief, quella riga avrebbe spedito
+ * allo studio `intervento: ristrutturazione o ampliamento` **scritto da noi**
+ * a ogni invio di chi non ha toccato la hero — su un sito la cui azione
+ * primaria è il brief *qualificato*, un dato falso alla fonte, che finisce
+ * anche nell'oggetto della mail. Al primo caricamento non c'è nessuna scelta e
+ * nessun pannello aperto. L'unica eccezione è `?intervento=`, che è una scelta
+ * che il visitatore ha già fatto altrove.
+ *
+ * **3. La riga scelta non «diventa un foglio».** Non serve più: in B il foglio
+ * c'è già ed è uno solo (`components/campo/Campo.tsx`). Il segnale è quello di
+ * AS misurato — **l'opacità come gerarchia** — più un filetto che *porta uno
+ * stato*: appena si sceglie, le altre righe scendono al pavimento
+ * `--regolo-attenua` (0,60 → 5,74:1, AA) e la scelta prende il filetto.
+ * Finché non si sceglie niente, tutte le righe stanno allo stesso livello: la
+ * pagina non attenua qualcosa prima che ci sia un motivo.
+ *
+ * Il ripiego senza `:has()` non è cambiato di forma ma di verso: prima mostrava
+ * **un** pannello mentre niente era spuntato — cioè una bugia. Ora li mostra
+ * **tutti e sei** aperti: una lista espansa è una degradazione onesta.
+ */
+function HeroDomanda({ interventoIniziale }: { interventoIniziale?: string | null }) {
   return (
-    <section className="hero-registro">
-      <div className="wrap">
-        <div className="hero-registro-testa">
-          {/* L'etichetta di sezione sta nel campo vuoto a **sinistra
-              dell'asse**, non sopra il titolo: Kononenko butta «Offices» a
-              x≈417 e comincia la tabella a x=493. Un occhiello sopra un titolo
-              è la tell n. 5; un'etichetta nel margine è un'informazione al suo
-              posto. */}
-          <p className="eyebrow hero-registro-etichetta">il punto di partenza</p>
+    <Campo primo id="percorsi" etichetta="il punto di partenza" className="campo-hero">
+      <h1 className="hero-domanda">Che intervento hai in mente?</h1>
+      <p className="hero-lead">
+        Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da parte
+        tua. Ingegneria civile e architettura, a {site.citta}.
+      </p>
 
-          <div className="hero-registro-domanda">
-            <h1>Che intervento hai in mente?</h1>
-            <p className="hero-lead">
-              Scegli il tuo caso: ti diciamo subito cosa comprende, come si svolge e cosa serve da
-              parte tua. Ingegneria civile e architettura, a {site.citta}.
-            </p>
-          </div>
-        </div>
+      {/* La quota, forma «registro»: le stesse tre condizioni e lo stesso
+          numero contato dal repo, disegnato con l'altro strumento. Niente
+          filetto per voce e niente terminatore obliquo a 45° — quelli sono la
+          firma di A, e un motivo grafico condiviso identico da due proposte non
+          è il motivo di nessuna delle due (`components/Quota.tsx`). */}
+      <Quota
+        voci={RUOLI}
+        numero={RUOLI.length}
+        unita="ruoli"
+        forma="registro"
+        className="hero-quota-registro"
+      />
 
-        {/* La stessa quota di A: è la grammatica condivisa che rende le due
-            pagine due proposte dello stesso studio e non due lavori. */}
-        <Quota voci={RUOLI} numero={RUOLI.length} unita="ruoli" className="hero-quota" />
+      {/* Un `radiogroup` etichettato dall'`h1`: la domanda è già in pagina, e
+          ripeterla in una `legend` la farebbe sentire due volte.
+          Ogni riga e il suo pannello sono **interlacciati**: così la regola
+          `:has()` è una sola invece di sei, e il pannello è il fratello
+          immediatamente successivo alla riga scelta. */}
+      <div className="registro" role="radiogroup" aria-label="Che intervento hai in mente?">
+        {righeIntervento.map((r) => {
+          const servizio = r.percorso ? servizioDelPercorso(r.percorso) : null
+          return (
+            <div key={r.intervento} className="registro-coppia">
+              <label className="riga" htmlFor={`percorso-${r.intervento}`}>
+                <span className="riga-scelta">
+                  <input
+                    type="radio"
+                    id={`percorso-${r.intervento}`}
+                    name="intervento"
+                    value={r.intervento}
+                    /* Il legame con il brief in fondo alla pagina. Non è una
+                       scorciatoia: è il meccanismo. */
+                    form="brief-form"
+                    defaultChecked={interventoIniziale === r.intervento}
+                  />
+                  <span className="riga-nome">{r.etichetta}</span>
+                </span>
+                {/* Il tecnicismo, che è il sottotitolo del servizio: la stessa
+                    relazione esito/tecnicismo dei sei servizi. «Altro» non ne
+                    ha uno, e la cella resta vuota — come AS, che spedisce la
+                    tabella con i buchi invece di riempirli. */}
+                <span className="riga-ruolo">{servizio ? servizio.sottotitolo : ''}</span>
+              </label>
 
-        {/* Un `radiogroup` etichettato dall'`h1`: la domanda è già in pagina, e
-            ripeterla in una `legend` la farebbe sentire due volte.
-            Ogni riga e il suo pannello sono **interlacciati**: così la regola
-            `:has()` è una sola invece di cinque, e il pannello è il fratello
-            immediatamente successivo alla riga scelta. */}
-        <div className="registro" role="radiogroup" aria-label="Che intervento hai in mente?">
-          {percorsi.map((p) => {
-            const servizio = servizioDelPercorso(p)
-            const iniziale = p.intervento === percorsoIniziale.intervento
-            return (
-              <div key={p.intervento} className="registro-coppia">
-                <label className="riga" htmlFor={`percorso-${p.intervento}`}>
-                  {/* La chiave d'archivio, a sinistra dell'asse. Non è un
-                      passo di un processo: è l'indice della riga. */}
-                  <span className="riga-chiave" data-numero="">
-                    {p.numero}
-                  </span>
-                  <span className="riga-ruolo">{servizio.sottotitolo}</span>
-                  <span className="riga-scelta">
-                    <input
-                      type="radio"
-                      id={`percorso-${p.intervento}`}
-                      name="percorso"
-                      value={p.intervento}
-                      defaultChecked={iniziale}
-                    />
-                    <span className="riga-nome">{p.etichetta}</span>
-                  </span>
-                </label>
-
-                {/* Il pannello: la **figura** bianca con 1 px di inchiostro sul
-                    bordo. Non è più una card scura a tre colonne con la
-                    micro-etichetta monospace sopra — che era, insieme, il
-                    cluster n. 4 e la «griglia a tre colonne con l'etichetta
-                    sopra» della lista di casa.
-                    `data-iniziale` è il ripiego per i browser senza `:has()`. */}
-                <div
-                  className="pannello"
-                  data-percorso={p.intervento}
-                  data-iniziale={iniziale ? '' : undefined}
-                >
+              {r.percorso && servizio ? (
+                <div className="pannello" data-percorso={r.intervento}>
                   <div>
-                    <p className="pannello-chiave" id={`${p.intervento}-comprende`}>
+                    <p className="pannello-chiave" id={`${r.intervento}-comprende`}>
                       cosa comprende
                     </p>
-                    <ul aria-labelledby={`${p.intervento}-comprende`}>
-                      {p.comprende.map((v) => (
+                    <ul aria-labelledby={`${r.intervento}-comprende`}>
+                      {r.percorso.comprende.map((v) => (
                         <li key={v}>{v}</li>
                       ))}
                     </ul>
                   </div>
 
                   <div>
-                    <p className="pannello-chiave" id={`${p.intervento}-svolge`}>
+                    <p className="pannello-chiave" id={`${r.intervento}-svolge`}>
                       come si svolge
                     </p>
-                    <ul aria-labelledby={`${p.intervento}-svolge`}>
-                      {p.svolge.map((v) => (
+                    <ul aria-labelledby={`${r.intervento}-svolge`}>
+                      {r.percorso.svolge.map((v) => (
                         <li key={v}>{v}</li>
                       ))}
                     </ul>
                   </div>
 
                   <div>
-                    <p className="pannello-chiave" id={`${p.intervento}-serve`}>
+                    <p className="pannello-chiave" id={`${r.intervento}-serve`}>
                       cosa serve da te
                     </p>
-                    <ul aria-labelledby={`${p.intervento}-serve`}>
-                      {p.serve.map((v) => (
+                    <ul aria-labelledby={`${r.intervento}-serve`}>
+                      {r.percorso.serve.map((v) => (
                         <li key={v}>{v}</li>
                       ))}
                     </ul>
                   </div>
 
                   <div className="pannello-azioni">
-                    <Link href={hrefBrief(p)} className="btn">
+                    {/* In B il brief è **nella stessa pagina** e la risposta è
+                        già data: l'ancora ci porta, non ricomincia. */}
+                    <a href="#brief" className="btn">
                       Raccontaci il progetto
-                    </Link>
-                    <Link href={hrefPercorso(p)} className="pannello-vai">
+                    </a>
+                    <Link href={hrefPercorso(r.percorso)} className="pannello-vai">
                       {servizio.titolo}
                     </Link>
                   </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
-
-        <p className="nota-cantiere">
-          Gli elenchi «cosa serve da te» sono una proposta: quali documenti servano davvero per
-          partire lo dice lo studio, servizio per servizio.
-        </p>
+              ) : (
+                /* «Altro» non ha un pannello, e non gliene inventiamo uno: non
+                   è un percorso, è la risposta di chi non si riconosce negli
+                   altri cinque. Porta solo al brief, dove lo racconta. */
+                <div className="pannello pannello-scarno" data-percorso={r.intervento}>
+                  <p>Raccontacelo nel brief: cinque domande, e la prima l’hai già risposta.</p>
+                  <div className="pannello-azioni">
+                    <a href="#brief" className="btn">
+                      Raccontaci il progetto
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
-    </section>
+
+      <p className="nota-cantiere">
+        Gli elenchi «cosa serve da te» sono una proposta: quali documenti servano davvero per
+        partire lo dice lo studio, servizio per servizio.
+      </p>
+    </Campo>
   )
 }

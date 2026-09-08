@@ -68,7 +68,7 @@ ha chiesto meno movimento (`components/MediaEsempio.tsx`).
 | Prima / dopo ×1 (poi 2-3) | home B | 16 / 10 | **due foto dallo stesso punto di ripresa**: è il vincolo che fa funzionare il blocco. Senza, il blocco non va online | no | «prima» e «dopo» dello stesso soggetto |
 | Mappa statica della sede — **striscia** | footer, tutte | **21 / 6** | tile statico o SVG. **Nessun cookie di terzi**: niente iframe di Google Maps. È larga e bassa per non essere la stessa immagine della mappa di `/contatti`, che è 4/3 | da decidere | indirizzo in chiaro |
 | Immagine Open Graph 1200×630 | tutte | — | fondo + tipografia in codice, oppure una foto dello studio | sì se generata → dichiarare | — |
-| Favicon e icone | tutte | — | dal logo, quando arriva (decisione n. 5) | no | — |
+| Favicon e icone | tutte | — | **fatta alla fase 3 ter, ed è un segnaposto dichiarato, non un logo.** `app/(a)/icon.svg` e `app/(b)/icon.svg`: non un marchio inventato — `CLAUDE.md` lo vieta — ma **il meccanismo di ciascuna proposta a 16 px**. In A la linea di quota (filetto + terminatore obliquo a 45° ISO 129-1), che è il motivo grafico dichiarato del sito; in B il foglio bianco sulla tavola nera con il bordo al 34,4 %, cioè la prova della miniatura in miniatura. Quando arriva il logo si rifanno tutte e due (decisione n. 5). Manca ancora `apple-icon` (180×180) e un `favicon.ico` di ripiego per i client che lo chiedono comunque | no | — |
 
 ## Fase 4 — le pagine interne
 

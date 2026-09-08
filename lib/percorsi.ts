@@ -19,6 +19,7 @@
  * CONTENUTI-DA-CLIENTE.md. In pagina il blocco lo dichiara.
  */
 
+import { passi } from './brief/domande'
 import type { Servizio } from './servizi'
 import { servizioBySlug } from './servizi'
 
@@ -139,3 +140,55 @@ export const hrefBrief = (p: Percorso) => `/contatti?intervento=${p.intervento}#
 
 /** Il percorso da cui parte il pannello dell'opzione B, senza JavaScript. */
 export const percorsoIniziale = percorsi[1]
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Le **sei** righe della hero dell'opzione B — e sono sei perché sono
+ * *esattamente* le sei risposte del passo 1 del brief.
+ *
+ * ## Perché non cinque (fase 3 ter, `DECISIONI.md` n. 31)
+ *
+ * In B la hero **è** il passo 1: le righe del registro sono `radio` con
+ * `name="intervento"` e `form="brief-form"`, cioè membri del form che sta in
+ * fondo alla pagina. Chi risponde alla prima domanda ha già compilato il primo
+ * passo, e il brief comincia a «passo 2 di 5». Costa **zero byte di
+ * JavaScript** — l'attributo `form` include un controllo posseduto da un form
+ * anche se sta fuori dal suo sottoalbero — e A non lo può fare, perché A non ha
+ * una domanda in hero.
+ *
+ * Perché la lista si costruisce **da `passi[0]` e non da `percorsi`**: se il
+ * gruppo di radio della hero è lo stesso del brief, le due liste non possono
+ * divergere di una voce senza che il brief riceva un valore che non sa
+ * validare. Quindi la fonte è una sola, ed è il brief. `percorsi` ne copre
+ * cinque; la sesta — «Altro» — non ha un pannello, e va bene così: non è un
+ * percorso, è la risposta di chi non si riconosce negli altri cinque. Inventarle
+ * un elenco «cosa comprende» sarebbe contenuto del cliente inventato.
+ *
+ * La deviazione dai «5 bottoni» di `CLAUDE.md` § Homepage blocco 2 è dichiarata:
+ * riguarda **solo** l'opzione B, perché solo lì la hero è il passo 1. Lo
+ * smistamento di A resta a cinque.
+ */
+export type RigaIntervento = {
+  /** La chiave chiusa del passo 1 del brief. */
+  intervento: string
+  /** L'etichetta con cui il committente riconosce il proprio caso. */
+  etichetta: string
+  /** Il percorso, quando esiste: «Altro» non ne ha uno. */
+  percorso: Percorso | null
+}
+
+export const righeIntervento: readonly RigaIntervento[] = (() => {
+  const gruppo = passi[0].elementi.find((e) => e.genere === 'gruppo')
+  // A build time, non a runtime: se un giorno il passo 1 smette di essere un
+  // gruppo di opzioni, la hero di B non può più essere quel passo, e il sito
+  // non deve compilare fingendo di sì.
+  if (!gruppo || gruppo.genere !== 'gruppo') {
+    throw new Error('lib/percorsi.ts: il passo 1 del brief non ha un gruppo di opzioni')
+  }
+  return gruppo.opzioni.map((o) => ({
+    intervento: o.valore,
+    etichetta: o.etichetta,
+    percorso: percorsi.find((p) => p.intervento === o.valore) ?? null,
+  }))
+})()

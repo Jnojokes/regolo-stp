@@ -19,6 +19,8 @@ export function Brief({
   pagina,
   interventoIniziale = null,
   etichetta = 'il brief',
+  passo1Esterno = false,
+  quotaForma = 'misura',
 }: {
   /** La pagina che ospita il blocco: finisce nella registrazione del consenso. */
   pagina: string
@@ -32,13 +34,24 @@ export function Brief({
    * l'unica quantità del sito che cambia (`components/Quota.tsx`).
    */
   etichetta?: string
+  /**
+   * L'opzione B: il passo 1 è la hero, e qui diventa una riga di lettura.
+   * Vedi `components/brief/BriefForm.tsx`.
+   */
+  passo1Esterno?: boolean
+  /** La forma della quota di avanzamento: `misura` in A, `registro` in B. */
+  quotaForma?: 'misura' | 'registro'
 }) {
   return (
-    <section id="brief" className="brief passo-largo">
+    <section id="brief" className="brief">
       <div className="wrap brief-griglia">
         <div className="brief-testo">
           <p className="eyebrow brief-occhiello">{etichetta}</p>
-          <h2 className="mt-3">Cinque domande. Poi vi richiamiamo noi.</h2>
+          <h2 className="mt-3">
+            {passo1Esterno
+              ? 'La prima l’hai già risposta. Ne restano quattro.'
+              : 'Cinque domande. Poi vi richiamiamo noi.'}
+          </h2>
           <p className="brief-lead text-lead mt-5 max-w-[40ch]">
             Non è un «contattaci»: è un brief. Un minuto, una domanda per volta, e i dati personali
             solo all’ultimo passo. Alla fine sappiamo già cosa serve e la prima telefonata parte dal
@@ -53,7 +66,13 @@ export function Brief({
         </div>
 
         <div className="brief-colonna-scheda">
-          <BriefForm pagina={pagina} interventoIniziale={interventoIniziale} idComuni={ID_COMUNI} />
+          <BriefForm
+            pagina={pagina}
+            interventoIniziale={interventoIniziale}
+            idComuni={ID_COMUNI}
+            passo1Esterno={passo1Esterno}
+            quotaForma={quotaForma}
+          />
         </div>
       </div>
 

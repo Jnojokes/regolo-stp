@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="REGOLO STP">
+  <!-- Opzione B. Stessa regola: non un logo, ma il meccanismo della proposta
+       a 16 px — il foglio bianco sulla tavola nera, con il bordo sinistro al
+       34,4 % (Kononenko misurato: la tabella comincia a x=493 su 1440). È
+       anche la prova della miniatura, in miniatura: accanto alla A non si
+       scambia. Va sostituito quando arriva il marchio (TODO-MEDIA.md). -->
+  <rect width="32" height="32" fill="#000000"/>
+  <rect x="11" y="2" width="19" height="28" fill="#ffffff"/>
+</svg>

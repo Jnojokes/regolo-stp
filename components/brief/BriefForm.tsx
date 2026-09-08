@@ -61,11 +61,37 @@ const snapshotServer = () => false
 
 export function BriefForm({
   interventoIniziale,
+  passo1Esterno = false,
+  quotaForma = 'misura',
   pagina,
   idComuni,
 }: {
   /** Il valore di `?intervento=`, già validato lato server. */
   interventoIniziale: string | null
+  /**
+   * L'opzione B: il passo 1 **non è qui**, è la hero. Le sue sei righe sono
+   * `radio` con `name="intervento"` e `form="brief-form"`, cioè membri di
+   * questo form anche se stanno cinquemila pixel più su — l'attributo `form`
+   * include un controllo posseduto da un form fuori dal suo sottoalbero,
+   * quindi il valore entra in `FormData` da sé e la validazione non cambia di
+   * una riga.
+   *
+   * Qui il primo passo diventa una **riga di lettura** con «cambia», e il
+   * percorso comincia dal secondo. La frase che si dice in call è questa:
+   * *in A il brief comincia a «passo 1 di 5»; in B a «passo 2 di 5», perché la
+   * prima domanda l'hai già risposta nella prima schermata.*
+   *
+   * Costo: questa prop e ~30 righe. Validazione, honeypot, rate limit,
+   * consenso e `<datalist>`: **zero modifiche**.
+   */
+  passo1Esterno?: boolean
+  /**
+   * La forma della quota di avanzamento, come in `components/Quota.tsx`:
+   * `misura` è la linea di quota con i terminatori obliqui a 45° (A),
+   * `registro` è la riga di documento senza terminatori (B). È l'ultima
+   * occorrenza del motivo di A che restava dentro l'opzione B.
+   */
+  quotaForma?: 'misura' | 'registro'
   /** Da che pagina parte il brief: finisce nella registrazione del consenso. */
   pagina: string
   /** L'id del `<datalist>` dei comuni, che il server disegna fuori dal form. */
@@ -80,7 +106,11 @@ export function BriefForm({
      server — il form completo, senza passi — e passa a `true` appena idratato. */
   const montato = useSyncExternalStore(nessunaSottoscrizione, snapshotClient, snapshotServer)
 
-  const [passo, setPasso] = useState(0)
+  /* Con il passo 1 fuori, il percorso comincia da 1: il passo 0 resta nel
+     modello (la validazione e `passoDellErrore` continuano a parlare di lui,
+     e il dato c'è davvero) ma non è una schermata in cui si può stare. */
+  const primoPasso = passo1Esterno ? 1 : 0
+  const [passo, setPasso] = useState(primoPasso)
   const [errori, setErrori] = useState<Errori>({})
   const [inCorso, setInCorso] = useState(false)
   const [guasto, setGuasto] = useState<Guasto>(null)
@@ -108,8 +138,22 @@ export function BriefForm({
   const leggi = () => (formRef.current ? daFormData(new FormData(formRef.current)) : {})
 
   const aFuoco = (nome: string) => {
-    const campo = formRef.current?.querySelector<HTMLElement>(`[name="${nome}"]`)
-    campo?.focus()
+    /* In B il campo `intervento` non è un discendente del form: è nella hero,
+       e ci appartiene per l'attributo `form`. Se non sta nel sottoalbero lo si
+       cerca nel documento — altrimenti «vai all'errore» non porterebbe da
+       nessuna parte proprio sulla domanda che apre la pagina. */
+    const dentro = formRef.current?.querySelector<HTMLElement>(`[name="${nome}"]`)
+    if (dentro) {
+      dentro.focus()
+      return
+    }
+    /* Fuori dal sottoalbero vuol dire: è la hero di B, cinquemila pixel più su.
+       Lì il solo `focus()` sposterebbe il fuoco senza far vedere dove, quindi
+       si porta anche in vista. In A questo ramo non si percorre mai — tutti i
+       campi sono dentro il form — ed è voluto: A non si tocca. */
+    const fuori = document.querySelector<HTMLElement>(`[form="brief-form"][name="${nome}"]`)
+    fuori?.scrollIntoView({ block: 'center', behavior: 'auto' })
+    fuori?.focus()
   }
 
   function vaiAlPasso(prossimo: number) {
@@ -131,7 +175,7 @@ export function BriefForm({
 
   function indietro() {
     setGuasto(null)
-    vaiAlPasso(Math.max(passo - 1, 0))
+    vaiAlPasso(Math.max(passo - 1, primoPasso))
   }
 
   /** Il primo tocco sul form è «apertura form», uno dei quattro eventi. */
@@ -174,7 +218,7 @@ export function BriefForm({
     const trovati = validaTutto(leggi())
     if (Object.keys(trovati).length > 0) {
       setErrori(trovati)
-      const dove = passoDellErrore(trovati)
+      const dove = Math.max(passoDellErrore(trovati), primoPasso)
       if (dove !== passo) vaiAlPasso(dove)
       aFuoco(Object.keys(trovati)[0])
       return
@@ -208,7 +252,7 @@ export function BriefForm({
         const corpo = (await risposta.json()) as { errori?: Errori }
         const dalServer = corpo.errori ?? {}
         setErrori(dalServer)
-        const dove = passoDellErrore(dalServer)
+        const dove = Math.max(passoDellErrore(dalServer), primoPasso)
         if (dove !== passo) vaiAlPasso(dove)
       } else {
         setGuasto('tecnico')
@@ -234,6 +278,11 @@ export function BriefForm({
       onFocusCapture={primoContatto}
       onChangeCapture={campoCambiato}
       className="brief-scheda"
+      // Il foglio si DICHIARA (`app/globals.css`, blocco «B: i token sono legati
+      // al PIANO»): prima era una lista di otto classi agganciata al tema, e ogni
+      // blocco nuovo andava ricordato lì a mano o usciva bianco su bianco.
+      // In A l'attributo non fa niente: la regola è dentro `[data-theme='b']`.
+      data-piano="foglio"
     >
       {/* Trappola per i bot: fuori dall'albero di accessibilità e fuori dal
           percorso di tabulazione, quindi invisibile a chi compila davvero.
@@ -262,22 +311,55 @@ export function BriefForm({
           tutti visibili e «passo 1 di 5» è vero a pagina ferma. Per questo sta
           **fuori** dai fieldset e si rende una volta sola. */}
       <div className="brief-avanzamento">
-        <ol className="brief-tacche" aria-hidden="true">
+        <ol className={`brief-tacche brief-tacche-${quotaForma}`} aria-hidden="true">
           {passi.map((p, i) => (
             /* Senza JavaScript nessuna tacca prendeva `data-fatto`: il disegno
                diceva zero su cinque mentre l'annotazione accanto diceva
                «passo 1 di 5». Sono le due metà della stessa quota e devono
                dire la stessa cosa. Senza JS si è al passo 1, quindi si accende
                la prima e una sola — non tutte, che direbbe «finito». */
-            <li key={p.id} data-fatto={i <= (montato ? passo : 0) ? '' : undefined} />
+            <li key={p.id} data-fatto={i <= (montato ? passo : primoPasso) ? '' : undefined} />
           ))}
         </ol>
         <p className="brief-avanzamento-conta" aria-hidden="true" data-numero="">
-          passo {montato ? passo + 1 : 1} di {passi.length}
+          passo {(montato ? passo : primoPasso) + 1} di {passi.length}
         </p>
       </div>
 
       {passi.map((p, i) => {
+        /* ---- opzione B: il passo 1 è la hero, qui è una riga di lettura ----
+           I sei valori sono tutti nel markup e li accende `:has()` guardando
+           quale radio della hero è spuntato: **zero JavaScript**, e il testo è
+           testo vero — selezionabile, copiabile, letto dagli screen reader —
+           non un `content` generato. Senza `:has()` resta visibile la riga
+           «non ancora scelto», che è una degradazione onesta.
+           `cambia` è un'ancora al registro: riporta alla domanda invece di
+           duplicarla qui. */
+        if (i === 0 && passo1Esterno) {
+          const gruppo = p.elementi.find((el) => el.genere === 'gruppo')
+          const opzioni = gruppo && gruppo.genere === 'gruppo' ? gruppo.opzioni : []
+          return (
+            <p
+              key={p.id}
+              className="brief-risposta"
+              data-errore={errore('intervento') ? '' : undefined}
+            >
+              <span className="brief-risposta-chiave">1 · {p.domanda.toLowerCase()}</span>
+              <span className="brief-risposta-valore">
+                {opzioni.map((o) => (
+                  <span key={o.valore} data-vale={o.valore}>
+                    {o.etichetta}
+                  </span>
+                ))}
+                <span className="brief-risposta-vuoto">non ancora scelto</span>
+              </span>
+              <a href="#percorsi" className="brief-risposta-cambia">
+                cambia
+              </a>
+            </p>
+          )
+        }
+
         const soloGruppo = p.elementi.length === 1 && p.elementi[0].genere === 'gruppo'
         const gruppoUnico = soloGruppo ? (p.elementi[0] as Gruppo) : null
         const descrizioni = [
@@ -364,7 +446,11 @@ export function BriefForm({
         <button
           type="button"
           className="btn btn-ghost brief-indietro"
-          hidden={!montato || passo === 0}
+          /* Con il passo 1 fuori, il primo passo utile è l'1: «Indietro» lì non
+           porta da nessuna parte, e un bottone che non fa niente è peggio di un
+           bottone che non c'è. Per tornare alla prima domanda c'è «cambia»
+           nella riga di lettura, che risale alla hero. */
+          hidden={!montato || passo === primoPasso}
           onClick={indietro}
         >
           Indietro

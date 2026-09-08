@@ -1,40 +1,79 @@
 import localFont from 'next/font/local'
 
 /**
- * Opzione B «Il registro» — **Chivo**, una famiglia sola per tutto.
+ * Opzione B «Lo strumento» — **Anybody**, una famiglia sola per tutto.
  *
- * Dal provino: «il più massiccio e sicuro dei grotteschi; ottima presenza».
- * **Non ha l'asse di larghezza, e in B è giusto così**: il display di B è
- * 43,6 px, non 152, e non deve stringersi per stare in riga — quindi non paga
- * un asse che non usa. Diventa anche una differenza di *meccanismo* fra i due
- * temi, che è quello che li tiene distinguibili: **A comprime, B no.**
+ * ## Perché si è cambiato carattere (fase 3 ter, `DECISIONI.md` n. 30)
  *
- * Niente monospace. Le cifre di Chivo sono già di larghezza fissa e la famiglia
- * ha `tnum`: le colonne di numeri si incolonnano con una riga di CSS
- * (`font-variant-numeric: tabular-nums`) invece che con 31 KB di JetBrains Mono
- * — che era anche il carattere di «SEZ. 01 — IL PUNTO DI PARTENZA», cioè una
- * delle tell del cluster n. 5.
+ * Non perché Chivo fosse brutto: perché **si scambiava con Archivo**, ed è un
+ * numero, non un'impressione. Misurato sui due file veri di `public/fonts/`:
  *
- * Peso di default di Chivo: **500**. Come per Archivo, il `font-weight` va
- * sempre dichiarato. Il file viene da `scripts/genera-font.sh`: 33,2 → 27,0 KB.
+ * ```
+ *              file        cap-height   x-height   x/cap    Δ da Archivo
+ * Archivo (A)  40.692 B      0,686       0,526     0,767        —
+ * Chivo   (B)  26.980 B      0,686       0,511     0,745      −2,9 %
+ * Anybody      19.488 B      0,675       0,593     0,879     +14,6 %
+ * ```
+ *
+ * **Archivo e Chivo hanno la cap-height identica al millesimo.** Alla stessa
+ * dimensione nominale depositano la stessa quantità di nero: è per questo che
+ * in una schermata sono lo stesso carattere. Il criterio che resta scritto
+ * anche se un giorno la famiglia cambia: **la famiglia di B si sceglie sul
+ * Δ x/cap rispetto ad Archivo, e sotto il 5 % non si sceglie.** Ordine di
+ * ripiego già pesato: Encode Sans (−4,9 %) → Zilla Slab, ma solo riaprendo la
+ * regola con cui è uscito Geist (è il carattere di marca di Mozilla). **Non**
+ * Bitter: misurato, è *più vicino* ad Archivo di quanto lo sia Chivo (−1,4 %),
+ * cioè la mossa ovvia «cambio genere, prendo uno slab» avrebbe *ridotto* la
+ * differenza percepita.
+ *
+ * `PROVINI.md` lo descrive per quello che è: «grottesco **meccanico** — fianchi
+ * piatti sulla `e`, `z` quadrata, aperture chiuse. **Nessun'altra famiglia
+ * della lista somiglia a uno strumento**». La `a` non ha coda, i contrappunzoni
+ * sono rettangoli.
+ *
+ * ## Tre cose verificate, non supposte
+ *
+ * **1. L'asse di larghezza è bloccato a 100 dentro il file.** Anybody in
+ * sorgente ha `wdth 50-150`, cioè lo stesso trucco di Archivo; `genera-font.sh`
+ * lo istanzia via e il file generato contiene `fvar = [wght 400-600]` e basta.
+ * «A comprime, B no» smette di essere una regola di CSS che qualcuno può
+ * disapplicare e diventa un fatto fisico: `font-stretch: 75%` in B non ha su
+ * cosa agire.
+ *
+ * **2. Costa meno di quello che c'era.** 19.488 byte contro i 26.980 di Chivo:
+ * **−7,3 KB sul percorso critico di un LCP che è testo**, e −21,2 KB rispetto
+ * ad Archivo. È l'unica scelta della fase che *restituisce* budget.
+ *
+ * **3. La trappola del peso di default sparisce, ma la regola resta.** La
+ * sorgente ha `usWeightClass 100` — con Anybody grezzo un corpo senza
+ * `font-weight` uscirebbe filiforme, che è peggio del semibold di Archivo e
+ * Chivo. Dopo `varLib.instancer wght=400:600` il valore diventa **400**
+ * (misurato). Il `font-weight` esplicito in `@layer base` resta comunque.
+ *
+ * Niente monospace: `tnum` c'è (l'assert di `genera-font.sh` lo verifica) e le
+ * colonne di numeri si incolonnano con `font-variant-numeric: tabular-nums`.
+ * Il provino ai corpi veri di B — 43,6 · 30,6 · 17 · 13,4, su tavola nera e su
+ * foglio bianco — è `kit/reference/_provini/provino-b2-1440.jpeg`: la riserva
+ * di `PROVINI.md` («a 17 px il corpo è un po' strano») era formata su un'altra
+ * domanda, il display di A a 96 px.
  */
-const chivo = localFont({
-  variable: '--font-chivo',
+const anybody = localFont({
+  variable: '--font-anybody',
   display: 'swap',
   adjustFontFallback: 'Arial',
   fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
   // Turbopack mette i `@font-face` dei due temi nello stesso chunk CSS e Next
   // precarica tutto quello che ci trova: senza questo, l'opzione A si
-  // scaricherebbe anche Chivo. `/opzione-b` è una rotta di proposta e sparisce
+  // scaricherebbe anche Anybody. `/opzione-b` è una rotta di proposta e sparisce
   // alla fase 5, quindi il preload lo perde lei, non la produzione.
   preload: false,
   src: [
     {
-      path: '../../public/fonts/chivo-regolo-latin-var.woff2',
+      path: '../../public/fonts/anybody-regolo-latin-var.woff2',
       weight: '400 600',
       style: 'normal',
     },
   ],
 })
 
-export const fontsThemeB = chivo.variable
+export const fontsThemeB = anybody.variable

@@ -60,10 +60,17 @@ fai archivo \
   "wght=400:600 wdth=62:100" \
   "archivo-regolo-latin-var.woff2"
 
-fai chivo \
-  "https://cdn.jsdelivr.net/fontsource/fonts/chivo:vf@latest/latin-wght-normal.woff2" \
-  "wght=400:600" \
-  "chivo-regolo-latin-var.woff2"
+# Anybody, e l'asse di larghezza si blocca a 100 **dentro il file**.
+# Non e' un dettaglio di pipeline: e' la ragione della scelta. «A comprime,
+# B no» era una regola di CSS che qualcuno poteva disapplicare; cosi' il file
+# di B non contiene l'asse e `font-stretch` in B non ha su cosa agire.
+# Misurato dopo questa riga: fvar = [wght 400-600] e basta, 19.476 byte,
+# `usWeightClass` 400 (la sorgente e' 100: la trappola del peso di default
+# sparisce qui, ma il `font-weight` esplicito resta comunque), `tnum` presente.
+fai anybody \
+  "https://cdn.jsdelivr.net/fontsource/fonts/anybody:vf@latest/latin-wdth-normal.woff2" \
+  "wght=400:600 wdth=100" \
+  "anybody-regolo-latin-var.woff2"
 
 # --- due istanze STATICHE per l'immagine Open Graph -------------------------
 # `next/og` (satori) non legge i woff2 variabili: vuole un file statico a un

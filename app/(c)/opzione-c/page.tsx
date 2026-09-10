@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
-import { BarraProposta } from '@/components/BarraProposta'
+import { BarraProposta, titoloProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import {
   Bande,
@@ -13,10 +13,13 @@ import {
   Servizi,
 } from '@/components/halston/Blocchi'
 
+/* Titolo e descrizione finiscono nell'anteprima del link quando lo si manda al
+   cliente (DECISIONI.md n. 55), quindi dicono il **meccanismo** e non la
+   reference: «Halston» lì sarebbe il nome di un template (n. 52). */
 export const metadata: Metadata = {
-  title: 'Homepage',
+  title: { absolute: titoloProposta('c') },
   description:
-    'Proposta di homepage per REGOLO, variante «Halston»: bande a piena larghezza che cambiano superficie, tutto in maiuscolo, i valori in monospace.',
+    'Proposta di homepage per REGOLO, opzione C «le bande»: bande a piena larghezza che cambiano superficie, tutto in maiuscolo, i valori in monospace.',
 }
 
 /**

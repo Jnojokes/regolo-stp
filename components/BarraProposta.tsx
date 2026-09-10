@@ -1,28 +1,43 @@
 import Link from 'next/link'
 import { MEDIA_DEMO } from '@/lib/media-demo'
+import { site } from '@/lib/site'
 
 /**
  * Barra della proposta: dice quale delle tre home si sta guardando e permette
  * di passare alle altre con un click.
  *
- * Serve a FT, non al cliente: da una sola anteprima si mostrano entrambe le
- * proposte senza dettare due indirizzi al telefono. È la barra `.proposal` dei
- * due prototipi, ed è anche il posto dove si dichiara — prima di ogni altra
- * cosa, in cima alla pagina — che i contenuti sono indicativi: così nessuno
- * legge i segnaposto come una proposta di testo, o i quattro rettangoli delle
- * persone come un organigramma.
+ * Nata per FT in call: da una sola anteprima si mostrano tutte e tre le
+ * proposte senza dettare tre indirizzi al telefono. Adesso le tre home arrivano
+ * al cliente anche come tre link in una mail (DECISIONI.md n. 55), e per lui fa
+ * lo stesso lavoro. È la barra `.proposal` dei due prototipi, ed è anche il
+ * posto dove si dichiara — prima di ogni altra cosa, in cima alla pagina — che
+ * i contenuti sono indicativi: così nessuno legge i segnaposto come una
+ * proposta di testo, o i quattro rettangoli delle persone come un organigramma.
  *
  * **Sparisce alla fase 5**, insieme alle rotte non scelte (DECISIONI.md n. 1):
  * in produzione non restano tre home, e su una home sola questa barra è solo
  * una riga di rumore sopra la hero.
  */
 const PROPOSTE = {
-  a: { nome: 'opzione A — «lo studio»', href: '/' },
-  b: { nome: 'opzione B — «il foglio»', href: '/opzione-b' },
-  c: { nome: 'opzione C — «le bande»', href: '/opzione-c' },
+  a: { lettera: 'A', meccanismo: '«lo studio»', href: '/' },
+  b: { lettera: 'B', meccanismo: '«il foglio»', href: '/opzione-b' },
+  c: { lettera: 'C', meccanismo: '«le bande»', href: '/opzione-c' },
 } as const
 
-type Opzione = keyof typeof PROPOSTE
+export type Opzione = keyof typeof PROPOSTE
+
+/**
+ * Il `<title>` di ognuna delle tre home, che è anche il titolo della sua
+ * anteprima quando il link si incolla in una mail (`og:title` lo eredita).
+ *
+ * Sta qui e non nelle tre pagine perché è **la stessa tabella dei nomi**, e
+ * perché così la fase 5 non lo può dimenticare: cancellare questo file rompe
+ * la build finché la home che resta non torna al titolo di produzione.
+ */
+export function titoloProposta(opzione: Opzione) {
+  const { lettera, meccanismo } = PROPOSTE[opzione]
+  return `${site.nome} — opzione ${lettera} ${meccanismo}`
+}
 
 export function BarraProposta({ opzione }: { opzione: Opzione }) {
   // I nomi sono quelli di CLAUDE.md § Le tre opzioni, che sono anche quelli
@@ -41,7 +56,7 @@ export function BarraProposta({ opzione }: { opzione: Opzione }) {
   // Tre, non quattro: l'opzione B del kick-off è uscita
   // (`DECISIONI.md` n. 39) e le due alternative sono state rifatte da zero.
   // La barra le mette in fila perché alternarle *è* la dimostrazione.
-  const questa = PROPOSTE[opzione].nome
+  const questa = `opzione ${PROPOSTE[opzione].lettera} — ${PROPOSTE[opzione].meccanismo}`
   const altre = (Object.keys(PROPOSTE) as Opzione[]).filter((k) => k !== opzione)
 
   return (

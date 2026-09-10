@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { BarraProposta } from '@/components/BarraProposta'
+import { BarraProposta, titoloProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import { ComeLavoriamo } from '@/components/sezioni/ComeLavoriamo'
 import { Esploso } from '@/components/sezioni/Esploso'
@@ -13,6 +13,11 @@ import { JsonLd } from '@/components/JsonLd'
 import { nodoStudio } from '@/lib/seo/studio'
 
 export const metadata: Metadata = {
+  /* Finché le home sono tre, anche quella di A dice quale è: le tre arrivano al
+     cliente come tre link, e nell'anteprima della mail il titolo è la prima
+     cosa che legge (DECISIONI.md n. 55). Alla fase 5 torna il titolo del
+     layout, che è quello di produzione. */
+  title: { absolute: titoloProposta('a') },
   description:
     'Studio di ingegneria civile e architettura a Fermo. Progettazione e direzione lavori su edifici nuovi ed esistenti, pubblici e privati.',
 }

@@ -7,9 +7,10 @@
 | Ultima fase chiusa | **ripassata di design, passo 3 — revisori e diversità** (09/09/2026). La ripassata è **finita**: quattro passi su quattro |
 | Prossima fase | **la decisione n. 1** — quale delle tre home. La prende il cliente in call con FT, e le altre due rotte si cancellano. Poi `/fase-4-contenuti` per le parti rimaste e `/fase-5-movimento` |
 | Come si guarda una pagina | `/servizi/strutture` è la pagina servizio completa · `/progetti` è l'indice con i filtri · `/progetti/esempio-scheda` è la scheda di esempio |
-| Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Le fasi 1 e 2 sono online |
+| Deploy | **`regolo-stp.vercel.app`**, collegato via integrazione GitHub: push su `main` → deploy di produzione. Node 22. Nessuna cartella `.vercel` e nessun CLI da installare. Su Vercel **nessuna variabile d'ambiente**: demo accesa per default, invio del brief spento |
+| I tre link per il cliente | `regolo-stp.vercel.app/opzione-a` (rinvio 307 a `/`) · `/opzione-b` · `/opzione-c` — pubblici, ognuno con titolo e anteprima del link (decisione n. 55). **Seguono `main`**: ogni push cambia quello che il cliente sta guardando |
 | Come si guarda | online su `regolo-stp.vercel.app` · in locale `npm run dev`, oppure `npm run build && npm run start:prova -- -p 3210` |
-| Come si prova il brief | serve `start:prova` o `dev`: accendono `BRIEF_TRASPORTO=file` e le due mail finiscono in `.brief-dev/` invece di partire |
+| Come si prova il brief | serve `start:prova` o `dev`: accendono `BRIEF_TRASPORTO=file` e le due mail finiscono in `.brief-dev/` invece di partire. Online, e in locale con `npm run start`, l'invio è spento e il form dice che è un'anteprima (n. 55) |
 | Budget | rispettato, misurato (tabella sotto) |
 
 ## Fatto
@@ -1139,6 +1140,7 @@ Su `/opzione-b` il peso totale sale per i font in più — debito tecnico della 
 | **La ricerca depositata**: `ricognizione.json`, dieci DESIGN.md contati, i sei `misure.json` che mancano e le due righe assenti nei sei blocchi vecchi di `SCHEDA.md` | NB | niente sul sito: sono le voci A1, A3, A5 e A6 della lista unica, e si chiudono senza toccare una riga di codice. Restano aperte perché quelle sei reference sono state catturate a mano prima che `misura-reference.mjs` entrasse in uso |
 | **La licenza di General Sans** (n. 48) | cliente | il go-live di C. Non è OFL come gli altri tre caratteri: è di Indian Type Foundry, uso commerciale e self-hosting permessi. Va confermata per iscritto |
 | Node locale v25.7.0, non LTS | NB | niente: `.nvmrc` e `engines` fissano 22 LTS, che è quello che usa Vercel |
+| **`regolo-stp.vercel.app` è indicizzabile, e i tre link adesso girano** | NB | niente oggi, e va deciso prima della fase 6. Non è una novità della n. 55 — le tre pagine erano già pubbliche e `robots.txt` risponde **404** da sempre — ma cambia il rischio: da quando i link si mandano per mail, un inoltro può farli finire in un motore, e `/` (A) non è `noindex` come B e C. Le due strade: **(a)** un `app/robots.ts` che vieta tutto **finché `NEXT_PUBLIC_SITE_URL` è vuoto**, cioè finché il dominio è quello di anteprima (una decina di righe, e la fase 6 lo sostituisce con quello vero); **(b)** lasciare così e chiudere la questione con il dominio (decisione n. 2). Da non fare: mettere `noindex` su `/`, che è la home candidata alla produzione |
 
 ## Debiti tecnici, da saldare alla fase 5
 

@@ -23,13 +23,19 @@ import { destinatarioStudio, inviaBrief } from '@/lib/brief/invio'
 import { controllaLimite, ipDellaRichiesta, restituisciCredito } from '@/lib/brief/rate-limit'
 import { registraConsenso } from '@/lib/brief/registro'
 import { daFormData, valida } from '@/lib/brief/validazione'
+import { MEDIA_DEMO } from '@/lib/media-demo'
 import { daCliente } from '@/lib/site'
 
 /** Il brief non si mette in cache mai, in nessuna forma. */
 export const dynamic = 'force-dynamic'
 
-/** Motivi di fallimento che la pagina «non inviato» sa spiegare. */
-type Motivo = 'troppi-invii' | 'dati' | 'tecnico'
+/**
+ * Motivi di fallimento che la pagina «non inviato» sa spiegare.
+ * `anteprima` non è un guasto: è l'invio spento per scelta nell'anteprima delle
+ * tre proposte (DECISIONI.md n. 55). Resta un fallimento — il brief **non** è
+ * partito, e nessuna risposta deve lasciarlo credere.
+ */
+type Motivo = 'troppi-invii' | 'dati' | 'tecnico' | 'anteprima'
 
 export async function POST(richiesta: Request) {
   const vuoleJson = richiesta.headers.get('accept')?.includes('application/json') ?? false
@@ -88,7 +94,16 @@ export async function POST(richiesta: Request) {
 
   if (!inviato.ok) {
     restituisciCredito(ip, limite.segno)
-    return rispondi({ ok: false, motivo: 'tecnico' })
+    /* Le tre proposte si guardano da un link mandato per mail, e chi prova il
+       brief da lì è il cliente stesso. Su quel deploy l'invio non è
+       configurato **per scelta** (nessuna chiave su Vercel), quindi «problema
+       tecnico» direbbe una cosa falsa: il form ha funzionato, è l'invio a
+       essere spento. Si dice quello — ma solo con l'interruttore della demo
+       acceso e solo per la configurazione mancante: un Resend che rifiuta resta
+       un guasto vero. Alla fase 5 `lib/media-demo.ts` si cancella, e questo
+       ramo con lui. */
+    const anteprima = MEDIA_DEMO && inviato.motivo === 'configurazione'
+    return rispondi({ ok: false, motivo: anteprima ? 'anteprima' : 'tecnico' })
   }
 
   return rispondi({ ok: true, cortesiaInviata: inviato.cortesiaInviata })
@@ -116,7 +131,16 @@ type Risposta =
 
 function rispostaJson(esito: Risposta) {
   if (esito.ok) return NextResponse.json({ ok: true, cortesiaInviata: esito.cortesiaInviata })
-  const stato = esito.motivo === 'troppi-invii' ? 429 : esito.motivo === 'dati' ? 422 : 500
+  // `anteprima` è un 503 e non un 2xx: il componente tratta ogni 2xx come un
+  // brief arrivato, e questo non lo è.
+  const stato =
+    esito.motivo === 'troppi-invii'
+      ? 429
+      : esito.motivo === 'dati'
+        ? 422
+        : esito.motivo === 'anteprima'
+          ? 503
+          : 500
   const intestazioni = esito.riprovaTra ? { 'Retry-After': String(esito.riprovaTra) } : undefined
   return NextResponse.json(esito, { status: stato, headers: intestazioni })
 }

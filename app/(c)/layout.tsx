@@ -19,12 +19,17 @@ import { Misurazione } from '@/components/Misurazione'
  * delle tre home e le altre due si cancellano (fase 5).
  */
 export const metadata: Metadata = {
+  // Come in `app/(a)/layout.tsx`: finché il dominio è aperto (decisione n. 2)
+  // l'anteprima del link si risolve sull'origine del deploy.
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
   title: {
     default: `${site.nome} — opzione C`,
     template: `%s — ${site.nome} (opzione C)`,
   },
   description:
-    'Proposta di homepage per REGOLO, variante «Halston». Rotta di lavoro, non indicizzata.',
+    'Proposta di homepage per REGOLO, opzione C «le bande». Rotta di lavoro, non indicizzata.',
   robots: { index: false, follow: false },
 }
 

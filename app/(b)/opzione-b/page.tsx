@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { BarraMobile } from '@/components/BarraMobile'
-import { BarraProposta } from '@/components/BarraProposta'
+import { BarraProposta, titoloProposta } from '@/components/BarraProposta'
 import { Brief } from '@/components/brief/Brief'
 import {
   Copertina,
@@ -12,10 +12,13 @@ import {
   Persone,
 } from '@/components/ecolinear/Blocchi'
 
+/* Titolo e descrizione finiscono nell'anteprima del link quando lo si manda al
+   cliente (DECISIONI.md n. 55), quindi dicono il **meccanismo** e non la
+   reference: «ecoLINEAR» lì sarebbe il nome di un altro studio (n. 52). */
 export const metadata: Metadata = {
-  title: 'Homepage',
+  title: { absolute: titoloProposta('b') },
   description:
-    'Proposta di homepage per REGOLO, variante «ecoLINEAR»: la pagina è un foglio da disegno tecnico, con le fasi del metodo pinnate accanto alla tavola.',
+    'Proposta di homepage per REGOLO, opzione B «il foglio»: la pagina è un foglio da disegno tecnico, con le fasi del metodo pinnate accanto alla tavola.',
 }
 
 /**

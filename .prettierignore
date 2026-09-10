@@ -17,3 +17,8 @@ scripts/opzioni-diff.mjs
 scripts/qa-browser.mjs
 scripts/collaudo/soglie.json
 collaudo/
+
+# La cache dell'hook di `impeccable`: la scrive un attrezzo locale (è anche in
+# `.git/info/exclude`), e `npm run format:check` non deve cadere per un file
+# che non abbiamo scritto noi.
+.impeccable/

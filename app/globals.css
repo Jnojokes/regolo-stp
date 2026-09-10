@@ -1749,6 +1749,13 @@
     font-weight: 600;
     text-decoration: underline;
   }
+  /* L'invio spento dell'anteprima (DECISIONI.md n. 55) non è un errore, e il
+     rosso direbbe il contrario. `currentColor` e non un token: è l'inchiostro
+     del piano su cui il brief sta, quindi è giusto anche dentro una banda scura
+     senza ridichiarare niente (n. 50). */
+  .brief-guasto[data-tipo='anteprima'] {
+    border-left-color: currentColor;
+  }
 
   /* ---- azioni ------------------------------------------------------------- */
   .brief-azioni {

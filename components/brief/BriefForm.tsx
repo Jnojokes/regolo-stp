@@ -52,7 +52,11 @@ import {
 } from '@/lib/brief/validazione'
 import { site } from '@/lib/site'
 
-type Guasto = null | 'troppi-invii' | 'tecnico'
+/* `anteprima` non è un guasto: è l'invio spento per scelta sul deploy delle tre
+   proposte (DECISIONI.md n. 55). Ha il suo messaggio perché «non è andato a buon
+   fine» lì sarebbe falso — ma resta fra i fallimenti, perché il brief non è
+   partito. */
+type Guasto = null | 'troppi-invii' | 'tecnico' | 'anteprima'
 
 /* Riferimenti stabili: `useSyncExternalStore` li confronta a ogni render. */
 const nessunaSottoscrizione = () => () => {}
@@ -247,7 +251,10 @@ export function BriefForm({
         const dove = Math.max(passoDellErrore(dalServer), primoPasso)
         if (dove !== passo) vaiAlPasso(dove)
       } else {
-        setGuasto('tecnico')
+        // Il 503 dell'anteprima porta `motivo: 'anteprima'`; tutto il resto è
+        // un guasto vero, e un corpo illeggibile anche.
+        const corpo = (await risposta.json().catch(() => null)) as { motivo?: string } | null
+        setGuasto(corpo?.motivo === 'anteprima' ? 'anteprima' : 'tecnico')
       }
     } catch {
       // Rete caduta a metà: le risposte restano dove sono, si riprova.
@@ -413,12 +420,24 @@ export function BriefForm({
       })}
 
       {guasto && (
-        <p className="brief-guasto" role="alert">
+        <p
+          className="brief-guasto"
+          /* L'anteprima è un'informazione, non un allarme: `status` si fa
+             leggere senza interrompere, e il filetto smette di essere rosso. */
+          role={guasto === 'anteprima' ? 'status' : 'alert'}
+          data-tipo={guasto === 'anteprima' ? 'anteprima' : undefined}
+        >
           {guasto === 'troppi-invii' ? (
             <>
               Sono già partiti diversi brief da questa connessione. Le risposte sono qui, riprova
               fra qualche minuto — oppure chiama lo studio allo{' '}
               <a href={`tel:${site.telefonoHref}`}>{site.telefono}</a>.
+            </>
+          ) : guasto === 'anteprima' ? (
+            <>
+              Questa è un’anteprima: l’invio è spento, quindi il brief non è partito e non è stato
+              salvato da nessuna parte. Sul sito vero, a questo punto, arriva allo studio, e chi lo
+              compila ne riceve una copia per mail.
             </>
           ) : (
             <>

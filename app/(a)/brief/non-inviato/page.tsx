@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { MEDIA_DEMO } from '@/lib/media-demo'
 import { site } from '@/lib/site'
 
 /**
@@ -34,6 +35,13 @@ const SPIEGAZIONI = {
     testo:
       'La richiesta non è arrivata allo studio per un problema tecnico. Riprova fra poco: se non funziona nemmeno la seconda volta, il telefono qui sotto funziona sempre.',
   },
+  /* L'invio spento dell'anteprima (DECISIONI.md n. 55). Dice che il brief non
+     è partito, e perché: nessuna scusa per un guasto che non c'è. */
+  anteprima: {
+    titolo: 'È un’anteprima.',
+    testo:
+      'In questo prototipo l’invio è spento: il brief non è partito e non è stato salvato da nessuna parte. Sul sito vero, a questo punto, arriva allo studio, e chi lo compila ne riceve una copia per mail.',
+  },
 } as const
 
 type Motivo = keyof typeof SPIEGAZIONI
@@ -45,8 +53,11 @@ export default async function BriefNonInviato({
 }) {
   const { motivo } = await searchParams
   // Quello che arriva dalla query string non si rimanda in pagina: si confronta
-  // con l'elenco chiuso e il resto diventa «tecnico».
-  const chiave: Motivo = motivo && motivo in SPIEGAZIONI ? (motivo as Motivo) : 'tecnico'
+  // con l'elenco chiuso e il resto diventa «tecnico». `anteprima` vale solo con
+  // la demo accesa: a demo spenta un indirizzo scritto a mano non deve poter
+  // far dire a questa pagina che il sito è un prototipo.
+  const noto: Motivo = motivo && motivo in SPIEGAZIONI ? (motivo as Motivo) : 'tecnico'
+  const chiave: Motivo = noto === 'anteprima' && !MEDIA_DEMO ? 'tecnico' : noto
   const spiegazione = SPIEGAZIONI[chiave]
 
   return (
@@ -55,15 +66,20 @@ export default async function BriefNonInviato({
       <h1 className="mt-4 max-w-[18ch]">{spiegazione.titolo}</h1>
       <p className="text-muted text-lead mt-6 max-w-[48ch]">{spiegazione.testo}</p>
 
-      <div className="border-line mt-12 border-t pt-8">
-        <p className="eyebrow">Chiama lo studio</p>
-        <a
-          href={`tel:${site.telefonoHref}`}
-          className="text-h3 mt-3 inline-block font-medium hover:underline"
-        >
-          {site.telefono}
-        </a>
-      </div>
+      {/* Il telefono è il canale alternativo di chi un brief lo voleva mandare
+          davvero. Nell'anteprima non c'è nessun contatto da recuperare: chi
+          guarda è lo studio stesso. */}
+      {chiave !== 'anteprima' && (
+        <div className="border-line mt-12 border-t pt-8">
+          <p className="eyebrow">Chiama lo studio</p>
+          <a
+            href={`tel:${site.telefonoHref}`}
+            className="text-h3 mt-3 inline-block font-medium hover:underline"
+          >
+            {site.telefono}
+          </a>
+        </div>
+      )}
 
       <div className="mt-12 flex flex-wrap gap-3">
         <Link href="/contatti#brief" className="btn">

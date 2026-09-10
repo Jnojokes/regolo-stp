@@ -59,7 +59,15 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   async redirects() {
-    return redirectDaMappa()
+    return [
+      /* Il link dell'opzione A nella mail al cliente (DECISIONI.md n. 55): le
+         tre home si mandano come tre indirizzi simmetrici — `/opzione-a`,
+         `/opzione-b`, `/opzione-c` — e A vive in `/`. **307 e non 308**: un
+         permanente il browser lo ricorda per sempre, e questa riga sparisce
+         alla fase 5 insieme alle due rotte non scelte. */
+      { source: '/opzione-a', destination: '/', permanent: false },
+      ...redirectDaMappa(),
+    ]
   },
 }
 

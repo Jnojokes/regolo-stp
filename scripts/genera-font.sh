@@ -147,6 +147,41 @@ fai jetbrains-mono \
 # alla prossima lettura qualcuno prova a rimetterlo in pagina. Le righe che li
 # scaricavano sono state cancellate insieme ai file.
 
+# ============================================================================
+# LE ANTEPRIME DEL LINK (Open Graph) — istanze statiche per `next/og`
+# ============================================================================
+# `next/og` (satori) non legge i woff2 e non interpola gli assi: vuole un TTF
+# per peso. Si ricavano dai file appena generati, quindi hanno lo stesso
+# sottoinsieme latino e non si scarica niente di piu'. Si leggono a build time
+# e non arrivano mai al browser. Uno per ogni peso che l'anteprima usa, e
+# nessuno di riserva (DECISIONI.md n. 55):
+#   B  Montserrat 300 (il marchio) e 400 (la riga dell'h1)
+#   C  General Sans 500 (titolo, discipline, valore) e JetBrains Mono 400
+# Le due istanze di Archivo in `assets/og/` sono piu' vecchie di questa sezione
+# e da qui non si rigenerano: sono l'anteprima di A, e A non si tocca.
+echo
+echo "· anteprime del link (assets/og)"
+"$TMP/venv/bin/python" - "$DEST" "assets/og" <<'PY'
+import sys, os
+from fontTools.ttLib import TTFont
+from fontTools.varLib import instancer
+sorgente, uscita = sys.argv[1], sys.argv[2]
+for file, nome, pesi in (
+    ("montserrat-regolo-latin-var.woff2", "montserrat", (300, 400)),
+    ("generalsans-regolo-latin-var.woff2", "generalsans", (500,)),
+    ("jetbrainsmono-regolo-latin-400.woff2", "jetbrainsmono", (400,)),
+):
+    for peso in pesi:
+        f = TTFont(os.path.join(sorgente, file))
+        # La mono e' gia' statica: senza `fvar` l'instancer fallirebbe.
+        if "fvar" in f:
+            f = instancer.instantiateVariableFont(f, {"wght": peso}, updateFontNames=False)
+        f.flavor = None
+        dst = os.path.join(uscita, f"{nome}-{peso}.ttf")
+        f.save(dst)
+        print(f"  {dst}  {os.path.getsize(dst)} byte")
+PY
+
 echo
 echo "Fatto. Controllo degli assi e delle funzioni tipografiche:"
 "$TMP/venv/bin/python" - "$DEST" <<'PY'

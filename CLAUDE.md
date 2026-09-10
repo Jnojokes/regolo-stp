@@ -121,7 +121,10 @@ dichiarazione (n. 27 b) — il piano torna con lui.
 
 Il fuoco non è mai colorato — è inchiostro sulla carta e carta sull'inchiostro, quindi 21:1 per
 costruzione. Ogni rapporto è verificato **sul DOM vero** con
-`node scripts/collaudo/contrasto-dom.mjs`: **123 coppie distinte su 8 rotte, zero sotto soglia**.
+`node scripts/collaudo/contrasto-dom.mjs`: **122 coppie distinte su 8 rotte, zero sotto soglia**
+(rimisurate il 10/09; erano 123, e la coppia in meno non è una regola cancellata — il campo video
+di C scambia elemento dopo il caricamento, quindi quante coppie distinte esistano su quella rotta
+dipende da quando lo script guarda. Quello che non dipende da niente è lo zero).
 Il `theme-color` di ogni layout è la carta del proprio tema e va tenuto allineato a mano.
 
 ### Tipografia — una famiglia display per tema, e le soglie sono misurate
@@ -324,7 +327,7 @@ il colore del marchio è **uno**: il segno sulla voce corrente del menu. Non inv
    e con una condizione che è il punto: la richiesta resta nel DOM in `data-chiede`, e
    `node scripts/segnaposto.mjs --scrivi` la raccoglie dall'HTML buildato di **ogni** rotta e
    genera la sezione di `CONTENUTI-DA-CLIENTE.md`. È **più robusto** del `grep` che sostituisce —
-   misurato: 28 richieste su 58 esistono solo dentro un `data-chiede`, quindi il vecchio gancio
+   misurato: 26 richieste su 56 esistono solo dentro un `data-chiede`, quindi il vecchio gancio
    non le vedeva. **Sui nomi delle
    persone non si usa mai** (n. 27 c): un nome finto sotto la qualifica di un ingegnere è la
    stessa cosa vietata di una faccia presa altrove.
@@ -484,6 +487,14 @@ le diverse opzioni può essere diverso comunque»*). Resta invece per il **brief
 componente su tutte e tre — stesse domande, cinque passi — vestito da tre apparati diversi
 (n. 51): è lì che il confronto in call misura la lingua visiva a parità di contenuto.
 
+**I tre link che vanno al cliente per mail** (n. 55): `/opzione-a` — un rinvio **307** alla home
+di A, così i tre indirizzi sono simmetrici — `/opzione-b`, `/opzione-c`. Ognuno ha il **suo
+titolo** («REGOLO — opzione A «lo studio»», e le altre due), che viene dalla tabella dei nomi di
+`components/BarraProposta.tsx`, e la **sua anteprima del link**, disegnata in codice come quella
+di A e **senza media di esempio**. Su quel deploy l'invio del brief è spento e il form lo
+**dichiara** invece di dire «problema tecnico». Il rinvio, i tre titoli e l'avviso sono legati
+all'interruttore della demo o alle rotte non scelte: alla fase 5 se ne vanno con loro.
+
 | | Da dove viene | Come si riconosce in tre secondi |
 |---|---|---|
 | **A** «lo studio» — `/` | il progetto, fase 3 bis | carta bianca, payoff a 132 px, la fotografia accanto al testo |
@@ -539,8 +550,8 @@ e una proposta con «molto meno copy e più media» non dice in home tutto quell
 riempimento invece di `[[DA CLIENTE: …]]`, perché sono una demo di vendita (n. 41). Ma quelle
 stringhe erano anche **la lista della spesa**: quindi la richiesta resta nel DOM in
 `data-chiede`, e `node scripts/segnaposto.mjs --scrivi` la raccoglie dall'HTML buildato di
-**tutte** le rotte e genera la sezione di `CONTENUTI-DA-CLIENTE.md`. Misurato: **28 richieste su
-58 esistono solo dentro un `data-chiede`** — un `grep` sul codice ne perderebbe metà. In A i
+**tutte** le rotte e genera la sezione di `CONTENUTI-DA-CLIENTE.md`. Misurato: **26 richieste su
+56 esistono solo dentro un `data-chiede`** — un `grep` sul codice ne perderebbe metà. In A i
 segnaposto restano **visibili**, e sui **nomi delle persone** non si usa mai (n. 27 c).
 
 **«Identico» non scavalca l'AA** (n. 49). Tutti e due i siti veri hanno testo sotto soglia — il
